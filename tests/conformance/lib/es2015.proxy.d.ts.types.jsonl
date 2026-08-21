@@ -1,0 +1,89 @@
+{"path":"es2015.proxy.d.ts","start":10,"end":22,"text":"ProxyHandler","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":10,"end":22,"text":"ProxyHandler","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":23,"end":24,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":179,"end":184,"text":"apply","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T, thisArg: any, argArray: any[]): any; (target: T, thisArg: any, argArray: any[]): any; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":186,"end":192,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":194,"end":195,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":197,"end":204,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":211,"end":219,"text":"argArray","nodeType":"Identifier","type":{"name":"Array","display":"any[]"}}
+{"path":"es2015.proxy.d.ts","start":426,"end":435,"text":"construct","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T, argArray: any[], newTarget: Function): object; (target: T, argArray: any[], newTarget: Function): object; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":437,"end":443,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":445,"end":446,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":448,"end":456,"text":"argArray","nodeType":"Identifier","type":{"name":"Array","display":"any[]"}}
+{"path":"es2015.proxy.d.ts","start":465,"end":474,"text":"newTarget","nodeType":"Identifier","type":{"name":"TypeReference","display":"Function"}}
+{"path":"es2015.proxy.d.ts","start":476,"end":484,"text":"Function","nodeType":"Identifier","type":{"name":"TypeReference","display":"FunctionConstructor"}}
+{"path":"es2015.proxy.d.ts","start":476,"end":484,"text":"Function","nodeType":"Identifier","type":{"name":"TypeReference","display":"FunctionConstructor"}}
+{"path":"es2015.proxy.d.ts","start":711,"end":725,"text":"defineProperty","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":727,"end":733,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":735,"end":736,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":738,"end":746,"text":"property","nodeType":"Identifier","type":{"name":"Union","display":"string | symbol"}}
+{"path":"es2015.proxy.d.ts","start":765,"end":775,"text":"attributes","nodeType":"Identifier","type":{"name":"TypeReference","display":"PropertyDescriptor"}}
+{"path":"es2015.proxy.d.ts","start":777,"end":795,"text":"PropertyDescriptor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":777,"end":795,"text":"PropertyDescriptor","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":1078,"end":1092,"text":"deleteProperty","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":1094,"end":1100,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":1102,"end":1103,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":1105,"end":1106,"text":"p","nodeType":"Identifier","type":{"name":"Union","display":"string | symbol"}}
+{"path":"es2015.proxy.d.ts","start":1402,"end":1405,"text":"get","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T, p: string | symbol, receiver: any): any; (target: T, p: string | symbol, receiver: any): any; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":1407,"end":1413,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":1415,"end":1416,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":1418,"end":1419,"text":"p","nodeType":"Identifier","type":{"name":"Union","display":"string | symbol"}}
+{"path":"es2015.proxy.d.ts","start":1438,"end":1446,"text":"receiver","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":1680,"end":1704,"text":"getOwnPropertyDescriptor","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T, p: string | symbol): PropertyDescriptor | undefined; (target: T, p: string | symbol): PropertyDescriptor | undefined; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":1706,"end":1712,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":1714,"end":1715,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":1717,"end":1718,"text":"p","nodeType":"Identifier","type":{"name":"Union","display":"string | symbol"}}
+{"path":"es2015.proxy.d.ts","start":1738,"end":1756,"text":"PropertyDescriptor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":1738,"end":1756,"text":"PropertyDescriptor","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":1916,"end":1930,"text":"getPrototypeOf","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T): object | null; (target: T): object | null; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":1932,"end":1938,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":1940,"end":1941,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":2159,"end":2162,"text":"has","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":2164,"end":2170,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":2172,"end":2173,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":2175,"end":2176,"text":"p","nodeType":"Identifier","type":{"name":"Union","display":"string | symbol"}}
+{"path":"es2015.proxy.d.ts","start":2334,"end":2346,"text":"isExtensible","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T): boolean; (target: T): boolean; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":2348,"end":2354,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":2356,"end":2357,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":2494,"end":2501,"text":"ownKeys","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T): ArrayLike<string | symbol>; (target: T): ArrayLike<string | symbol>; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":2503,"end":2509,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":2511,"end":2512,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":2515,"end":2524,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":2515,"end":2524,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":2677,"end":2694,"text":"preventExtensions","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T): boolean; (target: T): boolean; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":2696,"end":2702,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":2704,"end":2705,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3067,"end":3070,"text":"set","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T, p: string | symbol, newValue: any, receiver: any): boolean; (target: T, p: string | symbol, newValue: any, receiver: any): boolean; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":3072,"end":3078,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":3080,"end":3081,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3083,"end":3084,"text":"p","nodeType":"Identifier","type":{"name":"Union","display":"string | symbol"}}
+{"path":"es2015.proxy.d.ts","start":3103,"end":3111,"text":"newValue","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3118,"end":3126,"text":"receiver","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3339,"end":3353,"text":"setPrototypeOf","nodeType":"Identifier","type":{"name":"Union","display":"{ (target: T, v: object | null): boolean; (target: T, v: object | null): boolean; } | undefined"}}
+{"path":"es2015.proxy.d.ts","start":3355,"end":3361,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":3363,"end":3364,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3366,"end":3367,"text":"v","nodeType":"Identifier","type":{"name":"Union","display":"object | null"}}
+{"path":"es2015.proxy.d.ts","start":3407,"end":3423,"text":"ProxyConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3407,"end":3423,"text":"ProxyConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3660,"end":3669,"text":"revocable","nodeType":"Identifier","type":{"name":"Object","display":"{ <T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; }; <T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; }; }"}}
+{"path":"es2015.proxy.d.ts","start":3670,"end":3671,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3688,"end":3694,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":3696,"end":3697,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3699,"end":3706,"text":"handler","nodeType":"Identifier","type":{"name":"TypeReference","display":"ProxyHandler<T>"}}
+{"path":"es2015.proxy.d.ts","start":3708,"end":3720,"text":"ProxyHandler","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3708,"end":3720,"text":"ProxyHandler","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3721,"end":3722,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3728,"end":3733,"text":"proxy","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":3735,"end":3736,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":3738,"end":3744,"text":"revoke","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"es2015.proxy.d.ts","start":4300,"end":4301,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":4318,"end":4324,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.proxy.d.ts","start":4326,"end":4327,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":4329,"end":4336,"text":"handler","nodeType":"Identifier","type":{"name":"TypeReference","display":"ProxyHandler<T>"}}
+{"path":"es2015.proxy.d.ts","start":4338,"end":4350,"text":"ProxyHandler","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":4338,"end":4350,"text":"ProxyHandler","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":4351,"end":4352,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":4356,"end":4357,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":4373,"end":4378,"text":"Proxy","nodeType":"Identifier","type":{"name":"TypeReference","display":"ProxyConstructor"}}
+{"path":"es2015.proxy.d.ts","start":4380,"end":4396,"text":"ProxyConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.proxy.d.ts","start":4380,"end":4396,"text":"ProxyConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

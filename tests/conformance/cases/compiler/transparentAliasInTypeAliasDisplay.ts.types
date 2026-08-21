@@ -1,8 +1,8 @@
 type ArrayKey = number;
->    ^^^^^^^^: number   (TyNumber) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: number   (Number) (Identifier)
 
 type Path = `${ArrayKey}`;
->    ^^^^: `${number}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
+>    ^^^^: `${number}`   (TemplateLiteral) (Identifier)
 
 type Path = `${ArrayKey}`;
->              ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^: any   (Any) (Identifier)

@@ -1,41 +1,41 @@
 class A {
->     ^: typeof A   (TyTypeQuery) (BindingIdentifier)
+>     ^: typeof A   (TypeQuery) (Identifier)
 
   [key: string]: string;
->  ^^^: string   (TyString) (TSIndexSignatureName)
+>  ^^^: string   (String) (Identifier)
 
 interface B {
->         ^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^: any   (Any) (Identifier)
 
 interface B {
->         ^: any   (TyAny) (BindingIdentifier)
+>         ^: any   (Any) (Identifier)
 
   [key: string]: string;
->  ^^^: string   (TyString) (TSIndexSignatureName)
+>  ^^^: string   (String) (Identifier)
 
 type C = {
->    ^: { [key: string]: string; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^: { [key: string]: string; }   (Object) (Identifier)
 
   [key: string]: string;
->  ^^^: string   (TyString) (TSIndexSignatureName)
+>  ^^^: string   (String) (Identifier)
 
 type Multi = {
->    ^^^^^: {}   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^: {}   (Object) (Identifier)
 
   [key: string, key2: number]: object;
->  ^^^: string   (TyString) (TSIndexSignatureName)
+>  ^^^: string   (String) (Identifier)
 
   [key: string, key2: number]: object;
->               ^^^^: number   (TyNumber) (TSIndexSignatureName)
+>               ^^^^: number   (Number) (Identifier)
 
 type Multi2 = {
->    ^^^^^^: { [key: string]: string; [key2: number]: string; [key3: symbol]: string; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^: { [key: string]: string; [key2: number]: string; [key3: symbol]: string; }   (Object) (Identifier)
 
   [key: string]: string;
->  ^^^: string   (TyString) (TSIndexSignatureName)
+>  ^^^: string   (String) (Identifier)
 
   [key2: number]: string;
->  ^^^^: number   (TyNumber) (TSIndexSignatureName)
+>  ^^^^: number   (Number) (Identifier)
 
   [key3: symbol]: string;
->  ^^^^: symbol   (TySymbol) (TSIndexSignatureName)
+>  ^^^^: symbol   (Symbol) (Identifier)

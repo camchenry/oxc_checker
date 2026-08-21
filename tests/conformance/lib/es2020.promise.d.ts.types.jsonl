@@ -1,0 +1,47 @@
+{"path":"es2020.promise.d.ts","start":10,"end":32,"text":"PromiseFulfilledResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":10,"end":32,"text":"PromiseFulfilledResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":33,"end":34,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":42,"end":48,"text":"status","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"fulfilled\""}}
+{"path":"es2020.promise.d.ts","start":67,"end":72,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2020.promise.d.ts","start":74,"end":75,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":90,"end":111,"text":"PromiseRejectedResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":90,"end":111,"text":"PromiseRejectedResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":118,"end":124,"text":"status","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"rejected\""}}
+{"path":"es2020.promise.d.ts","start":142,"end":148,"text":"reason","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":163,"end":183,"text":"PromiseSettledResult","nodeType":"Identifier","type":{"name":"Union","display":"PromiseFulfilledResult<T> | PromiseRejectedResult"}}
+{"path":"es2020.promise.d.ts","start":184,"end":185,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":189,"end":211,"text":"PromiseFulfilledResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":189,"end":211,"text":"PromiseFulfilledResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":212,"end":213,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":217,"end":238,"text":"PromiseRejectedResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":217,"end":238,"text":"PromiseRejectedResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":251,"end":269,"text":"PromiseConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":251,"end":269,"text":"PromiseConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":493,"end":503,"text":"allSettled","nodeType":"Identifier","type":{"name":"Object","display":"{ <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; }"}}
+{"path":"es2020.promise.d.ts","start":504,"end":505,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":539,"end":545,"text":"values","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2020.promise.d.ts","start":547,"end":548,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":551,"end":558,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2020.promise.d.ts","start":551,"end":558,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2020.promise.d.ts","start":572,"end":573,"text":"P","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":583,"end":584,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":587,"end":607,"text":"PromiseSettledResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":608,"end":615,"text":"Awaited","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":608,"end":615,"text":"Awaited","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2020.promise.d.ts","start":616,"end":617,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":618,"end":619,"text":"P","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":850,"end":860,"text":"allSettled","nodeType":"Identifier","type":{"name":"Object","display":"{ <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<PromiseSettledResult<Awaited<T>>[]>; }"}}
+{"path":"es2020.promise.d.ts","start":861,"end":862,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":864,"end":870,"text":"values","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T | PromiseLike<T>>"}}
+{"path":"es2020.promise.d.ts","start":872,"end":880,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":872,"end":880,"text":"Iterable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2020.promise.d.ts","start":881,"end":882,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":885,"end":896,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":885,"end":896,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2020.promise.d.ts","start":897,"end":898,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":903,"end":910,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2020.promise.d.ts","start":903,"end":910,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2020.promise.d.ts","start":911,"end":931,"text":"PromiseSettledResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":932,"end":939,"text":"Awaited","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.promise.d.ts","start":932,"end":939,"text":"Awaited","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2020.promise.d.ts","start":940,"end":941,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

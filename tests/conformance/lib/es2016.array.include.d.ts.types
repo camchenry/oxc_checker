@@ -1,277 +1,277 @@
 interface Array<T> {
->         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^: any   (Any) (Identifier)
        expected: ArrayConstructor
 
 interface Array<T> {
->         ^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^: any   (Any) (Identifier)
        expected: ArrayConstructor
 
 interface Array<T> {
->               ^: any   (TyAny) (TSTypeParameter)
+>               ^: any   (Any) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
->   ^^^^^^^^: { (searchElement: T, fromIndex?: number): boolean; (searchElement: T, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (searchElement: T, fromIndex?: number): boolean; (searchElement: T, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: T   (TypeReference) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
->                           ^: any   (TyAny) (TSTypeReference)
+>                           ^: any   (Any) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
->                              ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                              ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
 interface ReadonlyArray<T> {
->         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ReadonlyArray<T> {
->         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ReadonlyArray<T> {
->                       ^: any   (TyAny) (TSTypeParameter)
+>                       ^: any   (Any) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
->   ^^^^^^^^: { (searchElement: T, fromIndex?: number): boolean; (searchElement: T, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (searchElement: T, fromIndex?: number): boolean; (searchElement: T, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: T   (TypeReference) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
->                           ^: any   (TyAny) (TSTypeReference)
+>                           ^: any   (Any) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
->                              ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                              ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^: any   (Any) (Identifier)
            expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^: any   (Any) (Identifier)
            expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                   ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                                        ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                        ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->                                   ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->                                   ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
                    expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
                    expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                           ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                                                ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->                                   ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->                                   ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                     ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->                                   ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->                                   ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                     ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->                                   ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                      ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->                                   ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                      ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     includes(searchElement: number, fromIndex?: number): boolean;
->                                   ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^^^: number | undefined   (Union) (Identifier)

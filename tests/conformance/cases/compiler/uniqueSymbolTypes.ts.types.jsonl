@@ -1,0 +1,14 @@
+{"path":"compiler/uniqueSymbolTypes.ts","start":21,"end":34,"text":"dataTagSymbol","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":63,"end":76,"text":"dataTagSymbol","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":86,"end":99,"text":"dataTagSymbol","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":122,"end":140,"text":"dataTagErrorSymbol","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":169,"end":187,"text":"dataTagErrorSymbol","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":197,"end":215,"text":"dataTagErrorSymbol","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":238,"end":249,"text":"unsetMarker","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":278,"end":289,"text":"UnsetMarker","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":299,"end":310,"text":"unsetMarker","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":324,"end":334,"text":"AnyDataTag","nodeType":"Identifier","type":{"name":"Object","display":"{ [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":341,"end":354,"text":"dataTagSymbol","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":341,"end":354,"text":"dataTagSymbol","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":364,"end":382,"text":"dataTagErrorSymbol","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/uniqueSymbolTypes.ts","start":364,"end":382,"text":"dataTagErrorSymbol","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}

@@ -1,89 +1,89 @@
 type Source = {
->    ^^^^^^: { name: string; count: number; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^: { name: string; count: number; }   (Object) (Identifier)
 
   name: string;
-> ^^^^: string   (TyString) (TSPropertySignature)
+> ^^^^: string   (String) (Identifier)
 
   count: number;
-> ^^^^^: number   (TyNumber) (TSPropertySignature)
+> ^^^^^: number   (Number) (Identifier)
 
 declare const optionalCopy: Partial<Source>;
->             ^^^^^^^^^^^^: Partial<Source>   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^^^: Partial<Source>   (TypeReference) (Identifier)
 
 declare const optionalCopy: Partial<Source>;
->                           ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^: any   (Any) (Identifier)
 
 declare const optionalCopy: Partial<Source>;
->                           ^^^^^^^: any   (TyError) (IdentifierReference)
+>                           ^^^^^^^: any   (Error) (Identifier)
 
 declare const optionalCopy: Partial<Source>;
->                                   ^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^: any   (Any) (Identifier)
 
 const optionalName = optionalCopy.name;
->     ^^^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>     ^^^^^^^^^^^^: string | undefined   (Union) (Identifier)
 
 const optionalName = optionalCopy.name;
->                    ^^^^^^^^^^^^: Partial<Source>   (TyTypeReference) (IdentifierReference)
+>                    ^^^^^^^^^^^^: Partial<Source>   (TypeReference) (Identifier)
 
 const optionalName = optionalCopy.name;
->                                 ^^^^: string | undefined   (TyUnion) (StaticMemberExpression)
+>                                 ^^^^: string | undefined   (Union) (Identifier)
 
 const optionalCount = optionalCopy.count;
->     ^^^^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: number | undefined   (Union) (Identifier)
 
 const optionalCount = optionalCopy.count;
->                     ^^^^^^^^^^^^: Partial<Source>   (TyTypeReference) (IdentifierReference)
+>                     ^^^^^^^^^^^^: Partial<Source>   (TypeReference) (Identifier)
 
 const optionalCount = optionalCopy.count;
->                                  ^^^^^: number | undefined   (TyUnion) (StaticMemberExpression)
+>                                  ^^^^^: number | undefined   (Union) (Identifier)
 
 declare const recorded: Record<"value", string>;
->             ^^^^^^^^: Record<"value", string>   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^: Record<"value", string>   (TypeReference) (Identifier)
 
 declare const recorded: Record<"value", string>;
->                       ^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^: any   (Any) (Identifier)
 
 declare const recorded: Record<"value", string>;
->                       ^^^^^^: any   (TyError) (IdentifierReference)
+>                       ^^^^^^: any   (Error) (Identifier)
 
 const recordedValue = recorded.value;
->     ^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const recordedValue = recorded.value;
->                     ^^^^^^^^: Record<"value", string>   (TyTypeReference) (IdentifierReference)
+>                     ^^^^^^^^: Record<"value", string>   (TypeReference) (Identifier)
 
 const recordedValue = recorded.value;
->                              ^^^^^: string   (TyString) (StaticMemberExpression)
+>                              ^^^^^: string   (String) (Identifier)
 
 type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
->    ^^^^^: Value extends string ? { value: Value; } : { value: number; }   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^: Value extends string ? { value: Value; } : { value: number; }   (Conditional) (Identifier)
 
 type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
->          ^^^^^: any   (TyAny) (TSTypeParameter)
+>          ^^^^^: any   (Any) (Identifier)
 
 type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
->                   ^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^: any   (Any) (Identifier)
 
 type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
->                                            ^^^^^: Value   (TyTypeReference) (TSPropertySignature)
+>                                            ^^^^^: Value   (TypeReference) (Identifier)
 
 type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
->                                                   ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                   ^^^^^: any   (Any) (Identifier)
 
 type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
->                                                               ^^^^^: number   (TyNumber) (TSPropertySignature)
+>                                                               ^^^^^: number   (Number) (Identifier)
 
 declare const boxed: Boxed<"ready">;
->             ^^^^^: { value: "ready"; }   (TyObject) (BindingIdentifier)
+>             ^^^^^: { value: "ready"; }   (Object) (Identifier)
 
 declare const boxed: Boxed<"ready">;
->                    ^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^: any   (Any) (Identifier)
 
 const conditionalValue = boxed.value;
->     ^^^^^^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const conditionalValue = boxed.value;
->                        ^^^^^: { value: "ready"; }   (TyObject) (IdentifierReference)
+>                        ^^^^^: { value: "ready"; }   (Object) (Identifier)
 
 const conditionalValue = boxed.value;
->                              ^^^^^: "ready"   (TyStringLiteral) (StaticMemberExpression)
+>                              ^^^^^: "ready"   (StringLiteral) (Identifier)

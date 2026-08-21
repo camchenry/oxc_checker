@@ -1,628 +1,628 @@
 export type ApplyDefaultOptions<
->           ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (TyMapped) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (Mapped) (Identifier)
 
   Options extends object,
-> ^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^: any   (Any) (Identifier)
 
   Defaults extends Required<Options>,
-> ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^: any   (Any) (Identifier)
 
   Defaults extends Required<Options>,
->                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^: any   (Any) (Identifier)
 
   Defaults extends Required<Options>,
->                  ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                  ^^^^^^^^: any   (Error) (Identifier)
 
   Defaults extends Required<Options>,
->                           ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^: any   (Any) (Identifier)
 
   SpecifiedOptions extends Options,
-> ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   SpecifiedOptions extends Options,
->                          ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^: any   (Any) (Identifier)
 
   [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
->  ^^^: any   (TyAny) (TSMappedType)
+>  ^^^: any   (Any) (Identifier)
 
   [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
->               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^: any   (Any) (Identifier)
 
   [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
->                          ^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^: any   (Any) (Identifier)
 
   [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
->                                            ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                            ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
->     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^^^^^^: any   (Any) (Identifier)
 
     ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
->     ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>     ^^^^^^^^^^^: any   (Error) (Identifier)
 
     ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
->                 ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
->                                  ^^^: any   (TyAny) (TSTypeReference)
+>                                  ^^^: any   (Any) (Identifier)
 
     ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]>
->                                              ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                              ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     : Defaults[Key]
->     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^^^: any   (Any) (Identifier)
 
     : Defaults[Key]
->              ^^^: any   (TyAny) (TSTypeReference)
+>              ^^^: any   (Any) (Identifier)
 
 export type HomomorphicPick<BaseType, Keys extends keyof BaseType> = {
->           ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (TyMapped) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (Mapped) (Identifier)
 
 export type HomomorphicPick<BaseType, Keys extends keyof BaseType> = {
->                           ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                           ^^^^^^^^: any   (Any) (Identifier)
 
 export type HomomorphicPick<BaseType, Keys extends keyof BaseType> = {
->                                     ^^^^: any   (TyAny) (TSTypeParameter)
+>                                     ^^^^: any   (Any) (Identifier)
 
 export type HomomorphicPick<BaseType, Keys extends keyof BaseType> = {
->                                                        ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                        ^^^^^^^^: any   (Any) (Identifier)
 
   [Key in Keys]: BaseType[Key]
->  ^^^: any   (TyAny) (TSMappedType)
+>  ^^^: any   (Any) (Identifier)
 
   [Key in Keys]: BaseType[Key]
->         ^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^: any   (Any) (Identifier)
 
   [Key in Keys]: BaseType[Key]
->                ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^^^: any   (Any) (Identifier)
 
   [Key in Keys]: BaseType[Key]
->                         ^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^: any   (Any) (Identifier)
 
 export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
->           ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => (G extends B ? 1 : 2) ? true : false   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => (G extends B ? 1 : 2) ? true : false   (Conditional) (Identifier)
 
 export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
->                   ^: any   (TyAny) (TSTypeParameter)
+>                   ^: any   (Any) (Identifier)
 
 export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
->                      ^: any   (TyAny) (TSTypeParameter)
+>                      ^: any   (Any) (Identifier)
 
 export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
->                             ^: any   (TyAny) (TSTypeParameter)
+>                             ^: any   (Any) (Identifier)
 
 export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
->                                     ^: any   (TyAny) (TSTypeReference)
+>                                     ^: any   (Any) (Identifier)
 
 export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
 export type IsEqual<A, B> = (<G>() => G extends A ? 1 : 2) extends <G>() =>
->                                                                   ^: any   (TyAny) (TSTypeParameter)
+>                                                                   ^: any   (Any) (Identifier)
 
   G extends B ? 1 : 2
-> ^: any   (TyAny) (TSTypeReference)
+> ^: any   (Any) (Identifier)
 
   G extends B ? 1 : 2
->           ^: any   (TyAny) (TSTypeReference)
+>           ^: any   (Any) (Identifier)
 
 export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
->           ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped) (TSTypeAliasDeclaration)
+>           ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (Mapped) (Identifier)
 
 export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
->                    ^: any   (TyAny) (TSTypeParameter)
+>                    ^: any   (Any) (Identifier)
 
 export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
->                            ^^^^^^^: any   (TyAny) (TSMappedType)
+>                            ^^^^^^^: any   (Any) (Identifier)
 
 export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
->                                             ^: any   (TyAny) (TSTypeReference)
+>                                             ^: any   (Any) (Identifier)
 
 export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
->                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                 ^: any   (Any) (Identifier)
 
 export type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {}
->                                                   ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                   ^^^^^^^: any   (Any) (Identifier)
 
 import type { ApplyDefaultOptions } from './internal/index'
->             ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (TyMapped) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (Mapped) (Identifier)
 
 import type { IsEqual } from './is-equal'
->             ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => (G extends B ? 1 : 2) ? true : false   (TyConditional) (BindingIdentifier)
+>             ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => (G extends B ? 1 : 2) ? true : false   (Conditional) (Identifier)
 
 type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
->    ^^^^^^: IsEqual<KeyType, ExcludeType> extends true ? never : KeyType extends ExcludeType ? never : KeyType   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^: IsEqual<KeyType, ExcludeType> extends true ? never : KeyType extends ExcludeType ? never : KeyType   (Conditional) (Identifier)
 
 type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
->           ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>           ^^^^^^^: any   (Any) (Identifier)
 
 type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
->                    ^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                    ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
->                                   ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => (G extends B ? 1 : 2) ? true : false   (TyConditional) (TSTypeReference)
+>                                   ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => (G extends B ? 1 : 2) ? true : false   (Conditional) (Identifier)
 
 type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
->                                   ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => (G extends B ? 1 : 2) ? true : false   (TyConditional) (IdentifierReference)
+>                                   ^^^^^^^: (<G>() => G extends A ? 1 : 2) extends <G>() => (G extends B ? 1 : 2) ? true : false   (Conditional) (Identifier)
 
 type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
->                                           ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^: any   (Any) (Identifier)
 
 type Filter<KeyType, ExcludeType> = IsEqual<KeyType, ExcludeType> extends true
->                                                    ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                    ^^^^^^^^^^^: any   (Any) (Identifier)
 
   : KeyType extends ExcludeType
->   ^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^: any   (Any) (Identifier)
 
   : KeyType extends ExcludeType
->                   ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^^: any   (Any) (Identifier)
 
     : KeyType
->     ^^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^^: any   (Any) (Identifier)
 
 export type ExceptOptions = {
->           ^^^^^^^^^^^^^: { requireExactProps?: boolean; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^: { requireExactProps?: boolean; }   (Object) (Identifier)
 
   requireExactProps?: boolean
-> ^^^^^^^^^^^^^^^^^: boolean | undefined   (TyUnion) (TSPropertySignature)
+> ^^^^^^^^^^^^^^^^^: boolean | undefined   (Union) (Identifier)
 
 type DefaultExceptOptions = {
->    ^^^^^^^^^^^^^^^^^^^^: { requireExactProps: false; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^: { requireExactProps: false; }   (Object) (Identifier)
 
   requireExactProps: false
-> ^^^^^^^^^^^^^^^^^: false   (TyBooleanLiteral) (TSPropertySignature)
+> ^^^^^^^^^^^^^^^^^: false   (BooleanLiteral) (Identifier)
 
 export type Except<
->           ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (TSTypeAliasDeclaration)
+>           ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
   ObjectType,
-> ^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^: any   (Any) (Identifier)
 
   KeysType extends keyof ObjectType,
-> ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^: any   (Any) (Identifier)
 
   KeysType extends keyof ObjectType,
->                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^^^^^^^: any   (Any) (Identifier)
 
   Options extends ExceptOptions = {},
-> ^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^: any   (Any) (Identifier)
 
   Options extends ExceptOptions = {},
->                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 > = _Except<
->   ^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^: any   (Any) (Identifier)
 
   ObjectType,
-> ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^^^^: any   (Any) (Identifier)
 
   KeysType,
-> ^^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^^: any   (Any) (Identifier)
 
   ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>
-> ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (TyMapped) (TSTypeReference)
+> ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (Mapped) (Identifier)
 
   ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>
-> ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (TyMapped) (IdentifierReference)
+> ^^^^^^^^^^^^^^^^^^^: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }   (Mapped) (Identifier)
 
   ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>
->                     ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>
->                                    ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   ApplyDefaultOptions<ExceptOptions, DefaultExceptOptions, Options>
->                                                          ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                          ^^^^^^^: any   (Any) (Identifier)
 
 type _Except<
->    ^^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (Options["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (TSTypeAliasDeclaration)
+>    ^^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (Options["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
   ObjectType,
-> ^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^: any   (Any) (Identifier)
 
   KeysType extends keyof ObjectType,
-> ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^: any   (Any) (Identifier)
 
   KeysType extends keyof ObjectType,
->                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^^^^^^^: any   (Any) (Identifier)
 
   Options extends Required<ExceptOptions>,
-> ^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^: any   (Any) (Identifier)
 
   Options extends Required<ExceptOptions>,
->                 ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^: any   (Any) (Identifier)
 
   Options extends Required<ExceptOptions>,
->                 ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                 ^^^^^^^^: any   (Error) (Identifier)
 
   Options extends Required<ExceptOptions>,
->                          ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
->  ^^^^^^^: any   (TyAny) (TSMappedType)
+>  ^^^^^^^: any   (Any) (Identifier)
 
   [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
->                   ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^: any   (Any) (Identifier)
 
   [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
->                                 ^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^: any   (Any) (Identifier)
 
   [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
->                                        ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                        ^^^^^^^: any   (Any) (Identifier)
 
   [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
->                                                 ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                 ^^^^^^^^: any   (Any) (Identifier)
 
   [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
->                                                             ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^^^^: any   (Any) (Identifier)
 
   [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]
->                                                                        ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                        ^^^^^^^: any   (Any) (Identifier)
 
 } & (Options['requireExactProps'] extends true
->    ^^^^^^^: any   (TyAny) (TSTypeReference)
+>    ^^^^^^^: any   (Any) (Identifier)
 
   ? Partial<Record<KeysType, never>>
->   ^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^: any   (Any) (Identifier)
 
   ? Partial<Record<KeysType, never>>
->   ^^^^^^^: any   (TyError) (IdentifierReference)
+>   ^^^^^^^: any   (Error) (Identifier)
 
   ? Partial<Record<KeysType, never>>
->           ^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^: any   (Any) (Identifier)
 
   ? Partial<Record<KeysType, never>>
->           ^^^^^^: any   (TyError) (IdentifierReference)
+>           ^^^^^^: any   (Error) (Identifier)
 
   ? Partial<Record<KeysType, never>>
->                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^: any   (Any) (Identifier)
 
 import type { Except } from './except'
->             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (BindingIdentifier)
+>             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
 import type { HomomorphicPick } from './internal/index'
->             ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (TyMapped) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (Mapped) (Identifier)
 
 import type { Simplify } from './simplify'
->             ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped) (BindingIdentifier)
+>             ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (Mapped) (Identifier)
 
 export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
->           ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (Mapped) (Identifier)
 
 export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
->                       ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                       ^^^^^^^^: any   (Any) (Identifier)
 
 export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
->                                 ^^^^: any   (TyAny) (TSTypeParameter)
+>                                 ^^^^: any   (Any) (Identifier)
 
 export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
->                                                    ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                    ^^^^^^^^: any   (Any) (Identifier)
 
 export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
->                                                                ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped) (TSTypeReference)
+>                                                                ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (Mapped) (Identifier)
 
 export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
->                                                                ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped) (IdentifierReference)
+>                                                                ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (Mapped) (Identifier)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (TSTypeReference)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (IdentifierReference)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
->        ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>        ^^^^^^^^: any   (Any) (Identifier)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
->                  ^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^: any   (Any) (Identifier)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
->                          ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^: any   (Any) (Identifier)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
->                          ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                          ^^^^^^^^: any   (Error) (Identifier)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
->                                   ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (TyMapped) (TSTypeReference)
+>                                   ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (Mapped) (Identifier)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
->                                   ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (TyMapped) (IdentifierReference)
+>                                   ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (Mapped) (Identifier)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
->                                                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                   ^^^^^^^^: any   (Any) (Identifier)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
->                                                             ^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^: any   (Any) (Identifier)
 
 export type UnionToIntersection<Union> = (
->           ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (Conditional) (Identifier)
 
 export type UnionToIntersection<Union> = (
->                               ^^^^^: any   (TyAny) (TSTypeParameter)
+>                               ^^^^^: any   (Any) (Identifier)
 
   Union extends unknown ? (distributedUnion: Union) => void : never
-> ^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^: any   (Any) (Identifier)
 
   Union extends unknown ? (distributedUnion: Union) => void : never
->                          ^^^^^^^^^^^^^^^^: Union   (TyTypeReference) (BindingIdentifier)
+>                          ^^^^^^^^^^^^^^^^: Union   (TypeReference) (Identifier)
 
   Union extends unknown ? (distributedUnion: Union) => void : never
->                                            ^^^^^: any   (TyAny) (TSTypeReference)
+>                                            ^^^^^: any   (Any) (Identifier)
 
 ) extends (mergedIntersection: infer Intersection) => void
->          ^^^^^^^^^^^^^^^^^^: Intersection   (TyTypeReference) (BindingIdentifier)
+>          ^^^^^^^^^^^^^^^^^^: Intersection   (TypeReference) (Identifier)
 
 ) extends (mergedIntersection: infer Intersection) => void
->                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   ? Intersection & Union
->   ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   ? Intersection & Union
->                  ^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^: any   (Any) (Identifier)
 
 import type { UnionToIntersection } from './union-to-intersection'
->             ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (TyConditional) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (Conditional) (Identifier)
 
 export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
->           ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (Keyof) (Identifier)
 
 export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
->                       ^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                       ^^^^^^^^^^: any   (Any) (Identifier)
 
 export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
->                                           ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (TyConditional) (TSTypeReference)
+>                                           ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (Conditional) (Identifier)
 
 export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
->                                           ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (TyConditional) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^^^^^^: (Union extends unknown ? (distributedUnion: Union) => void : never) extends (mergedIntersection: infer Intersection) => void ? Intersection & Union : never   (Conditional) (Identifier)
 
   ObjectType extends unknown ? Record<keyof ObjectType, never> : never
-> ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^^^^: any   (Any) (Identifier)
 
   ObjectType extends unknown ? Record<keyof ObjectType, never> : never
->                              ^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^: any   (Any) (Identifier)
 
   ObjectType extends unknown ? Record<keyof ObjectType, never> : never
->                              ^^^^^^: any   (TyError) (IdentifierReference)
+>                              ^^^^^^: any   (Error) (Identifier)
 
   ObjectType extends unknown ? Record<keyof ObjectType, never> : never
->                                           ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^^^^: any   (Any) (Identifier)
 
 import type { Except } from '../source/except'
->             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (BindingIdentifier)
+>             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
 import type { KeysOfUnion } from '../source/keys-of-union'
->             ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof) (BindingIdentifier)
+>             ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (Keyof) (Identifier)
 
 import type { SetRequired } from '../source/set-required'
->             ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped) (BindingIdentifier)
+>             ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (Mapped) (Identifier)
 
 import type { Simplify } from '../source/simplify'
->             ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped) (BindingIdentifier)
+>             ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (Mapped) (Identifier)
 
 type User = {
->    ^^^^: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^: { id: string; name?: string; email?: string; profile: { avatarUrl?: string; flags: string[]; }; }   (Object) (Identifier)
 
   id: string
-> ^^: string   (TyString) (TSPropertySignature)
+> ^^: string   (String) (Identifier)
 
   name?: string
-> ^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+> ^^^^: string | undefined   (Union) (Identifier)
 
   email?: string
-> ^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+> ^^^^^: string | undefined   (Union) (Identifier)
 
   profile: {
-> ^^^^^^^: { avatarUrl?: string; flags: string[]; }   (TyObject) (TSPropertySignature)
+> ^^^^^^^: { avatarUrl?: string; flags: string[]; }   (Object) (Identifier)
 
     avatarUrl?: string
->   ^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>   ^^^^^^^^^: string | undefined   (Union) (Identifier)
 
     flags: string[]
->   ^^^^^: string[]   (TyArray) (TSPropertySignature)
+>   ^^^^^: string[]   (Array) (Identifier)
 
 type PublicUser = Except<User, 'email'>
->    ^^^^^^^^^^: { id: string; name: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: { id: string; name: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }   (Object) (Identifier)
        expected: { id: string; name?: string; profile: { avatarUrl?: string; flags: string[]; }; }
 
 type PublicUser = Except<User, 'email'>
->                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (TSTypeReference)
+>                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
 type PublicUser = Except<User, 'email'>
->                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (IdentifierReference)
+>                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
 type PublicUser = Except<User, 'email'>
->                        ^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^: any   (Any) (Identifier)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->    ^^^^^^^^^^^^^^^^: { id: string; name: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^: { id: string; name: string | undefined; profile: { avatarUrl?: string; flags: string[]; }; }   (Object) (Identifier)
              expected: { id: string; name?: string; profile: { avatarUrl?: string; flags: string[]; }; } & Partial<Record<"email", never>>
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (TSTypeReference)
+>                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (IdentifierReference)
+>                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->                              ^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^: any   (Any) (Identifier)
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->                                               ^^^^^^^^^^^^^^^^^: true   (TyBooleanLiteral) (TSPropertySignature)
+>                                               ^^^^^^^^^^^^^^^^^: true   (BooleanLiteral) (Identifier)
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
->    ^^^^^^^^^^^^^^^: { id: string; profile: { avatarUrl?: string; flags: string[]; }; name: string | undefined; email: string | undefined; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^: { id: string; profile: { avatarUrl?: string; flags: string[]; }; name: string | undefined; email: string | undefined; }   (Object) (Identifier)
             expected: { id: string; name: string; email: string; profile: { avatarUrl?: string; flags: string[]; }; }
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
->                      ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped) (TSTypeReference)
+>                      ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (Mapped) (Identifier)
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
->                      ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (TyMapped) (IdentifierReference)
+>                      ^^^^^^^^^^^: { [KeyType in keyof ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)]: ({ [KeyType in keyof BaseType as Filter<KeyType, Keys>]: BaseType[KeyType]; } & Required<HomomorphicPick<BaseType, Keys>>)[KeyType]; }   (Mapped) (Identifier)
 
 type ContactableUser = SetRequired<User, 'name' | 'email'>
->                                  ^^^^: any   (TyAny) (TSTypeReference)
+>                                  ^^^^: any   (Any) (Identifier)
 
 type UserPreview = Simplify<
->    ^^^^^^^^^^^: { id: string; name: string | undefined; email: string | undefined; displayName: string; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: { id: string; name: string | undefined; email: string | undefined; displayName: string; }   (Object) (Identifier)
         expected: { id: string; name: string; email: string; displayName: string; }
 
 type UserPreview = Simplify<
->                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped) (TSTypeReference)
+>                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (Mapped) (Identifier)
 
 type UserPreview = Simplify<
->                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (TyMapped) (IdentifierReference)
+>                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (Mapped) (Identifier)
 
   Except<ContactableUser, 'profile'> & { displayName: string }
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (TSTypeReference)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
   Except<ContactableUser, 'profile'> & { displayName: string }
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (TyIntersection) (IdentifierReference)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
 
   Except<ContactableUser, 'profile'> & { displayName: string }
->        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   Except<ContactableUser, 'profile'> & { displayName: string }
->                                        ^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
+>                                        ^^^^^^^^^^^: string   (String) (Identifier)
 
 type CreatedEvent = {
->    ^^^^^^^^^^^^: { type: 'created'; user: User; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: { type: 'created'; user: User; }   (Object) (Identifier)
 
   type: 'created'
-> ^^^^: "created"   (TyStringLiteral) (TSPropertySignature)
+> ^^^^: "created"   (StringLiteral) (Identifier)
 
   user: User
-> ^^^^: User   (TyTypeReference) (TSPropertySignature)
+> ^^^^: User   (TypeReference) (Identifier)
 
   user: User
->       ^^^^: any   (TyAny) (TSTypeReference)
+>       ^^^^: any   (Any) (Identifier)
 
 type DeletedEvent = {
->    ^^^^^^^^^^^^: { type: 'deleted'; id: string; actor?: string; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: { type: 'deleted'; id: string; actor?: string; }   (Object) (Identifier)
 
   type: 'deleted'
-> ^^^^: "deleted"   (TyStringLiteral) (TSPropertySignature)
+> ^^^^: "deleted"   (StringLiteral) (Identifier)
 
   id: string
-> ^^: string   (TyString) (TSPropertySignature)
+> ^^: string   (String) (Identifier)
 
   actor?: string
-> ^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+> ^^^^^: string | undefined   (Union) (Identifier)
 
 type Event = CreatedEvent | DeletedEvent
->    ^^^^^: CreatedEvent | DeletedEvent   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^: CreatedEvent | DeletedEvent   (Union) (Identifier)
 
 type Event = CreatedEvent | DeletedEvent
->            ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type Event = CreatedEvent | DeletedEvent
->                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type EventKey = KeysOfUnion<Event>
->    ^^^^^^^^: keyof ({ type: never; user: never; } | { type: never; id: never; actor: never; })   (TyKeyof) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: keyof ({ type: never; user: never; } | { type: never; id: never; actor: never; })   (Keyof) (Identifier)
      expected: "actor" | "id" | "type" | "user"
 
 type EventKey = KeysOfUnion<Event>
->               ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof) (TSTypeReference)
+>               ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (Keyof) (Identifier)
 
 type EventKey = KeysOfUnion<Event>
->               ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (TyKeyof) (IdentifierReference)
+>               ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (Keyof) (Identifier)
 
 type EventKey = KeysOfUnion<Event>
->                           ^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^: any   (Any) (Identifier)
 
 const publicUser: PublicUser = {
->     ^^^^^^^^^^: PublicUser   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^: PublicUser   (TypeReference) (Identifier)
         expected: { id: string; name?: string; profile: { avatarUrl?: string; flags: string[]; }; }
 
 const publicUser: PublicUser = {
->                 ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^: any   (Any) (Identifier)
 
   id: 'user-1',
-> ^^: string   (TyString) (ObjectProperty)
+> ^^: string   (String) (Identifier)
 
   name: 'Ada',
-> ^^^^: string   (TyString) (ObjectProperty)
+> ^^^^: string   (String) (Identifier)
 
   profile: {
-> ^^^^^^^: { flags: string[]; }   (TyObject) (ObjectProperty)
+> ^^^^^^^: { flags: string[]; }   (Object) (Identifier)
 
     flags: ['admin'],
->   ^^^^^: string[]   (TyArray) (ObjectProperty)
+>   ^^^^^: string[]   (Array) (Identifier)
 
 const strictPublicUser: StrictPublicUser = {
->     ^^^^^^^^^^^^^^^^: StrictPublicUser   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^: StrictPublicUser   (TypeReference) (Identifier)
 
 const strictPublicUser: StrictPublicUser = {
->                       ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   id: 'user-2',
-> ^^: string   (TyString) (ObjectProperty)
+> ^^: string   (String) (Identifier)
 
   profile: {
-> ^^^^^^^: { avatarUrl: string; flags: never[]; }   (TyObject) (ObjectProperty)
+> ^^^^^^^: { avatarUrl: string; flags: never[]; }   (Object) (Identifier)
 
     avatarUrl: '/avatars/user-2.png',
->   ^^^^^^^^^: string   (TyString) (ObjectProperty)
+>   ^^^^^^^^^: string   (String) (Identifier)
 
     flags: [],
->   ^^^^^: never[]   (TyArray) (ObjectProperty)
+>   ^^^^^: never[]   (Array) (Identifier)
 
 const contactableUser: ContactableUser = {
->     ^^^^^^^^^^^^^^^: ContactableUser   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: ContactableUser   (TypeReference) (Identifier)
              expected: { id: string; name: string; email: string; profile: { avatarUrl?: string; flags: string[]; }; }
 
 const contactableUser: ContactableUser = {
->                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   id: 'user-3',
-> ^^: string   (TyString) (ObjectProperty)
+> ^^: string   (String) (Identifier)
 
   name: 'Grace',
-> ^^^^: string   (TyString) (ObjectProperty)
+> ^^^^: string   (String) (Identifier)
 
   email: 'grace@example.com',
-> ^^^^^: string   (TyString) (ObjectProperty)
+> ^^^^^: string   (String) (Identifier)
 
   profile: {
-> ^^^^^^^: { flags: string[]; }   (TyObject) (ObjectProperty)
+> ^^^^^^^: { flags: string[]; }   (Object) (Identifier)
 
     flags: ['beta'],
->   ^^^^^: string[]   (TyArray) (ObjectProperty)
+>   ^^^^^: string[]   (Array) (Identifier)
 
 const userPreview: UserPreview = {
->     ^^^^^^^^^^^: UserPreview   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^: UserPreview   (TypeReference) (Identifier)
          expected: { id: string; name: string; email: string; displayName: string; }
 
 const userPreview: UserPreview = {
->                  ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^: any   (Any) (Identifier)
 
   id: 'user-4',
-> ^^: string   (TyString) (ObjectProperty)
+> ^^: string   (String) (Identifier)
 
   name: 'Lin',
-> ^^^^: string   (TyString) (ObjectProperty)
+> ^^^^: string   (String) (Identifier)
 
   email: 'lin@example.com',
-> ^^^^^: string   (TyString) (ObjectProperty)
+> ^^^^^: string   (String) (Identifier)
 
   displayName: 'Lin H.',
-> ^^^^^^^^^^^: string   (TyString) (ObjectProperty)
+> ^^^^^^^^^^^: string   (String) (Identifier)
 
 const eventKey: EventKey = 'actor'
->     ^^^^^^^^: EventKey   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^: EventKey   (TypeReference) (Identifier)
       expected: "actor" | "id" | "type" | "user"
 
 const eventKey: EventKey = 'actor'
->               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^: any   (Any) (Identifier)
 
 const omittedEmail = strictPublicUser.email
->     ^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
+>     ^^^^^^^^^^^^: any   (Error) (Identifier)
           expected: undefined
 
 const omittedEmail = strictPublicUser.email
->                    ^^^^^^^^^^^^^^^^: StrictPublicUser   (TyTypeReference) (IdentifierReference)
+>                    ^^^^^^^^^^^^^^^^: StrictPublicUser   (TypeReference) (Identifier)
 
 const omittedEmail = strictPublicUser.email
->                                     ^^^^^: any   (TyError) (StaticMemberExpression)
+>                                     ^^^^^: any   (Error) (Identifier)
                                    expected: undefined

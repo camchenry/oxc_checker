@@ -1,216 +1,216 @@
 declare namespace Intl {
->                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
+>                 ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
 declare namespace Intl {
->                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
+>                 ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->        ^^^^^^^^^^^^^^^^^^^^^^^^^: Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^: Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant   (Union) (Identifier)
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                    ^^^^^^^^: typeof Temporal   (TyTypeQuery) (IdentifierReference)
+>                                    ^^^^^^^^: typeof Temporal   (TypeQuery) (Identifier)
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                             ^^^^^^^^^: Temporal.PlainDate   (TyTypeReference) (TSTypeReference)
+>                                             ^^^^^^^^^: Temporal.PlainDate   (TypeReference) (Identifier)
                                                expected: Temporal.PlainDateConstructor
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                                         ^^^^^^^^: typeof Temporal   (TyTypeQuery) (IdentifierReference)
+>                                                         ^^^^^^^^: typeof Temporal   (TypeQuery) (Identifier)
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                                                  ^^^^^^^^^^^^^^: Temporal.PlainYearMonth   (TyTypeReference) (TSTypeReference)
+>                                                                  ^^^^^^^^^^^^^^: Temporal.PlainYearMonth   (TypeReference) (Identifier)
                                                                          expected: Temporal.PlainYearMonthConstructor
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                                                                   ^^^^^^^^: typeof Temporal   (TyTypeQuery) (IdentifierReference)
+>                                                                                   ^^^^^^^^: typeof Temporal   (TypeQuery) (Identifier)
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                                                                            ^^^^^^^^^^^^^: Temporal.PlainMonthDay   (TyTypeReference) (TSTypeReference)
+>                                                                                            ^^^^^^^^^^^^^: Temporal.PlainMonthDay   (TypeReference) (Identifier)
                                                                                                   expected: Temporal.PlainMonthDayConstructor
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                                                                                            ^^^^^^^^: typeof Temporal   (TyTypeQuery) (IdentifierReference)
+>                                                                                                            ^^^^^^^^: typeof Temporal   (TypeQuery) (Identifier)
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                                                                                                     ^^^^^^^^^: Temporal.PlainTime   (TyTypeReference) (TSTypeReference)
+>                                                                                                                     ^^^^^^^^^: Temporal.PlainTime   (TypeReference) (Identifier)
                                                                                                                        expected: Temporal.PlainTimeConstructor
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                                                                                                                 ^^^^^^^^: typeof Temporal   (TyTypeQuery) (IdentifierReference)
+>                                                                                                                                 ^^^^^^^^: typeof Temporal   (TypeQuery) (Identifier)
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                                                                                                                          ^^^^^^^^^^^^^: Temporal.PlainDateTime   (TyTypeReference) (TSTypeReference)
+>                                                                                                                                          ^^^^^^^^^^^^^: Temporal.PlainDateTime   (TypeReference) (Identifier)
                                                                                                                                                 expected: Temporal.PlainDateTimeConstructor
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                                                                                                                                          ^^^^^^^^: typeof Temporal   (TyTypeQuery) (IdentifierReference)
+>                                                                                                                                                          ^^^^^^^^: typeof Temporal   (TypeQuery) (Identifier)
 
     type FormattableTemporalObject = Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant;
->                                                                                                                                                                   ^^^^^^^: Temporal.Instant   (TyTypeReference) (TSTypeReference)
+>                                                                                                                                                                   ^^^^^^^: Temporal.Instant   (TypeReference) (Identifier)
                                                                                                                                                                    expected: Temporal.InstantConstructor
 
     interface DateTimeFormat {
->             ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^: any   (Any) (Identifier)
                     expected: DateTimeFormatConstructor
 
     interface DateTimeFormat {
->             ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^: any   (Any) (Identifier)
                     expected: DateTimeFormatConstructor
 
         format(date?: FormattableTemporalObject | Date | number): string;
->       ^^^^^^: { (date?: Date | number): string; (date?: FormattableTemporalObject | Date | number): string; (date?: FormattableTemporalObject | Date | number): string; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^: { (date?: Date | number): string; (date?: FormattableTemporalObject | Date | number): string; (date?: FormattableTemporalObject | Date | number): string; }   (Object) (Identifier)
 
         format(date?: FormattableTemporalObject | Date | number): string;
->              ^^^^: FormattableTemporalObject | Date | number | undefined   (TyUnion) (BindingIdentifier)
+>              ^^^^: FormattableTemporalObject | Date | number | undefined   (Union) (Identifier)
 
         format(date?: FormattableTemporalObject | Date | number): string;
->                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         format(date?: FormattableTemporalObject | Date | number): string;
->                                                 ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)
+>                                                 ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         format(date?: FormattableTemporalObject | Date | number): string;
->                                                 ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
+>                                                 ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         formatToParts(date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[];
->       ^^^^^^^^^^^^^: { (date?: Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^: { (date?: Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; }   (Object) (Identifier)
 
         formatToParts(date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[];
->                     ^^^^: FormattableTemporalObject | Date | number | undefined   (TyUnion) (BindingIdentifier)
+>                     ^^^^: FormattableTemporalObject | Date | number | undefined   (Union) (Identifier)
 
         formatToParts(date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[];
->                            ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         formatToParts(date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[];
->                                                        ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)
+>                                                        ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         formatToParts(date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[];
->                                                        ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
+>                                                        ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         formatToParts(date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[];
->                                                                        ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                        ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         formatToParts(date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[];
->                                                                        ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                        ^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         formatRange(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string;
->       ^^^^^^^^^^^: { (startDate: Date | number | bigint, endDate: Date | number | bigint): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^: { (startDate: Date | number | bigint, endDate: Date | number | bigint): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; }   (Object) (Identifier)
 
         formatRange(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string;
->                   ^^^^^^^^^: FormattableTemporalObject | Date | number   (TyUnion) (BindingIdentifier)
+>                   ^^^^^^^^^: FormattableTemporalObject | Date | number   (Union) (Identifier)
 
         formatRange(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string;
->                              ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         formatRange(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string;
->                                                          ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)
+>                                                          ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         formatRange(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string;
->                                                          ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
+>                                                          ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         formatRange(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string;
->                                                                         ^^^^^^^: FormattableTemporalObject | Date | number   (TyUnion) (BindingIdentifier)
+>                                                                         ^^^^^^^: FormattableTemporalObject | Date | number   (Union) (Identifier)
 
         formatRange(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string;
->                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         formatRange(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string;
->                                                                                                              ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)
+>                                                                                                              ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         formatRange(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string;
->                                                                                                              ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
+>                                                                                                              ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->       ^^^^^^^^^^^^^^^^^^: { (startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^^^^: { (startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; }   (Object) (Identifier)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->                          ^^^^^^^^^: FormattableTemporalObject | Date | number   (TyUnion) (BindingIdentifier)
+>                          ^^^^^^^^^: FormattableTemporalObject | Date | number   (Union) (Identifier)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->                                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->                                                                 ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)
+>                                                                 ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->                                                                 ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
+>                                                                 ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->                                                                                ^^^^^^^: FormattableTemporalObject | Date | number   (TyUnion) (BindingIdentifier)
+>                                                                                ^^^^^^^: FormattableTemporalObject | Date | number   (Union) (Identifier)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->                                                                                                                     ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)
+>                                                                                                                     ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->                                                                                                                     ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
+>                                                                                                                     ^^^^: DateConstructor   (TypeReference) (Identifier)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         formatRangeToParts(startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[];
->                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     interface Locale {
->             ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^: any   (Any) (Identifier)
             expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     interface Locale {
->             ^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^: any   (Any) (Identifier)
             expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         getCalendars(): string[];
->       ^^^^^^^^^^^^: { (): string[]; (): string[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^: { (): string[]; (): string[]; }   (Object) (Identifier)
 
         getCollations(): string[];
->       ^^^^^^^^^^^^^: { (): string[]; (): string[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^: { (): string[]; (): string[]; }   (Object) (Identifier)
 
         getHourCycles(): string[];
->       ^^^^^^^^^^^^^: { (): string[]; (): string[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^: { (): string[]; (): string[]; }   (Object) (Identifier)
 
         getNumberingSystems(): string[];
->       ^^^^^^^^^^^^^^^^^^^: { (): string[]; (): string[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^^^^^: { (): string[]; (): string[]; }   (Object) (Identifier)
 
         getTextInfo(): TextInfo;
->       ^^^^^^^^^^^: { (): TextInfo; (): TextInfo; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^: { (): TextInfo; (): TextInfo; }   (Object) (Identifier)
 
         getTextInfo(): TextInfo;
->                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
         getTextInfo(): TextInfo;
->                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
         getTimeZones(): string[] | undefined;
->       ^^^^^^^^^^^^: { (): string[] | undefined; (): string[] | undefined; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^: { (): string[] | undefined; (): string[] | undefined; }   (Object) (Identifier)
 
         getWeekInfo(): WeekInfo;
->       ^^^^^^^^^^^: { (): WeekInfo; (): WeekInfo; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^: { (): WeekInfo; (): WeekInfo; }   (Object) (Identifier)
 
         getWeekInfo(): WeekInfo;
->                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
         getWeekInfo(): WeekInfo;
->                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
     interface TextInfo {
->             ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
     interface TextInfo {
->             ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
         direction?: "ltr" | "rtl";
->       ^^^^^^^^^: "ltr" | "rtl" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^: "ltr" | "rtl" | undefined   (Union) (Identifier)
 
     interface WeekInfo {
->             ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
     interface WeekInfo {
->             ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
         firstDay: number;
->       ^^^^^^^^: number   (TyNumber) (TSPropertySignature)
+>       ^^^^^^^^: number   (Number) (Identifier)
 
         weekend: number[];
->       ^^^^^^^: number[]   (TyArray) (TSPropertySignature)
+>       ^^^^^^^: number[]   (Array) (Identifier)

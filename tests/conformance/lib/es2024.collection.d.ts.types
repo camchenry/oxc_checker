@@ -1,53 +1,53 @@
 interface MapConstructor {
->         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface MapConstructor {
->         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     groupBy<K, T>(
->   ^^^^^^^: { <K, T>(items: Iterable<T>, keySelector: (item: T, index: number) => K): Map<K, T[]>; <K, T>(items: Iterable<T>, keySelector: (item: T, index: number) => K): Map<K, T[]>; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { <K, T>(items: Iterable<T>, keySelector: (item: T, index: number) => K): Map<K, T[]>; <K, T>(items: Iterable<T>, keySelector: (item: T, index: number) => K): Map<K, T[]>; }   (Object) (Identifier)
 
     groupBy<K, T>(
->           ^: any   (TyAny) (TSTypeParameter)
+>           ^: any   (Any) (Identifier)
 
     groupBy<K, T>(
->              ^: any   (TyAny) (TSTypeParameter)
+>              ^: any   (Any) (Identifier)
 
         items: Iterable<T>,
->       ^^^^^: Iterable<T>   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^: Iterable<T>   (TypeReference) (Identifier)
 
         items: Iterable<T>,
->              ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^: any   (Any) (Identifier)
 
         items: Iterable<T>,
->              ^^^^^^^^: any   (TyError) (IdentifierReference)
+>              ^^^^^^^^: any   (Error) (Identifier)
 
         items: Iterable<T>,
->                       ^: any   (TyAny) (TSTypeReference)
+>                       ^: any   (Any) (Identifier)
 
         keySelector: (item: T, index: number) => K,
->       ^^^^^^^^^^^: (item: T, index: number) => K   (TyFunction) (BindingIdentifier)
+>       ^^^^^^^^^^^: (item: T, index: number) => K   (Function) (Identifier)
 
         keySelector: (item: T, index: number) => K,
->                     ^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                     ^^^^: T   (TypeReference) (Identifier)
 
         keySelector: (item: T, index: number) => K,
->                           ^: any   (TyAny) (TSTypeReference)
+>                           ^: any   (Any) (Identifier)
 
         keySelector: (item: T, index: number) => K,
->                              ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                              ^^^^^: number   (Number) (Identifier)
 
         keySelector: (item: T, index: number) => K,
->                                                ^: any   (TyAny) (TSTypeReference)
+>                                                ^: any   (Any) (Identifier)
 
     ): Map<K, T[]>;
->      ^^^: MapConstructor   (TyTypeReference) (TSTypeReference)
+>      ^^^: MapConstructor   (TypeReference) (Identifier)
 
     ): Map<K, T[]>;
->      ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
+>      ^^^: MapConstructor   (TypeReference) (Identifier)
 
     ): Map<K, T[]>;
->          ^: any   (TyAny) (TSTypeReference)
+>          ^: any   (Any) (Identifier)
 
     ): Map<K, T[]>;
->             ^: any   (TyAny) (TSTypeReference)
+>             ^: any   (Any) (Identifier)

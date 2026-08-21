@@ -1,10 +1,10 @@
 interface Symbol {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: SymbolConstructor
 
 interface Symbol {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: SymbolConstructor
 
     readonly description: string | undefined;
->            ^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>            ^^^^^^^^^^^: string | undefined   (Union) (Identifier)

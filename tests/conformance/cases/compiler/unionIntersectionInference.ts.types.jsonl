@@ -1,0 +1,47 @@
+{"path":"compiler/unionIntersectionInference.ts","start":18,"end":23,"text":"maybe","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | undefined) => T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":24,"end":25,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":27,"end":32,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"T | undefined"}}
+{"path":"compiler/unionIntersectionInference.ts","start":34,"end":35,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":50,"end":51,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":70,"end":78,"text":"nullable","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | null) => T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":79,"end":80,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":82,"end":87,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"T | null"}}
+{"path":"compiler/unionIntersectionInference.ts","start":89,"end":90,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":100,"end":101,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":120,"end":125,"text":"falsy","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | false) => T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":126,"end":127,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":129,"end":134,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"T | false"}}
+{"path":"compiler/unionIntersectionInference.ts","start":136,"end":137,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":148,"end":149,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":168,"end":181,"text":"unwrapPromise","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: Promise<T> | T) => T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":182,"end":183,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":185,"end":190,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"Promise<T> | T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":192,"end":199,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/unionIntersectionInference.ts","start":192,"end":199,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/unionIntersectionInference.ts","start":200,"end":201,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":205,"end":206,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":209,"end":210,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":226,"end":239,"text":"promiseString","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/unionIntersectionInference.ts","start":241,"end":248,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/unionIntersectionInference.ts","start":241,"end":248,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/unionIntersectionInference.ts","start":272,"end":290,"text":"intersectionSource","nodeType":"Identifier","type":{"name":"Intersection","display":"string[] & { extra: number; }"}}
+{"path":"compiler/unionIntersectionInference.ts","start":305,"end":310,"text":"extra","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/unionIntersectionInference.ts","start":339,"end":344,"text":"extra","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: string[] & T) => T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":345,"end":346,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":348,"end":353,"text":"value","nodeType":"Identifier","type":{"name":"Intersection","display":"string[] & T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":366,"end":367,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":370,"end":371,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/unionIntersectionInference.ts","start":380,"end":390,"text":"maybeValue","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/unionIntersectionInference.ts","start":393,"end":398,"text":"maybe","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | undefined) => T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":415,"end":428,"text":"nullableValue","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/unionIntersectionInference.ts","start":431,"end":439,"text":"nullable","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | null) => T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":456,"end":466,"text":"falsyValue","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/unionIntersectionInference.ts","start":469,"end":474,"text":"falsy","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | false) => T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":491,"end":503,"text":"promiseValue","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/unionIntersectionInference.ts","start":506,"end":519,"text":"unwrapPromise","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: Promise<T> | T) => T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":520,"end":533,"text":"promiseString","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/unionIntersectionInference.ts","start":542,"end":553,"text":"directValue","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/unionIntersectionInference.ts","start":556,"end":569,"text":"unwrapPromise","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: Promise<T> | T) => T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":586,"end":596,"text":"extraValue","nodeType":"Identifier","type":{"name":"Object","display":"{ extra: number; }"}}
+{"path":"compiler/unionIntersectionInference.ts","start":599,"end":604,"text":"extra","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: string[] & T) => T"}}
+{"path":"compiler/unionIntersectionInference.ts","start":605,"end":623,"text":"intersectionSource","nodeType":"Identifier","type":{"name":"Intersection","display":"string[] & { extra: number; }"}}

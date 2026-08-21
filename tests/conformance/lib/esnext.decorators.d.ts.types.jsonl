@@ -1,0 +1,9 @@
+{"path":"esnext.decorators.d.ts","start":84,"end":101,"text":"SymbolConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.decorators.d.ts","start":84,"end":101,"text":"SymbolConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.decorators.d.ts","start":117,"end":125,"text":"metadata","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"esnext.decorators.d.ts","start":155,"end":163,"text":"Function","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.decorators.d.ts","start":155,"end":163,"text":"Function","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.decorators.d.ts","start":171,"end":177,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"esnext.decorators.d.ts","start":178,"end":186,"text":"metadata","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"esnext.decorators.d.ts","start":189,"end":206,"text":"DecoratorMetadata","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.decorators.d.ts","start":189,"end":206,"text":"DecoratorMetadata","nodeType":"Identifier","type":{"name":"Error","display":"any"}}

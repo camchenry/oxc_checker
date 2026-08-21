@@ -1,0 +1,11 @@
+{"path":"es2018.regexp.d.ts","start":10,"end":26,"text":"RegExpMatchArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.regexp.d.ts","start":10,"end":26,"text":"RegExpMatchArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.regexp.d.ts","start":33,"end":39,"text":"groups","nodeType":"Identifier","type":{"name":"Union","display":"{ [key: string]: string; } | undefined"}}
+{"path":"es2018.regexp.d.ts","start":53,"end":56,"text":"key","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2018.regexp.d.ts","start":95,"end":110,"text":"RegExpExecArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.regexp.d.ts","start":95,"end":110,"text":"RegExpExecArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.regexp.d.ts","start":117,"end":123,"text":"groups","nodeType":"Identifier","type":{"name":"Union","display":"{ [key: string]: string; } | undefined"}}
+{"path":"es2018.regexp.d.ts","start":137,"end":140,"text":"key","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2018.regexp.d.ts","start":179,"end":185,"text":"RegExp","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.regexp.d.ts","start":179,"end":185,"text":"RegExp","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.regexp.d.ts","start":360,"end":366,"text":"dotAll","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}

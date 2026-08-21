@@ -1,77 +1,77 @@
 type T1 = 'A' | 'A';
->    ^^: "A"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^: "A"   (StringLiteral) (Identifier)
 
 type T2 = string | string | number;
->    ^^: string | number   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^: string | number   (Union) (Identifier)
 
 type T3 = { a: string } & { a: string };
->    ^^: { a: string; } & { a: string; }   (TyIntersection) (TSTypeAliasDeclaration)
+>    ^^: { a: string; } & { a: string; }   (Intersection) (Identifier)
 
 type T3 = { a: string } & { a: string };
->           ^: string   (TyString) (TSPropertySignature)
+>           ^: string   (String) (Identifier)
 
 type T3 = { a: string } & { a: string };
->                           ^: string   (TyString) (TSPropertySignature)
+>                           ^: string   (String) (Identifier)
 
 type T4 = [1, 2, 3] | [1, 2, 3];
->    ^^: [1, 2, 3]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^: [1, 2, 3]   (Tuple) (Identifier)
 
 type StringA = string;
->    ^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^^^^^^: string   (String) (Identifier)
 
 type StringB = string;
->    ^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^^^^^^: string   (String) (Identifier)
 
 type T5 = StringA | StringB;
->    ^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^: string   (String) (Identifier)
 
 type T5 = StringA | StringB;
->         ^^^^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^^^^: any   (Any) (Identifier)
 
 type T5 = StringA | StringB;
->                   ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^: any   (Any) (Identifier)
 
 const fn = (a?: string | undefined) => {};
->     ^^: (a?: string | undefined) => void   (TyFunction) (BindingIdentifier)
+>     ^^: (a?: string | undefined) => void   (Function) (Identifier)
 
 const fn = (a?: string | undefined) => {};
->           ^: string | undefined   (TyUnion) (BindingIdentifier)
+>           ^: string | undefined   (Union) (Identifier)
 
 type T1 = 'A' | 'B';
->    ^^: "A" | "B"   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^: "A" | "B"   (Union) (Identifier)
 
 type T2 = string | number | boolean;
->    ^^: string | number | boolean   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^: string | number | boolean   (Union) (Identifier)
 
 type T3 = { a: string } & { b: string };
->    ^^: { a: string; } & { b: string; }   (TyIntersection) (TSTypeAliasDeclaration)
+>    ^^: { a: string; } & { b: string; }   (Intersection) (Identifier)
 
 type T3 = { a: string } & { b: string };
->           ^: string   (TyString) (TSPropertySignature)
+>           ^: string   (String) (Identifier)
 
 type T3 = { a: string } & { b: string };
->                           ^: string   (TyString) (TSPropertySignature)
+>                           ^: string   (String) (Identifier)
 
 type T4 = [1, 2, 3] | [1, 2, 3, 4];
->    ^^: [1, 2, 3] | [1, 2, 3, 4]   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^: [1, 2, 3] | [1, 2, 3, 4]   (Union) (Identifier)
 
 type StringA = string;
->    ^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^^^^^^: string   (String) (Identifier)
 
 type NumberB = number;
->    ^^^^^^^: number   (TyNumber) (TSTypeAliasDeclaration)
+>    ^^^^^^^: number   (Number) (Identifier)
 
 type T5 = StringA | NumberB;
->    ^^: string | number   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^: string | number   (Union) (Identifier)
 
 type T5 = StringA | NumberB;
->         ^^^^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^^^^: any   (Any) (Identifier)
 
 type T5 = StringA | NumberB;
->                   ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^: any   (Any) (Identifier)
 
 const fn = (a?: string) => {};
->     ^^: (a?: string) => void   (TyFunction) (BindingIdentifier)
+>     ^^: (a?: string) => void   (Function) (Identifier)
 
 const fn = (a?: string) => {};
->           ^: string | undefined   (TyUnion) (BindingIdentifier)
+>           ^: string | undefined   (Union) (Identifier)

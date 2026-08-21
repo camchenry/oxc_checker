@@ -1,0 +1,156 @@
+{"path":"compiler/symbolGenericInference.ts","start":5,"end":33,"text":"ReturnedQueryFunctionContext","nodeType":"Identifier","type":{"name":"Conditional","display":"[TPageParam] extends [never] ? { queryKey: TQueryKey; pageParam?: unknown; } : { queryKey: TQueryKey; pageParam: TPageParam; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":34,"end":43,"text":"TQueryKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":45,"end":55,"text":"TPageParam","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":70,"end":80,"text":"TPageParam","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":106,"end":114,"text":"queryKey","nodeType":"Identifier","type":{"name":"TypeReference","display":"TQueryKey"}}
+{"path":"compiler/symbolGenericInference.ts","start":116,"end":125,"text":"TQueryKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":127,"end":136,"text":"pageParam","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/symbolGenericInference.ts","start":157,"end":165,"text":"queryKey","nodeType":"Identifier","type":{"name":"TypeReference","display":"TQueryKey"}}
+{"path":"compiler/symbolGenericInference.ts","start":167,"end":176,"text":"TQueryKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":178,"end":187,"text":"pageParam","nodeType":"Identifier","type":{"name":"TypeReference","display":"TPageParam"}}
+{"path":"compiler/symbolGenericInference.ts","start":189,"end":199,"text":"TPageParam","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":208,"end":229,"text":"ReturnedQueryFunction","nodeType":"Identifier","type":{"name":"Function","display":"(queryContext: ReturnedQueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>"}}
+{"path":"compiler/symbolGenericInference.ts","start":230,"end":231,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":233,"end":242,"text":"TQueryKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":244,"end":254,"text":"TPageParam","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":269,"end":281,"text":"queryContext","nodeType":"Identifier","type":{"name":"TypeReference","display":"ReturnedQueryFunctionContext<TQueryKey, TPageParam>"}}
+{"path":"compiler/symbolGenericInference.ts","start":283,"end":311,"text":"ReturnedQueryFunctionContext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":312,"end":321,"text":"TQueryKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":323,"end":333,"text":"TPageParam","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":339,"end":340,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":343,"end":350,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/symbolGenericInference.ts","start":343,"end":350,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/symbolGenericInference.ts","start":351,"end":352,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":365,"end":382,"text":"makeReturnedQuery","nodeType":"Identifier","type":{"name":"Function","display":"<TData, TQueryKey>() => ReturnedQueryFunction<TData, TQueryKey>"}}
+{"path":"compiler/symbolGenericInference.ts","start":383,"end":388,"text":"TData","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":390,"end":399,"text":"TQueryKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":404,"end":425,"text":"ReturnedQueryFunction","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":426,"end":431,"text":"TData","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":433,"end":442,"text":"TQueryKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":462,"end":469,"text":"context","nodeType":"Identifier","type":{"name":"Object","display":"{ queryKey: TQueryKey; pageParam?: unknown; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":474,"end":483,"text":"undefined","nodeType":"Identifier","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/symbolGenericInference.ts","start":487,"end":492,"text":"TData","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":514,"end":525,"text":"acceptEvent","nodeType":"Identifier","type":{"name":"Function","display":"<T extends { kind: \"event\"; value: string; }>(value: T) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":526,"end":527,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":538,"end":542,"text":"kind","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"event\""}}
+{"path":"compiler/symbolGenericInference.ts","start":553,"end":558,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolGenericInference.ts","start":570,"end":575,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericInference.ts","start":577,"end":578,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":581,"end":582,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":590,"end":612,"text":"contextualObjectResult","nodeType":"Identifier","type":{"name":"Object","display":"{ kind: \"event\"; value: string; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":615,"end":626,"text":"acceptEvent","nodeType":"Identifier","type":{"name":"Function","display":"<T extends { kind: \"event\"; value: string; }>(value: T) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":629,"end":633,"text":"kind","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"event\""}}
+{"path":"compiler/symbolGenericInference.ts","start":644,"end":649,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolGenericInference.ts","start":683,"end":695,"text":"firstElement","nodeType":"Identifier","type":{"name":"Function","display":"<T>(values: T[]) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":696,"end":697,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":699,"end":705,"text":"values","nodeType":"Identifier","type":{"name":"Array","display":"T[]"}}
+{"path":"compiler/symbolGenericInference.ts","start":707,"end":708,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":713,"end":714,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":733,"end":742,"text":"inferPair","nodeType":"Identifier","type":{"name":"Function","display":"<T, U>(value: [T, U]) => [T, U]"}}
+{"path":"compiler/symbolGenericInference.ts","start":743,"end":744,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":746,"end":747,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":749,"end":754,"text":"value","nodeType":"Identifier","type":{"name":"Tuple","display":"[T, U]"}}
+{"path":"compiler/symbolGenericInference.ts","start":757,"end":758,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":760,"end":761,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":766,"end":767,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":769,"end":770,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":790,"end":799,"text":"inferTail","nodeType":"Identifier","type":{"name":"Function","display":"<T extends unknown[]>(value: [string, ...T]) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":800,"end":801,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":821,"end":826,"text":"value","nodeType":"Identifier","type":{"name":"Tuple","display":"[string, ...T]"}}
+{"path":"compiler/symbolGenericInference.ts","start":840,"end":841,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":845,"end":846,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":854,"end":864,"text":"firstValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericInference.ts","start":867,"end":879,"text":"firstElement","nodeType":"Identifier","type":{"name":"Function","display":"<T>(values: T[]) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":895,"end":904,"text":"pairValue","nodeType":"Identifier","type":{"name":"Tuple","display":"[number, string]"}}
+{"path":"compiler/symbolGenericInference.ts","start":907,"end":916,"text":"inferPair","nodeType":"Identifier","type":{"name":"Function","display":"<T, U>(value: [T, U]) => [T, U]"}}
+{"path":"compiler/symbolGenericInference.ts","start":958,"end":967,"text":"tailValue","nodeType":"Identifier","type":{"name":"Tuple","display":"[number, boolean]"}}
+{"path":"compiler/symbolGenericInference.ts","start":970,"end":979,"text":"inferTail","nodeType":"Identifier","type":{"name":"Function","display":"<T extends unknown[]>(value: [string, ...T]) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1048,"end":1053,"text":"maybe","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | undefined) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1054,"end":1055,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1057,"end":1062,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"T | undefined"}}
+{"path":"compiler/symbolGenericInference.ts","start":1064,"end":1065,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1080,"end":1081,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1100,"end":1108,"text":"nullable","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | null) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1109,"end":1110,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1112,"end":1117,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"T | null"}}
+{"path":"compiler/symbolGenericInference.ts","start":1119,"end":1120,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1130,"end":1131,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1150,"end":1155,"text":"falsy","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | false) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1156,"end":1157,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1159,"end":1164,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"T | false"}}
+{"path":"compiler/symbolGenericInference.ts","start":1166,"end":1167,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1178,"end":1179,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1198,"end":1211,"text":"unwrapPromise","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | Promise<T>) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1212,"end":1213,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1215,"end":1220,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"T | Promise<T>"}}
+{"path":"compiler/symbolGenericInference.ts","start":1222,"end":1229,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/symbolGenericInference.ts","start":1222,"end":1229,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/symbolGenericInference.ts","start":1230,"end":1231,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1235,"end":1236,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1239,"end":1240,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1256,"end":1269,"text":"promiseString","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/symbolGenericInference.ts","start":1271,"end":1278,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/symbolGenericInference.ts","start":1271,"end":1278,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/symbolGenericInference.ts","start":1294,"end":1304,"text":"maybeValue","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/symbolGenericInference.ts","start":1307,"end":1312,"text":"maybe","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | undefined) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1329,"end":1342,"text":"nullableValue","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/symbolGenericInference.ts","start":1345,"end":1353,"text":"nullable","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | null) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1370,"end":1380,"text":"falsyValue","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/symbolGenericInference.ts","start":1383,"end":1388,"text":"falsy","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | false) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1405,"end":1417,"text":"promiseValue","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolGenericInference.ts","start":1420,"end":1433,"text":"unwrapPromise","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | Promise<T>) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1434,"end":1447,"text":"promiseString","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/symbolGenericInference.ts","start":1456,"end":1467,"text":"directValue","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/symbolGenericInference.ts","start":1470,"end":1483,"text":"unwrapPromise","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | Promise<T>) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1509,"end":1527,"text":"intersectionSource","nodeType":"Identifier","type":{"name":"Intersection","display":"string[] & { extra: number; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":1542,"end":1547,"text":"extra","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericInference.ts","start":1576,"end":1586,"text":"inferExtra","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: string[] & T) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1587,"end":1588,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1590,"end":1595,"text":"value","nodeType":"Identifier","type":{"name":"Intersection","display":"string[] & T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1608,"end":1609,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1612,"end":1613,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1621,"end":1631,"text":"extraValue","nodeType":"Identifier","type":{"name":"Object","display":"{ extra: number; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":1634,"end":1644,"text":"inferExtra","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: string[] & T) => T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1645,"end":1663,"text":"intersectionSource","nodeType":"Identifier","type":{"name":"Intersection","display":"string[] & { extra: number; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":1676,"end":1690,"text":"selectOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): string; (x: number): number; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":1691,"end":1692,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolGenericInference.ts","start":1720,"end":1734,"text":"selectOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): string; (x: number): number; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":1735,"end":1736,"text":"x","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericInference.ts","start":1764,"end":1778,"text":"selectOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): string; (x: number): number; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":1779,"end":1780,"text":"x","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/symbolGenericInference.ts","start":1825,"end":1826,"text":"x","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/symbolGenericInference.ts","start":1836,"end":1850,"text":"selectedString","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolGenericInference.ts","start":1853,"end":1867,"text":"selectOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): string; (x: number): number; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":1884,"end":1898,"text":"selectedNumber","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericInference.ts","start":1901,"end":1915,"text":"selectOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): string; (x: number): number; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":1932,"end":1948,"text":"explicitOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(x: T): T; <T, U>(x: T): U; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":1949,"end":1950,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1952,"end":1953,"text":"x","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1955,"end":1956,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1959,"end":1960,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1971,"end":1987,"text":"explicitOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(x: T): T; <T, U>(x: T): U; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":1988,"end":1989,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1991,"end":1992,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":1994,"end":1995,"text":"x","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericInference.ts","start":1997,"end":1998,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":2001,"end":2002,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":2013,"end":2029,"text":"explicitOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(x: T): T; <T, U>(x: T): U; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":2030,"end":2031,"text":"x","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/symbolGenericInference.ts","start":2060,"end":2061,"text":"x","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/symbolGenericInference.ts","start":2071,"end":2092,"text":"explicitOverloadValue","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolGenericInference.ts","start":2095,"end":2111,"text":"explicitOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(x: T): T; <T, U>(x: T): U; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":2145,"end":2151,"text":"Picker","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":2145,"end":2151,"text":"Picker","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":2156,"end":2160,"text":"pick","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): string; (x: number): number; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":2161,"end":2162,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolGenericInference.ts","start":2183,"end":2187,"text":"pick","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): string; (x: number): number; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":2188,"end":2189,"text":"x","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericInference.ts","start":2224,"end":2230,"text":"picker","nodeType":"Identifier","type":{"name":"TypeReference","display":"Picker"}}
+{"path":"compiler/symbolGenericInference.ts","start":2232,"end":2238,"text":"Picker","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":2232,"end":2238,"text":"Picker","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericInference.ts","start":2246,"end":2258,"text":"pickedString","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolGenericInference.ts","start":2261,"end":2267,"text":"picker","nodeType":"Identifier","type":{"name":"TypeReference","display":"Picker"}}
+{"path":"compiler/symbolGenericInference.ts","start":2268,"end":2272,"text":"pick","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): string; (x: number): number; }"}}
+{"path":"compiler/symbolGenericInference.ts","start":2289,"end":2301,"text":"pickedNumber","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericInference.ts","start":2304,"end":2310,"text":"picker","nodeType":"Identifier","type":{"name":"TypeReference","display":"Picker"}}
+{"path":"compiler/symbolGenericInference.ts","start":2311,"end":2315,"text":"pick","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): string; (x: number): number; }"}}

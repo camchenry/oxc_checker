@@ -1,34 +1,34 @@
 interface RegExpMatchArray {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface RegExpMatchArray {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     groups?: {
->   ^^^^^^: { [key: string]: string; } | undefined   (TyUnion) (TSPropertySignature)
+>   ^^^^^^: { [key: string]: string; } | undefined   (Union) (Identifier)
 
         [key: string]: string;
->        ^^^: string   (TyString) (TSIndexSignatureName)
+>        ^^^: string   (String) (Identifier)
 
 interface RegExpExecArray {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface RegExpExecArray {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     groups?: {
->   ^^^^^^: { [key: string]: string; } | undefined   (TyUnion) (TSPropertySignature)
+>   ^^^^^^: { [key: string]: string; } | undefined   (Union) (Identifier)
 
         [key: string]: string;
->        ^^^: string   (TyString) (TSIndexSignatureName)
+>        ^^^: string   (String) (Identifier)
 
 interface RegExp {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: RegExpConstructor
 
 interface RegExp {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: RegExpConstructor
 
     readonly dotAll: boolean;
->            ^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+>            ^^^^^^: boolean   (Boolean) (Identifier)

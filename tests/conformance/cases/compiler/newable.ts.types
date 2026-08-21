@@ -1,35 +1,35 @@
 function f6<T extends string | (new () => {})>(a: T) {
->        ^^: <T extends string | (new () => {})>(a: T) => void   (TyFunction) (BindingIdentifier)
+>        ^^: <T extends string | (new () => {})>(a: T) => void   (Function) (Identifier)
 
 function f6<T extends string | (new () => {})>(a: T) {
->           ^: any   (TyAny) (TSTypeParameter)
+>           ^: any   (Any) (Identifier)
 
 function f6<T extends string | (new () => {})>(a: T) {
->                                              ^: T   (TyTypeReference) (BindingIdentifier)
+>                                              ^: T   (TypeReference) (Identifier)
 
 function f6<T extends string | (new () => {})>(a: T) {
->                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                 ^: any   (Any) (Identifier)
 
   if (typeof a !== "string") {
->            ^: T   (TyTypeReference) (IdentifierReference)
+>            ^: T   (TypeReference) (Identifier)
 
     new a();
->   ^^^^^^^^: {}   (TyObject) (ExpressionStatement)
+>   ^^^^^^^^: {}   (Object) (ExpressionStatement)
 
     new a();
->       ^: new () => {}   (TyObject) (IdentifierReference)
+>       ^: new () => {}   (Object) (Identifier)
 
 var x13:{ new(): number; new(n:number):number; x: string; w: {y: number;}; (): {}; } = 3;
->   ^^^: { (): {}; new (): number; new (n: number): number; x: string; w: { y: number; }; }   (TyObject) (BindingIdentifier)
+>   ^^^: { (): {}; new (): number; new (n: number): number; x: string; w: { y: number; }; }   (Object) (Identifier)
 
 var x13:{ new(): number; new(n:number):number; x: string; w: {y: number;}; (): {}; } = 3;
->                            ^: number   (TyNumber) (BindingIdentifier)
+>                            ^: number   (Number) (Identifier)
 
 var x13:{ new(): number; new(n:number):number; x: string; w: {y: number;}; (): {}; } = 3;
->                                              ^: string   (TyString) (TSPropertySignature)
+>                                              ^: string   (String) (Identifier)
 
 var x13:{ new(): number; new(n:number):number; x: string; w: {y: number;}; (): {}; } = 3;
->                                                         ^: { y: number; }   (TyObject) (TSPropertySignature)
+>                                                         ^: { y: number; }   (Object) (Identifier)
 
 var x13:{ new(): number; new(n:number):number; x: string; w: {y: number;}; (): {}; } = 3;
->                                                             ^: number   (TyNumber) (TSPropertySignature)
+>                                                             ^: number   (Number) (Identifier)

@@ -1,13 +1,13 @@
 interface String {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: StringConstructor
 
 interface String {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: StringConstructor
 
     at(index: number): string | undefined;
->   ^^: { (index: number): string | undefined; (index: number): string | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): string | undefined; (index: number): string | undefined; }   (Object) (Identifier)
 
     at(index: number): string | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)

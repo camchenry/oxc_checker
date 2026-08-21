@@ -1,0 +1,631 @@
+{"path":"es2023.array.d.ts","start":10,"end":15,"text":"Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":10,"end":15,"text":"Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":16,"end":17,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":602,"end":610,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined; }"}}
+{"path":"es2023.array.d.ts","start":611,"end":612,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":621,"end":622,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":624,"end":633,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: T, index: number, array: T[]) => value is S"}}
+{"path":"es2023.array.d.ts","start":636,"end":641,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":643,"end":644,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":646,"end":651,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":661,"end":666,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"T[]"}}
+{"path":"es2023.array.d.ts","start":668,"end":669,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":676,"end":681,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":685,"end":686,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":688,"end":695,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":704,"end":705,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":723,"end":731,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined; }"}}
+{"path":"es2023.array.d.ts","start":732,"end":741,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: T, index: number, array: T[]) => unknown"}}
+{"path":"es2023.array.d.ts","start":744,"end":749,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":751,"end":752,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":754,"end":759,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":769,"end":774,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"T[]"}}
+{"path":"es2023.array.d.ts","start":776,"end":777,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":793,"end":800,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":809,"end":810,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":1407,"end":1420,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number; (predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":1421,"end":1430,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: T, index: number, array: T[]) => unknown"}}
+{"path":"es2023.array.d.ts","start":1433,"end":1438,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":1440,"end":1441,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":1443,"end":1448,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":1458,"end":1463,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"T[]"}}
+{"path":"es2023.array.d.ts","start":1465,"end":1466,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":1482,"end":1489,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":1589,"end":1599,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): T[]; (): T[]; }"}}
+{"path":"es2023.array.d.ts","start":1603,"end":1604,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":2098,"end":2106,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: T, b: T) => number): T[]; (compareFn?: (a: T, b: T) => number): T[]; }"}}
+{"path":"es2023.array.d.ts","start":2107,"end":2116,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: T, b: T) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":2120,"end":2121,"text":"a","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":2123,"end":2124,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":2126,"end":2127,"text":"b","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":2129,"end":2130,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":2144,"end":2145,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":2581,"end":2590,"text":"toSpliced","nodeType":"Identifier","type":{"name":"Object","display":"{ (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; }"}}
+{"path":"es2023.array.d.ts","start":2591,"end":2596,"text":"start","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":2606,"end":2617,"text":"deleteCount","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":2630,"end":2635,"text":"items","nodeType":"Identifier","type":{"name":"Array","display":"T[]"}}
+{"path":"es2023.array.d.ts","start":2637,"end":2638,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":2643,"end":2644,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":2983,"end":2992,"text":"toSpliced","nodeType":"Identifier","type":{"name":"Object","display":"{ (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; }"}}
+{"path":"es2023.array.d.ts","start":2993,"end":2998,"text":"start","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":3008,"end":3019,"text":"deleteCount","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2023.array.d.ts","start":3031,"end":3032,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":3488,"end":3492,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: T): T[]; (index: number, value: T): T[]; }"}}
+{"path":"es2023.array.d.ts","start":3493,"end":3498,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":3508,"end":3513,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":3515,"end":3516,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":3519,"end":3520,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":3537,"end":3550,"text":"ReadonlyArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":3537,"end":3550,"text":"ReadonlyArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":3551,"end":3552,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":4137,"end":4145,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): T | undefined; }"}}
+{"path":"es2023.array.d.ts","start":4146,"end":4147,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":4156,"end":4157,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":4168,"end":4177,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: T, index: number, array: readonly T[]) => value is S"}}
+{"path":"es2023.array.d.ts","start":4180,"end":4185,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":4187,"end":4188,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":4190,"end":4195,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":4205,"end":4210,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"readonly T[]"}}
+{"path":"es2023.array.d.ts","start":4221,"end":4222,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":4229,"end":4234,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":4238,"end":4239,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":4249,"end":4256,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":4271,"end":4272,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":4290,"end":4298,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): T | undefined; <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): T | undefined; }"}}
+{"path":"es2023.array.d.ts","start":4308,"end":4317,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: T, index: number, array: readonly T[]) => unknown"}}
+{"path":"es2023.array.d.ts","start":4320,"end":4325,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":4327,"end":4328,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":4330,"end":4335,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":4345,"end":4350,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"readonly T[]"}}
+{"path":"es2023.array.d.ts","start":4361,"end":4362,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":4386,"end":4393,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":4408,"end":4409,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":5006,"end":5019,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): number; (predicate: (value: T, index: number, array: readonly T[]) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":5029,"end":5038,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: T, index: number, array: readonly T[]) => unknown"}}
+{"path":"es2023.array.d.ts","start":5041,"end":5046,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":5048,"end":5049,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":5051,"end":5056,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":5066,"end":5071,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"readonly T[]"}}
+{"path":"es2023.array.d.ts","start":5082,"end":5083,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":5107,"end":5114,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":5246,"end":5256,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): T[]; (): T[]; }"}}
+{"path":"es2023.array.d.ts","start":5260,"end":5261,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":5730,"end":5738,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: T, b: T) => number): T[]; (compareFn?: (a: T, b: T) => number): T[]; }"}}
+{"path":"es2023.array.d.ts","start":5739,"end":5748,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: T, b: T) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":5752,"end":5753,"text":"a","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":5755,"end":5756,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":5758,"end":5759,"text":"b","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":5761,"end":5762,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":5776,"end":5777,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":6265,"end":6274,"text":"toSpliced","nodeType":"Identifier","type":{"name":"Object","display":"{ (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; }"}}
+{"path":"es2023.array.d.ts","start":6275,"end":6280,"text":"start","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":6290,"end":6301,"text":"deleteCount","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":6314,"end":6319,"text":"items","nodeType":"Identifier","type":{"name":"Array","display":"T[]"}}
+{"path":"es2023.array.d.ts","start":6321,"end":6322,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":6327,"end":6328,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":6667,"end":6676,"text":"toSpliced","nodeType":"Identifier","type":{"name":"Object","display":"{ (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; }"}}
+{"path":"es2023.array.d.ts","start":6677,"end":6682,"text":"start","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":6692,"end":6703,"text":"deleteCount","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2023.array.d.ts","start":6715,"end":6716,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":7185,"end":7189,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: T): T[]; (index: number, value: T): T[]; }"}}
+{"path":"es2023.array.d.ts","start":7190,"end":7195,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":7205,"end":7210,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2023.array.d.ts","start":7212,"end":7213,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":7216,"end":7217,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":7234,"end":7243,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":7234,"end":7243,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":7244,"end":7256,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":7265,"end":7280,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":7265,"end":7280,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2023.array.d.ts","start":7865,"end":7873,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":7874,"end":7875,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":7901,"end":7910,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => value is S"}}
+{"path":"es2023.array.d.ts","start":7926,"end":7931,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":7953,"end":7958,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":7980,"end":7985,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":8006,"end":8011,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":8015,"end":8016,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":8026,"end":8033,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":8048,"end":8049,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":8067,"end":8075,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":8085,"end":8094,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":8097,"end":8102,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":8112,"end":8117,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":8127,"end":8132,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":8160,"end":8167,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":8785,"end":8798,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":8808,"end":8817,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":8820,"end":8825,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":8835,"end":8840,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":8850,"end":8855,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":8883,"end":8890,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":9015,"end":9025,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Int8Array<ArrayBuffer>; (): Int8Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":9029,"end":9038,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":9029,"end":9038,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":9039,"end":9050,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":9039,"end":9050,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":9559,"end":9567,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Int8Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":9568,"end":9577,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: number, b: number) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":9581,"end":9582,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":9592,"end":9593,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":9615,"end":9624,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":9615,"end":9624,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":9625,"end":9636,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":9625,"end":9636,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":10003,"end":10007,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: number): Int8Array<ArrayBuffer>; (index: number, value: number): Int8Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":10008,"end":10013,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":10023,"end":10028,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":10039,"end":10048,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":10039,"end":10048,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":10049,"end":10060,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":10049,"end":10060,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":10076,"end":10086,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":10076,"end":10086,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":10087,"end":10099,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":10108,"end":10123,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":10108,"end":10123,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2023.array.d.ts","start":10708,"end":10716,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":10717,"end":10718,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":10744,"end":10753,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => value is S"}}
+{"path":"es2023.array.d.ts","start":10769,"end":10774,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":10796,"end":10801,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":10823,"end":10828,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":10849,"end":10854,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":10858,"end":10859,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":10869,"end":10876,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":10891,"end":10892,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":10910,"end":10918,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":10928,"end":10937,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":10940,"end":10945,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":10955,"end":10960,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":10970,"end":10975,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":11003,"end":11010,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":11628,"end":11641,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":11651,"end":11660,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":11663,"end":11668,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":11678,"end":11683,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":11693,"end":11698,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":11726,"end":11733,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":11858,"end":11868,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Uint8Array<ArrayBuffer>; (): Uint8Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":11872,"end":11882,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":11872,"end":11882,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":11883,"end":11894,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":11883,"end":11894,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":12405,"end":12413,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Uint8Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":12414,"end":12423,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: number, b: number) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":12427,"end":12428,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":12438,"end":12439,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":12461,"end":12471,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":12461,"end":12471,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":12472,"end":12483,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":12472,"end":12483,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":12850,"end":12854,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: number): Uint8Array<ArrayBuffer>; (index: number, value: number): Uint8Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":12855,"end":12860,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":12870,"end":12875,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":12886,"end":12896,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":12886,"end":12896,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":12897,"end":12908,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":12897,"end":12908,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":12924,"end":12941,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":12924,"end":12941,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":12942,"end":12954,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":12963,"end":12978,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":12963,"end":12978,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2023.array.d.ts","start":13563,"end":13571,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":13572,"end":13573,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":13599,"end":13608,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => value is S"}}
+{"path":"es2023.array.d.ts","start":13624,"end":13629,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":13651,"end":13656,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":13678,"end":13683,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":13704,"end":13709,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":13713,"end":13714,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":13724,"end":13731,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":13746,"end":13747,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":13765,"end":13773,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":13783,"end":13792,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":13808,"end":13813,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":13835,"end":13840,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":13862,"end":13867,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":13905,"end":13912,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":14530,"end":14543,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":14553,"end":14562,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":14578,"end":14583,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":14605,"end":14610,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":14632,"end":14637,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":14675,"end":14682,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":14807,"end":14817,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Uint8ClampedArray<ArrayBuffer>; (): Uint8ClampedArray<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":14821,"end":14838,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":14821,"end":14838,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":14839,"end":14850,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":14839,"end":14850,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":15375,"end":15383,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Uint8ClampedArray<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":15384,"end":15393,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: number, b: number) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":15397,"end":15398,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":15408,"end":15409,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":15431,"end":15448,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":15431,"end":15448,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":15449,"end":15460,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":15449,"end":15460,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":15827,"end":15831,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: number): Uint8ClampedArray<ArrayBuffer>; (index: number, value: number): Uint8ClampedArray<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":15832,"end":15837,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":15847,"end":15852,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":15863,"end":15880,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":15863,"end":15880,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":15881,"end":15892,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":15881,"end":15892,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":15908,"end":15918,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":15908,"end":15918,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":15919,"end":15931,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":15940,"end":15955,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":15940,"end":15955,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2023.array.d.ts","start":16540,"end":16548,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":16549,"end":16550,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":16576,"end":16585,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => value is S"}}
+{"path":"es2023.array.d.ts","start":16601,"end":16606,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":16628,"end":16633,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":16655,"end":16660,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":16681,"end":16686,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":16690,"end":16691,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":16701,"end":16708,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":16723,"end":16724,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":16742,"end":16750,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":16760,"end":16769,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":16772,"end":16777,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":16787,"end":16792,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":16802,"end":16807,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":16835,"end":16842,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":17460,"end":17473,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":17483,"end":17492,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":17495,"end":17500,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":17510,"end":17515,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":17525,"end":17530,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":17558,"end":17565,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":17690,"end":17700,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Int16Array<ArrayBuffer>; (): Int16Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":17704,"end":17714,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":17704,"end":17714,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":17715,"end":17726,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":17715,"end":17726,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":18239,"end":18247,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Int16Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":18248,"end":18257,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: number, b: number) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":18261,"end":18262,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":18272,"end":18273,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":18295,"end":18305,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":18295,"end":18305,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":18306,"end":18317,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":18306,"end":18317,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":18684,"end":18688,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: number): Int16Array<ArrayBuffer>; (index: number, value: number): Int16Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":18689,"end":18694,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":18704,"end":18709,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":18720,"end":18730,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":18720,"end":18730,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":18731,"end":18742,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":18731,"end":18742,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":18758,"end":18769,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":18758,"end":18769,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":18770,"end":18782,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":18791,"end":18806,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":18791,"end":18806,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2023.array.d.ts","start":19391,"end":19399,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":19400,"end":19401,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":19427,"end":19436,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => value is S"}}
+{"path":"es2023.array.d.ts","start":19452,"end":19457,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":19479,"end":19484,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":19506,"end":19511,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":19532,"end":19537,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":19541,"end":19542,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":19552,"end":19559,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":19574,"end":19575,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":19593,"end":19601,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":19611,"end":19620,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":19636,"end":19641,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":19663,"end":19668,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":19690,"end":19695,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":19733,"end":19740,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":20358,"end":20371,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":20381,"end":20390,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":20406,"end":20411,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":20433,"end":20438,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":20460,"end":20465,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":20503,"end":20510,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":20635,"end":20645,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Uint16Array<ArrayBuffer>; (): Uint16Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":20649,"end":20660,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":20649,"end":20660,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":20661,"end":20672,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":20661,"end":20672,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":21185,"end":21193,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Uint16Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":21194,"end":21203,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: number, b: number) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":21207,"end":21208,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":21218,"end":21219,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":21241,"end":21252,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":21241,"end":21252,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":21253,"end":21264,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":21253,"end":21264,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":21631,"end":21635,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: number): Uint16Array<ArrayBuffer>; (index: number, value: number): Uint16Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":21636,"end":21641,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":21651,"end":21656,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":21667,"end":21678,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":21667,"end":21678,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":21679,"end":21690,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":21679,"end":21690,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":21706,"end":21716,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":21706,"end":21716,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":21717,"end":21729,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":21738,"end":21753,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":21738,"end":21753,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2023.array.d.ts","start":22338,"end":22346,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":22347,"end":22348,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":22374,"end":22383,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => value is S"}}
+{"path":"es2023.array.d.ts","start":22399,"end":22404,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":22426,"end":22431,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":22453,"end":22458,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":22479,"end":22484,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":22488,"end":22489,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":22499,"end":22506,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":22521,"end":22522,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":22540,"end":22548,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":22558,"end":22567,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":22570,"end":22575,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":22585,"end":22590,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":22600,"end":22605,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":22633,"end":22640,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":23258,"end":23271,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":23281,"end":23290,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":23293,"end":23298,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":23308,"end":23313,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":23323,"end":23328,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":23356,"end":23363,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":23488,"end":23498,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Int32Array<ArrayBuffer>; (): Int32Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":23502,"end":23512,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":23502,"end":23512,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":23513,"end":23524,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":23513,"end":23524,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":24037,"end":24045,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Int32Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":24046,"end":24055,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: number, b: number) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":24059,"end":24060,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":24070,"end":24071,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":24093,"end":24103,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":24093,"end":24103,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":24104,"end":24115,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":24104,"end":24115,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":24482,"end":24486,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: number): Int32Array<ArrayBuffer>; (index: number, value: number): Int32Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":24487,"end":24492,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":24502,"end":24507,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":24518,"end":24528,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":24518,"end":24528,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":24529,"end":24540,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":24529,"end":24540,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":24556,"end":24567,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":24556,"end":24567,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":24568,"end":24580,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":24589,"end":24604,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":24589,"end":24604,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2023.array.d.ts","start":25189,"end":25197,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":25198,"end":25199,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":25225,"end":25234,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => value is S"}}
+{"path":"es2023.array.d.ts","start":25250,"end":25255,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":25277,"end":25282,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":25304,"end":25309,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":25330,"end":25335,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":25339,"end":25340,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":25350,"end":25357,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":25372,"end":25373,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":25391,"end":25399,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":25409,"end":25418,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":25434,"end":25439,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":25461,"end":25466,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":25488,"end":25493,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":25531,"end":25538,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":26156,"end":26169,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":26179,"end":26188,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":26204,"end":26209,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":26231,"end":26236,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":26258,"end":26263,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":26301,"end":26308,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":26433,"end":26443,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Uint32Array<ArrayBuffer>; (): Uint32Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":26447,"end":26458,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":26447,"end":26458,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":26459,"end":26470,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":26459,"end":26470,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":26983,"end":26991,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":26992,"end":27001,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: number, b: number) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":27005,"end":27006,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":27016,"end":27017,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":27039,"end":27050,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":27039,"end":27050,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":27051,"end":27062,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":27051,"end":27062,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":27429,"end":27433,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: number): Uint32Array<ArrayBuffer>; (index: number, value: number): Uint32Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":27434,"end":27439,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":27449,"end":27454,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":27465,"end":27476,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":27465,"end":27476,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":27477,"end":27488,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":27477,"end":27488,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":27504,"end":27516,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":27504,"end":27516,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":27517,"end":27529,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":27538,"end":27553,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":27538,"end":27553,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2023.array.d.ts","start":28138,"end":28146,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":28147,"end":28148,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":28174,"end":28183,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => value is S"}}
+{"path":"es2023.array.d.ts","start":28199,"end":28204,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":28226,"end":28231,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":28253,"end":28258,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":28279,"end":28284,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":28288,"end":28289,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":28299,"end":28306,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":28321,"end":28322,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":28340,"end":28348,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":28358,"end":28367,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":28383,"end":28388,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":28410,"end":28415,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":28437,"end":28442,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":28480,"end":28487,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":29105,"end":29118,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":29128,"end":29137,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":29153,"end":29158,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":29180,"end":29185,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":29207,"end":29212,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":29250,"end":29257,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":29382,"end":29392,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Float32Array<ArrayBuffer>; (): Float32Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":29396,"end":29408,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":29396,"end":29408,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":29409,"end":29420,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":29409,"end":29420,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":29946,"end":29954,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Float32Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":29955,"end":29964,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: number, b: number) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":29968,"end":29969,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":29979,"end":29980,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":30002,"end":30014,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":30002,"end":30014,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":30015,"end":30026,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":30015,"end":30026,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":30393,"end":30397,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: number): Float32Array<ArrayBuffer>; (index: number, value: number): Float32Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":30398,"end":30403,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":30413,"end":30418,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":30429,"end":30441,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":30429,"end":30441,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":30442,"end":30453,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":30442,"end":30453,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":30469,"end":30481,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":30469,"end":30481,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":30482,"end":30494,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":30503,"end":30518,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":30503,"end":30518,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2023.array.d.ts","start":31103,"end":31111,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":31112,"end":31113,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":31139,"end":31148,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => value is S"}}
+{"path":"es2023.array.d.ts","start":31164,"end":31169,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":31191,"end":31196,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":31218,"end":31223,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":31244,"end":31249,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":31253,"end":31254,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":31264,"end":31271,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":31286,"end":31287,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":31305,"end":31313,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2023.array.d.ts","start":31323,"end":31332,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":31348,"end":31353,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":31375,"end":31380,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":31402,"end":31407,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":31445,"end":31452,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":32070,"end":32083,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":32093,"end":32102,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":32118,"end":32123,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":32145,"end":32150,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":32172,"end":32177,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":32215,"end":32222,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":32347,"end":32357,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Float64Array<ArrayBuffer>; (): Float64Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":32361,"end":32373,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":32361,"end":32373,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":32374,"end":32385,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":32374,"end":32385,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":32911,"end":32919,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Float64Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":32920,"end":32929,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: number, b: number) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":32933,"end":32934,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":32944,"end":32945,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":32967,"end":32979,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":32967,"end":32979,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":32980,"end":32991,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":32980,"end":32991,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":33358,"end":33362,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: number): Float64Array<ArrayBuffer>; (index: number, value: number): Float64Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":33363,"end":33368,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":33378,"end":33383,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":33394,"end":33406,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":33394,"end":33406,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":33407,"end":33418,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":33407,"end":33418,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":33434,"end":33447,"text":"BigInt64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":33434,"end":33447,"text":"BigInt64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":33448,"end":33460,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":33469,"end":33484,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":33469,"end":33484,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2023.array.d.ts","start":34069,"end":34077,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; }"}}
+{"path":"es2023.array.d.ts","start":34078,"end":34079,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":34105,"end":34114,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: bigint, index: number, array: this) => value is S"}}
+{"path":"es2023.array.d.ts","start":34130,"end":34135,"text":"value","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":34157,"end":34162,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":34184,"end":34189,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":34210,"end":34215,"text":"value","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":34219,"end":34220,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":34230,"end":34237,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":34252,"end":34253,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":34271,"end":34279,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; }"}}
+{"path":"es2023.array.d.ts","start":34289,"end":34298,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: bigint, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":34314,"end":34319,"text":"value","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":34341,"end":34346,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":34368,"end":34373,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":34411,"end":34418,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":35036,"end":35049,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":35059,"end":35068,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: bigint, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":35084,"end":35089,"text":"value","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":35111,"end":35116,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":35138,"end":35143,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":35181,"end":35188,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":35313,"end":35323,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): BigInt64Array<ArrayBuffer>; (): BigInt64Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":35327,"end":35340,"text":"BigInt64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":35327,"end":35340,"text":"BigInt64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":35341,"end":35352,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":35341,"end":35352,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":35887,"end":35895,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>; (compareFn?: (a: bigint, b: bigint) => number): BigInt64Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":35896,"end":35905,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: bigint, b: bigint) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":35909,"end":35910,"text":"a","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":35920,"end":35921,"text":"b","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":35943,"end":35956,"text":"BigInt64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":35943,"end":35956,"text":"BigInt64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":35957,"end":35968,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":35957,"end":35968,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":36335,"end":36339,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: bigint): BigInt64Array<ArrayBuffer>; (index: number, value: bigint): BigInt64Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":36340,"end":36345,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":36355,"end":36360,"text":"value","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":36371,"end":36384,"text":"BigInt64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":36371,"end":36384,"text":"BigInt64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":36385,"end":36396,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":36385,"end":36396,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":36412,"end":36426,"text":"BigUint64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":36412,"end":36426,"text":"BigUint64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":36427,"end":36439,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":36448,"end":36463,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":36448,"end":36463,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2023.array.d.ts","start":37048,"end":37056,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; }"}}
+{"path":"es2023.array.d.ts","start":37057,"end":37058,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":37084,"end":37093,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: bigint, index: number, array: this) => value is S"}}
+{"path":"es2023.array.d.ts","start":37109,"end":37114,"text":"value","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":37136,"end":37141,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":37163,"end":37168,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":37189,"end":37194,"text":"value","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":37198,"end":37199,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":37209,"end":37216,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":37231,"end":37232,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":37250,"end":37258,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; <S extends bigint>(predicate: (value: bigint, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): bigint | undefined; }"}}
+{"path":"es2023.array.d.ts","start":37268,"end":37277,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: bigint, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":37293,"end":37298,"text":"value","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":37320,"end":37325,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":37347,"end":37352,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":37390,"end":37397,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":38015,"end":38028,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: bigint, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2023.array.d.ts","start":38038,"end":38047,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: bigint, index: number, array: this) => unknown"}}
+{"path":"es2023.array.d.ts","start":38063,"end":38068,"text":"value","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":38090,"end":38095,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":38117,"end":38122,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2023.array.d.ts","start":38160,"end":38167,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":38292,"end":38302,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): BigUint64Array<ArrayBuffer>; (): BigUint64Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":38306,"end":38320,"text":"BigUint64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":38306,"end":38320,"text":"BigUint64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":38321,"end":38332,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":38321,"end":38332,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":38867,"end":38875,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>; (compareFn?: (a: bigint, b: bigint) => number): BigUint64Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":38876,"end":38885,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: bigint, b: bigint) => number) | undefined"}}
+{"path":"es2023.array.d.ts","start":38889,"end":38890,"text":"a","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":38900,"end":38901,"text":"b","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":38923,"end":38937,"text":"BigUint64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":38923,"end":38937,"text":"BigUint64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":38938,"end":38949,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":38938,"end":38949,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":39316,"end":39320,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: bigint): BigUint64Array<ArrayBuffer>; (index: number, value: bigint): BigUint64Array<ArrayBuffer>; }"}}
+{"path":"es2023.array.d.ts","start":39321,"end":39326,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2023.array.d.ts","start":39336,"end":39341,"text":"value","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"es2023.array.d.ts","start":39352,"end":39366,"text":"BigUint64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":39352,"end":39366,"text":"BigUint64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2023.array.d.ts","start":39367,"end":39378,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2023.array.d.ts","start":39367,"end":39378,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}

@@ -1,0 +1,97 @@
+{"path":"compiler/eslint_awaitThenable.ts::a.ts","start":0,"end":14,"text":"await 'value';","nodeType":"ExpressionStatement","type":{"name":"StringLiteral","display":"\"value\""}}
+{"path":"compiler/eslint_awaitThenable.ts::a.ts","start":22,"end":33,"text":"createValue","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/eslint_awaitThenable.ts::a.ts","start":51,"end":71,"text":"await createValue();","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_awaitThenable.ts::a.ts","start":57,"end":68,"text":"createValue","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/eslint_awaitThenable.ts::b.ts","start":0,"end":31,"text":"await Promise.resolve('value');","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_awaitThenable.ts::b.ts","start":6,"end":13,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::b.ts","start":14,"end":21,"text":"resolve","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }"}}
+{"path":"compiler/eslint_awaitThenable.ts::b.ts","start":39,"end":50,"text":"createValue","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<string>"}}
+{"path":"compiler/eslint_awaitThenable.ts::b.ts","start":74,"end":94,"text":"await createValue();","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_awaitThenable.ts::b.ts","start":80,"end":91,"text":"createValue","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<string>"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":15,"end":27,"text":"syncIterable","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":40,"end":53,"text":"arrayOfValues","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":86,"end":91,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":95,"end":108,"text":"arrayOfValues","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":116,"end":123,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":116,"end":135,"text":"console.log(value);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":124,"end":127,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":128,"end":133,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":158,"end":180,"text":"syncIterableOfPromises","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":193,"end":208,"text":"arrayOfPromises","nodeType":"Identifier","type":{"name":"Array","display":"Promise<number>[]"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":217,"end":224,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":225,"end":232,"text":"resolve","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":241,"end":248,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":249,"end":256,"text":"resolve","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":265,"end":272,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":273,"end":280,"text":"resolve","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":309,"end":322,"text":"promisedValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":326,"end":341,"text":"arrayOfPromises","nodeType":"Identifier","type":{"name":"Array","display":"Promise<number>[]"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":349,"end":356,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":349,"end":376,"text":"console.log(promisedValue);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":357,"end":360,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_awaitThenable.ts::c.ts","start":361,"end":374,"text":"promisedValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":15,"end":27,"text":"syncIterable","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":40,"end":53,"text":"arrayOfValues","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":80,"end":85,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":89,"end":102,"text":"arrayOfValues","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":110,"end":117,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":110,"end":129,"text":"console.log(value);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":118,"end":121,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":122,"end":127,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":152,"end":174,"text":"syncIterableOfPromises","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":187,"end":202,"text":"arrayOfPromises","nodeType":"Identifier","type":{"name":"Array","display":"Promise<number>[]"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":211,"end":218,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":219,"end":226,"text":"resolve","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":235,"end":242,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":243,"end":250,"text":"resolve","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":259,"end":266,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":267,"end":274,"text":"resolve","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":297,"end":310,"text":"promisedValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":320,"end":327,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":328,"end":331,"text":"all","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":332,"end":347,"text":"arrayOfPromises","nodeType":"Identifier","type":{"name":"Array","display":"Promise<number>[]"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":356,"end":363,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":356,"end":383,"text":"console.log(promisedValue);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":364,"end":367,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":368,"end":381,"text":"promisedValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":406,"end":439,"text":"validUseOfForAwaitOnAsyncIterable","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":462,"end":487,"text":"yieldThingsAsynchronously","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncGenerator<1 | 2, void, unknown>"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":496,"end":504,"text":"yield 1;","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":509,"end":565,"text":"await new Promise(resolve => setTimeout(resolve, 1000));","nodeType":"ExpressionStatement","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":519,"end":526,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":527,"end":534,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => void"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":538,"end":548,"text":"setTimeout","nodeType":"Identifier","type":{"name":"Function","display":"(handler: TimerHandler, timeout?: number, ...arguments: any[]) => number"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":549,"end":556,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => void"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":570,"end":578,"text":"yield 2;","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":603,"end":616,"text":"promisedValue","nodeType":"Identifier","type":{"name":"Union","display":"1 | 2"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":620,"end":645,"text":"yieldThingsAsynchronously","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncGenerator<1 | 2, void, unknown>"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":655,"end":662,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":655,"end":682,"text":"console.log(promisedValue);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":663,"end":666,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_awaitThenable.ts::d.ts","start":667,"end":680,"text":"promisedValue","nodeType":"Identifier","type":{"name":"Union","display":"1 | 2"}}
+{"path":"compiler/eslint_awaitThenable.ts::e.ts","start":9,"end":27,"text":"makeSyncDisposable","nodeType":"Identifier","type":{"name":"Function","display":"() => Disposable"}}
+{"path":"compiler/eslint_awaitThenable.ts::e.ts","start":31,"end":41,"text":"Disposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_awaitThenable.ts::e.ts","start":31,"end":41,"text":"Disposable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_awaitThenable.ts::e.ts","start":60,"end":66,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::e.ts","start":67,"end":74,"text":"dispose","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/eslint_awaitThenable.ts::e.ts","start":149,"end":163,"text":"shouldNotAwait","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_awaitThenable.ts::e.ts","start":182,"end":190,"text":"resource","nodeType":"Identifier","type":{"name":"TypeReference","display":"Disposable"}}
+{"path":"compiler/eslint_awaitThenable.ts::e.ts","start":193,"end":211,"text":"makeSyncDisposable","nodeType":"Identifier","type":{"name":"Function","display":"() => Disposable"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":9,"end":27,"text":"makeSyncDisposable","nodeType":"Identifier","type":{"name":"Function","display":"() => Disposable"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":31,"end":41,"text":"Disposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":31,"end":41,"text":"Disposable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":60,"end":66,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":67,"end":74,"text":"dispose","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":149,"end":163,"text":"shouldNotAwait","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":176,"end":184,"text":"resource","nodeType":"Identifier","type":{"name":"TypeReference","display":"Disposable"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":187,"end":205,"text":"makeSyncDisposable","nodeType":"Identifier","type":{"name":"Function","display":"() => Disposable"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":221,"end":240,"text":"makeAsyncDisposable","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncDisposable"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":244,"end":259,"text":"AsyncDisposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":244,"end":259,"text":"AsyncDisposable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":284,"end":290,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":291,"end":303,"text":"asyncDispose","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":308,"end":315,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":308,"end":315,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":402,"end":413,"text":"shouldAwait","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":432,"end":440,"text":"resource","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncDisposable"}}
+{"path":"compiler/eslint_awaitThenable.ts::f.ts","start":443,"end":462,"text":"makeAsyncDisposable","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncDisposable"}}

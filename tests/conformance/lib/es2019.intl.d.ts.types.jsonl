@@ -1,0 +1,5 @@
+{"path":"es2019.intl.d.ts","start":18,"end":22,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2019.intl.d.ts","start":18,"end":22,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2019.intl.d.ts","start":39,"end":70,"text":"DateTimeFormatPartTypesRegistry","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2019.intl.d.ts","start":39,"end":70,"text":"DateTimeFormatPartTypesRegistry","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2019.intl.d.ts","start":81,"end":88,"text":"unknown","nodeType":"Identifier","type":{"name":"Never","display":"never"}}

@@ -1,0 +1,14 @@
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::a.ts","start":0,"end":18,"text":"void (() => {})();","nodeType":"ExpressionStatement","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::a.ts","start":29,"end":32,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::a.ts","start":38,"end":49,"text":"void foo();","nodeType":"ExpressionStatement","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::a.ts","start":43,"end":46,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::b.ts","start":0,"end":13,"text":"(() => {})();","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::b.ts","start":24,"end":27,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::b.ts","start":33,"end":36,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::b.ts","start":33,"end":39,"text":"foo();","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::b.ts","start":72,"end":75,"text":"bar","nodeType":"Identifier","type":{"name":"Function","display":"(x: number) => number"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::b.ts","start":76,"end":77,"text":"x","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::b.ts","start":91,"end":98,"text":"void x;","nodeType":"ExpressionStatement","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::b.ts","start":96,"end":97,"text":"x","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::b.ts","start":136,"end":148,"text":"void bar(1);","nodeType":"ExpressionStatement","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/eslint_noMeaninglessVoidOperator.ts::b.ts","start":141,"end":144,"text":"bar","nodeType":"Identifier","type":{"name":"Function","display":"(x: number) => number"}}

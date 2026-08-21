@@ -1,377 +1,377 @@
 interface ErrorOptions {
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ErrorOptions {
->         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     cause?: unknown;
->   ^^^^^: unknown   (TyUnknown) (TSPropertySignature)
+>   ^^^^^: unknown   (Unknown) (Identifier)
 
 interface Error {
->         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^: any   (Any) (Identifier)
        expected: ErrorConstructor
 
 interface Error {
->         ^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^: any   (Any) (Identifier)
        expected: ErrorConstructor
 
     cause?: unknown;
->   ^^^^^: unknown   (TyUnknown) (TSPropertySignature)
+>   ^^^^^: unknown   (Unknown) (Identifier)
 
 interface ErrorConstructor {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ErrorConstructor {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): Error;
->        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: string | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): Error;
->                          ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                          ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): Error;
->                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): Error;
->                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): Error;
->                                                   ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                   ^^^^^: any   (Any) (Identifier)
                                                  expected: ErrorConstructor
 
     new (message?: string, options?: ErrorOptions): Error;
->                                                   ^^^^^: any   (TyAny) (IdentifierReference)
+>                                                   ^^^^^: any   (Any) (Identifier)
                                                  expected: ErrorConstructor
 
     (message?: string, options?: ErrorOptions): Error;
->    ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>    ^^^^^^^: string | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): Error;
->                      ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                      ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): Error;
->                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): Error;
->                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): Error;
->                                               ^^^^^: any   (TyAny) (TSTypeReference)
+>                                               ^^^^^: any   (Any) (Identifier)
                                              expected: ErrorConstructor
 
     (message?: string, options?: ErrorOptions): Error;
->                                               ^^^^^: any   (TyAny) (IdentifierReference)
+>                                               ^^^^^: any   (Any) (Identifier)
                                              expected: ErrorConstructor
 
 interface EvalErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface EvalErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): EvalError;
->        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: string | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): EvalError;
->                          ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                          ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): EvalError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): EvalError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): EvalError;
->                                                   ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                                   ^^^^^^^^^: EvalErrorConstructor   (TypeReference) (Identifier)
 
     new (message?: string, options?: ErrorOptions): EvalError;
->                                                   ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                                   ^^^^^^^^^: EvalErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): EvalError;
->    ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>    ^^^^^^^: string | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): EvalError;
->                      ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                      ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): EvalError;
->                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): EvalError;
->                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): EvalError;
->                                               ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                               ^^^^^^^^^: EvalErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): EvalError;
->                                               ^^^^^^^^^: EvalErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                               ^^^^^^^^^: EvalErrorConstructor   (TypeReference) (Identifier)
 
 interface RangeErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface RangeErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): RangeError;
->        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: string | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): RangeError;
->                          ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                          ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): RangeError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): RangeError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): RangeError;
->                                                   ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                                   ^^^^^^^^^^: RangeErrorConstructor   (TypeReference) (Identifier)
 
     new (message?: string, options?: ErrorOptions): RangeError;
->                                                   ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                                   ^^^^^^^^^^: RangeErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): RangeError;
->    ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>    ^^^^^^^: string | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): RangeError;
->                      ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                      ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): RangeError;
->                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): RangeError;
->                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): RangeError;
->                                               ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                               ^^^^^^^^^^: RangeErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): RangeError;
->                                               ^^^^^^^^^^: RangeErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                               ^^^^^^^^^^: RangeErrorConstructor   (TypeReference) (Identifier)
 
 interface ReferenceErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ReferenceErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): ReferenceError;
->        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: string | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): ReferenceError;
->                          ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                          ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): ReferenceError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): ReferenceError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): ReferenceError;
->                                                   ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                                   ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TypeReference) (Identifier)
 
     new (message?: string, options?: ErrorOptions): ReferenceError;
->                                                   ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                                   ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): ReferenceError;
->    ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>    ^^^^^^^: string | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): ReferenceError;
->                      ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                      ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): ReferenceError;
->                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): ReferenceError;
->                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): ReferenceError;
->                                               ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                               ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): ReferenceError;
->                                               ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                               ^^^^^^^^^^^^^^: ReferenceErrorConstructor   (TypeReference) (Identifier)
 
 interface SyntaxErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SyntaxErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): SyntaxError;
->        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: string | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): SyntaxError;
->                          ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                          ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): SyntaxError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): SyntaxError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): SyntaxError;
->                                                   ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                                   ^^^^^^^^^^^: SyntaxErrorConstructor   (TypeReference) (Identifier)
 
     new (message?: string, options?: ErrorOptions): SyntaxError;
->                                                   ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                                   ^^^^^^^^^^^: SyntaxErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): SyntaxError;
->    ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>    ^^^^^^^: string | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): SyntaxError;
->                      ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                      ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): SyntaxError;
->                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): SyntaxError;
->                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): SyntaxError;
->                                               ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                               ^^^^^^^^^^^: SyntaxErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): SyntaxError;
->                                               ^^^^^^^^^^^: SyntaxErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                               ^^^^^^^^^^^: SyntaxErrorConstructor   (TypeReference) (Identifier)
 
 interface TypeErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface TypeErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): TypeError;
->        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: string | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): TypeError;
->                          ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                          ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): TypeError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): TypeError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): TypeError;
->                                                   ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                                   ^^^^^^^^^: TypeErrorConstructor   (TypeReference) (Identifier)
 
     new (message?: string, options?: ErrorOptions): TypeError;
->                                                   ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                                   ^^^^^^^^^: TypeErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): TypeError;
->    ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>    ^^^^^^^: string | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): TypeError;
->                      ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                      ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): TypeError;
->                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): TypeError;
->                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): TypeError;
->                                               ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                               ^^^^^^^^^: TypeErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): TypeError;
->                                               ^^^^^^^^^: TypeErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                               ^^^^^^^^^: TypeErrorConstructor   (TypeReference) (Identifier)
 
 interface URIErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface URIErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): URIError;
->        ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: string | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): URIError;
->                          ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                          ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     new (message?: string, options?: ErrorOptions): URIError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): URIError;
->                                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (message?: string, options?: ErrorOptions): URIError;
->                                                   ^^^^^^^^: URIErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                                   ^^^^^^^^: URIErrorConstructor   (TypeReference) (Identifier)
 
     new (message?: string, options?: ErrorOptions): URIError;
->                                                   ^^^^^^^^: URIErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                                   ^^^^^^^^: URIErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): URIError;
->    ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>    ^^^^^^^: string | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): URIError;
->                      ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                      ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
     (message?: string, options?: ErrorOptions): URIError;
->                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): URIError;
->                                ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     (message?: string, options?: ErrorOptions): URIError;
->                                               ^^^^^^^^: URIErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                               ^^^^^^^^: URIErrorConstructor   (TypeReference) (Identifier)
 
     (message?: string, options?: ErrorOptions): URIError;
->                                               ^^^^^^^^: URIErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                               ^^^^^^^^: URIErrorConstructor   (TypeReference) (Identifier)
 
 interface AggregateErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AggregateErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         errors: Iterable<any>,
->       ^^^^^^: Iterable<any>   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^: Iterable<any>   (TypeReference) (Identifier)
 
         errors: Iterable<any>,
->               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^: any   (Any) (Identifier)
 
         errors: Iterable<any>,
->               ^^^^^^^^: any   (TyError) (IdentifierReference)
+>               ^^^^^^^^: any   (Error) (Identifier)
 
         message?: string,
->       ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>       ^^^^^^^: string | undefined   (Union) (Identifier)
 
         options?: ErrorOptions,
->       ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>       ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
         options?: ErrorOptions,
->                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^: any   (Any) (Identifier)
 
         options?: ErrorOptions,
->                 ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                 ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     ): AggregateError;
->      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (TSTypeReference)
+>      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
     ): AggregateError;
->      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (IdentifierReference)
+>      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
         errors: Iterable<any>,
->       ^^^^^^: Iterable<any>   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^: Iterable<any>   (TypeReference) (Identifier)
 
         errors: Iterable<any>,
->               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^: any   (Any) (Identifier)
 
         errors: Iterable<any>,
->               ^^^^^^^^: any   (TyError) (IdentifierReference)
+>               ^^^^^^^^: any   (Error) (Identifier)
 
         message?: string,
->       ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>       ^^^^^^^: string | undefined   (Union) (Identifier)
 
         options?: ErrorOptions,
->       ^^^^^^^: ErrorOptions | undefined   (TyUnion) (BindingIdentifier)
+>       ^^^^^^^: ErrorOptions | undefined   (Union) (Identifier)
 
         options?: ErrorOptions,
->                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^: any   (Any) (Identifier)
 
         options?: ErrorOptions,
->                 ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                 ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     ): AggregateError;
->      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (TSTypeReference)
+>      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
     ): AggregateError;
->      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (IdentifierReference)
+>      ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)

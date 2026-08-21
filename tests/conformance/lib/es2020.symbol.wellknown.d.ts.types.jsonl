@@ -1,0 +1,25 @@
+{"path":"es2020.symbol.wellknown.d.ts","start":89,"end":106,"text":"SymbolConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":89,"end":106,"text":"SymbolConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":282,"end":290,"text":"matchAll","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":320,"end":340,"text":"RegExpStringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":320,"end":340,"text":"RegExpStringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":341,"end":342,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":352,"end":366,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":352,"end":366,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":367,"end":368,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":370,"end":391,"text":"BuiltinIteratorReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":370,"end":391,"text":"BuiltinIteratorReturn","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":409,"end":415,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":416,"end":424,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":429,"end":449,"text":"RegExpStringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":429,"end":449,"text":"RegExpStringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":450,"end":451,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":467,"end":473,"text":"RegExp","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":467,"end":473,"text":"RegExp","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":680,"end":686,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":687,"end":695,"text":"matchAll","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":697,"end":700,"text":"str","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":711,"end":731,"text":"RegExpStringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":711,"end":731,"text":"RegExpStringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":732,"end":747,"text":"RegExpExecArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.symbol.wellknown.d.ts","start":732,"end":747,"text":"RegExpExecArray","nodeType":"Identifier","type":{"name":"Error","display":"any"}}

@@ -1,959 +1,959 @@
 declare namespace Intl {
->                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
+>                 ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
 declare namespace Intl {
->                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
+>                 ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     type UnicodeBCP47LocaleIdentifier = string;
->        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
     type RelativeTimeFormatUnit =
->        ^^^^^^^^^^^^^^^^^^^^^^: "year" | "years" | "quarter" | "quarters" | "month" | "months" | "week" | "weeks" | "day" | "days" | "hour" | "hours" | "minute" | "minutes" | "second" | "seconds"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^: "year" | "years" | "quarter" | "quarters" | "month" | "months" | "week" | "weeks" | "day" | "days" | "hour" | "hours" | "minute" | "minutes" | "second" | "seconds"   (Union) (Identifier)
 
     type RelativeTimeFormatUnitSingular =
->        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: "year" | "quarter" | "month" | "week" | "day" | "hour" | "minute" | "second"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: "year" | "quarter" | "month" | "week" | "day" | "hour" | "minute" | "second"   (Union) (Identifier)
 
     type RelativeTimeFormatLocaleMatcher = "lookup" | "best fit";
->        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: "lookup" | "best fit"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: "lookup" | "best fit"   (Union) (Identifier)
 
     type RelativeTimeFormatNumeric = "always" | "auto";
->        ^^^^^^^^^^^^^^^^^^^^^^^^^: "always" | "auto"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^: "always" | "auto"   (Union) (Identifier)
 
     type RelativeTimeFormatStyle = "long" | "short" | "narrow";
->        ^^^^^^^^^^^^^^^^^^^^^^^: "long" | "short" | "narrow"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^: "long" | "short" | "narrow"   (Union) (Identifier)
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
->        ^^^^^^^^^^^^^^^: UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^: UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined   (Union) (Identifier)
                 expected: string | Locale | readonly (string | Locale)[] | undefined
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
->                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
->                                                         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (TSTypeReference)
+>                                                         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                                                         expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
->                                                         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (IdentifierReference)
+>                                                         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                                                         expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
->                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
->                                                                                                           ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (TSTypeReference)
+>                                                                                                           ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                                                                                                           expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
->                                                                                                           ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (IdentifierReference)
+>                                                                                                           ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                                                                                                           expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     interface RelativeTimeFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface RelativeTimeFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         localeMatcher?: RelativeTimeFormatLocaleMatcher;
->       ^^^^^^^^^^^^^: RelativeTimeFormatLocaleMatcher | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^: RelativeTimeFormatLocaleMatcher | undefined   (Union) (Identifier)
 
         localeMatcher?: RelativeTimeFormatLocaleMatcher;
->                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         numeric?: RelativeTimeFormatNumeric;
->       ^^^^^^^: RelativeTimeFormatNumeric | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^: RelativeTimeFormatNumeric | undefined   (Union) (Identifier)
 
         numeric?: RelativeTimeFormatNumeric;
->                 ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         style?: RelativeTimeFormatStyle;
->       ^^^^^: RelativeTimeFormatStyle | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^: RelativeTimeFormatStyle | undefined   (Union) (Identifier)
 
         style?: RelativeTimeFormatStyle;
->               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface ResolvedRelativeTimeFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface ResolvedRelativeTimeFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         locale: UnicodeBCP47LocaleIdentifier;
->       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TypeReference) (Identifier)
       expected: string
 
         locale: UnicodeBCP47LocaleIdentifier;
->               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         style: RelativeTimeFormatStyle;
->       ^^^^^: RelativeTimeFormatStyle   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^: RelativeTimeFormatStyle   (TypeReference) (Identifier)
 
         style: RelativeTimeFormatStyle;
->              ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         numeric: RelativeTimeFormatNumeric;
->       ^^^^^^^: RelativeTimeFormatNumeric   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^: RelativeTimeFormatNumeric   (TypeReference) (Identifier)
 
         numeric: RelativeTimeFormatNumeric;
->                ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         numberingSystem: string;
->       ^^^^^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
     type RelativeTimeFormatPart =
->        ^^^^^^^^^^^^^^^^^^^^^^: { type: "literal"; value: string; } | { type: Exclude<NumberFormatPartTypes, "literal">; value: string; unit: RelativeTimeFormatUnitSingular; }   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^: { type: "literal"; value: string; } | { type: Exclude<NumberFormatPartTypes, "literal">; value: string; unit: RelativeTimeFormatUnitSingular; }   (Union) (Identifier)
 
             type: "literal";
->           ^^^^: "literal"   (TyStringLiteral) (TSPropertySignature)
+>           ^^^^: "literal"   (StringLiteral) (Identifier)
 
             value: string;
->           ^^^^^: string   (TyString) (TSPropertySignature)
+>           ^^^^^: string   (String) (Identifier)
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->           ^^^^: Exclude<NumberFormatPartTypes, "literal">   (TyTypeReference) (TSPropertySignature)
+>           ^^^^: Exclude<NumberFormatPartTypes, "literal">   (TypeReference) (Identifier)
         expected: "compact" | "currency" | "decimal" | "exponentInteger" | "exponentMinusSign" | "exponentSeparator" | "fraction" | "group" | "infinity" | "integer" | "minusSign" | "nan" | "percent" | "percentSign" | "plusSign" | "unit" | "unknown"
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->                 ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^: any   (Any) (Identifier)
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->                 ^^^^^^^: any   (TyError) (IdentifierReference)
+>                 ^^^^^^^: any   (Error) (Identifier)
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->                         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->                         ^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                         ^^^^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
             value: string;
->           ^^^^^: string   (TyString) (TSPropertySignature)
+>           ^^^^^: string   (String) (Identifier)
 
             unit: RelativeTimeFormatUnitSingular;
->           ^^^^: RelativeTimeFormatUnitSingular   (TyTypeReference) (TSPropertySignature)
+>           ^^^^: RelativeTimeFormatUnitSingular   (TypeReference) (Identifier)
 
             unit: RelativeTimeFormatUnitSingular;
->                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface RelativeTimeFormat {
->             ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
     interface RelativeTimeFormat {
->             ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         format(value: number, unit: RelativeTimeFormatUnit): string;
->       ^^^^^^: { (value: number, unit: RelativeTimeFormatUnit): string; (value: number, unit: RelativeTimeFormatUnit): string; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^: { (value: number, unit: RelativeTimeFormatUnit): string; (value: number, unit: RelativeTimeFormatUnit): string; }   (Object) (Identifier)
       expected: (value: number, unit: RelativeTimeFormatUnit) => string
 
         format(value: number, unit: RelativeTimeFormatUnit): string;
->              ^^^^^: number   (TyNumber) (BindingIdentifier)
+>              ^^^^^: number   (Number) (Identifier)
 
         format(value: number, unit: RelativeTimeFormatUnit): string;
->                             ^^^^: RelativeTimeFormatUnit   (TyTypeReference) (BindingIdentifier)
+>                             ^^^^: RelativeTimeFormatUnit   (TypeReference) (Identifier)
 
         format(value: number, unit: RelativeTimeFormatUnit): string;
->                                   ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         formatToParts(value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[];
->       ^^^^^^^^^^^^^: { (value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[]; (value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^: { (value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[]; (value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[]; }   (Object) (Identifier)
              expected: (value: number, unit: RelativeTimeFormatUnit) => RelativeTimeFormatPart[]
 
         formatToParts(value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[];
->                     ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                     ^^^^^: number   (Number) (Identifier)
 
         formatToParts(value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[];
->                                    ^^^^: RelativeTimeFormatUnit   (TyTypeReference) (BindingIdentifier)
+>                                    ^^^^: RelativeTimeFormatUnit   (TypeReference) (Identifier)
 
         formatToParts(value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[];
->                                          ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         formatToParts(value: number, unit: RelativeTimeFormatUnit): RelativeTimeFormatPart[];
->                                                                   ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                   ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         resolvedOptions(): ResolvedRelativeTimeFormatOptions;
->       ^^^^^^^^^^^^^^^: { (): ResolvedRelativeTimeFormatOptions; (): ResolvedRelativeTimeFormatOptions; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^: { (): ResolvedRelativeTimeFormatOptions; (): ResolvedRelativeTimeFormatOptions; }   (Object) (Identifier)
                expected: () => ResolvedRelativeTimeFormatOptions
 
         resolvedOptions(): ResolvedRelativeTimeFormatOptions;
->                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         resolvedOptions(): ResolvedRelativeTimeFormatOptions;
->                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     const RelativeTimeFormat: {
->         ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
             locales?: LocalesArgument,
->           ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>           ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
            expected: LocalesArgument
 
             locales?: LocalesArgument,
->                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
             options?: RelativeTimeFormatOptions,
->           ^^^^^^^: RelativeTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>           ^^^^^^^: RelativeTimeFormatOptions | undefined   (Union) (Identifier)
 
             options?: RelativeTimeFormatOptions,
->                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
             options?: RelativeTimeFormatOptions,
->                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         ): RelativeTimeFormat;
->          ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSTypeReference)
+>          ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         ): RelativeTimeFormat;
->          ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (IdentifierReference)
+>          ^^^^^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: RelativeTimeFormatOptions): RelativeTimeFormat; supportedLocalesOf(locales?: LocalesArgument, options?: RelativeTimeFormatOptions): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         supportedLocalesOf(
->       ^^^^^^^^^^^^^^^^^^: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]   (TyFunction) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^^^^: (locales?: LocalesArgument, options?: RelativeTimeFormatOptions) => UnicodeBCP47LocaleIdentifier[]   (Function) (Identifier)
 
             locales?: LocalesArgument,
->           ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>           ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
            expected: LocalesArgument
 
             locales?: LocalesArgument,
->                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
             options?: RelativeTimeFormatOptions,
->           ^^^^^^^: RelativeTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>           ^^^^^^^: RelativeTimeFormatOptions | undefined   (Union) (Identifier)
 
             options?: RelativeTimeFormatOptions,
->                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
             options?: RelativeTimeFormatOptions,
->                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         ): UnicodeBCP47LocaleIdentifier[];
->          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface NumberFormatOptionsStyleRegistry {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface NumberFormatOptionsStyleRegistry {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         unit: never;
->       ^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^: never   (Never) (Identifier)
 
     interface NumberFormatOptionsCurrencyDisplayRegistry {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface NumberFormatOptionsCurrencyDisplayRegistry {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         narrowSymbol: never;
->       ^^^^^^^^^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^^^^^^^^^: never   (Never) (Identifier)
 
     interface NumberFormatOptionsSignDisplayRegistry {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface NumberFormatOptionsSignDisplayRegistry {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         auto: never;
->       ^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^: never   (Never) (Identifier)
 
         never: never;
->       ^^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^^: never   (Never) (Identifier)
 
         always: never;
->       ^^^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^^^: never   (Never) (Identifier)
 
         exceptZero: never;
->       ^^^^^^^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^^^^^^^: never   (Never) (Identifier)
 
     type NumberFormatOptionsSignDisplay = keyof NumberFormatOptionsSignDisplayRegistry;
->        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: keyof NumberFormatOptionsSignDisplayRegistry   (TyKeyof) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: keyof NumberFormatOptionsSignDisplayRegistry   (Keyof) (Identifier)
 
     type NumberFormatOptionsSignDisplay = keyof NumberFormatOptionsSignDisplayRegistry;
->                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     type NumberFormatOptionsSignDisplay = keyof NumberFormatOptionsSignDisplayRegistry;
->                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface NumberFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface NumberFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         numberingSystem?: string | undefined;
->       ^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^: string | undefined   (Union) (Identifier)
 
         compactDisplay?: "short" | "long" | undefined;
->       ^^^^^^^^^^^^^^: "short" | "long" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^: "short" | "long" | undefined   (Union) (Identifier)
 
         notation?: "standard" | "scientific" | "engineering" | "compact" | undefined;
->       ^^^^^^^^: "standard" | "scientific" | "engineering" | "compact" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^: "standard" | "scientific" | "engineering" | "compact" | undefined   (Union) (Identifier)
 
         signDisplay?: NumberFormatOptionsSignDisplay | undefined;
->       ^^^^^^^^^^^: NumberFormatOptionsSignDisplay | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^: NumberFormatOptionsSignDisplay | undefined   (Union) (Identifier)
            expected: keyof NumberFormatOptionsSignDisplayRegistry | undefined
 
         signDisplay?: NumberFormatOptionsSignDisplay | undefined;
->                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         unit?: string | undefined;
->       ^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^: string | undefined   (Union) (Identifier)
 
         unitDisplay?: "short" | "long" | "narrow" | undefined;
->       ^^^^^^^^^^^: "short" | "long" | "narrow" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^: "short" | "long" | "narrow" | undefined   (Union) (Identifier)
 
         currencySign?: "standard" | "accounting" | undefined;
->       ^^^^^^^^^^^^: "standard" | "accounting" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^: "standard" | "accounting" | undefined   (Union) (Identifier)
 
     interface ResolvedNumberFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface ResolvedNumberFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         compactDisplay?: "short" | "long";
->       ^^^^^^^^^^^^^^: "short" | "long" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^: "short" | "long" | undefined   (Union) (Identifier)
 
         notation: "standard" | "scientific" | "engineering" | "compact";
->       ^^^^^^^^: "standard" | "scientific" | "engineering" | "compact"   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^: "standard" | "scientific" | "engineering" | "compact"   (Union) (Identifier)
 
         signDisplay: NumberFormatOptionsSignDisplay;
->       ^^^^^^^^^^^: NumberFormatOptionsSignDisplay   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^^^: NumberFormatOptionsSignDisplay   (TypeReference) (Identifier)
            expected: keyof NumberFormatOptionsSignDisplayRegistry
 
         signDisplay: NumberFormatOptionsSignDisplay;
->                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         unit?: string;
->       ^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^: string | undefined   (Union) (Identifier)
 
         unitDisplay?: "short" | "long" | "narrow";
->       ^^^^^^^^^^^: "short" | "long" | "narrow" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^: "short" | "long" | "narrow" | undefined   (Union) (Identifier)
 
         currencySign?: "standard" | "accounting";
->       ^^^^^^^^^^^^: "standard" | "accounting" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^: "standard" | "accounting" | undefined   (Union) (Identifier)
 
     interface NumberFormatPartTypeRegistry {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface NumberFormatPartTypeRegistry {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         compact: never;
->       ^^^^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^^^^: never   (Never) (Identifier)
 
         exponentInteger: never;
->       ^^^^^^^^^^^^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^: never   (Never) (Identifier)
 
         exponentMinusSign: never;
->       ^^^^^^^^^^^^^^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^^^: never   (Never) (Identifier)
 
         exponentSeparator: never;
->       ^^^^^^^^^^^^^^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^^^: never   (Never) (Identifier)
 
         unit: never;
->       ^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^: never   (Never) (Identifier)
 
         unknown: never;
->       ^^^^^^^: never   (TyNever) (TSPropertySignature)
+>       ^^^^^^^: never   (Never) (Identifier)
 
     interface DateTimeFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface DateTimeFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         calendar?: string | undefined;
->       ^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^: string | undefined   (Union) (Identifier)
 
         dayPeriod?: "narrow" | "short" | "long" | undefined;
->       ^^^^^^^^^: "short" | "long" | "narrow" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^: "short" | "long" | "narrow" | undefined   (Union) (Identifier)
 
         numberingSystem?: string | undefined;
->       ^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^: string | undefined   (Union) (Identifier)
 
         dateStyle?: "full" | "long" | "medium" | "short" | undefined;
->       ^^^^^^^^^: "full" | "long" | "medium" | "short" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^: "full" | "long" | "medium" | "short" | undefined   (Union) (Identifier)
 
         timeStyle?: "full" | "long" | "medium" | "short" | undefined;
->       ^^^^^^^^^: "full" | "long" | "medium" | "short" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^: "full" | "long" | "medium" | "short" | undefined   (Union) (Identifier)
 
         hourCycle?: "h11" | "h12" | "h23" | "h24" | undefined;
->       ^^^^^^^^^: "h11" | "h12" | "h23" | "h24" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^: "h11" | "h12" | "h23" | "h24" | undefined   (Union) (Identifier)
 
     type LocaleHourCycleKey = "h12" | "h23" | "h11" | "h24";
->        ^^^^^^^^^^^^^^^^^^: "h12" | "h23" | "h11" | "h24"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^: "h12" | "h23" | "h11" | "h24"   (Union) (Identifier)
 
     type LocaleCollationCaseFirst = "upper" | "lower" | "false";
->        ^^^^^^^^^^^^^^^^^^^^^^^^: "upper" | "lower" | "false"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^^: "upper" | "lower" | "false"   (Union) (Identifier)
 
     interface LocaleOptions {
->             ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface LocaleOptions {
->             ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         baseName?: string;
->       ^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^: string | undefined   (Union) (Identifier)
 
         calendar?: string;
->       ^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^: string | undefined   (Union) (Identifier)
 
         caseFirst?: LocaleCollationCaseFirst;
->       ^^^^^^^^^: LocaleCollationCaseFirst | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^: LocaleCollationCaseFirst | undefined   (Union) (Identifier)
 
         caseFirst?: LocaleCollationCaseFirst;
->                   ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         collation?: string;
->       ^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^: string | undefined   (Union) (Identifier)
 
         hourCycle?: LocaleHourCycleKey;
->       ^^^^^^^^^: LocaleHourCycleKey | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^: LocaleHourCycleKey | undefined   (Union) (Identifier)
 
         hourCycle?: LocaleHourCycleKey;
->                   ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         language?: string;
->       ^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^: string | undefined   (Union) (Identifier)
 
         numberingSystem?: string;
->       ^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^: string | undefined   (Union) (Identifier)
 
         numeric?: boolean;
->       ^^^^^^^: boolean | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^: boolean | undefined   (Union) (Identifier)
 
         region?: string;
->       ^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^: string | undefined   (Union) (Identifier)
 
         script?: string;
->       ^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^: string | undefined   (Union) (Identifier)
 
     interface Locale extends LocaleOptions {
->             ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (TSInterfaceDeclaration)
+>             ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
             expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     interface Locale extends LocaleOptions {
->             ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (BindingIdentifier)
+>             ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
             expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     interface Locale extends LocaleOptions {
->                            ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+>                            ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface Locale extends LocaleOptions {
->                            ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         baseName: string;
->       ^^^^^^^^: string   (TyString) (TSPropertySignature)
+>       ^^^^^^^^: string   (String) (Identifier)
 
         language: string;
->       ^^^^^^^^: string   (TyString) (TSPropertySignature)
+>       ^^^^^^^^: string   (String) (Identifier)
 
         maximize(): Locale;
->       ^^^^^^^^: { (): Locale; (): Locale; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^: { (): Locale; (): Locale; }   (Object) (Identifier)
         expected: () => Locale
 
         maximize(): Locale;
->                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (TSTypeReference)
+>                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                   expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         maximize(): Locale;
->                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (IdentifierReference)
+>                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                   expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         minimize(): Locale;
->       ^^^^^^^^: { (): Locale; (): Locale; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^: { (): Locale; (): Locale; }   (Object) (Identifier)
         expected: () => Locale
 
         minimize(): Locale;
->                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (TSTypeReference)
+>                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                   expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         minimize(): Locale;
->                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (IdentifierReference)
+>                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                   expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         toString(): UnicodeBCP47LocaleIdentifier;
->       ^^^^^^^^: { (): UnicodeBCP47LocaleIdentifier; (): UnicodeBCP47LocaleIdentifier; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^: { (): UnicodeBCP47LocaleIdentifier; (): UnicodeBCP47LocaleIdentifier; }   (Object) (Identifier)
         expected: () => UnicodeBCP47LocaleIdentifier
 
         toString(): UnicodeBCP47LocaleIdentifier;
->                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     const Locale: {
->         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (BindingIdentifier)
+>         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
         expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->            ^^^: UnicodeBCP47LocaleIdentifier | Locale   (TyUnion) (BindingIdentifier)
+>            ^^^: UnicodeBCP47LocaleIdentifier | Locale   (Union) (Identifier)
         expected: string | Locale
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                                                ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (TSTypeReference)
+>                                                ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                                                expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                                                ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (IdentifierReference)
+>                                                ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                                                expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                                                        ^^^^^^^: LocaleOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                                        ^^^^^^^: LocaleOptions | undefined   (Union) (Identifier)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                                                                  ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                  ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                                                                  ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                  ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                                                                                  ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (TSTypeReference)
+>                                                                                  ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                                                                                  expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                                                                                  ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (TyObject) (IdentifierReference)
+>                                                                                  ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
                                                                                  expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
 
     type DisplayNamesFallback =
->        ^^^^^^^^^^^^^^^^^^^^: "code" | "none"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^: "code" | "none"   (Union) (Identifier)
 
     type DisplayNamesType =
->        ^^^^^^^^^^^^^^^^: "language" | "region" | "script" | "calendar" | "dateTimeField" | "currency"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^: "language" | "region" | "script" | "calendar" | "dateTimeField" | "currency"   (Union) (Identifier)
 
     type DisplayNamesLanguageDisplay =
->        ^^^^^^^^^^^^^^^^^^^^^^^^^^^: "dialect" | "standard"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^: "dialect" | "standard"   (Union) (Identifier)
 
     interface DisplayNamesOptions {
->             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface DisplayNamesOptions {
->             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         localeMatcher?: RelativeTimeFormatLocaleMatcher;
->       ^^^^^^^^^^^^^: RelativeTimeFormatLocaleMatcher | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^: RelativeTimeFormatLocaleMatcher | undefined   (Union) (Identifier)
 
         localeMatcher?: RelativeTimeFormatLocaleMatcher;
->                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         style?: RelativeTimeFormatStyle;
->       ^^^^^: RelativeTimeFormatStyle | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^: RelativeTimeFormatStyle | undefined   (Union) (Identifier)
 
         style?: RelativeTimeFormatStyle;
->               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         type: DisplayNamesType;
->       ^^^^: DisplayNamesType   (TyTypeReference) (TSPropertySignature)
+>       ^^^^: DisplayNamesType   (TypeReference) (Identifier)
 
         type: DisplayNamesType;
->             ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         languageDisplay?: DisplayNamesLanguageDisplay;
->       ^^^^^^^^^^^^^^^: DisplayNamesLanguageDisplay | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^: DisplayNamesLanguageDisplay | undefined   (Union) (Identifier)
 
         languageDisplay?: DisplayNamesLanguageDisplay;
->                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         fallback?: DisplayNamesFallback;
->       ^^^^^^^^: DisplayNamesFallback | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^: DisplayNamesFallback | undefined   (Union) (Identifier)
 
         fallback?: DisplayNamesFallback;
->                  ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface ResolvedDisplayNamesOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface ResolvedDisplayNamesOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         locale: UnicodeBCP47LocaleIdentifier;
->       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TypeReference) (Identifier)
       expected: string
 
         locale: UnicodeBCP47LocaleIdentifier;
->               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         style: RelativeTimeFormatStyle;
->       ^^^^^: RelativeTimeFormatStyle   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^: RelativeTimeFormatStyle   (TypeReference) (Identifier)
 
         style: RelativeTimeFormatStyle;
->              ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         type: DisplayNamesType;
->       ^^^^: DisplayNamesType   (TyTypeReference) (TSPropertySignature)
+>       ^^^^: DisplayNamesType   (TypeReference) (Identifier)
 
         type: DisplayNamesType;
->             ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         fallback: DisplayNamesFallback;
->       ^^^^^^^^: DisplayNamesFallback   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^: DisplayNamesFallback   (TypeReference) (Identifier)
 
         fallback: DisplayNamesFallback;
->                 ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         languageDisplay?: DisplayNamesLanguageDisplay;
->       ^^^^^^^^^^^^^^^: DisplayNamesLanguageDisplay | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^: DisplayNamesLanguageDisplay | undefined   (Union) (Identifier)
 
         languageDisplay?: DisplayNamesLanguageDisplay;
->                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface DisplayNames {
->             ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
     interface DisplayNames {
->             ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
+>             ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         of(code: string): string | undefined;
->       ^^: { (code: string): string | undefined; (code: string): string | undefined; }   (TyObject) (TSMethodSignature)
+>       ^^: { (code: string): string | undefined; (code: string): string | undefined; }   (Object) (Identifier)
   expected: (code: string) => string | undefined
 
         of(code: string): string | undefined;
->          ^^^^: string   (TyString) (BindingIdentifier)
+>          ^^^^: string   (String) (Identifier)
 
         resolvedOptions(): ResolvedDisplayNamesOptions;
->       ^^^^^^^^^^^^^^^: { (): ResolvedDisplayNamesOptions; (): ResolvedDisplayNamesOptions; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^: { (): ResolvedDisplayNamesOptions; (): ResolvedDisplayNamesOptions; }   (Object) (Identifier)
                expected: () => ResolvedDisplayNamesOptions
 
         resolvedOptions(): ResolvedDisplayNamesOptions;
->                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         resolvedOptions(): ResolvedDisplayNamesOptions;
->                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     const DisplayNames: {
->         ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
+>         ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         prototype: DisplayNames;
->       ^^^^^^^^^: DisplayNames   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^: DisplayNames   (TypeReference) (Identifier)
 
         prototype: DisplayNames;
->                  ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSTypeReference)
+>                  ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         prototype: DisplayNames;
->                  ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (IdentifierReference)
+>                  ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
->            ^^^^^^^: LocalesArgument   (TyTypeReference) (BindingIdentifier)
+>            ^^^^^^^: LocalesArgument   (TypeReference) (Identifier)
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
->                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
->                                      ^^^^^^^: DisplayNamesOptions   (TyTypeReference) (BindingIdentifier)
+>                                      ^^^^^^^: DisplayNamesOptions   (TypeReference) (Identifier)
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
->                                               ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                               ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
->                                               ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                               ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
->                                                                     ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSTypeReference)
+>                                                                     ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
->                                                                     ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (IdentifierReference)
+>                                                                     ^^^^^^^^^^^^: { new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames; prototype: DisplayNames; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->       ^^^^^^^^^^^^^^^^^^: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]   (TyFunction) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^^^^: (locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]   (Function) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                          ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>                          ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
                           expected: LocalesArgument
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                                     ^^^^^^^: { localeMatcher?: RelativeTimeFormatLocaleMatcher; } | undefined   (TyUnion) (BindingIdentifier)
+>                                                     ^^^^^^^: { localeMatcher?: RelativeTimeFormatLocaleMatcher; } | undefined   (Union) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                                                 ^^^^^^^^^^^^^: RelativeTimeFormatLocaleMatcher | undefined   (TyUnion) (TSPropertySignature)
+>                                                                 ^^^^^^^^^^^^^: RelativeTimeFormatLocaleMatcher | undefined   (Union) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface CollatorConstructor {
->             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface CollatorConstructor {
->             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->            ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>            ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
             expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                       ^^^^^^^: CollatorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                       ^^^^^^^: CollatorOptions | undefined   (Union) (Identifier)
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                 ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                                 ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                 ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                                                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                   ^^^^^^^^: any   (Any) (Identifier)
                                                                     expected: CollatorConstructor
 
         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                                                   ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                   ^^^^^^^^: any   (Error) (Identifier)
                                                                     expected: CollatorConstructor
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->        ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
         expected: LocalesArgument
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                   ^^^^^^^: CollatorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^: CollatorOptions | undefined   (Union) (Identifier)
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                             ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                             ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                             ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                                               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                               ^^^^^^^^: any   (Any) (Identifier)
                                                                 expected: CollatorConstructor
 
         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
->                                                               ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                               ^^^^^^^^: any   (Error) (Identifier)
                                                                 expected: CollatorConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
->       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: CollatorOptions): string[]; (locales: LocalesArgument, options?: CollatorOptions): string[]; (locales: LocalesArgument, options?: CollatorOptions): string[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: CollatorOptions): string[]; (locales: LocalesArgument, options?: CollatorOptions): string[]; (locales: LocalesArgument, options?: CollatorOptions): string[]; }   (Object) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
->                          ^^^^^^^: LocalesArgument   (TyTypeReference) (BindingIdentifier)
+>                          ^^^^^^^: LocalesArgument   (TypeReference) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
->                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
->                                                    ^^^^^^^: CollatorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                                    ^^^^^^^: CollatorOptions | undefined   (Union) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
->                                                              ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                              ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: CollatorOptions): string[];
->                                                              ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                              ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     interface DateTimeFormatConstructor {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface DateTimeFormatConstructor {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->            ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>            ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
             expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                       ^^^^^^^: DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                       ^^^^^^^: DateTimeFormatOptions | undefined   (Union) (Identifier)
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                                 ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                 ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                                 ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                 ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                                                         ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
                                                                                 expected: DateTimeFormatConstructor
 
         new (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                                                         ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                         ^^^^^^^^^^^^^^: any   (Error) (Identifier)
                                                                                 expected: DateTimeFormatConstructor
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->        ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
         expected: LocalesArgument
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                   ^^^^^^^: DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^: DateTimeFormatOptions | undefined   (Union) (Identifier)
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                             ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                             ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                                                     ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                     ^^^^^^^^^^^^^^: any   (Any) (Identifier)
                                                                             expected: DateTimeFormatConstructor
 
         (locales?: LocalesArgument, options?: DateTimeFormatOptions): DateTimeFormat;
->                                                                     ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                     ^^^^^^^^^^^^^^: any   (Error) (Identifier)
                                                                             expected: DateTimeFormatConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
->       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: DateTimeFormatOptions): string[]; (locales: LocalesArgument, options?: DateTimeFormatOptions): string[]; (locales: LocalesArgument, options?: DateTimeFormatOptions): string[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: DateTimeFormatOptions): string[]; (locales: LocalesArgument, options?: DateTimeFormatOptions): string[]; (locales: LocalesArgument, options?: DateTimeFormatOptions): string[]; }   (Object) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
->                          ^^^^^^^: LocalesArgument   (TyTypeReference) (BindingIdentifier)
+>                          ^^^^^^^: LocalesArgument   (TypeReference) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
->                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
->                                                    ^^^^^^^: DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                                    ^^^^^^^: DateTimeFormatOptions | undefined   (Union) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
->                                                              ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                              ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: DateTimeFormatOptions): string[];
->                                                              ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                              ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface NumberFormatConstructor {
->             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface NumberFormatConstructor {
->             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->            ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>            ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
             expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                       ^^^^^^^: NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                       ^^^^^^^: NumberFormatOptions | undefined   (Union) (Identifier)
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                                 ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                 ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                                 ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                 ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                                                       ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                       ^^^^^^^^^^^^: any   (Any) (Identifier)
                                                                             expected: NumberFormatConstructor
 
         new (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                                                       ^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                       ^^^^^^^^^^^^: any   (Error) (Identifier)
                                                                             expected: NumberFormatConstructor
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->        ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
         expected: LocalesArgument
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                   ^^^^^^^: NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^: NumberFormatOptions | undefined   (Union) (Identifier)
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                                                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                   ^^^^^^^^^^^^: any   (Any) (Identifier)
                                                                         expected: NumberFormatConstructor
 
         (locales?: LocalesArgument, options?: NumberFormatOptions): NumberFormat;
->                                                                   ^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                   ^^^^^^^^^^^^: any   (Error) (Identifier)
                                                                         expected: NumberFormatConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
->       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: NumberFormatOptions): string[]; (locales: LocalesArgument, options?: NumberFormatOptions): string[]; (locales: LocalesArgument, options?: NumberFormatOptions): string[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^^^^: { (locales: string | string[], options?: NumberFormatOptions): string[]; (locales: LocalesArgument, options?: NumberFormatOptions): string[]; (locales: LocalesArgument, options?: NumberFormatOptions): string[]; }   (Object) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
->                          ^^^^^^^: LocalesArgument   (TyTypeReference) (BindingIdentifier)
+>                          ^^^^^^^: LocalesArgument   (TypeReference) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
->                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
->                                                    ^^^^^^^: NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                                    ^^^^^^^: NumberFormatOptions | undefined   (Union) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
->                                                              ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                              ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: NumberFormatOptions): string[];
->                                                              ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                              ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface PluralRulesConstructor {
->             ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface PluralRulesConstructor {
->             ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->            ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>            ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
             expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                       ^^^^^^^: PluralRulesOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                       ^^^^^^^: PluralRulesOptions | undefined   (Union) (Identifier)
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                                 ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                 ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                                 ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                 ^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                                                      ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                      ^^^^^^^^^^^: any   (Any) (Identifier)
                                                                           expected: PluralRulesConstructor
 
         new (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                                                      ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                      ^^^^^^^^^^^: any   (Error) (Identifier)
                                                                           expected: PluralRulesConstructor
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->        ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
         expected: LocalesArgument
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                   ^^^^^^^: PluralRulesOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^: PluralRulesOptions | undefined   (Union) (Identifier)
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                             ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                             ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                             ^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                                                  ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                  ^^^^^^^^^^^: any   (Any) (Identifier)
                                                                       expected: PluralRulesConstructor
 
         (locales?: LocalesArgument, options?: PluralRulesOptions): PluralRules;
->                                                                  ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                  ^^^^^^^^^^^: any   (Error) (Identifier)
                                                                       expected: PluralRulesConstructor
 
         supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
->       ^^^^^^^^^^^^^^^^^^: { (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^^^^: { (locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; (locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[]; }   (Object) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
->                          ^^^^^^^: LocalesArgument   (TyTypeReference) (BindingIdentifier)
+>                          ^^^^^^^: LocalesArgument   (TypeReference) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
->                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
->                                                    ^^^^^^^: { localeMatcher?: "lookup" | "best fit"; } | undefined   (TyUnion) (BindingIdentifier)
+>                                                    ^^^^^^^: { localeMatcher?: "lookup" | "best fit"; } | undefined   (Union) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
->                                                                ^^^^^^^^^^^^^: "lookup" | "best fit" | undefined   (TyUnion) (TSPropertySignature)
+>                                                                ^^^^^^^^^^^^^: "lookup" | "best fit" | undefined   (Union) (Identifier)

@@ -1,35 +1,35 @@
 type ConcreteTrue = number extends number ? boolean : string;
->    ^^^^^^^^^^^^: boolean   (TyBoolean) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 type ConcreteFalse = number extends string ? boolean : string;
->    ^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^: string   (String) (Identifier)
 
 declare const concreteTrue: number extends number ? boolean : string;
->             ^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>             ^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 declare const concreteFalse: number extends string ? boolean : string;
->             ^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>             ^^^^^^^^^^^^^: string   (String) (Identifier)
 
 declare function choose<T>(): T extends string ? boolean : number;
->                ^^^^^^: <T>() => T extends string ? boolean : number   (TyFunction) (BindingIdentifier)
+>                ^^^^^^: <T>() => T extends string ? boolean : number   (Function) (Identifier)
 
 declare function choose<T>(): T extends string ? boolean : number;
->                       ^: any   (TyAny) (TSTypeParameter)
+>                       ^: any   (Any) (Identifier)
 
 declare function choose<T>(): T extends string ? boolean : number;
->                             ^: any   (TyAny) (TSTypeReference)
+>                             ^: any   (Any) (Identifier)
 
 const distributed = choose<string | number>();
->     ^^^^^^^^^^^: boolean | number   (TyUnion) (BindingIdentifier)
+>     ^^^^^^^^^^^: boolean | number   (Union) (Identifier)
 
 const distributed = choose<string | number>();
->                   ^^^^^^: <T>() => T extends string ? boolean : number   (TyFunction) (IdentifierReference)
+>                   ^^^^^^: <T>() => T extends string ? boolean : number   (Function) (Identifier)
 
 declare function unresolvedConditional<T>(): T extends string ? number : boolean;
->                ^^^^^^^^^^^^^^^^^^^^^: <T>() => T extends string ? number : boolean   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^^^^^^^: <T>() => T extends string ? number : boolean   (Function) (Identifier)
 
 declare function unresolvedConditional<T>(): T extends string ? number : boolean;
->                                      ^: any   (TyAny) (TSTypeParameter)
+>                                      ^: any   (Any) (Identifier)
 
 declare function unresolvedConditional<T>(): T extends string ? number : boolean;
->                                            ^: any   (TyAny) (TSTypeReference)
+>                                            ^: any   (Any) (Identifier)

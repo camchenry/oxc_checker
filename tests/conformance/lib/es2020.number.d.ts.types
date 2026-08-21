@@ -1,31 +1,31 @@
 interface Number {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: NumberConstructor
 
 interface Number {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: NumberConstructor
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; }   (Object) (Identifier)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                  ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>                  ^^^^^^^: Intl.LocalesArgument | undefined   (Union) (Identifier)
                   expected: Intl.LocalesArgument
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                            ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                            ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                                 ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
+>                                 ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TypeReference) (Identifier)
                                          expected: any
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                                                  ^^^^^^^: Intl.NumberFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                                  ^^^^^^^: Intl.NumberFormatOptions | undefined   (Union) (Identifier)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                                                            ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                                                            ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string;
->                                                                 ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TyTypeReference) (TSTypeReference)
+>                                                                 ^^^^^^^^^^^^^^^^^^^: Intl.NumberFormatOptions   (TypeReference) (Identifier)
                                                                              expected: any

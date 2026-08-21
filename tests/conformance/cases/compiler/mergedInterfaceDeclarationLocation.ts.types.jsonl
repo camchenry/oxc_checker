@@ -1,0 +1,9 @@
+{"path":"compiler/mergedInterfaceDeclarationLocation.ts","start":10,"end":16,"text":"Widget","nodeType":"Identifier","type":{"name":"TypeReference","display":"WidgetConstructor"}}
+{"path":"compiler/mergedInterfaceDeclarationLocation.ts","start":10,"end":16,"text":"Widget","nodeType":"Identifier","type":{"name":"TypeReference","display":"WidgetConstructor"}}
+{"path":"compiler/mergedInterfaceDeclarationLocation.ts","start":30,"end":47,"text":"WidgetConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/mergedInterfaceDeclarationLocation.ts","start":30,"end":47,"text":"WidgetConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/mergedInterfaceDeclarationLocation.ts","start":58,"end":64,"text":"Widget","nodeType":"Identifier","type":{"name":"TypeReference","display":"WidgetConstructor"}}
+{"path":"compiler/mergedInterfaceDeclarationLocation.ts","start":58,"end":64,"text":"Widget","nodeType":"Identifier","type":{"name":"TypeReference","display":"WidgetConstructor"}}
+{"path":"compiler/mergedInterfaceDeclarationLocation.ts","start":79,"end":85,"text":"Widget","nodeType":"Identifier","type":{"name":"TypeReference","display":"WidgetConstructor"}}
+{"path":"compiler/mergedInterfaceDeclarationLocation.ts","start":87,"end":104,"text":"WidgetConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/mergedInterfaceDeclarationLocation.ts","start":87,"end":104,"text":"WidgetConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

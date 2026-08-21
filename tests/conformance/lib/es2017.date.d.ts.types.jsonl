@@ -1,0 +1,10 @@
+{"path":"es2017.date.d.ts","start":10,"end":25,"text":"DateConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2017.date.d.ts","start":10,"end":25,"text":"DateConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2017.date.d.ts","start":933,"end":936,"text":"UTC","nodeType":"Identifier","type":{"name":"Object","display":"{ (year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; }"}}
+{"path":"es2017.date.d.ts","start":937,"end":941,"text":"year","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2017.date.d.ts","start":951,"end":961,"text":"monthIndex","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2017.date.d.ts","start":972,"end":976,"text":"date","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2017.date.d.ts","start":987,"end":992,"text":"hours","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2017.date.d.ts","start":1003,"end":1010,"text":"minutes","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2017.date.d.ts","start":1021,"end":1028,"text":"seconds","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2017.date.d.ts","start":1039,"end":1041,"text":"ms","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}

@@ -1,0 +1,61 @@
+{"path":"compiler/symbolBasicTypes.ts","start":6,"end":20,"text":"declaredNumber","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolBasicTypes.ts","start":40,"end":54,"text":"declaredString","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolBasicTypes.ts","start":80,"end":95,"text":"declaredBoolean","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolBasicTypes.ts","start":119,"end":133,"text":"declaredBigint","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"compiler/symbolBasicTypes.ts","start":154,"end":171,"text":"declaredUndefined","nodeType":"Identifier","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/symbolBasicTypes.ts","start":185,"end":194,"text":"undefined","nodeType":"Identifier","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/symbolBasicTypes.ts","start":202,"end":214,"text":"declaredNull","nodeType":"Identifier","type":{"name":"Null","display":"null"}}
+{"path":"compiler/symbolBasicTypes.ts","start":235,"end":246,"text":"declaredAny","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolBasicTypes.ts","start":263,"end":278,"text":"declaredUnknown","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/symbolBasicTypes.ts","start":300,"end":309,"text":"arrayCtor","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":312,"end":317,"text":"Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":325,"end":336,"text":"promiseCtor","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":339,"end":346,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":354,"end":361,"text":"mapCtor","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":364,"end":367,"text":"Map","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":375,"end":382,"text":"setCtor","nodeType":"Identifier","type":{"name":"TypeReference","display":"SetConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":385,"end":388,"text":"Set","nodeType":"Identifier","type":{"name":"TypeReference","display":"SetConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":396,"end":406,"text":"symbolCtor","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":409,"end":415,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":423,"end":433,"text":"objectCtor","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":436,"end":442,"text":"Object","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":450,"end":460,"text":"objectKeys","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/symbolBasicTypes.ts","start":463,"end":469,"text":"Object","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":470,"end":474,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (o: object): string[]; (o: {}): string[]; }"}}
+{"path":"compiler/symbolBasicTypes.ts","start":477,"end":478,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolBasicTypes.ts","start":492,"end":508,"text":"constructedArray","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/symbolBasicTypes.ts","start":515,"end":520,"text":"Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":540,"end":553,"text":"declaredArray","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/symbolBasicTypes.ts","start":583,"end":595,"text":"genericArray","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/symbolBasicTypes.ts","start":597,"end":602,"text":"Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":597,"end":602,"text":"Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayConstructor"}}
+{"path":"compiler/symbolBasicTypes.ts","start":630,"end":643,"text":"readonlyArray","nodeType":"Identifier","type":{"name":"Array","display":"readonly string[]"}}
+{"path":"compiler/symbolBasicTypes.ts","start":645,"end":658,"text":"ReadonlyArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolBasicTypes.ts","start":645,"end":658,"text":"ReadonlyArray","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/symbolBasicTypes.ts","start":681,"end":686,"text":"tuple","nodeType":"Identifier","type":{"name":"Tuple","display":"[number, string]"}}
+{"path":"compiler/symbolBasicTypes.ts","start":710,"end":721,"text":"tupleNumber","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolBasicTypes.ts","start":724,"end":729,"text":"tuple","nodeType":"Identifier","type":{"name":"Tuple","display":"[number, string]"}}
+{"path":"compiler/symbolBasicTypes.ts","start":738,"end":749,"text":"tupleString","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolBasicTypes.ts","start":752,"end":757,"text":"tuple","nodeType":"Identifier","type":{"name":"Tuple","display":"[number, string]"}}
+{"path":"compiler/symbolBasicTypes.ts","start":766,"end":778,"text":"tupleMissing","nodeType":"Identifier","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/symbolBasicTypes.ts","start":781,"end":786,"text":"tuple","nodeType":"Identifier","type":{"name":"Tuple","display":"[number, string]"}}
+{"path":"compiler/symbolBasicTypes.ts","start":806,"end":817,"text":"stringIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ [key: string]: bigint; }"}}
+{"path":"compiler/symbolBasicTypes.ts","start":822,"end":825,"text":"key","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolBasicTypes.ts","start":852,"end":868,"text":"stringIndexValue","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"compiler/symbolBasicTypes.ts","start":871,"end":882,"text":"stringIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ [key: string]: bigint; }"}}
+{"path":"compiler/symbolBasicTypes.ts","start":883,"end":891,"text":"anything","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"compiler/symbolBasicTypes.ts","start":900,"end":912,"text":"literalCount","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
+{"path":"compiler/symbolBasicTypes.ts","start":924,"end":936,"text":"literalLabel","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/symbolBasicTypes.ts","start":954,"end":965,"text":"quotedLabel","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"\\\"ready\\\"\""}}
+{"path":"compiler/symbolBasicTypes.ts","start":987,"end":999,"text":"quoteOnlyNot","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"false"}}
+{"path":"compiler/symbolBasicTypes.ts","start":1017,"end":1031,"text":"literalEnabled","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/symbolBasicTypes.ts","start":1046,"end":1056,"text":"widenedSum","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolBasicTypes.ts","start":1059,"end":1071,"text":"literalCount","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
+{"path":"compiler/symbolBasicTypes.ts","start":1083,"end":1097,"text":"widenedMessage","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolBasicTypes.ts","start":1100,"end":1112,"text":"literalLabel","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/symbolBasicTypes.ts","start":1125,"end":1140,"text":"inferredBoolean","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolBasicTypes.ts","start":1154,"end":1168,"text":"inferredNumber","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolBasicTypes.ts","start":1179,"end":1193,"text":"inferredString","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolBasicTypes.ts","start":1209,"end":1223,"text":"inferredBigint","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"compiler/symbolBasicTypes.ts","start":1234,"end":1245,"text":"inferredAny","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolBasicTypes.ts","start":1251,"end":1271,"text":"mismatchedAnnotation","nodeType":"Identifier","type":{"name":"String","display":"string"}}

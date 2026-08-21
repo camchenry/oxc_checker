@@ -1,227 +1,227 @@
 declare namespace Intl {
->                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
+>                 ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
 declare namespace Intl {
->                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
+>                 ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     interface SegmenterOptions {
->             ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface SegmenterOptions {
->             ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         localeMatcher?: "best fit" | "lookup" | undefined;
->       ^^^^^^^^^^^^^: "best fit" | "lookup" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^: "best fit" | "lookup" | undefined   (Union) (Identifier)
 
         granularity?: "grapheme" | "word" | "sentence" | undefined;
->       ^^^^^^^^^^^: "grapheme" | "word" | "sentence" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^: "grapheme" | "word" | "sentence" | undefined   (Union) (Identifier)
 
     interface Segmenter {
->             ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSInterfaceDeclaration)
+>             ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
     interface Segmenter {
->             ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
+>             ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         segment(input: string): Segments;
->       ^^^^^^^: { (input: string): Segments; (input: string): Segments; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^: { (input: string): Segments; (input: string): Segments; }   (Object) (Identifier)
        expected: (input: string) => Segments
 
         segment(input: string): Segments;
->               ^^^^^: string   (TyString) (BindingIdentifier)
+>               ^^^^^: string   (String) (Identifier)
 
         segment(input: string): Segments;
->                               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^^: any   (Any) (Identifier)
 
         segment(input: string): Segments;
->                               ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                               ^^^^^^^^: any   (Any) (Identifier)
 
         resolvedOptions(): ResolvedSegmenterOptions;
->       ^^^^^^^^^^^^^^^: { (): ResolvedSegmenterOptions; (): ResolvedSegmenterOptions; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^: { (): ResolvedSegmenterOptions; (): ResolvedSegmenterOptions; }   (Object) (Identifier)
                expected: () => ResolvedSegmenterOptions
 
         resolvedOptions(): ResolvedSegmenterOptions;
->                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         resolvedOptions(): ResolvedSegmenterOptions;
->                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface ResolvedSegmenterOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface ResolvedSegmenterOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         locale: string;
->       ^^^^^^: string   (TyString) (TSPropertySignature)
+>       ^^^^^^: string   (String) (Identifier)
 
         granularity: "grapheme" | "word" | "sentence";
->       ^^^^^^^^^^^: "grapheme" | "word" | "sentence"   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^: "grapheme" | "word" | "sentence"   (Union) (Identifier)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->             ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->             ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                             ^: any   (TyAny) (TSTypeParameter)
+>                             ^: any   (Any) (Identifier)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                                        ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+>                                        ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                                        ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                        ^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                       ^: any   (Any) (Identifier)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface SegmentIterator<T> extends IteratorObject<T, BuiltinIteratorReturn, unknown> {
->                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                          ^^^^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         [Symbol.iterator](): SegmentIterator<T>;
->        ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>        ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
         [Symbol.iterator](): SegmentIterator<T>;
->               ^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>               ^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
         [Symbol.iterator](): SegmentIterator<T>;
->                            ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         [Symbol.iterator](): SegmentIterator<T>;
->                            ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         [Symbol.iterator](): SegmentIterator<T>;
->                                            ^: any   (TyAny) (TSTypeReference)
+>                                            ^: any   (Any) (Identifier)
 
     interface Segments {
->             ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
     interface Segments {
->             ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
         containing(codeUnitIndex?: number): SegmentData | undefined;
->       ^^^^^^^^^^: { (codeUnitIndex?: number): SegmentData | undefined; (codeUnitIndex?: number): SegmentData | undefined; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^: { (codeUnitIndex?: number): SegmentData | undefined; (codeUnitIndex?: number): SegmentData | undefined; }   (Object) (Identifier)
 
         containing(codeUnitIndex?: number): SegmentData | undefined;
->                  ^^^^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                  ^^^^^^^^^^^^^: number | undefined   (Union) (Identifier)
 
         containing(codeUnitIndex?: number): SegmentData | undefined;
->                                           ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^^^^^: any   (Any) (Identifier)
 
         containing(codeUnitIndex?: number): SegmentData | undefined;
->                                           ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                           ^^^^^^^^^^^: any   (Any) (Identifier)
 
         [Symbol.iterator](): SegmentIterator<SegmentData>;
->        ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>        ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
         [Symbol.iterator](): SegmentIterator<SegmentData>;
->               ^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>               ^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
         [Symbol.iterator](): SegmentIterator<SegmentData>;
->                            ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         [Symbol.iterator](): SegmentIterator<SegmentData>;
->                            ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         [Symbol.iterator](): SegmentIterator<SegmentData>;
->                                            ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                            ^^^^^^^^^^^: any   (Any) (Identifier)
 
         [Symbol.iterator](): SegmentIterator<SegmentData>;
->                                            ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                            ^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface SegmentData {
->             ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface SegmentData {
->             ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^: any   (Any) (Identifier)
 
         segment: string;
->       ^^^^^^^: string   (TyString) (TSPropertySignature)
+>       ^^^^^^^: string   (String) (Identifier)
 
         index: number;
->       ^^^^^: number   (TyNumber) (TSPropertySignature)
+>       ^^^^^: number   (Number) (Identifier)
 
         input: string;
->       ^^^^^: string   (TyString) (TSPropertySignature)
+>       ^^^^^: string   (String) (Identifier)
 
         isWordLike?: boolean;
->       ^^^^^^^^^^: boolean | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^: boolean | undefined   (Union) (Identifier)
 
     const Segmenter: {
->         ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
+>         ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         prototype: Segmenter;
->       ^^^^^^^^^: Segmenter   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^: Segmenter   (TypeReference) (Identifier)
 
         prototype: Segmenter;
->                  ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSTypeReference)
+>                  ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         prototype: Segmenter;
->                  ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (IdentifierReference)
+>                  ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
->            ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>            ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
             expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
->                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
->                      ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
->                                       ^^^^^^^: SegmenterOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                       ^^^^^^^: SegmenterOptions | undefined   (Union) (Identifier)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
->                                                 ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                 ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
->                                                 ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                 ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
->                                                                    ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSTypeReference)
+>                                                                    ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
->                                                                    ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (IdentifierReference)
+>                                                                    ^^^^^^^^^: { new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter; prototype: Segmenter; supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">) => UnicodeBCP47LocaleIdentifier[]   (TyFunction) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^^^^: (locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">) => UnicodeBCP47LocaleIdentifier[]   (Function) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                          ^^^^^^^: LocalesArgument   (TyTypeReference) (BindingIdentifier)
+>                          ^^^^^^^: LocalesArgument   (TypeReference) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                   ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                   ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                                    ^^^^^^^: Pick<SegmenterOptions, "localeMatcher"> | undefined   (TyUnion) (BindingIdentifier)
+>                                                    ^^^^^^^: Pick<SegmenterOptions, "localeMatcher"> | undefined   (Union) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                                              ^^^^: any   (TyAny) (TSTypeReference)
+>                                                              ^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                                              ^^^^: any   (TyError) (IdentifierReference)
+>                                                              ^^^^: any   (Error) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                                                   ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                   ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                                                   ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                   ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
->                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     function supportedValuesOf(key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[];
->            ^^^^^^^^^^^^^^^^^: { (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^^^^: { (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; (key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[]; }   (Object) (Identifier)
 
     function supportedValuesOf(key: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"): string[];
->                              ^^^: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"   (TyUnion) (BindingIdentifier)
+>                              ^^^: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"   (Union) (Identifier)

@@ -1,0 +1,5 @@
+{"path":"compiler/genericInference1.ts","start":0,"end":35,"text":"['a', 'b', 'c'].map(x => x.length);","nodeType":"ExpressionStatement","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/genericInference1.ts","start":16,"end":19,"text":"map","nodeType":"Identifier","type":{"name":"Function","display":"<U>(callbackfn: (value: string, index: number, array: string[]) => U, thisArg?: any) => U[]"}}
+{"path":"compiler/genericInference1.ts","start":20,"end":21,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/genericInference1.ts","start":25,"end":26,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/genericInference1.ts","start":27,"end":33,"text":"length","nodeType":"Identifier","type":{"name":"Number","display":"number"}}

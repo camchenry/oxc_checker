@@ -1,71 +1,71 @@
 const x1 = "a" + "b"
->     ^^: string   (TyString) (BindingIdentifier)
+>     ^^: string   (String) (Identifier)
 
 const x2 = 1 + 2
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x3 = 1 - 2
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x4 = 1 * 2
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x5 = 1 / 2
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x6 = 1 % 2
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x7 = 1 ** 2
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x8 = "a" == 2
->     ^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^: boolean   (Boolean) (Identifier)
 
 const x9 = 2 != "a"
->     ^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^: boolean   (Boolean) (Identifier)
 
 const x10 = "a" === 2
->     ^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^: boolean   (Boolean) (Identifier)
 
 const x11 = 2 !== "a"
->     ^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^: boolean   (Boolean) (Identifier)
 
 const x12 = "a" > 2
->     ^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^: boolean   (Boolean) (Identifier)
 
 const x13 = "a" < 2
->     ^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^: boolean   (Boolean) (Identifier)
 
 const x14 = "a" >= 2
->     ^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^: boolean   (Boolean) (Identifier)
 
 const x15 = "a" <= 2
->     ^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^: boolean   (Boolean) (Identifier)
 
 const x16 = 1 << 2
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x17 = 1 >> 2
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x18 = 1 >>> 2
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x19 = 1 & 2
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x20 = 1 | 2
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x21 = 1 ^ 2
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x22 = 'x' in {}
->     ^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^: boolean   (Boolean) (Identifier)
 
 const x23 = 'x' instanceof Object
->     ^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^: boolean   (Boolean) (Identifier)
 
 const x23 = 'x' instanceof Object
->                          ^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
+>                          ^^^^^^: ObjectConstructor   (TypeReference) (Identifier)

@@ -1,146 +1,146 @@
 interface ArrayConstructor {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ArrayConstructor {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->   ^^^^^^^^^: { <T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>; <T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>; <T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>; <T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^: { <T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>; <T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>; <T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>; <T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>; }   (Object) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->             ^: any   (TyAny) (TSTypeParameter)
+>             ^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                ^^^^^^^^^^^^^^^^^^^: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>   (TyUnion) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^^^^^: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>   (Union) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                     ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                     ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                     ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                     ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                   ^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                        ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                        ^^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                        ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                        ^^^^^^^^: any   (Error) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                                 ^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                     ^^^^^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                     ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                     ^^^^^^^^^^^: any   (Error) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                                                 ^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                                       ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                       ^^^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                                       ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                       ^^^^^^^^^: any   (Error) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                                                                 ^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                                                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                     ^^^^^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                                                     ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                                     ^^^^^^^^^^^: any   (Error) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                                                                                 ^: any   (Any) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                                                                       ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                                                                                                       ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                                                                       ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                                                                                                       ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     fromAsync<T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>;
->                                                                                                                               ^: any   (TyAny) (TSTypeReference)
+>                                                                                                                               ^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->   ^^^^^^^^^: { <T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>; <T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>; <T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>; <T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^: { <T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>; <T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>; <T>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T | PromiseLike<T>> | ArrayLike<T | PromiseLike<T>>): Promise<T[]>; <T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>; }   (Object) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->             ^: any   (TyAny) (TSTypeParameter)
+>             ^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                ^: any   (TyAny) (TSTypeParameter)
+>                ^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                   ^^^^^^^^^^^^^^^^^^^: AsyncIterable<T> | Iterable<T> | ArrayLike<T>   (TyUnion) (BindingIdentifier)
+>                   ^^^^^^^^^^^^^^^^^^^: AsyncIterable<T> | Iterable<T> | ArrayLike<T>   (Union) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                        ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                        ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                        ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                      ^: any   (TyAny) (TSTypeReference)
+>                                                      ^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                           ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                           ^^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                           ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                           ^^^^^^^^: any   (Error) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                                    ^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                         ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                         ^^^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                         ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                         ^^^^^^^^^: any   (Error) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                                                   ^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                       ^^^^^: (value: Awaited<T>, index: number) => U   (TyFunction) (BindingIdentifier)
+>                                                                                       ^^^^^: (value: Awaited<T>, index: number) => U   (Function) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                               ^^^^^: Awaited<T>   (TyTypeReference) (BindingIdentifier)
+>                                                                                               ^^^^^: Awaited<T>   (TypeReference) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                                      ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                      ^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                                      ^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                                      ^^^^^^^: any   (Error) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                                              ^: any   (TyAny) (TSTypeReference)
+>                                                                                                              ^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                                                                                  ^^^^^: number   (Number) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                                                                                                    ^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                                                                       ^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                                                                                                                                       ^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                                                                                       ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                                                                                                                                       ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                                                                                       ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                                                                                                                                       ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                                                                                               ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                                                                               ^^^^^^^: any   (Any) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                                                                                               ^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                                                                                               ^^^^^^^: any   (Error) (Identifier)
 
     fromAsync<T, U>(iterableOrArrayLike: AsyncIterable<T> | Iterable<T> | ArrayLike<T>, mapFn: (value: Awaited<T>, index: number) => U, thisArg?: any): Promise<Awaited<U>[]>;
->                                                                                                                                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                                                                                                                                       ^: any   (Any) (Identifier)

@@ -1,27 +1,27 @@
 interface Promise<T> {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: PromiseConstructor
 
 interface Promise<T> {
->         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: PromiseConstructor
 
 interface Promise<T> {
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
->   ^^^^^^^: { (onfinally?: (() => void) | undefined | null): Promise<T>; (onfinally?: (() => void) | undefined | null): Promise<T>; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { (onfinally?: (() => void) | undefined | null): Promise<T>; (onfinally?: (() => void) | undefined | null): Promise<T>; }   (Object) (Identifier)
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
->           ^^^^^^^^^: (() => void) | null | undefined   (TyUnion) (BindingIdentifier)
+>           ^^^^^^^^^: (() => void) | null | undefined   (Union) (Identifier)
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
->                                                         ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                         ^^^^^^^: any   (Any) (Identifier)
                                                          expected: PromiseConstructor
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
->                                                         ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                         ^^^^^^^: any   (Any) (Identifier)
                                                          expected: PromiseConstructor
 
     finally(onfinally?: (() => void) | undefined | null): Promise<T>;
->                                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                                 ^: any   (Any) (Identifier)

@@ -1,53 +1,53 @@
 const stringArray: string[] = ["sugar", "tea", "rum"];
->     ^^^^^^^^^^^: string[]   (TyArray) (BindingIdentifier)
+>     ^^^^^^^^^^^: string[]   (Array) (Identifier)
 
 const singleStringTuple: [string] = ["sugar", "tea", "rum"];
->     ^^^^^^^^^^^^^^^^^: [string]   (TyTuple) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^: [string]   (Tuple) (Identifier)
 
 const stringNumberTuple: [string, number] = ["Weeks from shore", 2];
->     ^^^^^^^^^^^^^^^^^: [string, number]   (TyTuple) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^: [string, number]   (Tuple) (Identifier)
 
 type StringsThenConfig = [...string[], { huh: boolean }];
->    ^^^^^^^^^^^^^^^^^: [...string[], { huh: boolean; }]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^: [...string[], { huh: boolean; }]   (Tuple) (Identifier)
 
 type StringsThenConfig = [...string[], { huh: boolean }];
->                                        ^^^: boolean   (TyBoolean) (TSPropertySignature)
+>                                        ^^^: boolean   (Boolean) (Identifier)
 
 const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: true }];
->     ^^^^^^^^^^^: StringsThenConfig   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^: StringsThenConfig   (TypeReference) (Identifier)
 
 const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: true }];
->                  ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: true }];
->                                                                          ^^^: true   (TyBooleanLiteral) (ObjectProperty)
+>                                                                          ^^^: true   (BooleanLiteral) (Identifier)
 
 const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
->     ^^^^^^^^^^^^: StringsThenConfig   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^: StringsThenConfig   (TypeReference) (Identifier)
 
 const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
->                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
->                                                                         ^^^: false   (TyBooleanLiteral) (ObjectProperty)
+>                                                                         ^^^: false   (BooleanLiteral) (Identifier)
 
 const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
->     ^^^^^^^^^^^: StringsThenConfig   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^: StringsThenConfig   (TypeReference) (Identifier)
 
 const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
->                  ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
->                                                                      ^^^: true   (TyBooleanLiteral) (ObjectProperty)
+>                                                                      ^^^: true   (BooleanLiteral) (Identifier)
 
 const directVariadic: [...string[], { huh: boolean }] = ["value", { huh: true }];
->     ^^^^^^^^^^^^^^: [...string[], { huh: boolean; }]   (TyTuple) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: [...string[], { huh: boolean; }]   (Tuple) (Identifier)
 
 const directVariadic: [...string[], { huh: boolean }] = ["value", { huh: true }];
->                                     ^^^: boolean   (TyBoolean) (TSPropertySignature)
+>                                     ^^^: boolean   (Boolean) (Identifier)
 
 const directVariadic: [...string[], { huh: boolean }] = ["value", { huh: true }];
->                                                                   ^^^: true   (TyBooleanLiteral) (ObjectProperty)
+>                                                                   ^^^: true   (BooleanLiteral) (Identifier)
 
 const optionalElement: [number?] = [];
->     ^^^^^^^^^^^^^^^: [(number | undefined)?]   (TyTuple) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: [(number | undefined)?]   (Tuple) (Identifier)

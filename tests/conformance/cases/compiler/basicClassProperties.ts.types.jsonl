@@ -1,0 +1,61 @@
+{"path":"compiler/basicClassProperties.ts","start":6,"end":23,"text":"ClassPropertyItem","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyItem"}}
+{"path":"compiler/basicClassProperties.ts","start":28,"end":32,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/basicClassProperties.ts","start":60,"end":80,"text":"ClassPropertyExample","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":85,"end":90,"text":"ready","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":111,"end":116,"text":"count","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/basicClassProperties.ts","start":124,"end":128,"text":"item","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyItem"}}
+{"path":"compiler/basicClassProperties.ts","start":130,"end":147,"text":"ClassPropertyItem","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyItem"}}
+{"path":"compiler/basicClassProperties.ts","start":130,"end":147,"text":"ClassPropertyItem","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyItem"}}
+{"path":"compiler/basicClassProperties.ts","start":154,"end":171,"text":"ClassPropertyItem","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyItem"}}
+{"path":"compiler/basicClassProperties.ts","start":184,"end":191,"text":"enabled","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":212,"end":220,"text":"getReady","nodeType":"Identifier","type":{"name":"Function","display":"() => boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":241,"end":246,"text":"ready","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":255,"end":263,"text":"getCount","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/basicClassProperties.ts","start":284,"end":289,"text":"count","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/basicClassProperties.ts","start":298,"end":309,"text":"getItemName","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/basicClassProperties.ts","start":330,"end":334,"text":"item","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyItem"}}
+{"path":"compiler/basicClassProperties.ts","start":335,"end":339,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/basicClassProperties.ts","start":355,"end":365,"text":"getEnabled","nodeType":"Identifier","type":{"name":"Function","display":"() => boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":381,"end":401,"text":"ClassPropertyExample","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":402,"end":409,"text":"enabled","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":424,"end":446,"text":"_classPropertyInstance","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":453,"end":473,"text":"ClassPropertyExample","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":483,"end":502,"text":"_classPropertyReady","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":505,"end":527,"text":"_classPropertyInstance","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":528,"end":533,"text":"ready","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":541,"end":560,"text":"_classPropertyCount","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/basicClassProperties.ts","start":563,"end":585,"text":"_classPropertyInstance","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":586,"end":591,"text":"count","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/basicClassProperties.ts","start":599,"end":621,"text":"_classPropertyItemName","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/basicClassProperties.ts","start":624,"end":646,"text":"_classPropertyInstance","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":647,"end":651,"text":"item","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyItem"}}
+{"path":"compiler/basicClassProperties.ts","start":652,"end":656,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/basicClassProperties.ts","start":664,"end":691,"text":"_classPropertyReadyFromThis","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":694,"end":716,"text":"_classPropertyInstance","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":717,"end":725,"text":"getReady","nodeType":"Identifier","type":{"name":"Function","display":"() => boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":735,"end":762,"text":"_classPropertyCountFromThis","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/basicClassProperties.ts","start":765,"end":787,"text":"_classPropertyInstance","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":788,"end":796,"text":"getCount","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/basicClassProperties.ts","start":806,"end":832,"text":"_classPropertyNameFromThis","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/basicClassProperties.ts","start":835,"end":857,"text":"_classPropertyInstance","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":858,"end":869,"text":"getItemName","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/basicClassProperties.ts","start":879,"end":900,"text":"_classPropertyEnabled","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":903,"end":923,"text":"ClassPropertyExample","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":924,"end":931,"text":"enabled","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":939,"end":970,"text":"_classPropertyEnabledFromMethod","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":973,"end":993,"text":"ClassPropertyExample","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":994,"end":1004,"text":"getEnabled","nodeType":"Identifier","type":{"name":"Function","display":"() => boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":1014,"end":1037,"text":"_classPropertyPrototype","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":1040,"end":1060,"text":"ClassPropertyExample","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":1061,"end":1070,"text":"prototype","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":1078,"end":1106,"text":"_classPropertyPrototypeReady","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":1109,"end":1129,"text":"ClassPropertyExample","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":1130,"end":1139,"text":"prototype","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":1140,"end":1145,"text":"ready","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":1153,"end":1178,"text":"_ClassPropertyConstructor","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":1181,"end":1201,"text":"ClassPropertyExample","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":1209,"end":1237,"text":"_classPropertyAliasedEnabled","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":1240,"end":1265,"text":"_ClassPropertyConstructor","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":1266,"end":1273,"text":"enabled","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/basicClassProperties.ts","start":1281,"end":1310,"text":"_classPropertyAliasedInstance","nodeType":"Identifier","type":{"name":"TypeReference","display":"ClassPropertyExample"}}
+{"path":"compiler/basicClassProperties.ts","start":1317,"end":1342,"text":"_ClassPropertyConstructor","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ClassPropertyExample"}}

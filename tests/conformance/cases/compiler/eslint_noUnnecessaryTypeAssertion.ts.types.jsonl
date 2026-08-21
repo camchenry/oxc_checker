@@ -1,0 +1,17 @@
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":6,"end":10,"text":"foo1","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"3"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":22,"end":25,"text":"bar","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":41,"end":47,"text":"foo1_1","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":68,"end":72,"text":"foo2","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":98,"end":104,"text":"foo2_1","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":126,"end":129,"text":"Foo","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":146,"end":150,"text":"foo3","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":154,"end":157,"text":"Foo","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":177,"end":181,"text":"foo4","nodeType":"Identifier","type":{"name":"Function","display":"(x: number) => number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":182,"end":183,"text":"x","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":212,"end":213,"text":"x","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":247,"end":251,"text":"foo5","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"foo\""}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":263,"end":268,"text":"const","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":263,"end":268,"text":"const","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":280,"end":284,"text":"foo6","nodeType":"Identifier","type":{"name":"Function","display":"(x: number | undefined) => number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":285,"end":286,"text":"x","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts","start":327,"end":328,"text":"x","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}

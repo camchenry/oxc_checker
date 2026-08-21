@@ -1,290 +1,290 @@
 interface Array<T> {
->         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^: any   (Any) (Identifier)
        expected: ArrayConstructor
 
 interface Array<T> {
->         ^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^: any   (Any) (Identifier)
        expected: ArrayConstructor
 
 interface Array<T> {
->               ^: any   (TyAny) (TSTypeParameter)
+>               ^: any   (Any) (Identifier)
 
     at(index: number): T | undefined;
->   ^^: { (index: number): T | undefined; (index: number): T | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): T | undefined; (index: number): T | undefined; }   (Object) (Identifier)
 
     at(index: number): T | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
     at(index: number): T | undefined;
->                      ^: any   (TyAny) (TSTypeReference)
+>                      ^: any   (Any) (Identifier)
 
 interface ReadonlyArray<T> {
->         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ReadonlyArray<T> {
->         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ReadonlyArray<T> {
->                       ^: any   (TyAny) (TSTypeParameter)
+>                       ^: any   (Any) (Identifier)
 
     at(index: number): T | undefined;
->   ^^: { (index: number): T | undefined; (index: number): T | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): T | undefined; (index: number): T | undefined; }   (Object) (Identifier)
 
     at(index: number): T | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
     at(index: number): T | undefined;
->                      ^: any   (TyAny) (TSTypeReference)
+>                      ^: any   (Any) (Identifier)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^: any   (Any) (Identifier)
            expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^: any   (Any) (Identifier)
            expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                   ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                                        ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                        ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     at(index: number): number | undefined;
->   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (Object) (Identifier)
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     at(index: number): number | undefined;
->   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (Object) (Identifier)
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
                    expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
                    expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                           ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                                                ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     at(index: number): number | undefined;
->   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (Object) (Identifier)
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     at(index: number): number | undefined;
->   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (Object) (Identifier)
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                     ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     at(index: number): number | undefined;
->   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (Object) (Identifier)
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     at(index: number): number | undefined;
->   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (Object) (Identifier)
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                     ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     at(index: number): number | undefined;
->   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (Object) (Identifier)
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                      ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     at(index: number): number | undefined;
->   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (Object) (Identifier)
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                      ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     at(index: number): number | undefined;
->   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): number | undefined; (index: number): number | undefined; }   (Object) (Identifier)
 
     at(index: number): number | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
                expected: BigInt64ArrayConstructor
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
                expected: BigInt64ArrayConstructor
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
->                       ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                       ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
->                                            ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                            ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface BigInt64Array<TArrayBuffer extends ArrayBufferLike> {
->                                            ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                            ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     at(index: number): bigint | undefined;
->   ^^: { (index: number): bigint | undefined; (index: number): bigint | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): bigint | undefined; (index: number): bigint | undefined; }   (Object) (Identifier)
 
     at(index: number): bigint | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
                 expected: BigUint64ArrayConstructor
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
                 expected: BigUint64ArrayConstructor
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
->                        ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                        ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
->                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                             ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface BigUint64Array<TArrayBuffer extends ArrayBufferLike> {
->                                             ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                             ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     at(index: number): bigint | undefined;
->   ^^: { (index: number): bigint | undefined; (index: number): bigint | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^: { (index: number): bigint | undefined; (index: number): bigint | undefined; }   (Object) (Identifier)
 
     at(index: number): bigint | undefined;
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)

@@ -1,0 +1,77 @@
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":17,"end":21,"text":"Item","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Item"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":26,"end":30,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":57,"end":64,"text":"Example","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":69,"end":74,"text":"ready","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":95,"end":100,"text":"count","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":108,"end":112,"text":"item","nodeType":"Identifier","type":{"name":"TypeReference","display":"Item"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":114,"end":118,"text":"Item","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Item"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":114,"end":118,"text":"Item","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Item"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":125,"end":129,"text":"Item","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Item"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":142,"end":149,"text":"enabled","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":169,"end":177,"text":"getReady","nodeType":"Identifier","type":{"name":"Function","display":"() => boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":194,"end":199,"text":"ready","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":205,"end":213,"text":"getCount","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":230,"end":235,"text":"count","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":241,"end":252,"text":"getItemName","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":269,"end":273,"text":"item","nodeType":"Identifier","type":{"name":"TypeReference","display":"Item"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":274,"end":278,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":291,"end":301,"text":"getEnabled","nodeType":"Identifier","type":{"name":"Function","display":"() => boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":313,"end":320,"text":"Example","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":321,"end":328,"text":"enabled","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":340,"end":348,"text":"instance","nodeType":"Identifier","type":{"name":"TypeReference","display":"Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":355,"end":362,"text":"Example","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":372,"end":377,"text":"ready","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":380,"end":388,"text":"instance","nodeType":"Identifier","type":{"name":"TypeReference","display":"Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":389,"end":394,"text":"ready","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":402,"end":407,"text":"count","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":410,"end":418,"text":"instance","nodeType":"Identifier","type":{"name":"TypeReference","display":"Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":419,"end":424,"text":"count","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":432,"end":440,"text":"itemName","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":443,"end":451,"text":"instance","nodeType":"Identifier","type":{"name":"TypeReference","display":"Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":452,"end":456,"text":"item","nodeType":"Identifier","type":{"name":"TypeReference","display":"Item"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":457,"end":461,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":469,"end":482,"text":"readyFromThis","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":485,"end":493,"text":"instance","nodeType":"Identifier","type":{"name":"TypeReference","display":"Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":494,"end":502,"text":"getReady","nodeType":"Identifier","type":{"name":"Function","display":"() => boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":512,"end":525,"text":"countFromThis","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":528,"end":536,"text":"instance","nodeType":"Identifier","type":{"name":"TypeReference","display":"Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":537,"end":545,"text":"getCount","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":555,"end":567,"text":"nameFromThis","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":570,"end":578,"text":"instance","nodeType":"Identifier","type":{"name":"TypeReference","display":"Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":579,"end":590,"text":"getItemName","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":600,"end":607,"text":"enabled","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":610,"end":617,"text":"Example","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":618,"end":625,"text":"enabled","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":633,"end":650,"text":"enabledFromMethod","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":653,"end":660,"text":"Example","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Example"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::classProperties.ts","start":661,"end":671,"text":"getEnabled","nodeType":"Identifier","type":{"name":"Function","display":"() => boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":17,"end":21,"text":"Ship","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Ship"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":24,"end":30,"text":"isSunk","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":57,"end":62,"text":"Board","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Board"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":67,"end":72,"text":"ships","nodeType":"Identifier","type":{"name":"Array","display":"Ship[]"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":74,"end":78,"text":"Ship","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Ship"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":74,"end":78,"text":"Ship","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Ship"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":89,"end":101,"text":"allShipsSunk","nodeType":"Identifier","type":{"name":"Function","display":"() => boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":122,"end":127,"text":"ships","nodeType":"Identifier","type":{"name":"Array","display":"Ship[]"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":128,"end":133,"text":"every","nodeType":"Identifier","type":{"name":"Object","display":"{ <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":144,"end":149,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"Ship"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":160,"end":165,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"Ship"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":166,"end":172,"text":"isSunk","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":190,"end":195,"text":"board","nodeType":"Identifier","type":{"name":"TypeReference","display":"Board"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":202,"end":207,"text":"Board","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Board"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":217,"end":221,"text":"sunk","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":224,"end":229,"text":"board","nodeType":"Identifier","type":{"name":"TypeReference","display":"Board"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::every.ts","start":230,"end":242,"text":"allShipsSunk","nodeType":"Identifier","type":{"name":"Function","display":"() => boolean"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::asyncMap.ts","start":17,"end":23,"text":"mapped","nodeType":"Identifier","type":{"name":"Array","display":"Promise<number>[]"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::asyncMap.ts","start":36,"end":39,"text":"map","nodeType":"Identifier","type":{"name":"Function","display":"<U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::asyncMap.ts","start":46,"end":51,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::asyncMap.ts","start":55,"end":60,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::stringMap.ts","start":17,"end":24,"text":"lengths","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::stringMap.ts","start":46,"end":49,"text":"map","nodeType":"Identifier","type":{"name":"Function","display":"<U>(callbackfn: (value: string, index: number, array: string[]) => U, thisArg?: any) => U[]"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::stringMap.ts","start":50,"end":55,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::stringMap.ts","start":59,"end":64,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::stringMap.ts","start":65,"end":71,"text":"length","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::destructuredClass.ts","start":26,"end":42,"text":"DestructuredBase","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof DestructuredBase"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::destructuredClass.ts","start":56,"end":61,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::destructuredClass.ts","start":101,"end":106,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolClassAndArrayTypes.ts::destructuredClass.ts","start":108,"end":115,"text":"renamed","nodeType":"Identifier","type":{"name":"String","display":"string"}}

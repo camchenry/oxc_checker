@@ -1,122 +1,122 @@
 declare const x: any;
->             ^: any   (TyAny) (BindingIdentifier)
+>             ^: any   (Any) (Identifier)
 
 type G<T> = T;
->    ^: T   (TyTypeReference) (TSTypeAliasDeclaration)
+>    ^: T   (TypeReference) (Identifier)
 
 type G<T> = T;
->      ^: any   (TyAny) (TSTypeParameter)
+>      ^: any   (Any) (Identifier)
 
 type G<T> = T;
->           ^: any   (TyAny) (TSTypeReference)
+>           ^: any   (Any) (Identifier)
 
 const xs = <string>x;
->     ^^: string   (TyString) (BindingIdentifier)
+>     ^^: string   (String) (Identifier)
 
 const xs = <string>x;
->                  ^: any   (TyAny) (IdentifierReference)
+>                  ^: any   (Any) (Identifier)
 
 const xu = <unknown>x;
->     ^^: unknown   (TyUnknown) (BindingIdentifier)
+>     ^^: unknown   (Unknown) (Identifier)
 
 const xu = <unknown>x;
->                   ^: any   (TyAny) (IdentifierReference)
+>                   ^: any   (Any) (Identifier)
 
 const xn = <number>x;
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const xn = <number>x;
->                  ^: any   (TyAny) (IdentifierReference)
+>                  ^: any   (Any) (Identifier)
 
 const xa = <any>x;
->     ^^: any   (TyAny) (BindingIdentifier)
+>     ^^: any   (Any) (Identifier)
 
 const xa = <any>x;
->               ^: any   (TyAny) (IdentifierReference)
+>               ^: any   (Any) (Identifier)
 
 const ys = x as string;
->     ^^: string   (TyString) (BindingIdentifier)
+>     ^^: string   (String) (Identifier)
 
 const ys = x as string;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const yu = x as unknown;
->     ^^: unknown   (TyUnknown) (BindingIdentifier)
+>     ^^: unknown   (Unknown) (Identifier)
 
 const yu = x as unknown;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const yn = x as number;
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const yn = x as number;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const ya = x as any;
->     ^^: any   (TyAny) (BindingIdentifier)
+>     ^^: any   (Any) (Identifier)
 
 const ya = x as any;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const gs = x as G<string>;
->     ^^: string   (TyString) (BindingIdentifier)
+>     ^^: string   (String) (Identifier)
 
 const gs = x as G<string>;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const gs = x as G<string>;
->               ^: any   (TyAny) (TSTypeReference)
+>               ^: any   (Any) (Identifier)
 
 const gu = x as G<unknown>;
->     ^^: unknown   (TyUnknown) (BindingIdentifier)
+>     ^^: unknown   (Unknown) (Identifier)
 
 const gu = x as G<unknown>;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const gu = x as G<unknown>;
->               ^: any   (TyAny) (TSTypeReference)
+>               ^: any   (Any) (Identifier)
 
 const gn = x as G<number>;
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const gn = x as G<number>;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const gn = x as G<number>;
->               ^: any   (TyAny) (TSTypeReference)
+>               ^: any   (Any) (Identifier)
 
 const ga = x as G<any>;
->     ^^: any   (TyAny) (BindingIdentifier)
+>     ^^: any   (Any) (Identifier)
 
 const ga = x as G<any>;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const ga = x as G<any>;
->               ^: any   (TyAny) (TSTypeReference)
+>               ^: any   (Any) (Identifier)
 
 interface i00<T = number> { a: T; }
->         ^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^: any   (Any) (Identifier)
 
 interface i00<T = number> { a: T; }
->         ^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^: any   (Any) (Identifier)
 
 interface i00<T = number> { a: T; }
->             ^: any   (TyAny) (TSTypeParameter)
+>             ^: any   (Any) (Identifier)
 
 interface i00<T = number> { a: T; }
->                           ^: T   (TyTypeReference) (TSPropertySignature)
+>                           ^: T   (TypeReference) (Identifier)
 
 interface i00<T = number> { a: T; }
->                              ^: any   (TyAny) (TSTypeReference)
+>                              ^: any   (Any) (Identifier)
 
 const i00c00 = (<i00>x)
->     ^^^^^^: i00<number>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^: i00<number>   (TypeReference) (Identifier)
 
 const i00c00 = (<i00>x)
->                ^^^: any   (TyAny) (TSTypeReference)
+>                ^^^: any   (Any) (Identifier)
 
 const i00c00 = (<i00>x)
->                ^^^: any   (TyAny) (IdentifierReference)
+>                ^^^: any   (Any) (Identifier)
 
 const i00c00 = (<i00>x)
->                    ^: any   (TyAny) (IdentifierReference)
+>                    ^: any   (Any) (Identifier)

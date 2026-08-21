@@ -1,0 +1,138 @@
+{"path":"es2025.intl.d.ts","start":55,"end":59,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2025.intl.d.ts","start":55,"end":59,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2025.intl.d.ts","start":253,"end":280,"text":"DurationFormatLocaleMatcher","nodeType":"Identifier","type":{"name":"Union","display":"\"lookup\" | \"best fit\""}}
+{"path":"es2025.intl.d.ts","start":514,"end":533,"text":"DurationFormatStyle","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"digital\""}}
+{"path":"es2025.intl.d.ts","start":811,"end":838,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Union","display":"\"always\" | \"auto\""}}
+{"path":"es2025.intl.d.ts","start":1075,"end":1093,"text":"DurationFormatUnit","nodeType":"Identifier","type":{"name":"Union","display":"\"years\" | \"months\" | \"weeks\" | \"days\" | \"hours\" | \"minutes\" | \"seconds\" | \"milliseconds\" | \"microseconds\" | \"nanoseconds\""}}
+{"path":"es2025.intl.d.ts","start":1311,"end":1337,"text":"DurationFormatUnitSingular","nodeType":"Identifier","type":{"name":"Union","display":"\"year\" | \"month\" | \"week\" | \"day\" | \"hour\" | \"minute\" | \"second\" | \"millisecond\" | \"microsecond\" | \"nanosecond\""}}
+{"path":"es2025.intl.d.ts","start":1816,"end":1834,"text":"DurationFormatPart","nodeType":"Identifier","type":{"name":"Union","display":"{ type: \"literal\"; value: string; unit?: DurationFormatUnitSingular; } | { type: Exclude<NumberFormatPartTypes, \"literal\">; value: string; unit: DurationFormatUnitSingular; }"}}
+{"path":"es2025.intl.d.ts","start":1861,"end":1865,"text":"type","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"literal\""}}
+{"path":"es2025.intl.d.ts","start":1890,"end":1895,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2025.intl.d.ts","start":1917,"end":1921,"text":"unit","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatUnitSingular | undefined"}}
+{"path":"es2025.intl.d.ts","start":1924,"end":1950,"text":"DurationFormatUnitSingular","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":1986,"end":1990,"text":"type","nodeType":"Identifier","type":{"name":"TypeReference","display":"Exclude<NumberFormatPartTypes, \"literal\">"}}
+{"path":"es2025.intl.d.ts","start":1992,"end":1999,"text":"Exclude","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":1992,"end":1999,"text":"Exclude","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.intl.d.ts","start":2000,"end":2021,"text":"NumberFormatPartTypes","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":2000,"end":2021,"text":"NumberFormatPartTypes","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.intl.d.ts","start":2047,"end":2052,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2025.intl.d.ts","start":2074,"end":2078,"text":"unit","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatUnitSingular"}}
+{"path":"es2025.intl.d.ts","start":2080,"end":2106,"text":"DurationFormatUnitSingular","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":2399,"end":2420,"text":"DurationFormatOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":2399,"end":2420,"text":"DurationFormatOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":2431,"end":2444,"text":"localeMatcher","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatLocaleMatcher | undefined"}}
+{"path":"es2025.intl.d.ts","start":2447,"end":2474,"text":"DurationFormatLocaleMatcher","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":2496,"end":2511,"text":"numberingSystem","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"es2025.intl.d.ts","start":2542,"end":2547,"text":"style","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatStyle | undefined"}}
+{"path":"es2025.intl.d.ts","start":2550,"end":2569,"text":"DurationFormatStyle","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":2591,"end":2596,"text":"years","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | undefined"}}
+{"path":"es2025.intl.d.ts","start":2648,"end":2660,"text":"yearsDisplay","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatDisplayOption | undefined"}}
+{"path":"es2025.intl.d.ts","start":2663,"end":2690,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":2712,"end":2718,"text":"months","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | undefined"}}
+{"path":"es2025.intl.d.ts","start":2770,"end":2783,"text":"monthsDisplay","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatDisplayOption | undefined"}}
+{"path":"es2025.intl.d.ts","start":2786,"end":2813,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":2835,"end":2840,"text":"weeks","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | undefined"}}
+{"path":"es2025.intl.d.ts","start":2892,"end":2904,"text":"weeksDisplay","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatDisplayOption | undefined"}}
+{"path":"es2025.intl.d.ts","start":2907,"end":2934,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":2956,"end":2960,"text":"days","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | undefined"}}
+{"path":"es2025.intl.d.ts","start":3012,"end":3023,"text":"daysDisplay","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatDisplayOption | undefined"}}
+{"path":"es2025.intl.d.ts","start":3026,"end":3053,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":3075,"end":3080,"text":"hours","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\" | \"2-digit\" | undefined"}}
+{"path":"es2025.intl.d.ts","start":3156,"end":3168,"text":"hoursDisplay","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatDisplayOption | undefined"}}
+{"path":"es2025.intl.d.ts","start":3171,"end":3198,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":3220,"end":3227,"text":"minutes","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\" | \"2-digit\" | undefined"}}
+{"path":"es2025.intl.d.ts","start":3303,"end":3317,"text":"minutesDisplay","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatDisplayOption | undefined"}}
+{"path":"es2025.intl.d.ts","start":3320,"end":3347,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":3369,"end":3376,"text":"seconds","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\" | \"2-digit\" | undefined"}}
+{"path":"es2025.intl.d.ts","start":3452,"end":3466,"text":"secondsDisplay","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatDisplayOption | undefined"}}
+{"path":"es2025.intl.d.ts","start":3469,"end":3496,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":3518,"end":3530,"text":"milliseconds","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\" | undefined"}}
+{"path":"es2025.intl.d.ts","start":3594,"end":3613,"text":"millisecondsDisplay","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatDisplayOption | undefined"}}
+{"path":"es2025.intl.d.ts","start":3616,"end":3643,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":3665,"end":3677,"text":"microseconds","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\" | undefined"}}
+{"path":"es2025.intl.d.ts","start":3741,"end":3760,"text":"microsecondsDisplay","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatDisplayOption | undefined"}}
+{"path":"es2025.intl.d.ts","start":3763,"end":3790,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":3812,"end":3823,"text":"nanoseconds","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\" | undefined"}}
+{"path":"es2025.intl.d.ts","start":3887,"end":3905,"text":"nanosecondsDisplay","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatDisplayOption | undefined"}}
+{"path":"es2025.intl.d.ts","start":3908,"end":3935,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":3957,"end":3973,"text":"fractionalDigits","nodeType":"Identifier","type":{"name":"Union","display":"0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | undefined"}}
+{"path":"es2025.intl.d.ts","start":4266,"end":4280,"text":"DurationFormat","nodeType":"Identifier","type":{"name":"Object","display":"{ new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }"}}
+{"path":"es2025.intl.d.ts","start":4266,"end":4280,"text":"DurationFormat","nodeType":"Identifier","type":{"name":"Object","display":"{ new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }"}}
+{"path":"es2025.intl.d.ts","start":4657,"end":4663,"text":"format","nodeType":"Identifier","type":{"name":"Object","display":"{ (duration: Partial<Record<DurationFormatUnit, number>>): string; (duration: Partial<Record<DurationFormatUnit, number>>): string; }"}}
+{"path":"es2025.intl.d.ts","start":4664,"end":4672,"text":"duration","nodeType":"Identifier","type":{"name":"TypeReference","display":"Partial<Record<DurationFormatUnit, number>>"}}
+{"path":"es2025.intl.d.ts","start":4674,"end":4681,"text":"Partial","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":4674,"end":4681,"text":"Partial","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.intl.d.ts","start":4682,"end":4688,"text":"Record","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":4682,"end":4688,"text":"Record","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.intl.d.ts","start":4689,"end":4707,"text":"DurationFormatUnit","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5109,"end":5122,"text":"formatToParts","nodeType":"Identifier","type":{"name":"Object","display":"{ (duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[]; (duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[]; }"}}
+{"path":"es2025.intl.d.ts","start":5123,"end":5131,"text":"duration","nodeType":"Identifier","type":{"name":"TypeReference","display":"Partial<Record<DurationFormatUnit, number>>"}}
+{"path":"es2025.intl.d.ts","start":5133,"end":5140,"text":"Partial","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5133,"end":5140,"text":"Partial","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5141,"end":5147,"text":"Record","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5141,"end":5147,"text":"Record","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5148,"end":5166,"text":"DurationFormatUnit","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5179,"end":5197,"text":"DurationFormatPart","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5363,"end":5378,"text":"resolvedOptions","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ResolvedDurationFormatOptions; (): ResolvedDurationFormatOptions; }"}}
+{"path":"es2025.intl.d.ts","start":5382,"end":5411,"text":"ResolvedDurationFormatOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5382,"end":5411,"text":"ResolvedDurationFormatOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5434,"end":5463,"text":"ResolvedDurationFormatOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5434,"end":5463,"text":"ResolvedDurationFormatOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5474,"end":5480,"text":"locale","nodeType":"Identifier","type":{"name":"TypeReference","display":"UnicodeBCP47LocaleIdentifier"}}
+{"path":"es2025.intl.d.ts","start":5482,"end":5510,"text":"UnicodeBCP47LocaleIdentifier","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5482,"end":5510,"text":"UnicodeBCP47LocaleIdentifier","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5520,"end":5535,"text":"numberingSystem","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2025.intl.d.ts","start":5553,"end":5558,"text":"style","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatStyle"}}
+{"path":"es2025.intl.d.ts","start":5560,"end":5579,"text":"DurationFormatStyle","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5589,"end":5594,"text":"years","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\""}}
+{"path":"es2025.intl.d.ts","start":5633,"end":5645,"text":"yearsDisplay","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatDisplayOption"}}
+{"path":"es2025.intl.d.ts","start":5647,"end":5674,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5684,"end":5690,"text":"months","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\""}}
+{"path":"es2025.intl.d.ts","start":5729,"end":5742,"text":"monthsDisplay","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatDisplayOption"}}
+{"path":"es2025.intl.d.ts","start":5744,"end":5771,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5781,"end":5786,"text":"weeks","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\""}}
+{"path":"es2025.intl.d.ts","start":5825,"end":5837,"text":"weeksDisplay","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatDisplayOption"}}
+{"path":"es2025.intl.d.ts","start":5839,"end":5866,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5876,"end":5880,"text":"days","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\""}}
+{"path":"es2025.intl.d.ts","start":5919,"end":5930,"text":"daysDisplay","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatDisplayOption"}}
+{"path":"es2025.intl.d.ts","start":5932,"end":5959,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":5969,"end":5974,"text":"hours","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\" | \"2-digit\""}}
+{"path":"es2025.intl.d.ts","start":6037,"end":6049,"text":"hoursDisplay","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatDisplayOption"}}
+{"path":"es2025.intl.d.ts","start":6051,"end":6078,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":6088,"end":6095,"text":"minutes","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\" | \"2-digit\""}}
+{"path":"es2025.intl.d.ts","start":6158,"end":6172,"text":"minutesDisplay","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatDisplayOption"}}
+{"path":"es2025.intl.d.ts","start":6174,"end":6201,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":6211,"end":6218,"text":"seconds","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\" | \"2-digit\""}}
+{"path":"es2025.intl.d.ts","start":6281,"end":6295,"text":"secondsDisplay","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatDisplayOption"}}
+{"path":"es2025.intl.d.ts","start":6297,"end":6324,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":6334,"end":6346,"text":"milliseconds","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\""}}
+{"path":"es2025.intl.d.ts","start":6397,"end":6416,"text":"millisecondsDisplay","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatDisplayOption"}}
+{"path":"es2025.intl.d.ts","start":6418,"end":6445,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":6455,"end":6467,"text":"microseconds","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\""}}
+{"path":"es2025.intl.d.ts","start":6518,"end":6537,"text":"microsecondsDisplay","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatDisplayOption"}}
+{"path":"es2025.intl.d.ts","start":6539,"end":6566,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":6576,"end":6587,"text":"nanoseconds","nodeType":"Identifier","type":{"name":"Union","display":"\"long\" | \"short\" | \"narrow\" | \"numeric\""}}
+{"path":"es2025.intl.d.ts","start":6638,"end":6656,"text":"nanosecondsDisplay","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormatDisplayOption"}}
+{"path":"es2025.intl.d.ts","start":6658,"end":6685,"text":"DurationFormatDisplayOption","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":6695,"end":6711,"text":"fractionalDigits","nodeType":"Identifier","type":{"name":"Union","display":"0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | undefined"}}
+{"path":"es2025.intl.d.ts","start":6770,"end":6784,"text":"DurationFormat","nodeType":"Identifier","type":{"name":"Object","display":"{ new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }"}}
+{"path":"es2025.intl.d.ts","start":6796,"end":6805,"text":"prototype","nodeType":"Identifier","type":{"name":"TypeReference","display":"DurationFormat"}}
+{"path":"es2025.intl.d.ts","start":6807,"end":6821,"text":"DurationFormat","nodeType":"Identifier","type":{"name":"Object","display":"{ new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }"}}
+{"path":"es2025.intl.d.ts","start":6807,"end":6821,"text":"DurationFormat","nodeType":"Identifier","type":{"name":"Object","display":"{ new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }"}}
+{"path":"es2025.intl.d.ts","start":7407,"end":7414,"text":"locales","nodeType":"Identifier","type":{"name":"Union","display":"LocalesArgument | undefined"}}
+{"path":"es2025.intl.d.ts","start":7417,"end":7432,"text":"LocalesArgument","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":7417,"end":7432,"text":"LocalesArgument","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.intl.d.ts","start":7434,"end":7441,"text":"options","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatOptions | undefined"}}
+{"path":"es2025.intl.d.ts","start":7444,"end":7465,"text":"DurationFormatOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":7444,"end":7465,"text":"DurationFormatOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":7468,"end":7482,"text":"DurationFormat","nodeType":"Identifier","type":{"name":"Object","display":"{ new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }"}}
+{"path":"es2025.intl.d.ts","start":7468,"end":7482,"text":"DurationFormat","nodeType":"Identifier","type":{"name":"Object","display":"{ new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }"}}
+{"path":"es2025.intl.d.ts","start":8428,"end":8446,"text":"supportedLocalesOf","nodeType":"Identifier","type":{"name":"Function","display":"(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]"}}
+{"path":"es2025.intl.d.ts","start":8447,"end":8454,"text":"locales","nodeType":"Identifier","type":{"name":"Union","display":"LocalesArgument | undefined"}}
+{"path":"es2025.intl.d.ts","start":8457,"end":8472,"text":"LocalesArgument","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":8457,"end":8472,"text":"LocalesArgument","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.intl.d.ts","start":8474,"end":8481,"text":"options","nodeType":"Identifier","type":{"name":"Union","display":"{ localeMatcher?: DurationFormatLocaleMatcher; } | undefined"}}
+{"path":"es2025.intl.d.ts","start":8486,"end":8499,"text":"localeMatcher","nodeType":"Identifier","type":{"name":"Union","display":"DurationFormatLocaleMatcher | undefined"}}
+{"path":"es2025.intl.d.ts","start":8502,"end":8529,"text":"DurationFormatLocaleMatcher","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":8535,"end":8563,"text":"UnicodeBCP47LocaleIdentifier","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.intl.d.ts","start":8535,"end":8563,"text":"UnicodeBCP47LocaleIdentifier","nodeType":"Identifier","type":{"name":"Error","display":"any"}}

@@ -1,0 +1,37 @@
+{"path":"compiler/namedTuples.ts","start":6,"end":11,"text":"Point","nodeType":"Identifier","type":{"name":"Tuple","display":"[x: number, y: number]"}}
+{"path":"compiler/namedTuples.ts","start":44,"end":49,"text":"point","nodeType":"Identifier","type":{"name":"TypeReference","display":"Point"}}
+{"path":"compiler/namedTuples.ts","start":51,"end":56,"text":"Point","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":75,"end":88,"text":"OptionalPoint","nodeType":"Identifier","type":{"name":"Tuple","display":"[x: number, y?: number | undefined]"}}
+{"path":"compiler/namedTuples.ts","start":122,"end":132,"text":"pointWithX","nodeType":"Identifier","type":{"name":"TypeReference","display":"OptionalPoint"}}
+{"path":"compiler/namedTuples.ts","start":134,"end":147,"text":"OptionalPoint","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":162,"end":172,"text":"pointWithY","nodeType":"Identifier","type":{"name":"TypeReference","display":"OptionalPoint"}}
+{"path":"compiler/namedTuples.ts","start":174,"end":187,"text":"OptionalPoint","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":206,"end":213,"text":"Command","nodeType":"Identifier","type":{"name":"Tuple","display":"[name: string, ...args: string[]]"}}
+{"path":"compiler/namedTuples.ts","start":257,"end":264,"text":"command","nodeType":"Identifier","type":{"name":"TypeReference","display":"Command"}}
+{"path":"compiler/namedTuples.ts","start":266,"end":273,"text":"Command","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":317,"end":330,"text":"ReadonlyPoint","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [x: number, y: number]"}}
+{"path":"compiler/namedTuples.ts","start":372,"end":385,"text":"readonlyPoint","nodeType":"Identifier","type":{"name":"TypeReference","display":"ReadonlyPoint"}}
+{"path":"compiler/namedTuples.ts","start":387,"end":400,"text":"ReadonlyPoint","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":419,"end":431,"text":"MessageTuple","nodeType":"Identifier","type":{"name":"Tuple","display":"[kind: \"message\", payload: string]"}}
+{"path":"compiler/namedTuples.ts","start":475,"end":485,"text":"ErrorTuple","nodeType":"Identifier","type":{"name":"Tuple","display":"[kind: \"error\", message: string]"}}
+{"path":"compiler/namedTuples.ts","start":527,"end":537,"text":"TupleEvent","nodeType":"Identifier","type":{"name":"Union","display":"MessageTuple | ErrorTuple"}}
+{"path":"compiler/namedTuples.ts","start":540,"end":552,"text":"MessageTuple","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":555,"end":565,"text":"ErrorTuple","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":581,"end":593,"text":"messageEvent","nodeType":"Identifier","type":{"name":"TypeReference","display":"TupleEvent"}}
+{"path":"compiler/namedTuples.ts","start":595,"end":605,"text":"TupleEvent","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":621,"end":631,"text":"errorEvent","nodeType":"Identifier","type":{"name":"TypeReference","display":"TupleEvent"}}
+{"path":"compiler/namedTuples.ts","start":633,"end":643,"text":"TupleEvent","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":651,"end":662,"text":"NestedPoint","nodeType":"Identifier","type":{"name":"Tuple","display":"[name: string, position: Point]"}}
+{"path":"compiler/namedTuples.ts","start":690,"end":695,"text":"Point","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":704,"end":715,"text":"nestedPoint","nodeType":"Identifier","type":{"name":"TypeReference","display":"NestedPoint"}}
+{"path":"compiler/namedTuples.ts","start":717,"end":728,"text":"NestedPoint","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":742,"end":747,"text":"point","nodeType":"Identifier","type":{"name":"TypeReference","display":"Point"}}
+{"path":"compiler/namedTuples.ts","start":768,"end":772,"text":"emit","nodeType":"Identifier","type":{"name":"Function","display":"(...event: TupleEvent) => void"}}
+{"path":"compiler/namedTuples.ts","start":776,"end":781,"text":"event","nodeType":"Identifier","type":{"name":"TypeReference","display":"TupleEvent"}}
+{"path":"compiler/namedTuples.ts","start":783,"end":793,"text":"TupleEvent","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/namedTuples.ts","start":802,"end":806,"text":"emit","nodeType":"Identifier","type":{"name":"Function","display":"(...event: TupleEvent) => void"}}
+{"path":"compiler/namedTuples.ts","start":802,"end":824,"text":"emit(...messageEvent);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/namedTuples.ts","start":810,"end":822,"text":"messageEvent","nodeType":"Identifier","type":{"name":"TypeReference","display":"TupleEvent"}}
+{"path":"compiler/namedTuples.ts","start":825,"end":829,"text":"emit","nodeType":"Identifier","type":{"name":"Function","display":"(...event: TupleEvent) => void"}}
+{"path":"compiler/namedTuples.ts","start":825,"end":845,"text":"emit(...errorEvent);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/namedTuples.ts","start":833,"end":843,"text":"errorEvent","nodeType":"Identifier","type":{"name":"TypeReference","display":"TupleEvent"}}

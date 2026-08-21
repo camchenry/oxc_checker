@@ -1,549 +1,549 @@
 declare abstract class Iterator<T, TResult = undefined, TNext = unknown> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
->                      ^^^^^^^^: typeof Iterator   (TyTypeQuery) (BindingIdentifier)
+>                      ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
 
 declare abstract class Iterator<T, TResult = undefined, TNext = unknown> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
->                               ^: any   (TyAny) (TSTypeParameter)
+>                               ^: any   (Any) (Identifier)
 
 declare abstract class Iterator<T, TResult = undefined, TNext = unknown> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
->                                  ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                  ^^^^^^^: any   (Any) (Identifier)
 
 declare abstract class Iterator<T, TResult = undefined, TNext = unknown> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
->                                                       ^^^^^: any   (TyAny) (TSTypeParameter)
+>                                                       ^^^^^: any   (Any) (Identifier)
 
     abstract next(value?: TNext): IteratorResult<T, TResult>;
->            ^^^^: (value?: TNext) => IteratorResult<T, TResult>   (TyFunction) (MethodDefinition)
+>            ^^^^: (value?: TNext) => IteratorResult<T, TResult>   (Function) (Identifier)
 
     abstract next(value?: TNext): IteratorResult<T, TResult>;
->                 ^^^^^: TNext | undefined   (TyUnion) (BindingIdentifier)
+>                 ^^^^^: TNext | undefined   (Union) (Identifier)
 
     abstract next(value?: TNext): IteratorResult<T, TResult>;
->                         ^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^: any   (Any) (Identifier)
 
     abstract next(value?: TNext): IteratorResult<T, TResult>;
->                                 ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     abstract next(value?: TNext): IteratorResult<T, TResult>;
->                                 ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                 ^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     abstract next(value?: TNext): IteratorResult<T, TResult>;
->                                                ^: any   (TyAny) (TSTypeReference)
+>                                                ^: any   (Any) (Identifier)
 
     abstract next(value?: TNext): IteratorResult<T, TResult>;
->                                                   ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                   ^^^^^^^: any   (Any) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->         ^^^^^^^^: typeof Iterator   (TyTypeQuery) (TSInterfaceDeclaration)
+>         ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->         ^^^^^^^^: typeof Iterator   (TyTypeQuery) (BindingIdentifier)
+>         ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->                  ^: any   (TyAny) (TSTypeParameter)
+>                  ^: any   (Any) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->                     ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                     ^^^^^^^: any   (Any) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->                              ^^^^^: any   (TyAny) (TSTypeParameter)
+>                              ^^^^^: any   (Any) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->                                             ^^^^^^^^^^: typeof globalThis   (TyGlobalThis) (IdentifierReference)
+>                                             ^^^^^^^^^^: typeof globalThis   (GlobalThis) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->                                                        ^^^^^^^^^^^^^^: any   (TyError) (StaticMemberExpression)
+>                                                        ^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->                                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                                       ^: any   (Any) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->                                                                          ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                          ^^^^^^^: any   (Any) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->                                                                                   ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                   ^^^^^: any   (Any) (Identifier)
 
 type IteratorObjectConstructor = typeof Iterator;
->    ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (TyTypeQuery) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
 
 type IteratorObjectConstructor = typeof Iterator;
->                                       ^^^^^^^^: typeof Iterator   (TyTypeQuery) (IdentifierReference)
+>                                       ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
 
     interface IteratorObject<T, TReturn, TNext> {
->             ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface IteratorObject<T, TReturn, TNext> {
->             ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface IteratorObject<T, TReturn, TNext> {
->                            ^: any   (TyAny) (TSTypeParameter)
+>                            ^: any   (Any) (Identifier)
 
     interface IteratorObject<T, TReturn, TNext> {
->                               ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                               ^^^^^^^: any   (Any) (Identifier)
 
     interface IteratorObject<T, TReturn, TNext> {
->                                        ^^^^^: any   (TyAny) (TSTypeParameter)
+>                                        ^^^^^: any   (Any) (Identifier)
 
         [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
->        ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>        ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
         [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
->               ^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>               ^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
         [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
->                            ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
->                            ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
->                                           ^: any   (TyAny) (TSTypeReference)
+>                                           ^: any   (Any) (Identifier)
 
         [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
->                                              ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                              ^^^^^^^: any   (Any) (Identifier)
 
         [Symbol.iterator](): IteratorObject<T, TReturn, TNext>;
->                                                       ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                       ^^^^^: any   (Any) (Identifier)
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
->       ^^^: <U>(callbackfn: (value: T, index: number) => U) => IteratorObject<U, undefined, unknown>   (TyFunction) (TSMethodSignature)
+>       ^^^: <U>(callbackfn: (value: T, index: number) => U) => IteratorObject<U, undefined, unknown>   (Function) (Identifier)
    expected: { <U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>; <U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>; }
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
->           ^: any   (TyAny) (TSTypeParameter)
+>           ^: any   (Any) (Identifier)
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
->              ^^^^^^^^^^: (value: T, index: number) => U   (TyFunction) (BindingIdentifier)
+>              ^^^^^^^^^^: (value: T, index: number) => U   (Function) (Identifier)
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
->                           ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                           ^^^^^: T   (TypeReference) (Identifier)
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
->                                  ^: any   (TyAny) (TSTypeReference)
+>                                  ^: any   (Any) (Identifier)
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
->                                     ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                     ^^^^^: number   (Number) (Identifier)
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
->                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                       ^: any   (Any) (Identifier)
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
->                                                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                           ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
->                                                           ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                           ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
->                                                                          ^: any   (TyAny) (TSTypeReference)
+>                                                                          ^: any   (Any) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->       ^^^^^^: <S extends T>(predicate: (value: T, index: number) => value is S) => IteratorObject<S, undefined, unknown>   (TyFunction) (TSMethodSignature)
+>       ^^^^^^: <S extends T>(predicate: (value: T, index: number) => value is S) => IteratorObject<S, undefined, unknown>   (Function) (Identifier)
       expected: { <S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>; (predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>; <S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>; (predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>; }
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->              ^: any   (TyAny) (TSTypeParameter)
+>              ^: any   (Any) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                        ^: any   (TyAny) (TSTypeReference)
+>                        ^: any   (Any) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                           ^^^^^^^^^: (value: T, index: number) => value is S   (TyFunction) (BindingIdentifier)
+>                           ^^^^^^^^^: (value: T, index: number) => value is S   (Function) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                                       ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                       ^^^^^: T   (TypeReference) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                                                 ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                 ^^^^^: number   (Number) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                                                                   ^^^^^: T   (TyTypeReference) (IdentifierName)
+>                                                                   ^^^^^: T   (TypeReference) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                                                                            ^: any   (TyAny) (TSTypeReference)
+>                                                                            ^: any   (Any) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                                                                                ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                                                                                ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                                ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                                                                                               ^: any   (TyAny) (TSTypeReference)
+>                                                                                               ^: any   (Any) (Identifier)
 
         filter(predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>;
->       ^^^^^^: (predicate: (value: T, index: number) => unknown) => IteratorObject<T, undefined, unknown>   (TyFunction) (TSMethodSignature)
+>       ^^^^^^: (predicate: (value: T, index: number) => unknown) => IteratorObject<T, undefined, unknown>   (Function) (Identifier)
       expected: { <S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>; (predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>; <S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>; (predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>; }
 
         filter(predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>;
->              ^^^^^^^^^: (value: T, index: number) => unknown   (TyFunction) (BindingIdentifier)
+>              ^^^^^^^^^: (value: T, index: number) => unknown   (Function) (Identifier)
 
         filter(predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>;
->                          ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                          ^^^^^: T   (TypeReference) (Identifier)
 
         filter(predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>;
->                                 ^: any   (TyAny) (TSTypeReference)
+>                                 ^: any   (Any) (Identifier)
 
         filter(predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>;
->                                    ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                    ^^^^^: number   (Number) (Identifier)
 
         filter(predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>;
->                                                                ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         filter(predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>;
->                                                                ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         filter(predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>;
->                                                                               ^: any   (TyAny) (TSTypeReference)
+>                                                                               ^: any   (Any) (Identifier)
 
         take(limit: number): IteratorObject<T, undefined, unknown>;
->       ^^^^: (limit: number) => IteratorObject<T, undefined, unknown>   (TyFunction) (TSMethodSignature)
+>       ^^^^: (limit: number) => IteratorObject<T, undefined, unknown>   (Function) (Identifier)
     expected: { (limit: number): IteratorObject<T, undefined, unknown>; (limit: number): IteratorObject<T, undefined, unknown>; }
 
         take(limit: number): IteratorObject<T, undefined, unknown>;
->            ^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^: number   (Number) (Identifier)
 
         take(limit: number): IteratorObject<T, undefined, unknown>;
->                            ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         take(limit: number): IteratorObject<T, undefined, unknown>;
->                            ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         take(limit: number): IteratorObject<T, undefined, unknown>;
->                                           ^: any   (TyAny) (TSTypeReference)
+>                                           ^: any   (Any) (Identifier)
 
         drop(count: number): IteratorObject<T, undefined, unknown>;
->       ^^^^: (count: number) => IteratorObject<T, undefined, unknown>   (TyFunction) (TSMethodSignature)
+>       ^^^^: (count: number) => IteratorObject<T, undefined, unknown>   (Function) (Identifier)
     expected: { (count: number): IteratorObject<T, undefined, unknown>; (count: number): IteratorObject<T, undefined, unknown>; }
 
         drop(count: number): IteratorObject<T, undefined, unknown>;
->            ^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^: number   (Number) (Identifier)
 
         drop(count: number): IteratorObject<T, undefined, unknown>;
->                            ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         drop(count: number): IteratorObject<T, undefined, unknown>;
->                            ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         drop(count: number): IteratorObject<T, undefined, unknown>;
->                                           ^: any   (TyAny) (TSTypeReference)
+>                                           ^: any   (Any) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->       ^^^^^^^: <U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>) => IteratorObject<U, undefined, unknown>   (TyFunction) (TSMethodSignature)
+>       ^^^^^^^: <U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>) => IteratorObject<U, undefined, unknown>   (Function) (Identifier)
        expected: { <U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>; <U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>; }
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->               ^: any   (TyAny) (TSTypeParameter)
+>               ^: any   (Any) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                  ^^^^^^^^: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>   (TyFunction) (BindingIdentifier)
+>                  ^^^^^^^^: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>   (Function) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                             ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                             ^^^^^: T   (TypeReference) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                    ^: any   (TyAny) (TSTypeReference)
+>                                    ^: any   (Any) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                       ^^^^^: number   (Number) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                                         ^^^^^^^^: typeof Iterator   (TyTypeQuery) (TSTypeReference)
+>                                                         ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
                                                           expected: IteratorConstructor
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                                         ^^^^^^^^: typeof Iterator   (TyTypeQuery) (IdentifierReference)
+>                                                         ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
                                                           expected: IteratorConstructor
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                                                  ^: any   (TyAny) (TSTypeReference)
+>                                                                  ^: any   (Any) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                                                                           ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                           ^^^^^^^^: any   (Any) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                                                                           ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                           ^^^^^^^^: any   (Error) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                                                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                                                                    ^: any   (Any) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                                                                                                             ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                                             ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                                                                                                             ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                                                                             ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                                                                                                                            ^: any   (TyAny) (TSTypeReference)
+>                                                                                                                                            ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
->       ^^^^^^: (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T) => T   (TyFunction) (TSMethodSignature)
+>       ^^^^^^: (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T) => T   (Function) (Identifier)
       expected: { (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T; <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T; <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U; }
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
->              ^^^^^^^^^^: (previousValue: T, currentValue: T, currentIndex: number) => T   (TyFunction) (BindingIdentifier)
+>              ^^^^^^^^^^: (previousValue: T, currentValue: T, currentIndex: number) => T   (Function) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
->                           ^^^^^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                           ^^^^^^^^^^^^^: T   (TypeReference) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
->                                          ^: any   (TyAny) (TSTypeReference)
+>                                          ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
->                                             ^^^^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                             ^^^^^^^^^^^^: T   (TypeReference) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
->                                                           ^: any   (TyAny) (TSTypeReference)
+>                                                           ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
->                                                              ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                              ^^^^^^^^^^^^: number   (Number) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
->                                                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                                                       ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
->                                                                                           ^: any   (TyAny) (TSTypeReference)
+>                                                                                           ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->       ^^^^^^: (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T) => T   (TyFunction) (TSMethodSignature)
+>       ^^^^^^: (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T) => T   (Function) (Identifier)
       expected: { (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T; <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T; <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U; }
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->              ^^^^^^^^^^: (previousValue: T, currentValue: T, currentIndex: number) => T   (TyFunction) (BindingIdentifier)
+>              ^^^^^^^^^^: (previousValue: T, currentValue: T, currentIndex: number) => T   (Function) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                           ^^^^^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                           ^^^^^^^^^^^^^: T   (TypeReference) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                                          ^: any   (TyAny) (TSTypeReference)
+>                                          ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                                             ^^^^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                             ^^^^^^^^^^^^: T   (TypeReference) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                                                           ^: any   (TyAny) (TSTypeReference)
+>                                                           ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                                                              ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                              ^^^^^^^^^^^^: number   (Number) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                                                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                                                       ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                                                                                          ^^^^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                                                                          ^^^^^^^^^^^^: T   (TypeReference) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                                                                                                        ^: any   (TyAny) (TSTypeReference)
+>                                                                                                        ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                                                                                                            ^: any   (TyAny) (TSTypeReference)
+>                                                                                                            ^: any   (Any) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->       ^^^^^^: <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U) => U   (TyFunction) (TSMethodSignature)
+>       ^^^^^^: <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U) => U   (Function) (Identifier)
       expected: { (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T; <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T; <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U; }
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->              ^: any   (TyAny) (TSTypeParameter)
+>              ^: any   (Any) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                 ^^^^^^^^^^: (previousValue: U, currentValue: T, currentIndex: number) => U   (TyFunction) (BindingIdentifier)
+>                 ^^^^^^^^^^: (previousValue: U, currentValue: T, currentIndex: number) => U   (Function) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                              ^^^^^^^^^^^^^: U   (TyTypeReference) (BindingIdentifier)
+>                              ^^^^^^^^^^^^^: U   (TypeReference) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                                             ^: any   (TyAny) (TSTypeReference)
+>                                             ^: any   (Any) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                                                ^^^^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                                ^^^^^^^^^^^^: T   (TypeReference) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                                                              ^: any   (TyAny) (TSTypeReference)
+>                                                              ^: any   (Any) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                                                                 ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                                 ^^^^^^^^^^^^: number   (Number) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                                                                                          ^: any   (TyAny) (TSTypeReference)
+>                                                                                          ^: any   (Any) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                                                                                             ^^^^^^^^^^^^: U   (TyTypeReference) (BindingIdentifier)
+>                                                                                             ^^^^^^^^^^^^: U   (TypeReference) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                                                                                                           ^: any   (TyAny) (TSTypeReference)
+>                                                                                                           ^: any   (Any) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                                                                                                               ^: any   (TyAny) (TSTypeReference)
+>                                                                                                               ^: any   (Any) (Identifier)
 
         toArray(): T[];
->       ^^^^^^^: () => T[]   (TyFunction) (TSMethodSignature)
+>       ^^^^^^^: () => T[]   (Function) (Identifier)
        expected: { (): T[]; (): T[]; }
 
         toArray(): T[];
->                  ^: any   (TyAny) (TSTypeReference)
+>                  ^: any   (Any) (Identifier)
 
         forEach(callbackfn: (value: T, index: number) => void): void;
->       ^^^^^^^: (callbackfn: (value: T, index: number) => void) => void   (TyFunction) (TSMethodSignature)
+>       ^^^^^^^: (callbackfn: (value: T, index: number) => void) => void   (Function) (Identifier)
        expected: { (callbackfn: (value: T, index: number) => void): void; (callbackfn: (value: T, index: number) => void): void; }
 
         forEach(callbackfn: (value: T, index: number) => void): void;
->               ^^^^^^^^^^: (value: T, index: number) => void   (TyFunction) (BindingIdentifier)
+>               ^^^^^^^^^^: (value: T, index: number) => void   (Function) (Identifier)
 
         forEach(callbackfn: (value: T, index: number) => void): void;
->                            ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                            ^^^^^: T   (TypeReference) (Identifier)
 
         forEach(callbackfn: (value: T, index: number) => void): void;
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
         forEach(callbackfn: (value: T, index: number) => void): void;
->                                      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                      ^^^^^: number   (Number) (Identifier)
 
         some(predicate: (value: T, index: number) => unknown): boolean;
->       ^^^^: (predicate: (value: T, index: number) => unknown) => boolean   (TyFunction) (TSMethodSignature)
+>       ^^^^: (predicate: (value: T, index: number) => unknown) => boolean   (Function) (Identifier)
     expected: { (predicate: (value: T, index: number) => unknown): boolean; (predicate: (value: T, index: number) => unknown): boolean; }
 
         some(predicate: (value: T, index: number) => unknown): boolean;
->            ^^^^^^^^^: (value: T, index: number) => unknown   (TyFunction) (BindingIdentifier)
+>            ^^^^^^^^^: (value: T, index: number) => unknown   (Function) (Identifier)
 
         some(predicate: (value: T, index: number) => unknown): boolean;
->                        ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                        ^^^^^: T   (TypeReference) (Identifier)
 
         some(predicate: (value: T, index: number) => unknown): boolean;
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
         some(predicate: (value: T, index: number) => unknown): boolean;
->                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                  ^^^^^: number   (Number) (Identifier)
 
         every(predicate: (value: T, index: number) => unknown): boolean;
->       ^^^^^: (predicate: (value: T, index: number) => unknown) => boolean   (TyFunction) (TSMethodSignature)
+>       ^^^^^: (predicate: (value: T, index: number) => unknown) => boolean   (Function) (Identifier)
      expected: { (predicate: (value: T, index: number) => unknown): boolean; (predicate: (value: T, index: number) => unknown): boolean; }
 
         every(predicate: (value: T, index: number) => unknown): boolean;
->             ^^^^^^^^^: (value: T, index: number) => unknown   (TyFunction) (BindingIdentifier)
+>             ^^^^^^^^^: (value: T, index: number) => unknown   (Function) (Identifier)
 
         every(predicate: (value: T, index: number) => unknown): boolean;
->                         ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                         ^^^^^: T   (TypeReference) (Identifier)
 
         every(predicate: (value: T, index: number) => unknown): boolean;
->                                ^: any   (TyAny) (TSTypeReference)
+>                                ^: any   (Any) (Identifier)
 
         every(predicate: (value: T, index: number) => unknown): boolean;
->                                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                   ^^^^^: number   (Number) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->       ^^^^: <S extends T>(predicate: (value: T, index: number) => value is S) => S | undefined   (TyFunction) (TSMethodSignature)
+>       ^^^^: <S extends T>(predicate: (value: T, index: number) => value is S) => S | undefined   (Function) (Identifier)
     expected: { <S extends T>(predicate: (value: T, index: number) => value is S): S | undefined; (predicate: (value: T, index: number) => unknown): T | undefined; <S extends T>(predicate: (value: T, index: number) => value is S): S | undefined; (predicate: (value: T, index: number) => unknown): T | undefined; }
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->            ^: any   (TyAny) (TSTypeParameter)
+>            ^: any   (Any) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->                      ^: any   (TyAny) (TSTypeReference)
+>                      ^: any   (Any) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->                         ^^^^^^^^^: (value: T, index: number) => value is S   (TyFunction) (BindingIdentifier)
+>                         ^^^^^^^^^: (value: T, index: number) => value is S   (Function) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->                                     ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                     ^^^^^: T   (TypeReference) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->                                            ^: any   (TyAny) (TSTypeReference)
+>                                            ^: any   (Any) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->                                               ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                               ^^^^^: number   (Number) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->                                                                 ^^^^^: T   (TyTypeReference) (IdentifierName)
+>                                                                 ^^^^^: T   (TypeReference) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->                                                                          ^: any   (TyAny) (TSTypeReference)
+>                                                                          ^: any   (Any) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->                                                                              ^: any   (TyAny) (TSTypeReference)
+>                                                                              ^: any   (Any) (Identifier)
 
         find(predicate: (value: T, index: number) => unknown): T | undefined;
->       ^^^^: (predicate: (value: T, index: number) => unknown) => T | undefined   (TyFunction) (TSMethodSignature)
+>       ^^^^: (predicate: (value: T, index: number) => unknown) => T | undefined   (Function) (Identifier)
     expected: { <S extends T>(predicate: (value: T, index: number) => value is S): S | undefined; (predicate: (value: T, index: number) => unknown): T | undefined; <S extends T>(predicate: (value: T, index: number) => value is S): S | undefined; (predicate: (value: T, index: number) => unknown): T | undefined; }
 
         find(predicate: (value: T, index: number) => unknown): T | undefined;
->            ^^^^^^^^^: (value: T, index: number) => unknown   (TyFunction) (BindingIdentifier)
+>            ^^^^^^^^^: (value: T, index: number) => unknown   (Function) (Identifier)
 
         find(predicate: (value: T, index: number) => unknown): T | undefined;
->                        ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                        ^^^^^: T   (TypeReference) (Identifier)
 
         find(predicate: (value: T, index: number) => unknown): T | undefined;
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
         find(predicate: (value: T, index: number) => unknown): T | undefined;
->                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                  ^^^^^: number   (Number) (Identifier)
 
         find(predicate: (value: T, index: number) => unknown): T | undefined;
->                                                              ^: any   (TyAny) (TSTypeReference)
+>                                                              ^: any   (Any) (Identifier)
 
         readonly [Symbol.toStringTag]: string;
->                 ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>                 ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
         readonly [Symbol.toStringTag]: string;
->                        ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                        ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     interface IteratorConstructor extends IteratorObjectConstructor {
->             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface IteratorConstructor extends IteratorObjectConstructor {
->             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface IteratorConstructor extends IteratorObjectConstructor {
->                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (TyTypeQuery) (TSInterfaceHeritage)
+>                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
                                                            expected: any
 
     interface IteratorConstructor extends IteratorObjectConstructor {
->                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (TyTypeQuery) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
                                                            expected: any
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->       ^^^^: <T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>) => IteratorObject<T, undefined, unknown>   (TyFunction) (TSMethodSignature)
+>       ^^^^: <T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>) => IteratorObject<T, undefined, unknown>   (Function) (Identifier)
     expected: { <T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>; <T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>; }
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->            ^: any   (TyAny) (TSTypeParameter)
+>            ^: any   (Any) (Identifier)
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->               ^^^^^: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>   (TyUnion) (BindingIdentifier)
+>               ^^^^^: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>   (Union) (Identifier)
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->                      ^^^^^^^^: typeof Iterator   (TyTypeQuery) (TSTypeReference)
+>                      ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
                        expected: IteratorConstructor
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->                      ^^^^^^^^: typeof Iterator   (TyTypeQuery) (IdentifierReference)
+>                      ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
                        expected: IteratorConstructor
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->                                                        ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                        ^^^^^^^^: any   (Any) (Identifier)
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->                                                        ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                        ^^^^^^^^: any   (Error) (Identifier)
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->                                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                                 ^: any   (Any) (Identifier)
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->                                                                                          ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                          ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->                                                                                          ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                                          ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->                                                                                                         ^: any   (TyAny) (TSTypeReference)
+>                                                                                                         ^: any   (Any) (Identifier)
 
     var Iterator: IteratorConstructor;
->       ^^^^^^^^: IteratorConstructor   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^^^: IteratorConstructor   (TypeReference) (Identifier)
 
     var Iterator: IteratorConstructor;
->                 ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     var Iterator: IteratorConstructor;
->                 ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                 ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)

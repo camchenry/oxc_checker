@@ -1,110 +1,110 @@
 enum Status {
->    ^^^^^^: typeof Status   (TyTypeQuery) (TSEnumDeclaration)
+>    ^^^^^^: typeof Status   (TypeQuery) (Identifier)
 
 enum Status {
->    ^^^^^^: typeof Status   (TyTypeQuery) (BindingIdentifier)
+>    ^^^^^^: typeof Status   (TypeQuery) (Identifier)
 
   Unknown,
-> ^^^^^^^: Status.Unknown   (TyTypeReference) (TSEnumMember)
+> ^^^^^^^: Status.Unknown   (TypeReference) (Identifier)
 
   Closed = 1,
-> ^^^^^^: Status.Closed   (TyTypeReference) (TSEnumMember)
+> ^^^^^^: Status.Closed   (TypeReference) (Identifier)
 
   Open = 'open',
-> ^^^^: Status.Open   (TyTypeReference) (TSEnumMember)
+> ^^^^: Status.Open   (TypeReference) (Identifier)
 
 enum Status2 {
->    ^^^^^^^: typeof Status2   (TyTypeQuery) (TSEnumDeclaration)
+>    ^^^^^^^: typeof Status2   (TypeQuery) (Identifier)
 
 enum Status2 {
->    ^^^^^^^: typeof Status2   (TyTypeQuery) (BindingIdentifier)
+>    ^^^^^^^: typeof Status2   (TypeQuery) (Identifier)
 
   Unknown = 0,
-> ^^^^^^^: Status2.Unknown   (TyTypeReference) (TSEnumMember)
+> ^^^^^^^: Status2.Unknown   (TypeReference) (Identifier)
 
   Closed = 1,
-> ^^^^^^: Status2.Closed   (TyTypeReference) (TSEnumMember)
+> ^^^^^^: Status2.Closed   (TypeReference) (Identifier)
 
   Open = 2,
-> ^^^^: Status2.Open   (TyTypeReference) (TSEnumMember)
+> ^^^^: Status2.Open   (TypeReference) (Identifier)
 
 enum Status3 {
->    ^^^^^^^: typeof Status3   (TyTypeQuery) (TSEnumDeclaration)
+>    ^^^^^^^: typeof Status3   (TypeQuery) (Identifier)
 
 enum Status3 {
->    ^^^^^^^: typeof Status3   (TyTypeQuery) (BindingIdentifier)
+>    ^^^^^^^: typeof Status3   (TypeQuery) (Identifier)
 
   Unknown,
-> ^^^^^^^: Status3.Unknown   (TyTypeReference) (TSEnumMember)
+> ^^^^^^^: Status3.Unknown   (TypeReference) (Identifier)
 
   Closed,
-> ^^^^^^: Status3.Closed   (TyTypeReference) (TSEnumMember)
+> ^^^^^^: Status3.Closed   (TypeReference) (Identifier)
 
   Open,
-> ^^^^: Status3.Open   (TyTypeReference) (TSEnumMember)
+> ^^^^: Status3.Open   (TypeReference) (Identifier)
 
 enum Status4 {
->    ^^^^^^^: typeof Status4   (TyTypeQuery) (TSEnumDeclaration)
+>    ^^^^^^^: typeof Status4   (TypeQuery) (Identifier)
 
 enum Status4 {
->    ^^^^^^^: typeof Status4   (TyTypeQuery) (BindingIdentifier)
+>    ^^^^^^^: typeof Status4   (TypeQuery) (Identifier)
 
   Unknown = 'unknown',
-> ^^^^^^^: Status4.Unknown   (TyTypeReference) (TSEnumMember)
+> ^^^^^^^: Status4.Unknown   (TypeReference) (Identifier)
 
   Closed = 'closed',
-> ^^^^^^: Status4.Closed   (TyTypeReference) (TSEnumMember)
+> ^^^^^^: Status4.Closed   (TypeReference) (Identifier)
 
   Open = 'open',
-> ^^^^: Status4.Open   (TyTypeReference) (TSEnumMember)
+> ^^^^: Status4.Open   (TypeReference) (Identifier)
 
 enum Status {
->    ^^^^^^: typeof Status   (TyTypeQuery) (TSEnumDeclaration)
+>    ^^^^^^: typeof Status   (TypeQuery) (Identifier)
 
 enum Status {
->    ^^^^^^: typeof Status   (TyTypeQuery) (BindingIdentifier)
+>    ^^^^^^: typeof Status   (TypeQuery) (Identifier)
 
   Closed = 'closed',
-> ^^^^^^: Status.Closed   (TyTypeReference) (TSEnumMember)
+> ^^^^^^: Status.Closed   (TypeReference) (Identifier)
 
   Open = 'open',
-> ^^^^: Status.Open   (TyTypeReference) (TSEnumMember)
+> ^^^^: Status.Open   (TypeReference) (Identifier)
 
 Object.values(Status);
->^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
+>^^^^^^: ObjectConstructor   (TypeReference) (Identifier)
 
 Object.values(Status);
->^^^^^^^^^^^^^^^^^^^^^^: Status[]   (TyArray) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^: Status[]   (Array) (ExpressionStatement)
 
 Object.values(Status);
->      ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject) (StaticMemberExpression)
+>      ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (Object) (Identifier)
 
 Object.values(Status);
->             ^^^^^^: typeof Status   (TyTypeQuery) (IdentifierReference)
+>             ^^^^^^: typeof Status   (TypeQuery) (Identifier)
 
 enum Status {
->    ^^^^^^: typeof Status   (TyTypeQuery) (TSEnumDeclaration)
+>    ^^^^^^: typeof Status   (TypeQuery) (Identifier)
 
 enum Status {
->    ^^^^^^: typeof Status   (TyTypeQuery) (BindingIdentifier)
+>    ^^^^^^: typeof Status   (TypeQuery) (Identifier)
 
   Unknown,
-> ^^^^^^^: Status.Unknown   (TyTypeReference) (TSEnumMember)
+> ^^^^^^^: Status.Unknown   (TypeReference) (Identifier)
 
   Closed = 1,
-> ^^^^^^: Status.Closed   (TyTypeReference) (TSEnumMember)
+> ^^^^^^: Status.Closed   (TypeReference) (Identifier)
 
   Open = 'open',
-> ^^^^: Status.Open   (TyTypeReference) (TSEnumMember)
+> ^^^^: Status.Open   (TypeReference) (Identifier)
 
 Object.values(Status);
->^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
+>^^^^^^: ObjectConstructor   (TypeReference) (Identifier)
 
 Object.values(Status);
->^^^^^^^^^^^^^^^^^^^^^^: (string | Status.Unknown | Status.Closed)[]   (TyArray) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^: (string | Status.Unknown | Status.Closed)[]   (Array) (ExpressionStatement)
 
 Object.values(Status);
->      ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject) (StaticMemberExpression)
+>      ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (Object) (Identifier)
 
 Object.values(Status);
->             ^^^^^^: typeof Status   (TyTypeQuery) (IdentifierReference)
+>             ^^^^^^: typeof Status   (TypeQuery) (Identifier)

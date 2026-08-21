@@ -1,0 +1,22 @@
+{"path":"es2024.object.d.ts","start":10,"end":27,"text":"ObjectConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":10,"end":27,"text":"ObjectConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":257,"end":264,"text":"groupBy","nodeType":"Identifier","type":{"name":"Object","display":"{ <K extends PropertyKey, T>(items: Iterable<T>, keySelector: (item: T, index: number) => K): Partial<Record<K, T[]>>; <K extends PropertyKey, T>(items: Iterable<T>, keySelector: (item: T, index: number) => K): Partial<Record<K, T[]>>; }"}}
+{"path":"es2024.object.d.ts","start":265,"end":266,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":275,"end":286,"text":"PropertyKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":275,"end":286,"text":"PropertyKey","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2024.object.d.ts","start":288,"end":289,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":300,"end":305,"text":"items","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2024.object.d.ts","start":307,"end":315,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":307,"end":315,"text":"Iterable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2024.object.d.ts","start":316,"end":317,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":328,"end":339,"text":"keySelector","nodeType":"Identifier","type":{"name":"Function","display":"(item: T, index: number) => K"}}
+{"path":"es2024.object.d.ts","start":342,"end":346,"text":"item","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2024.object.d.ts","start":348,"end":349,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":351,"end":356,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2024.object.d.ts","start":369,"end":370,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":379,"end":386,"text":"Partial","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":379,"end":386,"text":"Partial","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2024.object.d.ts","start":387,"end":393,"text":"Record","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":387,"end":393,"text":"Record","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2024.object.d.ts","start":394,"end":395,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.object.d.ts","start":397,"end":398,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

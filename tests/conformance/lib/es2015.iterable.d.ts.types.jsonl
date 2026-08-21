@@ -1,0 +1,858 @@
+{"path":"es2015.iterable.d.ts","start":49,"end":66,"text":"SymbolConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":49,"end":66,"text":"SymbolConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":219,"end":227,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":257,"end":276,"text":"IteratorYieldResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":257,"end":276,"text":"IteratorYieldResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":277,"end":283,"text":"TYield","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":291,"end":295,"text":"done","nodeType":"Identifier","type":{"name":"Union","display":"false | undefined"}}
+{"path":"es2015.iterable.d.ts","start":309,"end":314,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"TYield"}}
+{"path":"es2015.iterable.d.ts","start":316,"end":322,"text":"TYield","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":337,"end":357,"text":"IteratorReturnResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":337,"end":357,"text":"IteratorReturnResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":358,"end":365,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":373,"end":377,"text":"done","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"es2015.iterable.d.ts","start":389,"end":394,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"TReturn"}}
+{"path":"es2015.iterable.d.ts","start":396,"end":403,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":413,"end":427,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Union","display":"IteratorYieldResult<T> | IteratorReturnResult<TReturn>"}}
+{"path":"es2015.iterable.d.ts","start":428,"end":429,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":431,"end":438,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":448,"end":467,"text":"IteratorYieldResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":448,"end":467,"text":"IteratorYieldResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":468,"end":469,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":473,"end":493,"text":"IteratorReturnResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":473,"end":493,"text":"IteratorReturnResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":494,"end":501,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":515,"end":523,"text":"Iterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":515,"end":523,"text":"Iterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":524,"end":525,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":527,"end":534,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":542,"end":547,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":674,"end":678,"text":"next","nodeType":"Identifier","type":{"name":"Object","display":"{ (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; }"}}
+{"path":"es2015.iterable.d.ts","start":683,"end":688,"text":"value","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":697,"end":702,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":706,"end":720,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":721,"end":722,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":724,"end":731,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":738,"end":744,"text":"return","nodeType":"Identifier","type":{"name":"Union","display":"{ (value?: TReturn): IteratorResult<T, TReturn>; (value?: TReturn): IteratorResult<T, TReturn>; } | undefined"}}
+{"path":"es2015.iterable.d.ts","start":746,"end":751,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"TReturn | undefined"}}
+{"path":"es2015.iterable.d.ts","start":754,"end":761,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":764,"end":778,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":779,"end":780,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":782,"end":789,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":796,"end":801,"text":"throw","nodeType":"Identifier","type":{"name":"Union","display":"{ (e?: any): IteratorResult<T, TReturn>; (e?: any): IteratorResult<T, TReturn>; } | undefined"}}
+{"path":"es2015.iterable.d.ts","start":803,"end":804,"text":"e","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":813,"end":827,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":828,"end":829,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":831,"end":838,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":854,"end":862,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":854,"end":862,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":863,"end":864,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":866,"end":873,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":881,"end":886,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":901,"end":907,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":908,"end":916,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":921,"end":929,"text":"Iterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":921,"end":929,"text":"Iterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":930,"end":931,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":933,"end":940,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":942,"end":947,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1039,"end":1055,"text":"IterableIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1039,"end":1055,"text":"IterableIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1056,"end":1057,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1059,"end":1066,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1074,"end":1079,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1095,"end":1103,"text":"Iterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1095,"end":1103,"text":"Iterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1104,"end":1105,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1107,"end":1114,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1116,"end":1121,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1130,"end":1136,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":1137,"end":1145,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":1150,"end":1166,"text":"IterableIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1150,"end":1166,"text":"IterableIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1167,"end":1168,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1170,"end":1177,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1179,"end":1184,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1320,"end":1334,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1320,"end":1334,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1335,"end":1336,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1338,"end":1345,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1357,"end":1362,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1382,"end":1390,"text":"Iterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1382,"end":1390,"text":"Iterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1391,"end":1392,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1394,"end":1401,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1403,"end":1408,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1417,"end":1423,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":1424,"end":1432,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":1437,"end":1451,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1437,"end":1451,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1452,"end":1453,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1455,"end":1462,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1464,"end":1469,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1688,"end":1709,"text":"BuiltinIteratorReturn","nodeType":"Identifier","type":{"name":"TypeReference","display":"intrinsic"}}
+{"path":"es2015.iterable.d.ts","start":1734,"end":1747,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1734,"end":1747,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1748,"end":1749,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1759,"end":1773,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1759,"end":1773,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1774,"end":1775,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1777,"end":1798,"text":"BuiltinIteratorReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1816,"end":1822,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":1823,"end":1831,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":1836,"end":1849,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1836,"end":1849,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1850,"end":1851,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1867,"end":1872,"text":"Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1867,"end":1872,"text":"Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1873,"end":1874,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1903,"end":1909,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":1910,"end":1918,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":1923,"end":1936,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1923,"end":1936,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":1937,"end":1938,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2038,"end":2045,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, T]>; (): ArrayIterator<[number, T]>; }"}}
+{"path":"es2015.iterable.d.ts","start":2049,"end":2062,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2049,"end":2062,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2072,"end":2073,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2146,"end":2150,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":2154,"end":2167,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2154,"end":2167,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2248,"end":2254,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<T>; (): ArrayIterator<T>; }"}}
+{"path":"es2015.iterable.d.ts","start":2258,"end":2271,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2258,"end":2271,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2272,"end":2273,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2289,"end":2305,"text":"ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2289,"end":2305,"text":"ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2443,"end":2447,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(iterable: Iterable<T> | ArrayLike<T>): T[]; <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(iterable: Iterable<T> | ArrayLike<T>): T[]; <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; }"}}
+{"path":"es2015.iterable.d.ts","start":2448,"end":2449,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2451,"end":2459,"text":"iterable","nodeType":"Identifier","type":{"name":"Union","display":"Iterable<T> | ArrayLike<T>"}}
+{"path":"es2015.iterable.d.ts","start":2461,"end":2469,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2461,"end":2469,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2470,"end":2471,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2475,"end":2484,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2475,"end":2484,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2485,"end":2486,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2490,"end":2491,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2773,"end":2777,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(arrayLike: ArrayLike<T>): T[]; <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(iterable: Iterable<T> | ArrayLike<T>): T[]; <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; <T>(iterable: Iterable<T> | ArrayLike<T>): T[]; <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[]; }"}}
+{"path":"es2015.iterable.d.ts","start":2778,"end":2779,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2781,"end":2782,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2784,"end":2792,"text":"iterable","nodeType":"Identifier","type":{"name":"Union","display":"Iterable<T> | ArrayLike<T>"}}
+{"path":"es2015.iterable.d.ts","start":2794,"end":2802,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2794,"end":2802,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2803,"end":2804,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2808,"end":2817,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2808,"end":2817,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2818,"end":2819,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2822,"end":2827,"text":"mapfn","nodeType":"Identifier","type":{"name":"Function","display":"(v: T, k: number) => U"}}
+{"path":"es2015.iterable.d.ts","start":2830,"end":2831,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.iterable.d.ts","start":2833,"end":2834,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2836,"end":2837,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2015.iterable.d.ts","start":2850,"end":2851,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2853,"end":2860,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2869,"end":2870,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2887,"end":2900,"text":"ReadonlyArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2887,"end":2900,"text":"ReadonlyArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2901,"end":2902,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2955,"end":2961,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":2962,"end":2970,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":2975,"end":2988,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2975,"end":2988,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":2989,"end":2990,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3090,"end":3097,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, T]>; (): ArrayIterator<[number, T]>; }"}}
+{"path":"es2015.iterable.d.ts","start":3101,"end":3114,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3101,"end":3114,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3124,"end":3125,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3198,"end":3202,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":3206,"end":3219,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3206,"end":3219,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3300,"end":3306,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<T>; (): ArrayIterator<T>; }"}}
+{"path":"es2015.iterable.d.ts","start":3310,"end":3323,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3310,"end":3323,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3324,"end":3325,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3341,"end":3351,"text":"IArguments","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3341,"end":3351,"text":"IArguments","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3379,"end":3385,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":3386,"end":3394,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":3399,"end":3412,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3399,"end":3412,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3432,"end":3443,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3432,"end":3443,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3444,"end":3445,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3455,"end":3469,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3455,"end":3469,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3470,"end":3471,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3473,"end":3494,"text":"BuiltinIteratorReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3512,"end":3518,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":3519,"end":3527,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":3532,"end":3543,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3532,"end":3543,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3544,"end":3545,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3561,"end":3564,"text":"Map","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3561,"end":3564,"text":"Map","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3565,"end":3566,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3568,"end":3569,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3632,"end":3638,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":3639,"end":3647,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":3652,"end":3663,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3652,"end":3663,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3665,"end":3666,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3668,"end":3669,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3769,"end":3776,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): MapIterator<[K, V]>; (): MapIterator<[K, V]>; }"}}
+{"path":"es2015.iterable.d.ts","start":3780,"end":3791,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3780,"end":3791,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3793,"end":3794,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3796,"end":3797,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3868,"end":3872,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): MapIterator<K>; (): MapIterator<K>; }"}}
+{"path":"es2015.iterable.d.ts","start":3876,"end":3887,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3876,"end":3887,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3888,"end":3889,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3961,"end":3967,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): MapIterator<V>; (): MapIterator<V>; }"}}
+{"path":"es2015.iterable.d.ts","start":3971,"end":3982,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3971,"end":3982,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":3983,"end":3984,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4000,"end":4011,"text":"ReadonlyMap","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4000,"end":4011,"text":"ReadonlyMap","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4012,"end":4013,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4015,"end":4016,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4079,"end":4085,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":4086,"end":4094,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":4099,"end":4110,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4099,"end":4110,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4112,"end":4113,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4115,"end":4116,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4216,"end":4223,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): MapIterator<[K, V]>; (): MapIterator<[K, V]>; }"}}
+{"path":"es2015.iterable.d.ts","start":4227,"end":4238,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4227,"end":4238,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4240,"end":4241,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4243,"end":4244,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4315,"end":4319,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): MapIterator<K>; (): MapIterator<K>; }"}}
+{"path":"es2015.iterable.d.ts","start":4323,"end":4334,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4323,"end":4334,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4335,"end":4336,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4408,"end":4414,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): MapIterator<V>; (): MapIterator<V>; }"}}
+{"path":"es2015.iterable.d.ts","start":4418,"end":4429,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4418,"end":4429,"text":"MapIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4430,"end":4431,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4447,"end":4461,"text":"MapConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4447,"end":4461,"text":"MapConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4476,"end":4479,"text":"Map","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4476,"end":4479,"text":"Map","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4500,"end":4501,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4503,"end":4504,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4506,"end":4514,"text":"iterable","nodeType":"Identifier","type":{"name":"Union","display":"Iterable<readonly [K, V]> | null | undefined"}}
+{"path":"es2015.iterable.d.ts","start":4517,"end":4525,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4517,"end":4525,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4536,"end":4537,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4539,"end":4540,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4552,"end":4555,"text":"Map","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4552,"end":4555,"text":"Map","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4556,"end":4557,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4559,"end":4560,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4576,"end":4583,"text":"WeakMap","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4576,"end":4583,"text":"WeakMap","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4584,"end":4585,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4594,"end":4601,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4594,"end":4601,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4603,"end":4604,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4620,"end":4638,"text":"WeakMapConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4620,"end":4638,"text":"WeakMapConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4650,"end":4651,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4660,"end":4667,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4660,"end":4667,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4670,"end":4677,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4670,"end":4677,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4679,"end":4680,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4688,"end":4696,"text":"iterable","nodeType":"Identifier","type":{"name":"Union","display":"Iterable<readonly [K, V]> | null | undefined"}}
+{"path":"es2015.iterable.d.ts","start":4699,"end":4707,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4699,"end":4707,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4718,"end":4719,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4721,"end":4722,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4734,"end":4741,"text":"WeakMap","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4734,"end":4741,"text":"WeakMap","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4742,"end":4743,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4745,"end":4746,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4762,"end":4773,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4762,"end":4773,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4774,"end":4775,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4785,"end":4799,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4785,"end":4799,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4800,"end":4801,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4803,"end":4824,"text":"BuiltinIteratorReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4842,"end":4848,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":4849,"end":4857,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":4862,"end":4873,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4862,"end":4873,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4874,"end":4875,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4891,"end":4894,"text":"Set","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4891,"end":4894,"text":"Set","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4895,"end":4896,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4949,"end":4955,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":4956,"end":4964,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":4969,"end":4980,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4969,"end":4980,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":4981,"end":4982,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5080,"end":5087,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): SetIterator<[T, T]>; (): SetIterator<[T, T]>; }"}}
+{"path":"es2015.iterable.d.ts","start":5091,"end":5102,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5091,"end":5102,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5104,"end":5105,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5107,"end":5108,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5204,"end":5208,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): SetIterator<T>; (): SetIterator<T>; }"}}
+{"path":"es2015.iterable.d.ts","start":5212,"end":5223,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5212,"end":5223,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5224,"end":5225,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5298,"end":5304,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): SetIterator<T>; (): SetIterator<T>; }"}}
+{"path":"es2015.iterable.d.ts","start":5308,"end":5319,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5308,"end":5319,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5320,"end":5321,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5337,"end":5348,"text":"ReadonlySet","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5337,"end":5348,"text":"ReadonlySet","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5349,"end":5350,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5403,"end":5409,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":5410,"end":5418,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":5423,"end":5434,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5423,"end":5434,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5435,"end":5436,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5534,"end":5541,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): SetIterator<[T, T]>; (): SetIterator<[T, T]>; }"}}
+{"path":"es2015.iterable.d.ts","start":5545,"end":5556,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5545,"end":5556,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5558,"end":5559,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5561,"end":5562,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5658,"end":5662,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): SetIterator<T>; (): SetIterator<T>; }"}}
+{"path":"es2015.iterable.d.ts","start":5666,"end":5677,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5666,"end":5677,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5678,"end":5679,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5752,"end":5758,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): SetIterator<T>; (): SetIterator<T>; }"}}
+{"path":"es2015.iterable.d.ts","start":5762,"end":5773,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5762,"end":5773,"text":"SetIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5774,"end":5775,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5791,"end":5805,"text":"SetConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5791,"end":5805,"text":"SetConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5817,"end":5818,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5820,"end":5828,"text":"iterable","nodeType":"Identifier","type":{"name":"Union","display":"Iterable<T> | null | undefined"}}
+{"path":"es2015.iterable.d.ts","start":5831,"end":5839,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5831,"end":5839,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5840,"end":5841,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5852,"end":5855,"text":"Set","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5852,"end":5855,"text":"Set","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5856,"end":5857,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5873,"end":5880,"text":"WeakSet","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5873,"end":5880,"text":"WeakSet","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5881,"end":5882,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5891,"end":5898,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5891,"end":5898,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5914,"end":5932,"text":"WeakSetConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5914,"end":5932,"text":"WeakSetConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5944,"end":5945,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5954,"end":5961,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5954,"end":5961,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5964,"end":5971,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5964,"end":5971,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5973,"end":5981,"text":"iterable","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2015.iterable.d.ts","start":5983,"end":5991,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5983,"end":5991,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5992,"end":5993,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5997,"end":6004,"text":"WeakSet","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":5997,"end":6004,"text":"WeakSet","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6005,"end":6006,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6022,"end":6029,"text":"Promise","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6022,"end":6029,"text":"Promise","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6030,"end":6031,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6047,"end":6065,"text":"PromiseConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6047,"end":6065,"text":"PromiseConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6324,"end":6327,"text":"all","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; }"}}
+{"path":"es2015.iterable.d.ts","start":6328,"end":6329,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6331,"end":6337,"text":"values","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T | PromiseLike<T>>"}}
+{"path":"es2015.iterable.d.ts","start":6339,"end":6347,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6339,"end":6347,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6348,"end":6349,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6352,"end":6363,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6352,"end":6363,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6364,"end":6365,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6370,"end":6377,"text":"Promise","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6370,"end":6377,"text":"Promise","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6378,"end":6385,"text":"Awaited","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6378,"end":6385,"text":"Awaited","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6386,"end":6387,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6612,"end":6616,"text":"race","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }"}}
+{"path":"es2015.iterable.d.ts","start":6617,"end":6618,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6620,"end":6626,"text":"values","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T | PromiseLike<T>>"}}
+{"path":"es2015.iterable.d.ts","start":6628,"end":6636,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6628,"end":6636,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6637,"end":6638,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6641,"end":6652,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6641,"end":6652,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6653,"end":6654,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6659,"end":6666,"text":"Promise","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6659,"end":6666,"text":"Promise","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6667,"end":6674,"text":"Awaited","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6667,"end":6674,"text":"Awaited","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6675,"end":6676,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6693,"end":6707,"text":"StringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6693,"end":6707,"text":"StringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6708,"end":6709,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6719,"end":6733,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6719,"end":6733,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6734,"end":6735,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6737,"end":6758,"text":"BuiltinIteratorReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6776,"end":6782,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":6783,"end":6791,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":6796,"end":6810,"text":"StringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6796,"end":6810,"text":"StringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6811,"end":6812,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6828,"end":6834,"text":"String","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6828,"end":6834,"text":"String","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6862,"end":6868,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":6869,"end":6877,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":6882,"end":6896,"text":"StringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6882,"end":6896,"text":"StringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6919,"end":6928,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6919,"end":6928,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6929,"end":6941,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6950,"end":6965,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6950,"end":6965,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6974,"end":6980,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":6981,"end":6989,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":6994,"end":7007,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":6994,"end":7007,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7111,"end":7118,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }"}}
+{"path":"es2015.iterable.d.ts","start":7122,"end":7135,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7122,"end":7135,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7220,"end":7224,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":7228,"end":7241,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7228,"end":7241,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7318,"end":7324,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":7328,"end":7341,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7328,"end":7341,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7364,"end":7384,"text":"Int8ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7364,"end":7384,"text":"Int8ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7396,"end":7404,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":7406,"end":7414,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7406,"end":7414,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7425,"end":7434,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7425,"end":7434,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7435,"end":7446,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":7435,"end":7446,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":7599,"end":7603,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (elements: Iterable<number>): Int8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (elements: Iterable<number>): Int8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":7604,"end":7612,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":7614,"end":7622,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7614,"end":7622,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7633,"end":7642,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7633,"end":7642,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7643,"end":7654,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":7643,"end":7654,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":7949,"end":7953,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Int8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (elements: Iterable<number>): Int8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; (elements: Iterable<number>): Int8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":7954,"end":7955,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7957,"end":7965,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2015.iterable.d.ts","start":7967,"end":7975,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7967,"end":7975,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7976,"end":7977,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7980,"end":7985,"text":"mapfn","nodeType":"Identifier","type":{"name":"Union","display":"((v: T, k: number) => number) | undefined"}}
+{"path":"es2015.iterable.d.ts","start":7989,"end":7990,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.iterable.d.ts","start":7992,"end":7993,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":7995,"end":7996,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2015.iterable.d.ts","start":8017,"end":8024,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8033,"end":8042,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8033,"end":8042,"text":"Int8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8043,"end":8054,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":8043,"end":8054,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":8070,"end":8080,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8070,"end":8080,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8081,"end":8093,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8102,"end":8117,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8102,"end":8117,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8126,"end":8132,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":8133,"end":8141,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":8146,"end":8159,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8146,"end":8159,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8263,"end":8270,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }"}}
+{"path":"es2015.iterable.d.ts","start":8274,"end":8287,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8274,"end":8287,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8372,"end":8376,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":8380,"end":8393,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8380,"end":8393,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8470,"end":8476,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":8480,"end":8493,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8480,"end":8493,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8516,"end":8537,"text":"Uint8ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8516,"end":8537,"text":"Uint8ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8549,"end":8557,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":8559,"end":8567,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8559,"end":8567,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8578,"end":8588,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8578,"end":8588,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8589,"end":8600,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":8589,"end":8600,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":8753,"end":8757,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (elements: Iterable<number>): Uint8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (elements: Iterable<number>): Uint8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":8758,"end":8766,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":8768,"end":8776,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8768,"end":8776,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8787,"end":8797,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8787,"end":8797,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":8798,"end":8809,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":8798,"end":8809,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":9104,"end":9108,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Uint8Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (elements: Iterable<number>): Uint8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; (elements: Iterable<number>): Uint8Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":9109,"end":9110,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9112,"end":9120,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2015.iterable.d.ts","start":9122,"end":9130,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9122,"end":9130,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9131,"end":9132,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9135,"end":9140,"text":"mapfn","nodeType":"Identifier","type":{"name":"Union","display":"((v: T, k: number) => number) | undefined"}}
+{"path":"es2015.iterable.d.ts","start":9144,"end":9145,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.iterable.d.ts","start":9147,"end":9148,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9150,"end":9151,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2015.iterable.d.ts","start":9172,"end":9179,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9188,"end":9198,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9188,"end":9198,"text":"Uint8Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9199,"end":9210,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":9199,"end":9210,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":9226,"end":9243,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9226,"end":9243,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9244,"end":9256,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9265,"end":9280,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9265,"end":9280,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9289,"end":9295,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":9296,"end":9304,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":9309,"end":9322,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9309,"end":9322,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9426,"end":9433,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }"}}
+{"path":"es2015.iterable.d.ts","start":9437,"end":9450,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9437,"end":9450,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9535,"end":9539,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":9543,"end":9556,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9543,"end":9556,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9633,"end":9639,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":9643,"end":9656,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9643,"end":9656,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9679,"end":9707,"text":"Uint8ClampedArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9679,"end":9707,"text":"Uint8ClampedArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9719,"end":9727,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":9729,"end":9737,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9729,"end":9737,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9748,"end":9765,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9748,"end":9765,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9766,"end":9777,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":9766,"end":9777,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":9930,"end":9934,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":9935,"end":9943,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":9945,"end":9953,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9945,"end":9953,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9964,"end":9981,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9964,"end":9981,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":9982,"end":9993,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":9982,"end":9993,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":10288,"end":10292,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Uint8ClampedArray<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; (elements: Iterable<number>): Uint8ClampedArray<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":10293,"end":10294,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10296,"end":10304,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2015.iterable.d.ts","start":10306,"end":10314,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10306,"end":10314,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10315,"end":10316,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10319,"end":10324,"text":"mapfn","nodeType":"Identifier","type":{"name":"Union","display":"((v: T, k: number) => number) | undefined"}}
+{"path":"es2015.iterable.d.ts","start":10328,"end":10329,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.iterable.d.ts","start":10331,"end":10332,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10334,"end":10335,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2015.iterable.d.ts","start":10356,"end":10363,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10372,"end":10389,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10372,"end":10389,"text":"Uint8ClampedArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10390,"end":10401,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":10390,"end":10401,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":10417,"end":10427,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10417,"end":10427,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10428,"end":10440,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10449,"end":10464,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10449,"end":10464,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10473,"end":10479,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":10480,"end":10488,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":10493,"end":10506,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10493,"end":10506,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10609,"end":10616,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }"}}
+{"path":"es2015.iterable.d.ts","start":10620,"end":10633,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10620,"end":10633,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10718,"end":10722,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":10726,"end":10739,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10726,"end":10739,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10816,"end":10822,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":10826,"end":10839,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10826,"end":10839,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10862,"end":10883,"text":"Int16ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10862,"end":10883,"text":"Int16ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10895,"end":10903,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":10905,"end":10913,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10905,"end":10913,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10924,"end":10934,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10924,"end":10934,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":10935,"end":10946,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":10935,"end":10946,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":11099,"end":11103,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (elements: Iterable<number>): Int16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (elements: Iterable<number>): Int16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":11104,"end":11112,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":11114,"end":11122,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11114,"end":11122,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11133,"end":11143,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11133,"end":11143,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11144,"end":11155,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":11144,"end":11155,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":11450,"end":11454,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Int16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (elements: Iterable<number>): Int16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; (elements: Iterable<number>): Int16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":11455,"end":11456,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11458,"end":11466,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2015.iterable.d.ts","start":11468,"end":11476,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11468,"end":11476,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11477,"end":11478,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11481,"end":11486,"text":"mapfn","nodeType":"Identifier","type":{"name":"Union","display":"((v: T, k: number) => number) | undefined"}}
+{"path":"es2015.iterable.d.ts","start":11490,"end":11491,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.iterable.d.ts","start":11493,"end":11494,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11496,"end":11497,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2015.iterable.d.ts","start":11518,"end":11525,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11534,"end":11544,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11534,"end":11544,"text":"Int16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11545,"end":11556,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":11545,"end":11556,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":11572,"end":11583,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11572,"end":11583,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11584,"end":11596,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11605,"end":11620,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11605,"end":11620,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11629,"end":11635,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":11636,"end":11644,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":11649,"end":11662,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11649,"end":11662,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11766,"end":11773,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }"}}
+{"path":"es2015.iterable.d.ts","start":11777,"end":11790,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11777,"end":11790,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11875,"end":11879,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":11883,"end":11896,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11883,"end":11896,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11973,"end":11979,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":11983,"end":11996,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":11983,"end":11996,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12019,"end":12041,"text":"Uint16ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12019,"end":12041,"text":"Uint16ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12053,"end":12061,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":12063,"end":12071,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12063,"end":12071,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12082,"end":12093,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12082,"end":12093,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12094,"end":12105,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":12094,"end":12105,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":12258,"end":12262,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (elements: Iterable<number>): Uint16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (elements: Iterable<number>): Uint16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":12263,"end":12271,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":12273,"end":12281,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12273,"end":12281,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12292,"end":12303,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12292,"end":12303,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12304,"end":12315,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":12304,"end":12315,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":12610,"end":12614,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Uint16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (elements: Iterable<number>): Uint16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; (elements: Iterable<number>): Uint16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":12615,"end":12616,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12618,"end":12626,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2015.iterable.d.ts","start":12628,"end":12636,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12628,"end":12636,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12637,"end":12638,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12641,"end":12646,"text":"mapfn","nodeType":"Identifier","type":{"name":"Union","display":"((v: T, k: number) => number) | undefined"}}
+{"path":"es2015.iterable.d.ts","start":12650,"end":12651,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.iterable.d.ts","start":12653,"end":12654,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12656,"end":12657,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2015.iterable.d.ts","start":12678,"end":12685,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12694,"end":12705,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12694,"end":12705,"text":"Uint16Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12706,"end":12717,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":12706,"end":12717,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":12733,"end":12743,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12733,"end":12743,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12744,"end":12756,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12765,"end":12780,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12765,"end":12780,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12789,"end":12795,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":12796,"end":12804,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":12809,"end":12822,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12809,"end":12822,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12926,"end":12933,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }"}}
+{"path":"es2015.iterable.d.ts","start":12937,"end":12950,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":12937,"end":12950,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13035,"end":13039,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":13043,"end":13056,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13043,"end":13056,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13133,"end":13139,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":13143,"end":13156,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13143,"end":13156,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13179,"end":13200,"text":"Int32ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13179,"end":13200,"text":"Int32ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13212,"end":13220,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":13222,"end":13230,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13222,"end":13230,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13241,"end":13251,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13241,"end":13251,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13252,"end":13263,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":13252,"end":13263,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":13416,"end":13420,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (elements: Iterable<number>): Int32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (elements: Iterable<number>): Int32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":13421,"end":13429,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":13431,"end":13439,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13431,"end":13439,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13450,"end":13460,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13450,"end":13460,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13461,"end":13472,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":13461,"end":13472,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":13767,"end":13771,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (elements: Iterable<number>): Int32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (elements: Iterable<number>): Int32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":13772,"end":13773,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13775,"end":13783,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2015.iterable.d.ts","start":13785,"end":13793,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13785,"end":13793,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13794,"end":13795,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13798,"end":13803,"text":"mapfn","nodeType":"Identifier","type":{"name":"Union","display":"((v: T, k: number) => number) | undefined"}}
+{"path":"es2015.iterable.d.ts","start":13807,"end":13808,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.iterable.d.ts","start":13810,"end":13811,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13813,"end":13814,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2015.iterable.d.ts","start":13835,"end":13842,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13851,"end":13861,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13851,"end":13861,"text":"Int32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13862,"end":13873,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":13862,"end":13873,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":13889,"end":13900,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13889,"end":13900,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13901,"end":13913,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13922,"end":13937,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13922,"end":13937,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13946,"end":13952,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":13953,"end":13961,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":13966,"end":13979,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":13966,"end":13979,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14083,"end":14090,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }"}}
+{"path":"es2015.iterable.d.ts","start":14094,"end":14107,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14094,"end":14107,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14192,"end":14196,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":14200,"end":14213,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14200,"end":14213,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14290,"end":14296,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":14300,"end":14313,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14300,"end":14313,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14336,"end":14358,"text":"Uint32ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14336,"end":14358,"text":"Uint32ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14370,"end":14378,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":14380,"end":14388,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14380,"end":14388,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14399,"end":14410,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14399,"end":14410,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14411,"end":14422,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":14411,"end":14422,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":14575,"end":14579,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (elements: Iterable<number>): Uint32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (elements: Iterable<number>): Uint32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":14580,"end":14588,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":14590,"end":14598,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14590,"end":14598,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14609,"end":14620,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14609,"end":14620,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14621,"end":14632,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":14621,"end":14632,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":14927,"end":14931,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Uint32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (elements: Iterable<number>): Uint32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; (elements: Iterable<number>): Uint32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":14932,"end":14933,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14935,"end":14943,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2015.iterable.d.ts","start":14945,"end":14953,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14945,"end":14953,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14954,"end":14955,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14958,"end":14963,"text":"mapfn","nodeType":"Identifier","type":{"name":"Union","display":"((v: T, k: number) => number) | undefined"}}
+{"path":"es2015.iterable.d.ts","start":14967,"end":14968,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.iterable.d.ts","start":14970,"end":14971,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":14973,"end":14974,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2015.iterable.d.ts","start":14995,"end":15002,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15011,"end":15022,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15011,"end":15022,"text":"Uint32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15023,"end":15034,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":15023,"end":15034,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":15050,"end":15062,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15050,"end":15062,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15063,"end":15075,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15084,"end":15099,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15084,"end":15099,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15108,"end":15114,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":15115,"end":15123,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":15128,"end":15141,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15128,"end":15141,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15245,"end":15252,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }"}}
+{"path":"es2015.iterable.d.ts","start":15256,"end":15269,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15256,"end":15269,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15354,"end":15358,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":15362,"end":15375,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15362,"end":15375,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15452,"end":15458,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":15462,"end":15475,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15462,"end":15475,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15498,"end":15521,"text":"Float32ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15498,"end":15521,"text":"Float32ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15533,"end":15541,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":15543,"end":15551,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15543,"end":15551,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15562,"end":15574,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15562,"end":15574,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15575,"end":15586,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":15575,"end":15586,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":15739,"end":15743,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (elements: Iterable<number>): Float32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (elements: Iterable<number>): Float32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":15744,"end":15752,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":15754,"end":15762,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15754,"end":15762,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15773,"end":15785,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15773,"end":15785,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":15786,"end":15797,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":15786,"end":15797,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":16092,"end":16096,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Float32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (elements: Iterable<number>): Float32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; (elements: Iterable<number>): Float32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":16097,"end":16098,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16100,"end":16108,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2015.iterable.d.ts","start":16110,"end":16118,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16110,"end":16118,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16119,"end":16120,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16123,"end":16128,"text":"mapfn","nodeType":"Identifier","type":{"name":"Union","display":"((v: T, k: number) => number) | undefined"}}
+{"path":"es2015.iterable.d.ts","start":16132,"end":16133,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.iterable.d.ts","start":16135,"end":16136,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16138,"end":16139,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2015.iterable.d.ts","start":16160,"end":16167,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16176,"end":16188,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16176,"end":16188,"text":"Float32Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16189,"end":16200,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":16189,"end":16200,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":16216,"end":16228,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16216,"end":16228,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16229,"end":16241,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16250,"end":16265,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16250,"end":16265,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16274,"end":16280,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2015.iterable.d.ts","start":16281,"end":16289,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2015.iterable.d.ts","start":16294,"end":16307,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16294,"end":16307,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16411,"end":16418,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }"}}
+{"path":"es2015.iterable.d.ts","start":16422,"end":16435,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16422,"end":16435,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16520,"end":16524,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":16528,"end":16541,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16528,"end":16541,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16618,"end":16624,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2015.iterable.d.ts","start":16628,"end":16641,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16628,"end":16641,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16664,"end":16687,"text":"Float64ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16664,"end":16687,"text":"Float64ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16699,"end":16707,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":16709,"end":16717,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16709,"end":16717,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16728,"end":16740,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16728,"end":16740,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16741,"end":16752,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":16741,"end":16752,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":16905,"end":16909,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (elements: Iterable<number>): Float64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (elements: Iterable<number>): Float64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":16910,"end":16918,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2015.iterable.d.ts","start":16920,"end":16928,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16920,"end":16928,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16939,"end":16951,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16939,"end":16951,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":16952,"end":16963,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":16952,"end":16963,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":17258,"end":17262,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Float64Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (elements: Iterable<number>): Float64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; (elements: Iterable<number>): Float64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>; }"}}
+{"path":"es2015.iterable.d.ts","start":17263,"end":17264,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":17266,"end":17274,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2015.iterable.d.ts","start":17276,"end":17284,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":17276,"end":17284,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":17285,"end":17286,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":17289,"end":17294,"text":"mapfn","nodeType":"Identifier","type":{"name":"Union","display":"((v: T, k: number) => number) | undefined"}}
+{"path":"es2015.iterable.d.ts","start":17298,"end":17299,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2015.iterable.d.ts","start":17301,"end":17302,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":17304,"end":17305,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2015.iterable.d.ts","start":17326,"end":17333,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":17342,"end":17354,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":17342,"end":17354,"text":"Float64Array","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2015.iterable.d.ts","start":17355,"end":17366,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2015.iterable.d.ts","start":17355,"end":17366,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}

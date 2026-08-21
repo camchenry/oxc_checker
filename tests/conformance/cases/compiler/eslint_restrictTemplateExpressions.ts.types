@@ -1,159 +1,158 @@
 const arg1 = [1, 2];
->     ^^^^: number[]   (TyArray) (BindingIdentifier)
+>     ^^^^: number[]   (Array) (Identifier)
 
 const msg1 = `arg1 = ${arg1}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg1 = `arg1 = ${arg1}`;
->                      ^^^^: number[]   (TyArray) (IdentifierReference)
+>                      ^^^^: number[]   (Array) (Identifier)
 
 const arg2 = { name: 'Foo' };
->     ^^^^: { name: string; }   (TyObject) (BindingIdentifier)
+>     ^^^^: { name: string; }   (Object) (Identifier)
 
 const arg2 = { name: 'Foo' };
->              ^^^^: string   (TyString) (ObjectProperty)
+>              ^^^^: string   (String) (Identifier)
 
 const msg2 = `arg2 = ${arg2 || null}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg2 = `arg2 = ${arg2 || null}`;
->                      ^^^^: { name: string; }   (TyObject) (IdentifierReference)
+>                      ^^^^: { name: string; }   (Object) (Identifier)
 
 const arg = 'foo';
->     ^^^: "foo"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^: "foo"   (StringLiteral) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: "arg = foo"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^: "arg = foo"   (StringLiteral) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->                     ^^^: "foo"   (TyStringLiteral) (IdentifierReference)
+>                     ^^^: "foo"   (StringLiteral) (Identifier)
 
 const msg2 = `arg = ${arg || 'default'}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg2 = `arg = ${arg || 'default'}`;
->                     ^^^: "foo"   (TyStringLiteral) (IdentifierReference)
+>                     ^^^: "foo"   (StringLiteral) (Identifier)
 
 const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
->     ^^^^^^^^^^^^^^^^^^: string & { _kind?: 'MyString'; }   (TyIntersection) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^: string & { _kind?: 'MyString'; }   (Intersection) (Identifier)
 
 const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
->                                    ^^^^^: "MyString" | undefined   (TyUnion) (TSPropertySignature)
+>                                    ^^^^^: "MyString" | undefined   (Union) (Identifier)
 
 const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
->                                    ^^^^^^^^^^^^^^^^^^: string & { _kind?: 'MyString'; }   (TyIntersection) (IdentifierReference)
+>                                    ^^^^^^^^^^^^^^^^^^: string & { _kind?: 'MyString'; }   (Intersection) (Identifier)
 
 const arg = 123;
->     ^^^: 123   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^: 123   (NumberLiteral) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: "arg = 123"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^: "arg = 123"   (StringLiteral) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->                     ^^^: 123   (TyNumberLiteral) (IdentifierReference)
+>                     ^^^: 123   (NumberLiteral) (Identifier)
 
 const msg2 = `arg = ${arg || 'zero'}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg2 = `arg = ${arg || 'zero'}`;
->                     ^^^: 123   (TyNumberLiteral) (IdentifierReference)
+>                     ^^^: 123   (NumberLiteral) (Identifier)
 
 const arg = true;
->     ^^^: true   (TyBooleanLiteral) (BindingIdentifier)
+>     ^^^: true   (BooleanLiteral) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: "arg = true"   (TyStringLiteral) (BindingIdentifier)
-  expected: string
+>     ^^^^: "arg = true"   (StringLiteral) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->                     ^^^: true   (TyBooleanLiteral) (IdentifierReference)
+>                     ^^^: true   (BooleanLiteral) (Identifier)
 
 const msg2 = `arg = ${arg || 'not truthy'}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg2 = `arg = ${arg || 'not truthy'}`;
->                     ^^^: true   (TyBooleanLiteral) (IdentifierReference)
+>                     ^^^: true   (BooleanLiteral) (Identifier)
 
 const user = JSON.parse('{ "name": "foo" }');
->     ^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^: any   (Any) (Identifier)
 
 const user = JSON.parse('{ "name": "foo" }');
->            ^^^^: JSON   (TyTypeReference) (IdentifierReference)
+>            ^^^^: JSON   (TypeReference) (Identifier)
 
 const user = JSON.parse('{ "name": "foo" }');
->                 ^^^^^: (text: string, reviver?: (this: any, key: string, value: any) => any) => any   (TyFunction) (StaticMemberExpression)
+>                 ^^^^^: (text: string, reviver?: (this: any, key: string, value: any) => any) => any   (Function) (Identifier)
 
 const msg1 = `arg = ${user.name}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg1 = `arg = ${user.name}`;
->                     ^^^^: any   (TyAny) (IdentifierReference)
+>                     ^^^^: any   (Any) (Identifier)
 
 const msg1 = `arg = ${user.name}`;
->                          ^^^^: any   (TyAny) (StaticMemberExpression)
+>                          ^^^^: any   (Any) (Identifier)
 
 const msg2 = `arg = ${user.name || 'the user with no name'}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg2 = `arg = ${user.name || 'the user with no name'}`;
->                     ^^^^: any   (TyAny) (IdentifierReference)
+>                     ^^^^: any   (Any) (Identifier)
 
 const msg2 = `arg = ${user.name || 'the user with no name'}`;
->                          ^^^^: any   (TyAny) (StaticMemberExpression)
+>                          ^^^^: any   (Any) (Identifier)
 
 const arg = condition ? 'ok' : null;
->     ^^^: "ok" | null   (TyUnion) (BindingIdentifier)
+>     ^^^: "ok" | null   (Union) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->                     ^^^: "ok" | null   (TyUnion) (IdentifierReference)
+>                     ^^^: "ok" | null   (Union) (Identifier)
 
 const arg = new RegExp('foo');
->     ^^^: RegExp   (TyTypeReference) (BindingIdentifier)
+>     ^^^: RegExp   (TypeReference) (Identifier)
 
 const arg = new RegExp('foo');
->               ^^^^^^: RegExpConstructor   (TyTypeReference) (IdentifierReference)
+>               ^^^^^^: RegExpConstructor   (TypeReference) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->                     ^^^: RegExp   (TyTypeReference) (IdentifierReference)
+>                     ^^^: RegExp   (TypeReference) (Identifier)
 
 const arg = /foo/;
->     ^^^: RegExp   (TyTypeReference) (BindingIdentifier)
+>     ^^^: RegExp   (TypeReference) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->                     ^^^: RegExp   (TyTypeReference) (IdentifierReference)
+>                     ^^^: RegExp   (TypeReference) (Identifier)
 
 const arg = 'something';
->     ^^^: "something"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^: "something"   (StringLiteral) (Identifier)
 
 const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
->     ^^^^: "something" | "arg = something"   (TyUnion) (BindingIdentifier)
+>     ^^^^: "something" | "arg = something"   (Union) (Identifier)
 
 const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
->                   ^^^: "something"   (TyStringLiteral) (IdentifierReference)
+>                   ^^^: "something"   (StringLiteral) (Identifier)
 
 const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
->                                      ^^^: "something"   (TyStringLiteral) (IdentifierReference)
+>                                      ^^^: "something"   (StringLiteral) (Identifier)
 
 const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
->                                                     ^^^: never   (TyNever) (IdentifierReference)
+>                                                     ^^^: never   (Never) (Identifier)
 
 const arg = ['foo', 'bar'];
->     ^^^: string[]   (TyArray) (BindingIdentifier)
+>     ^^^: string[]   (Array) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const msg1 = `arg = ${arg}`;
->                     ^^^: string[]   (TyArray) (IdentifierReference)
+>                     ^^^: string[]   (Array) (Identifier)

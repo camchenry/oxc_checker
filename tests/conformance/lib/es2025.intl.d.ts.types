@@ -1,420 +1,420 @@
 declare namespace Intl {
->                 ^^^^: typeof Intl   (TyTypeQuery) (TSModuleDeclaration)
+>                 ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
 declare namespace Intl {
->                 ^^^^: typeof Intl   (TyTypeQuery) (BindingIdentifier)
+>                 ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     type DurationFormatLocaleMatcher = "lookup" | "best fit";
->        ^^^^^^^^^^^^^^^^^^^^^^^^^^^: "lookup" | "best fit"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^: "lookup" | "best fit"   (Union) (Identifier)
 
     type DurationFormatStyle = "long" | "short" | "narrow" | "digital";
->        ^^^^^^^^^^^^^^^^^^^: "long" | "short" | "narrow" | "digital"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^: "long" | "short" | "narrow" | "digital"   (Union) (Identifier)
 
     type DurationFormatDisplayOption = "always" | "auto";
->        ^^^^^^^^^^^^^^^^^^^^^^^^^^^: "always" | "auto"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^: "always" | "auto"   (Union) (Identifier)
 
     type DurationFormatUnit =
->        ^^^^^^^^^^^^^^^^^^: "years" | "months" | "weeks" | "days" | "hours" | "minutes" | "seconds" | "milliseconds" | "microseconds" | "nanoseconds"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^: "years" | "months" | "weeks" | "days" | "hours" | "minutes" | "seconds" | "milliseconds" | "microseconds" | "nanoseconds"   (Union) (Identifier)
 
     type DurationFormatUnitSingular =
->        ^^^^^^^^^^^^^^^^^^^^^^^^^^: "year" | "month" | "week" | "day" | "hour" | "minute" | "second" | "millisecond" | "microsecond" | "nanosecond"   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^: "year" | "month" | "week" | "day" | "hour" | "minute" | "second" | "millisecond" | "microsecond" | "nanosecond"   (Union) (Identifier)
 
     type DurationFormatPart =
->        ^^^^^^^^^^^^^^^^^^: { type: "literal"; value: string; unit?: DurationFormatUnitSingular; } | { type: Exclude<NumberFormatPartTypes, "literal">; value: string; unit: DurationFormatUnitSingular; }   (TyUnion) (TSTypeAliasDeclaration)
+>        ^^^^^^^^^^^^^^^^^^: { type: "literal"; value: string; unit?: DurationFormatUnitSingular; } | { type: Exclude<NumberFormatPartTypes, "literal">; value: string; unit: DurationFormatUnitSingular; }   (Union) (Identifier)
 
             type: "literal";
->           ^^^^: "literal"   (TyStringLiteral) (TSPropertySignature)
+>           ^^^^: "literal"   (StringLiteral) (Identifier)
 
             value: string;
->           ^^^^^: string   (TyString) (TSPropertySignature)
+>           ^^^^^: string   (String) (Identifier)
 
             unit?: DurationFormatUnitSingular;
->           ^^^^: DurationFormatUnitSingular | undefined   (TyUnion) (TSPropertySignature)
+>           ^^^^: DurationFormatUnitSingular | undefined   (Union) (Identifier)
 
             unit?: DurationFormatUnitSingular;
->                  ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->           ^^^^: Exclude<NumberFormatPartTypes, "literal">   (TyTypeReference) (TSPropertySignature)
+>           ^^^^: Exclude<NumberFormatPartTypes, "literal">   (TypeReference) (Identifier)
         expected: "compact" | "currency" | "decimal" | "exponentInteger" | "exponentMinusSign" | "exponentSeparator" | "fraction" | "group" | "infinity" | "integer" | "minusSign" | "nan" | "percent" | "percentSign" | "plusSign" | "unit" | "unknown"
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->                 ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^: any   (Any) (Identifier)
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->                 ^^^^^^^: any   (TyError) (IdentifierReference)
+>                 ^^^^^^^: any   (Error) (Identifier)
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->                         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
             type: Exclude<NumberFormatPartTypes, "literal">;
->                         ^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                         ^^^^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
             value: string;
->           ^^^^^: string   (TyString) (TSPropertySignature)
+>           ^^^^^: string   (String) (Identifier)
 
             unit: DurationFormatUnitSingular;
->           ^^^^: DurationFormatUnitSingular   (TyTypeReference) (TSPropertySignature)
+>           ^^^^: DurationFormatUnitSingular   (TypeReference) (Identifier)
 
             unit: DurationFormatUnitSingular;
->                 ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface DurationFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface DurationFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         localeMatcher?: DurationFormatLocaleMatcher | undefined;
->       ^^^^^^^^^^^^^: DurationFormatLocaleMatcher | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^: DurationFormatLocaleMatcher | undefined   (Union) (Identifier)
 
         localeMatcher?: DurationFormatLocaleMatcher | undefined;
->                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         numberingSystem?: string | undefined;
->       ^^^^^^^^^^^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^: string | undefined   (Union) (Identifier)
 
         style?: DurationFormatStyle | undefined;
->       ^^^^^: DurationFormatStyle | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^: DurationFormatStyle | undefined   (Union) (Identifier)
 
         style?: DurationFormatStyle | undefined;
->               ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         years?: "long" | "short" | "narrow" | undefined;
->       ^^^^^: "long" | "short" | "narrow" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^: "long" | "short" | "narrow" | undefined   (Union) (Identifier)
 
         yearsDisplay?: DurationFormatDisplayOption | undefined;
->       ^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (Union) (Identifier)
 
         yearsDisplay?: DurationFormatDisplayOption | undefined;
->                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         months?: "long" | "short" | "narrow" | undefined;
->       ^^^^^^: "long" | "short" | "narrow" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^: "long" | "short" | "narrow" | undefined   (Union) (Identifier)
 
         monthsDisplay?: DurationFormatDisplayOption | undefined;
->       ^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (Union) (Identifier)
 
         monthsDisplay?: DurationFormatDisplayOption | undefined;
->                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         weeks?: "long" | "short" | "narrow" | undefined;
->       ^^^^^: "long" | "short" | "narrow" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^: "long" | "short" | "narrow" | undefined   (Union) (Identifier)
 
         weeksDisplay?: DurationFormatDisplayOption | undefined;
->       ^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (Union) (Identifier)
 
         weeksDisplay?: DurationFormatDisplayOption | undefined;
->                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         days?: "long" | "short" | "narrow" | undefined;
->       ^^^^: "long" | "short" | "narrow" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^: "long" | "short" | "narrow" | undefined   (Union) (Identifier)
 
         daysDisplay?: DurationFormatDisplayOption | undefined;
->       ^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (Union) (Identifier)
 
         daysDisplay?: DurationFormatDisplayOption | undefined;
->                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         hours?: "long" | "short" | "narrow" | "numeric" | "2-digit" | undefined;
->       ^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit" | undefined   (Union) (Identifier)
 
         hoursDisplay?: DurationFormatDisplayOption | undefined;
->       ^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (Union) (Identifier)
 
         hoursDisplay?: DurationFormatDisplayOption | undefined;
->                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         minutes?: "long" | "short" | "narrow" | "numeric" | "2-digit" | undefined;
->       ^^^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit" | undefined   (Union) (Identifier)
 
         minutesDisplay?: DurationFormatDisplayOption | undefined;
->       ^^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (Union) (Identifier)
 
         minutesDisplay?: DurationFormatDisplayOption | undefined;
->                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         seconds?: "long" | "short" | "narrow" | "numeric" | "2-digit" | undefined;
->       ^^^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit" | undefined   (Union) (Identifier)
 
         secondsDisplay?: DurationFormatDisplayOption | undefined;
->       ^^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (Union) (Identifier)
 
         secondsDisplay?: DurationFormatDisplayOption | undefined;
->                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         milliseconds?: "long" | "short" | "narrow" | "numeric" | undefined;
->       ^^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric" | undefined   (Union) (Identifier)
 
         millisecondsDisplay?: DurationFormatDisplayOption | undefined;
->       ^^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (Union) (Identifier)
 
         millisecondsDisplay?: DurationFormatDisplayOption | undefined;
->                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         microseconds?: "long" | "short" | "narrow" | "numeric" | undefined;
->       ^^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric" | undefined   (Union) (Identifier)
 
         microsecondsDisplay?: DurationFormatDisplayOption | undefined;
->       ^^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (Union) (Identifier)
 
         microsecondsDisplay?: DurationFormatDisplayOption | undefined;
->                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         nanoseconds?: "long" | "short" | "narrow" | "numeric" | undefined;
->       ^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric" | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric" | undefined   (Union) (Identifier)
 
         nanosecondsDisplay?: DurationFormatDisplayOption | undefined;
->       ^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption | undefined   (Union) (Identifier)
 
         nanosecondsDisplay?: DurationFormatDisplayOption | undefined;
->                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         fractionalDigits?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | undefined;
->       ^^^^^^^^^^^^^^^^: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^^: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | undefined   (Union) (Identifier)
 
     interface DurationFormat {
->             ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
     interface DurationFormat {
->             ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         format(duration: Partial<Record<DurationFormatUnit, number>>): string;
->       ^^^^^^: { (duration: Partial<Record<DurationFormatUnit, number>>): string; (duration: Partial<Record<DurationFormatUnit, number>>): string; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^: { (duration: Partial<Record<DurationFormatUnit, number>>): string; (duration: Partial<Record<DurationFormatUnit, number>>): string; }   (Object) (Identifier)
       expected: (duration: Partial<Record<DurationFormatUnit, number>>) => string
 
         format(duration: Partial<Record<DurationFormatUnit, number>>): string;
->              ^^^^^^^^: Partial<Record<DurationFormatUnit, number>>   (TyTypeReference) (BindingIdentifier)
+>              ^^^^^^^^: Partial<Record<DurationFormatUnit, number>>   (TypeReference) (Identifier)
 
         format(duration: Partial<Record<DurationFormatUnit, number>>): string;
->                        ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^^^^: any   (Any) (Identifier)
 
         format(duration: Partial<Record<DurationFormatUnit, number>>): string;
->                        ^^^^^^^: any   (TyError) (IdentifierReference)
+>                        ^^^^^^^: any   (Error) (Identifier)
 
         format(duration: Partial<Record<DurationFormatUnit, number>>): string;
->                                ^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^: any   (Any) (Identifier)
 
         format(duration: Partial<Record<DurationFormatUnit, number>>): string;
->                                ^^^^^^: any   (TyError) (IdentifierReference)
+>                                ^^^^^^: any   (Error) (Identifier)
 
         format(duration: Partial<Record<DurationFormatUnit, number>>): string;
->                                       ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                       ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         formatToParts(duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[];
->       ^^^^^^^^^^^^^: { (duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[]; (duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[]; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^: { (duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[]; (duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[]; }   (Object) (Identifier)
              expected: (duration: Partial<Record<DurationFormatUnit, number>>) => DurationFormatPart[]
 
         formatToParts(duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[];
->                     ^^^^^^^^: Partial<Record<DurationFormatUnit, number>>   (TyTypeReference) (BindingIdentifier)
+>                     ^^^^^^^^: Partial<Record<DurationFormatUnit, number>>   (TypeReference) (Identifier)
 
         formatToParts(duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[];
->                               ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^: any   (Any) (Identifier)
 
         formatToParts(duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[];
->                               ^^^^^^^: any   (TyError) (IdentifierReference)
+>                               ^^^^^^^: any   (Error) (Identifier)
 
         formatToParts(duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[];
->                                       ^^^^^^: any   (TyAny) (TSTypeReference)
+>                                       ^^^^^^: any   (Any) (Identifier)
 
         formatToParts(duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[];
->                                       ^^^^^^: any   (TyError) (IdentifierReference)
+>                                       ^^^^^^: any   (Error) (Identifier)
 
         formatToParts(duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[];
->                                              ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                              ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         formatToParts(duration: Partial<Record<DurationFormatUnit, number>>): DurationFormatPart[];
->                                                                             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                             ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         resolvedOptions(): ResolvedDurationFormatOptions;
->       ^^^^^^^^^^^^^^^: { (): ResolvedDurationFormatOptions; (): ResolvedDurationFormatOptions; }   (TyObject) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^: { (): ResolvedDurationFormatOptions; (): ResolvedDurationFormatOptions; }   (Object) (Identifier)
                expected: () => ResolvedDurationFormatOptions
 
         resolvedOptions(): ResolvedDurationFormatOptions;
->                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         resolvedOptions(): ResolvedDurationFormatOptions;
->                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface ResolvedDurationFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface ResolvedDurationFormatOptions {
->             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         locale: UnicodeBCP47LocaleIdentifier;
->       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^: UnicodeBCP47LocaleIdentifier   (TypeReference) (Identifier)
       expected: string
 
         locale: UnicodeBCP47LocaleIdentifier;
->               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         locale: UnicodeBCP47LocaleIdentifier;
->               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         numberingSystem: string;
->       ^^^^^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
         style: DurationFormatStyle;
->       ^^^^^: DurationFormatStyle   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^: DurationFormatStyle   (TypeReference) (Identifier)
 
         style: DurationFormatStyle;
->              ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         years: "long" | "short" | "narrow";
->       ^^^^^: "long" | "short" | "narrow"   (TyUnion) (TSPropertySignature)
+>       ^^^^^: "long" | "short" | "narrow"   (Union) (Identifier)
 
         yearsDisplay: DurationFormatDisplayOption;
->       ^^^^^^^^^^^^: DurationFormatDisplayOption   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^^^^: DurationFormatDisplayOption   (TypeReference) (Identifier)
 
         yearsDisplay: DurationFormatDisplayOption;
->                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         months: "long" | "short" | "narrow";
->       ^^^^^^: "long" | "short" | "narrow"   (TyUnion) (TSPropertySignature)
+>       ^^^^^^: "long" | "short" | "narrow"   (Union) (Identifier)
 
         monthsDisplay: DurationFormatDisplayOption;
->       ^^^^^^^^^^^^^: DurationFormatDisplayOption   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^^^^^: DurationFormatDisplayOption   (TypeReference) (Identifier)
 
         monthsDisplay: DurationFormatDisplayOption;
->                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         weeks: "long" | "short" | "narrow";
->       ^^^^^: "long" | "short" | "narrow"   (TyUnion) (TSPropertySignature)
+>       ^^^^^: "long" | "short" | "narrow"   (Union) (Identifier)
 
         weeksDisplay: DurationFormatDisplayOption;
->       ^^^^^^^^^^^^: DurationFormatDisplayOption   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^^^^: DurationFormatDisplayOption   (TypeReference) (Identifier)
 
         weeksDisplay: DurationFormatDisplayOption;
->                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         days: "long" | "short" | "narrow";
->       ^^^^: "long" | "short" | "narrow"   (TyUnion) (TSPropertySignature)
+>       ^^^^: "long" | "short" | "narrow"   (Union) (Identifier)
 
         daysDisplay: DurationFormatDisplayOption;
->       ^^^^^^^^^^^: DurationFormatDisplayOption   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^^^: DurationFormatDisplayOption   (TypeReference) (Identifier)
 
         daysDisplay: DurationFormatDisplayOption;
->                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         hours: "long" | "short" | "narrow" | "numeric" | "2-digit";
->       ^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit"   (TyUnion) (TSPropertySignature)
+>       ^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit"   (Union) (Identifier)
 
         hoursDisplay: DurationFormatDisplayOption;
->       ^^^^^^^^^^^^: DurationFormatDisplayOption   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^^^^: DurationFormatDisplayOption   (TypeReference) (Identifier)
 
         hoursDisplay: DurationFormatDisplayOption;
->                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         minutes: "long" | "short" | "narrow" | "numeric" | "2-digit";
->       ^^^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit"   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit"   (Union) (Identifier)
 
         minutesDisplay: DurationFormatDisplayOption;
->       ^^^^^^^^^^^^^^: DurationFormatDisplayOption   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^: DurationFormatDisplayOption   (TypeReference) (Identifier)
 
         minutesDisplay: DurationFormatDisplayOption;
->                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         seconds: "long" | "short" | "narrow" | "numeric" | "2-digit";
->       ^^^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit"   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^: "long" | "short" | "narrow" | "numeric" | "2-digit"   (Union) (Identifier)
 
         secondsDisplay: DurationFormatDisplayOption;
->       ^^^^^^^^^^^^^^: DurationFormatDisplayOption   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^: DurationFormatDisplayOption   (TypeReference) (Identifier)
 
         secondsDisplay: DurationFormatDisplayOption;
->                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         milliseconds: "long" | "short" | "narrow" | "numeric";
->       ^^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric"   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric"   (Union) (Identifier)
 
         millisecondsDisplay: DurationFormatDisplayOption;
->       ^^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption   (TypeReference) (Identifier)
 
         millisecondsDisplay: DurationFormatDisplayOption;
->                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         microseconds: "long" | "short" | "narrow" | "numeric";
->       ^^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric"   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric"   (Union) (Identifier)
 
         microsecondsDisplay: DurationFormatDisplayOption;
->       ^^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption   (TypeReference) (Identifier)
 
         microsecondsDisplay: DurationFormatDisplayOption;
->                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         nanoseconds: "long" | "short" | "narrow" | "numeric";
->       ^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric"   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^: "long" | "short" | "narrow" | "numeric"   (Union) (Identifier)
 
         nanosecondsDisplay: DurationFormatDisplayOption;
->       ^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^^^^: DurationFormatDisplayOption   (TypeReference) (Identifier)
 
         nanosecondsDisplay: DurationFormatDisplayOption;
->                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         fractionalDigits?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
->       ^^^^^^^^^^^^^^^^: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | undefined   (TyUnion) (TSPropertySignature)
+>       ^^^^^^^^^^^^^^^^: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | undefined   (Union) (Identifier)
 
     const DurationFormat: {
->         ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         prototype: DurationFormat;
->       ^^^^^^^^^: DurationFormat   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^^: DurationFormat   (TypeReference) (Identifier)
 
         prototype: DurationFormat;
->                  ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         prototype: DurationFormat;
->                  ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (IdentifierReference)
+>                  ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat;
->            ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>            ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
             expected: LocalesArgument
 
         new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat;
->                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat;
->                      ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat;
->                                       ^^^^^^^: DurationFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                       ^^^^^^^: DurationFormatOptions | undefined   (Union) (Identifier)
 
         new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat;
->                                                 ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                 ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat;
->                                                 ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                 ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat;
->                                                                         ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (TSTypeReference)
+>                                                                         ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat;
->                                                                         ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (TyObject) (IdentifierReference)
+>                                                                         ^^^^^^^^^^^^^^: { new (locales?: LocalesArgument, options?: DurationFormatOptions): DurationFormat; prototype: DurationFormat; supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[]; }   (Object) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->       ^^^^^^^^^^^^^^^^^^: (locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]   (TyFunction) (TSMethodSignature)
+>       ^^^^^^^^^^^^^^^^^^: (locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }) => UnicodeBCP47LocaleIdentifier[]   (Function) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                          ^^^^^^^: LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>                          ^^^^^^^: LocalesArgument | undefined   (Union) (Identifier)
                           expected: LocalesArgument
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                    ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                    ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                                     ^^^^^^^: { localeMatcher?: DurationFormatLocaleMatcher; } | undefined   (TyUnion) (BindingIdentifier)
+>                                                     ^^^^^^^: { localeMatcher?: DurationFormatLocaleMatcher; } | undefined   (Union) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                                                 ^^^^^^^^^^^^^: DurationFormatLocaleMatcher | undefined   (TyUnion) (TSPropertySignature)
+>                                                                 ^^^^^^^^^^^^^: DurationFormatLocaleMatcher | undefined   (Union) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: DurationFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
->                                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)

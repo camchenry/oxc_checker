@@ -1,32 +1,32 @@
 interface Shape {
->         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^: any   (Any) (Identifier)
 
 interface Shape {
->         ^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^: any   (Any) (Identifier)
 
   hash: HashWrapper;
-> ^^^^: HashTarget   (TyTypeReference) (TSPropertySignature)
+> ^^^^: HashTarget   (TypeReference) (Identifier)
 
   hash: HashWrapper;
->       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>       ^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface HashAlgorithm {}
->         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface HashAlgorithm {}
->         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type HashTarget = HashAlgorithm | string;
->    ^^^^^^^^^^: HashAlgorithm | string   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: HashAlgorithm | string   (Union) (Identifier)
 
 type HashTarget = HashAlgorithm | string;
->                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type HashTarget = HashAlgorithm | string;
->                 ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                 ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type HashWrapper = HashTarget;
->    ^^^^^^^^^^^: HashAlgorithm | string   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: HashAlgorithm | string   (Union) (Identifier)
 
 type HashWrapper = HashTarget;
->                  ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^: any   (Any) (Identifier)

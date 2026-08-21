@@ -1,41 +1,41 @@
 export declare const dataTagSymbol: unique symbol;
->                    ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
+>                    ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type dataTagSymbol = typeof dataTagSymbol;
->           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type dataTagSymbol = typeof dataTagSymbol;
->                                  ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+>                                  ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export declare const dataTagErrorSymbol: unique symbol;
->                    ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
+>                    ^^^^^^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
->           ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol;
->                                       ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+>                                       ^^^^^^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export declare const unsetMarker: unique symbol;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type UnsetMarker = typeof unsetMarker;
->           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type UnsetMarker = typeof unsetMarker;
->                                ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+>                                ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type AnyDataTag = {
->           ^^^^^^^^^^: { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^: { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }   (Object) (Identifier)
 
 	[dataTagSymbol]: any;
-> ^^^^^^^^^^^^^: any   (TyAny) (TSPropertySignature)
+> ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 	[dataTagSymbol]: any;
-> ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+> ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 	[dataTagErrorSymbol]: any;
-> ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSPropertySignature)
+> ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 	[dataTagErrorSymbol]: any;
-> ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+> ^^^^^^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)

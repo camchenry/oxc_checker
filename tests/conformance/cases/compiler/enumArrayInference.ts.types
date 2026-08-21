@@ -1,26 +1,26 @@
 enum E { A, B }
->    ^: typeof E   (TyTypeQuery) (TSEnumDeclaration)
+>    ^: typeof E   (TypeQuery) (Identifier)
 
 enum E { A, B }
->    ^: typeof E   (TyTypeQuery) (BindingIdentifier)
+>    ^: typeof E   (TypeQuery) (Identifier)
 
 enum E { A, B }
->        ^: E.A   (TyTypeReference) (TSEnumMember)
+>        ^: E.A   (TypeReference) (Identifier)
 
 enum E { A, B }
->           ^: E.B   (TyTypeReference) (TSEnumMember)
+>           ^: E.B   (TypeReference) (Identifier)
 
 const values = [E.A, E.B];
->     ^^^^^^: E[]   (TyArray) (BindingIdentifier)
+>     ^^^^^^: E[]   (Array) (Identifier)
 
 const values = [E.A, E.B];
->               ^: typeof E   (TyTypeQuery) (IdentifierReference)
+>               ^: typeof E   (TypeQuery) (Identifier)
 
 const values = [E.A, E.B];
->                 ^: E.A   (TyTypeReference) (StaticMemberExpression)
+>                 ^: E.A   (TypeReference) (Identifier)
 
 const values = [E.A, E.B];
->                    ^: typeof E   (TyTypeQuery) (IdentifierReference)
+>                    ^: typeof E   (TypeQuery) (Identifier)
 
 const values = [E.A, E.B];
->                      ^: E.B   (TyTypeReference) (StaticMemberExpression)
+>                      ^: E.B   (TypeReference) (Identifier)

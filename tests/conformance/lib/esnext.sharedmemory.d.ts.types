@@ -1,13 +1,13 @@
 interface Atomics {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: Atomics
 
 interface Atomics {
->         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: Atomics
 
     pause(n?: number): void;
->   ^^^^^: { (n?: number): void; (n?: number): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (n?: number): void; (n?: number): void; }   (Object) (Identifier)
 
     pause(n?: number): void;
->         ^: number | undefined   (TyUnion) (BindingIdentifier)
+>         ^: number | undefined   (Union) (Identifier)

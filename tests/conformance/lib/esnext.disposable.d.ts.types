@@ -1,413 +1,413 @@
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly dispose: unique symbol;
->            ^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly asyncDispose: unique symbol;
->            ^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Disposable {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Disposable {
->         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.dispose](): void;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.dispose](): void;
->           ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface AsyncDisposable {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncDisposable {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncDispose](): PromiseLike<void>;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.asyncDispose](): PromiseLike<void>;
->           ^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.asyncDispose](): PromiseLike<void>;
->                            ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncDispose](): PromiseLike<void>;
->                            ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                            ^^^^^^^^^^^: any   (Error) (Identifier)
 
 interface SuppressedError extends Error {
->         ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TypeReference) (Identifier)
 
 interface SuppressedError extends Error {
->         ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TypeReference) (Identifier)
 
 interface SuppressedError extends Error {
->                                 ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
+>                                 ^^^^^: ErrorConstructor   (TypeReference) (Identifier)
 
 interface SuppressedError extends Error {
->                                 ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                 ^^^^^: ErrorConstructor   (TypeReference) (Identifier)
 
     error: any;
->   ^^^^^: any   (TyAny) (TSPropertySignature)
+>   ^^^^^: any   (Any) (Identifier)
 
     suppressed: any;
->   ^^^^^^^^^^: any   (TyAny) (TSPropertySignature)
+>   ^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SuppressedErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SuppressedErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (error: any, suppressed: any, message?: string): SuppressedError;
->        ^^^^^: any   (TyAny) (BindingIdentifier)
+>        ^^^^^: any   (Any) (Identifier)
 
     new (error: any, suppressed: any, message?: string): SuppressedError;
->                    ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                    ^^^^^^^^^^: any   (Any) (Identifier)
 
     new (error: any, suppressed: any, message?: string): SuppressedError;
->                                     ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>                                     ^^^^^^^: string | undefined   (Union) (Identifier)
 
     new (error: any, suppressed: any, message?: string): SuppressedError;
->                                                        ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                                        ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TypeReference) (Identifier)
 
     new (error: any, suppressed: any, message?: string): SuppressedError;
->                                                        ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                                        ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TypeReference) (Identifier)
 
     (error: any, suppressed: any, message?: string): SuppressedError;
->    ^^^^^: any   (TyAny) (BindingIdentifier)
+>    ^^^^^: any   (Any) (Identifier)
 
     (error: any, suppressed: any, message?: string): SuppressedError;
->                ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                ^^^^^^^^^^: any   (Any) (Identifier)
 
     (error: any, suppressed: any, message?: string): SuppressedError;
->                                 ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>                                 ^^^^^^^: string | undefined   (Union) (Identifier)
 
     (error: any, suppressed: any, message?: string): SuppressedError;
->                                                    ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                                    ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TypeReference) (Identifier)
 
     (error: any, suppressed: any, message?: string): SuppressedError;
->                                                    ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                                    ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TypeReference) (Identifier)
 
     readonly prototype: SuppressedError;
->            ^^^^^^^^^: SuppressedError   (TyTypeReference) (TSPropertySignature)
+>            ^^^^^^^^^: SuppressedError   (TypeReference) (Identifier)
 
     readonly prototype: SuppressedError;
->                       ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TypeReference) (Identifier)
 
     readonly prototype: SuppressedError;
->                       ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TypeReference) (Identifier)
 
 declare var SuppressedError: SuppressedErrorConstructor;
->           ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^^^^^^^^^^: SuppressedErrorConstructor   (TypeReference) (Identifier)
 
 declare var SuppressedError: SuppressedErrorConstructor;
->                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare var SuppressedError: SuppressedErrorConstructor;
->                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface DisposableStack {
->         ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TypeReference) (Identifier)
 
 interface DisposableStack {
->         ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TypeReference) (Identifier)
 
     readonly disposed: boolean;
->            ^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+>            ^^^^^^^^: boolean   (Boolean) (Identifier)
 
     dispose(): void;
->   ^^^^^^^: { (): void; (): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { (): void; (): void; }   (Object) (Identifier)
 
     use<T extends Disposable | null | undefined>(value: T): T;
->   ^^^: { <T extends Disposable | null | undefined>(value: T): T; <T extends Disposable | null | undefined>(value: T): T; }   (TyObject) (TSMethodSignature)
+>   ^^^: { <T extends Disposable | null | undefined>(value: T): T; <T extends Disposable | null | undefined>(value: T): T; }   (Object) (Identifier)
 
     use<T extends Disposable | null | undefined>(value: T): T;
->       ^: any   (TyAny) (TSTypeParameter)
+>       ^: any   (Any) (Identifier)
 
     use<T extends Disposable | null | undefined>(value: T): T;
->                 ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^: any   (Any) (Identifier)
 
     use<T extends Disposable | null | undefined>(value: T): T;
->                 ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                 ^^^^^^^^^^: any   (Any) (Identifier)
 
     use<T extends Disposable | null | undefined>(value: T): T;
->                                                ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                                ^^^^^: T   (TypeReference) (Identifier)
 
     use<T extends Disposable | null | undefined>(value: T): T;
->                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                       ^: any   (Any) (Identifier)
 
     use<T extends Disposable | null | undefined>(value: T): T;
->                                                           ^: any   (TyAny) (TSTypeReference)
+>                                                           ^: any   (Any) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
->   ^^^^^: { <T>(value: T, onDispose: (value: T) => void): T; <T>(value: T, onDispose: (value: T) => void): T; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { <T>(value: T, onDispose: (value: T) => void): T; <T>(value: T, onDispose: (value: T) => void): T; }   (Object) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
->         ^: any   (TyAny) (TSTypeParameter)
+>         ^: any   (Any) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
->            ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>            ^^^^^: T   (TypeReference) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
->                   ^: any   (TyAny) (TSTypeReference)
+>                   ^: any   (Any) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
->                      ^^^^^^^^^: (value: T) => void   (TyFunction) (BindingIdentifier)
+>                      ^^^^^^^^^: (value: T) => void   (Function) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
->                                  ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                  ^^^^^: T   (TypeReference) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
->                                         ^: any   (TyAny) (TSTypeReference)
+>                                         ^: any   (Any) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
->                                                      ^: any   (TyAny) (TSTypeReference)
+>                                                      ^: any   (Any) (Identifier)
 
     defer(onDispose: () => void): void;
->   ^^^^^: { (onDispose: () => void): void; (onDispose: () => void): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (onDispose: () => void): void; (onDispose: () => void): void; }   (Object) (Identifier)
 
     defer(onDispose: () => void): void;
->         ^^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)
+>         ^^^^^^^^^: () => void   (Function) (Identifier)
 
     move(): DisposableStack;
->   ^^^^: { (): DisposableStack; (): DisposableStack; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { (): DisposableStack; (): DisposableStack; }   (Object) (Identifier)
 
     move(): DisposableStack;
->           ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TypeReference) (Identifier)
 
     move(): DisposableStack;
->           ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TypeReference) (Identifier)
 
     [Symbol.dispose](): void;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.dispose](): void;
->           ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface DisposableStackConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface DisposableStackConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): DisposableStack;
->           ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TypeReference) (Identifier)
 
     new (): DisposableStack;
->           ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TypeReference) (Identifier)
 
     readonly prototype: DisposableStack;
->            ^^^^^^^^^: DisposableStack   (TyTypeReference) (TSPropertySignature)
+>            ^^^^^^^^^: DisposableStack   (TypeReference) (Identifier)
 
     readonly prototype: DisposableStack;
->                       ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TypeReference) (Identifier)
 
     readonly prototype: DisposableStack;
->                       ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TypeReference) (Identifier)
 
 declare var DisposableStack: DisposableStackConstructor;
->           ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^^^^^^^^^^: DisposableStackConstructor   (TypeReference) (Identifier)
 
 declare var DisposableStack: DisposableStackConstructor;
->                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare var DisposableStack: DisposableStackConstructor;
->                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncDisposableStack {
->         ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TypeReference) (Identifier)
 
 interface AsyncDisposableStack {
->         ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TypeReference) (Identifier)
 
     readonly disposed: boolean;
->            ^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+>            ^^^^^^^^: boolean   (Boolean) (Identifier)
 
     disposeAsync(): Promise<void>;
->   ^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^: { (): Promise<void>; (): Promise<void>; }   (Object) (Identifier)
 
     disposeAsync(): Promise<void>;
->                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                   ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     disposeAsync(): Promise<void>;
->                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                   ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
->   ^^^: { <T extends AsyncDisposable | Disposable | null | undefined>(value: T): T; <T extends AsyncDisposable | Disposable | null | undefined>(value: T): T; }   (TyObject) (TSMethodSignature)
+>   ^^^: { <T extends AsyncDisposable | Disposable | null | undefined>(value: T): T; <T extends AsyncDisposable | Disposable | null | undefined>(value: T): T; }   (Object) (Identifier)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
->       ^: any   (TyAny) (TSTypeParameter)
+>       ^: any   (Any) (Identifier)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
->                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
->                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                 ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
->                                   ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^^: any   (Any) (Identifier)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
->                                   ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                   ^^^^^^^^^^: any   (Any) (Identifier)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
->                                                                  ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                                                  ^^^^^: T   (TypeReference) (Identifier)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
->                                                                         ^: any   (TyAny) (TSTypeReference)
+>                                                                         ^: any   (Any) (Identifier)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
->                                                                             ^: any   (TyAny) (TSTypeReference)
+>                                                                             ^: any   (Any) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->   ^^^^^: { <T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T; <T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { <T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T; <T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T; }   (Object) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->         ^: any   (TyAny) (TSTypeParameter)
+>         ^: any   (Any) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->            ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>            ^^^^^: T   (TypeReference) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->                   ^: any   (TyAny) (TSTypeReference)
+>                   ^: any   (Any) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->                      ^^^^^^^^^^^^^^: (value: T) => PromiseLike<void> | void   (TyFunction) (BindingIdentifier)
+>                      ^^^^^^^^^^^^^^: (value: T) => PromiseLike<void> | void   (Function) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->                                       ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                       ^^^^^: T   (TypeReference) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->                                                    ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                    ^^^^^^^^^^^: any   (Any) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->                                                    ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                    ^^^^^^^^^^^: any   (Error) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->                                                                               ^: any   (TyAny) (TSTypeReference)
+>                                                                               ^: any   (Any) (Identifier)
 
     defer(onDisposeAsync: () => PromiseLike<void> | void): void;
->   ^^^^^: { (onDisposeAsync: () => PromiseLike<void> | void): void; (onDisposeAsync: () => PromiseLike<void> | void): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (onDisposeAsync: () => PromiseLike<void> | void): void; (onDisposeAsync: () => PromiseLike<void> | void): void; }   (Object) (Identifier)
 
     defer(onDisposeAsync: () => PromiseLike<void> | void): void;
->         ^^^^^^^^^^^^^^: () => PromiseLike<void> | void   (TyFunction) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^: () => PromiseLike<void> | void   (Function) (Identifier)
 
     defer(onDisposeAsync: () => PromiseLike<void> | void): void;
->                               ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^^^^^: any   (Any) (Identifier)
 
     defer(onDisposeAsync: () => PromiseLike<void> | void): void;
->                               ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                               ^^^^^^^^^^^: any   (Error) (Identifier)
 
     move(): AsyncDisposableStack;
->   ^^^^: { (): AsyncDisposableStack; (): AsyncDisposableStack; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { (): AsyncDisposableStack; (): AsyncDisposableStack; }   (Object) (Identifier)
 
     move(): AsyncDisposableStack;
->           ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TypeReference) (Identifier)
 
     move(): AsyncDisposableStack;
->           ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TypeReference) (Identifier)
 
     [Symbol.asyncDispose](): Promise<void>;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.asyncDispose](): Promise<void>;
->           ^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.asyncDispose](): Promise<void>;
->                            ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     [Symbol.asyncDispose](): Promise<void>;
->                            ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface AsyncDisposableStackConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncDisposableStackConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): AsyncDisposableStack;
->           ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TypeReference) (Identifier)
 
     new (): AsyncDisposableStack;
->           ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TypeReference) (Identifier)
 
     readonly prototype: AsyncDisposableStack;
->            ^^^^^^^^^: AsyncDisposableStack   (TyTypeReference) (TSPropertySignature)
+>            ^^^^^^^^^: AsyncDisposableStack   (TypeReference) (Identifier)
 
     readonly prototype: AsyncDisposableStack;
->                       ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TypeReference) (Identifier)
 
     readonly prototype: AsyncDisposableStack;
->                       ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TypeReference) (Identifier)
 
 declare var AsyncDisposableStack: AsyncDisposableStackConstructor;
->           ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^^^^^^^^^^^^^^^: AsyncDisposableStackConstructor   (TypeReference) (Identifier)
 
 declare var AsyncDisposableStack: AsyncDisposableStackConstructor;
->                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare var AsyncDisposableStack: AsyncDisposableStackConstructor;
->                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface IteratorObject<T, TReturn, TNext> extends Disposable {
->         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface IteratorObject<T, TReturn, TNext> extends Disposable {
->         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface IteratorObject<T, TReturn, TNext> extends Disposable {
->                        ^: any   (TyAny) (TSTypeParameter)
+>                        ^: any   (Any) (Identifier)
 
 interface IteratorObject<T, TReturn, TNext> extends Disposable {
->                           ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                           ^^^^^^^: any   (Any) (Identifier)
 
 interface IteratorObject<T, TReturn, TNext> extends Disposable {
->                                    ^^^^^: any   (TyAny) (TSTypeParameter)
+>                                    ^^^^^: any   (Any) (Identifier)
 
 interface IteratorObject<T, TReturn, TNext> extends Disposable {
->                                                   ^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+>                                                   ^^^^^^^^^^: any   (Any) (Identifier)
 
 interface IteratorObject<T, TReturn, TNext> extends Disposable {
->                                                   ^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                   ^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
->         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
->         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
->                             ^: any   (TyAny) (TSTypeParameter)
+>                             ^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
->                                ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                ^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
->                                         ^^^^^: any   (TyAny) (TSTypeParameter)
+>                                         ^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
->                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+>                                                        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn, TNext> extends AsyncDisposable {
->                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)

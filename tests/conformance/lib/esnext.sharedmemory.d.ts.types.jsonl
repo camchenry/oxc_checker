@@ -1,0 +1,4 @@
+{"path":"esnext.sharedmemory.d.ts","start":10,"end":17,"text":"Atomics","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.sharedmemory.d.ts","start":10,"end":17,"text":"Atomics","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.sharedmemory.d.ts","start":187,"end":192,"text":"pause","nodeType":"Identifier","type":{"name":"Object","display":"{ (n?: number): void; (n?: number): void; }"}}
+{"path":"esnext.sharedmemory.d.ts","start":193,"end":194,"text":"n","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}

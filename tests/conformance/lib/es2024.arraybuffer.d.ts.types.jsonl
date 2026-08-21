@@ -1,0 +1,22 @@
+{"path":"es2024.arraybuffer.d.ts","start":10,"end":21,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.arraybuffer.d.ts","start":10,"end":21,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.arraybuffer.d.ts","start":302,"end":315,"text":"maxByteLength","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2024.arraybuffer.d.ts","start":526,"end":535,"text":"resizable","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"es2024.arraybuffer.d.ts","start":749,"end":755,"text":"resize","nodeType":"Identifier","type":{"name":"Object","display":"{ (newByteLength?: number): void; (newByteLength?: number): void; }"}}
+{"path":"es2024.arraybuffer.d.ts","start":756,"end":769,"text":"newByteLength","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2024.arraybuffer.d.ts","start":1025,"end":1033,"text":"detached","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"es2024.arraybuffer.d.ts","start":1287,"end":1295,"text":"transfer","nodeType":"Identifier","type":{"name":"Object","display":"{ (newByteLength?: number): ArrayBuffer; (newByteLength?: number): ArrayBuffer; }"}}
+{"path":"es2024.arraybuffer.d.ts","start":1296,"end":1309,"text":"newByteLength","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2024.arraybuffer.d.ts","start":1321,"end":1332,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.arraybuffer.d.ts","start":1321,"end":1332,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.arraybuffer.d.ts","start":1602,"end":1623,"text":"transferToFixedLength","nodeType":"Identifier","type":{"name":"Object","display":"{ (newByteLength?: number): ArrayBuffer; (newByteLength?: number): ArrayBuffer; }"}}
+{"path":"es2024.arraybuffer.d.ts","start":1624,"end":1637,"text":"newByteLength","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2024.arraybuffer.d.ts","start":1649,"end":1660,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.arraybuffer.d.ts","start":1649,"end":1660,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.arraybuffer.d.ts","start":1675,"end":1697,"text":"ArrayBufferConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.arraybuffer.d.ts","start":1675,"end":1697,"text":"ArrayBufferConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.arraybuffer.d.ts","start":1709,"end":1719,"text":"byteLength","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2024.arraybuffer.d.ts","start":1729,"end":1736,"text":"options","nodeType":"Identifier","type":{"name":"Union","display":"{ maxByteLength?: number; } | undefined"}}
+{"path":"es2024.arraybuffer.d.ts","start":1741,"end":1754,"text":"maxByteLength","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2024.arraybuffer.d.ts","start":1769,"end":1780,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.arraybuffer.d.ts","start":1769,"end":1780,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

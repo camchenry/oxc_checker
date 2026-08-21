@@ -1,0 +1,86 @@
+{"path":"compiler/symbolFunctionParameters.ts::declared.ts","start":20,"end":38,"text":"declaredParameters","nodeType":"Identifier","type":{"name":"Function","display":"(a: number, b: string, c: boolean) => void"}}
+{"path":"compiler/symbolFunctionParameters.ts::declared.ts","start":39,"end":40,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolFunctionParameters.ts::declared.ts","start":50,"end":51,"text":"b","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolFunctionParameters.ts::declared.ts","start":61,"end":62,"text":"c","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/symbolFunctionParameters.ts::optional.ts","start":28,"end":45,"text":"optionalParameter","nodeType":"Identifier","type":{"name":"Function","display":"(value?: number) => number"}}
+{"path":"compiler/symbolFunctionParameters.ts::optional.ts","start":46,"end":51,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"compiler/symbolFunctionParameters.ts::annotation.ts","start":28,"end":32,"text":"pipe","nodeType":"Identifier","type":{"name":"Function","display":"<A extends any[], B>(callback: (...args: A) => B) => B"}}
+{"path":"compiler/symbolFunctionParameters.ts::annotation.ts","start":33,"end":34,"text":"A","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::annotation.ts","start":50,"end":51,"text":"B","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::annotation.ts","start":53,"end":61,"text":"callback","nodeType":"Identifier","type":{"name":"Function","display":"(...args: A) => B"}}
+{"path":"compiler/symbolFunctionParameters.ts::annotation.ts","start":67,"end":71,"text":"args","nodeType":"Identifier","type":{"name":"TypeReference","display":"A"}}
+{"path":"compiler/symbolFunctionParameters.ts::annotation.ts","start":73,"end":74,"text":"A","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::annotation.ts","start":79,"end":80,"text":"B","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::annotation.ts","start":83,"end":84,"text":"B","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":28,"end":44,"text":"acceptsPredicate","nodeType":"Identifier","type":{"name":"Function","display":"<T, S extends T>(predicate: (value: T) => value is S, assertion: (value: unknown) => asserts value is string, thisPredicate: (this: unknown) => this is { ready: true; }, thisAssertion: (this: unknown) => asserts this is { ready: true; }, bareAssertion: (value: unknown) => asserts value, bareThisAssertion: (this: unknown) => asserts this) => void"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":45,"end":46,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":48,"end":49,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":58,"end":59,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":64,"end":73,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: T) => value is S"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":76,"end":81,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":83,"end":84,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":89,"end":94,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":98,"end":99,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":103,"end":112,"text":"assertion","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => asserts value is string"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":115,"end":120,"text":"value","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":142,"end":147,"text":"value","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":161,"end":174,"text":"thisPredicate","nodeType":"Identifier","type":{"name":"Function","display":"(this: unknown) => this is { ready: true; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":177,"end":181,"text":"this","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":205,"end":210,"text":"ready","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":222,"end":235,"text":"thisAssertion","nodeType":"Identifier","type":{"name":"Function","display":"(this: unknown) => asserts this is { ready: true; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":238,"end":242,"text":"this","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":274,"end":279,"text":"ready","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":291,"end":304,"text":"bareAssertion","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => asserts value"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":307,"end":312,"text":"value","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":334,"end":339,"text":"value","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":343,"end":360,"text":"bareThisAssertion","nodeType":"Identifier","type":{"name":"Function","display":"(this: unknown) => asserts this"}}
+{"path":"compiler/symbolFunctionParameters.ts::predicates.ts","start":363,"end":367,"text":"this","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":28,"end":39,"text":"useCallback","nodeType":"Identifier","type":{"name":"Function","display":"<T>(callback: () => T) => T"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":40,"end":41,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":43,"end":51,"text":"callback","nodeType":"Identifier","type":{"name":"Function","display":"() => T"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":59,"end":60,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":63,"end":64,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":83,"end":98,"text":"configureReturn","nodeType":"Identifier","type":{"name":"Function","display":"<T>(options: { create: () => T; }) => T"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":99,"end":100,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":102,"end":109,"text":"options","nodeType":"Identifier","type":{"name":"Object","display":"{ create: () => T; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":113,"end":119,"text":"create","nodeType":"Identifier","type":{"name":"Function","display":"() => T"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":127,"end":128,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":133,"end":134,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":142,"end":155,"text":"callbackValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":158,"end":169,"text":"useCallback","nodeType":"Identifier","type":{"name":"Function","display":"<T>(callback: () => T) => T"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":186,"end":205,"text":"objectCallbackValue","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":208,"end":223,"text":"configureReturn","nodeType":"Identifier","type":{"name":"Function","display":"<T>(options: { create: () => T; }) => T"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":226,"end":232,"text":"create","nodeType":"Identifier","type":{"name":"Function","display":"() => { value: number; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::callbackReturn.ts","start":243,"end":248,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":28,"end":43,"text":"configureObject","nodeType":"Identifier","type":{"name":"Function","display":"<T>(options: { create: () => T; consume: (value: T) => void; }) => T"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":44,"end":45,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":47,"end":54,"text":"options","nodeType":"Identifier","type":{"name":"Object","display":"{ create: () => T; consume: (value: T) => void; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":60,"end":66,"text":"create","nodeType":"Identifier","type":{"name":"Function","display":"() => T"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":74,"end":75,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":79,"end":86,"text":"consume","nodeType":"Identifier","type":{"name":"Function","display":"(value: T) => void"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":89,"end":94,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":96,"end":97,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":112,"end":113,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":121,"end":133,"text":"objectResult","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":136,"end":151,"text":"configureObject","nodeType":"Identifier","type":{"name":"Function","display":"<T>(options: { create: () => T; consume: (value: T) => void; }) => T"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":156,"end":162,"text":"create","nodeType":"Identifier","type":{"name":"Function","display":"() => { value: number; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":173,"end":178,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":188,"end":195,"text":"consume","nodeType":"Identifier","type":{"name":"Function","display":"(item: { value: number; }) => void"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":197,"end":201,"text":"item","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":217,"end":235,"text":"objectDerivedValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":238,"end":242,"text":"item","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::objectCallbacks.ts","start":243,"end":248,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":28,"end":42,"text":"configureTuple","nodeType":"Identifier","type":{"name":"Function","display":"<T>(callbacks: [() => T, (value: T) => void]) => T"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":43,"end":44,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":46,"end":55,"text":"callbacks","nodeType":"Identifier","type":{"name":"Tuple","display":"[() => T, (value: T) => void]"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":64,"end":65,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":68,"end":73,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":75,"end":76,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":89,"end":90,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":98,"end":109,"text":"tupleResult","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":112,"end":126,"text":"configureTuple","nodeType":"Identifier","type":{"name":"Function","display":"<T>(callbacks: [() => T, (value: T) => void]) => T"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":140,"end":145,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":155,"end":159,"text":"item","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":175,"end":192,"text":"tupleDerivedValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":195,"end":199,"text":"item","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}
+{"path":"compiler/symbolFunctionParameters.ts::tupleCallbacks.ts","start":200,"end":205,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}

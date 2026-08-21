@@ -1,1149 +1,1149 @@
 export type SetStateInternal<T> = {
->           ^^^^^^^^^^^^^^^^: (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false) => void   (TyFunction) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^: (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false) => void   (Function) (Identifier)
                     expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
 
 export type SetStateInternal<T> = {
->                            ^: any   (TyAny) (TSTypeParameter)
+>                            ^: any   (Any) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
-> ^: (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false) => void   (TyFunction) (TSMethodSignature)
+> ^: (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false) => void   (Function) (Identifier)
 expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->   ^^^^^^^: T | Partial<T> | ((state: T) => T | Partial<T>)   (TyUnion) (BindingIdentifier)
+>   ^^^^^^^: T | Partial<T> | ((state: T) => T | Partial<T>)   (Union) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->            ^: any   (TyAny) (TSTypeReference)
+>            ^: any   (Any) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^^: any   (Any) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                ^^^^^^^: any   (TyError) (IdentifierReference)
+>                ^^^^^^^: any   (Error) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                        ^: any   (TyAny) (TSTypeReference)
+>                        ^: any   (Any) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                               ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                               ^^^^^: T   (TypeReference) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                                      ^: any   (TyAny) (TSTypeReference)
+>                                      ^: any   (Any) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                                            ^: any   (TyAny) (TSTypeReference)
+>                                            ^: any   (Any) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                                                ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                ^^^^^^^: any   (Any) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                                                ^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                ^^^^^^^: any   (Error) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                                                        ^: any   (TyAny) (TSTypeReference)
+>                                                        ^: any   (Any) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                                                             ^^^^^^^: false | undefined   (TyUnion) (BindingIdentifier)
+>                                                             ^^^^^^^: false | undefined   (Union) (Identifier)
 
   _(state: T | ((state: T) => T), replace: true): void
-> ^: (state: T | ((state: T) => T), replace: true) => void   (TyFunction) (TSMethodSignature)
+> ^: (state: T | ((state: T) => T), replace: true) => void   (Function) (Identifier)
 expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
 
   _(state: T | ((state: T) => T), replace: true): void
->   ^^^^^: T | ((state: T) => T)   (TyUnion) (BindingIdentifier)
+>   ^^^^^: T | ((state: T) => T)   (Union) (Identifier)
 
   _(state: T | ((state: T) => T), replace: true): void
->          ^: any   (TyAny) (TSTypeReference)
+>          ^: any   (Any) (Identifier)
 
   _(state: T | ((state: T) => T), replace: true): void
->                ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                ^^^^^: T   (TypeReference) (Identifier)
 
   _(state: T | ((state: T) => T), replace: true): void
->                       ^: any   (TyAny) (TSTypeReference)
+>                       ^: any   (Any) (Identifier)
 
   _(state: T | ((state: T) => T), replace: true): void
->                             ^: any   (TyAny) (TSTypeReference)
+>                             ^: any   (Any) (Identifier)
 
   _(state: T | ((state: T) => T), replace: true): void
->                                 ^^^^^^^: true   (TyBooleanLiteral) (BindingIdentifier)
+>                                 ^^^^^^^: true   (BooleanLiteral) (Identifier)
 
 export interface StoreApi<T> {
->                ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>                ^^^^^^^^: any   (Any) (Identifier)
 
 export interface StoreApi<T> {
->                ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                ^^^^^^^^: any   (Any) (Identifier)
 
 export interface StoreApi<T> {
->                         ^: any   (TyAny) (TSTypeParameter)
+>                         ^: any   (Any) (Identifier)
 
   setState: SetStateInternal<T>
-> ^^^^^^^^: SetStateInternal<T>   (TyTypeReference) (TSPropertySignature)
+> ^^^^^^^^: SetStateInternal<T>   (TypeReference) (Identifier)
   expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void; (state: T | ((state: T) => T), replace: true): void; }
 
   setState: SetStateInternal<T>
->           ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   setState: SetStateInternal<T>
->                            ^: any   (TyAny) (TSTypeReference)
+>                            ^: any   (Any) (Identifier)
 
   getState: () => T
-> ^^^^^^^^: () => T   (TyFunction) (TSPropertySignature)
+> ^^^^^^^^: () => T   (Function) (Identifier)
 
   getState: () => T
->                 ^: any   (TyAny) (TSTypeReference)
+>                 ^: any   (Any) (Identifier)
 
   getInitialState: () => T
-> ^^^^^^^^^^^^^^^: () => T   (TyFunction) (TSPropertySignature)
+> ^^^^^^^^^^^^^^^: () => T   (Function) (Identifier)
 
   getInitialState: () => T
->                        ^: any   (TyAny) (TSTypeReference)
+>                        ^: any   (Any) (Identifier)
 
   subscribe: (listener: (state: T, prevState: T) => void) => () => void
-> ^^^^^^^^^: (listener: (state: T, prevState: T) => void) => () => void   (TyFunction) (TSPropertySignature)
+> ^^^^^^^^^: (listener: (state: T, prevState: T) => void) => () => void   (Function) (Identifier)
 
   subscribe: (listener: (state: T, prevState: T) => void) => () => void
->             ^^^^^^^^: (state: T, prevState: T) => void   (TyFunction) (BindingIdentifier)
+>             ^^^^^^^^: (state: T, prevState: T) => void   (Function) (Identifier)
 
   subscribe: (listener: (state: T, prevState: T) => void) => () => void
->                        ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                        ^^^^^: T   (TypeReference) (Identifier)
 
   subscribe: (listener: (state: T, prevState: T) => void) => () => void
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
   subscribe: (listener: (state: T, prevState: T) => void) => () => void
->                                  ^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                  ^^^^^^^^^: T   (TypeReference) (Identifier)
 
   subscribe: (listener: (state: T, prevState: T) => void) => () => void
->                                             ^: any   (TyAny) (TSTypeReference)
+>                                             ^: any   (Any) (Identifier)
 
 export type StoreMutatorIdentifier = keyof StoreMutators<unknown, unknown>
->           ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (Keyof) (Identifier)
                           expected: never
 
 export type StoreMutatorIdentifier = keyof StoreMutators<unknown, unknown>
->                                          ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type StoreMutatorIdentifier = keyof StoreMutators<unknown, unknown>
->                                          ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                          ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export interface StoreMutators<S, A> {}
->                ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>                ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export interface StoreMutators<S, A> {}
->                ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export interface StoreMutators<S, A> {}
->                              ^: any   (TyAny) (TSTypeParameter)
+>                              ^: any   (Any) (Identifier)
 
 export interface StoreMutators<S, A> {}
->                                 ^: any   (TyAny) (TSTypeParameter)
+>                                 ^: any   (Any) (Identifier)
 
 export type Mutate<S, Ms> = number extends Ms['length' & keyof Ms]
->           ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (Conditional) (Identifier)
           expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
 export type Mutate<S, Ms> = number extends Ms['length' & keyof Ms]
->                  ^: any   (TyAny) (TSTypeParameter)
+>                  ^: any   (Any) (Identifier)
 
 export type Mutate<S, Ms> = number extends Ms['length' & keyof Ms]
->                     ^^: any   (TyAny) (TSTypeParameter)
+>                     ^^: any   (Any) (Identifier)
 
 export type Mutate<S, Ms> = number extends Ms['length' & keyof Ms]
->                                          ^^: any   (TyAny) (TSTypeReference)
+>                                          ^^: any   (Any) (Identifier)
 
 export type Mutate<S, Ms> = number extends Ms['length' & keyof Ms]
->                                                              ^^: any   (TyAny) (TSTypeReference)
+>                                                              ^^: any   (Any) (Identifier)
 
   ? S
->   ^: any   (TyAny) (TSTypeReference)
+>   ^: any   (Any) (Identifier)
 
   : Ms extends []
->   ^^: any   (TyAny) (TSTypeReference)
+>   ^^: any   (Any) (Identifier)
 
     ? S
->     ^: any   (TyAny) (TSTypeReference)
+>     ^: any   (Any) (Identifier)
 
     : Ms extends [[infer Mi, infer Ma], ...infer Mrs]
->     ^^: any   (TyAny) (TSTypeReference)
+>     ^^: any   (Any) (Identifier)
 
     : Ms extends [[infer Mi, infer Ma], ...infer Mrs]
->                        ^^: any   (TyAny) (TSTypeParameter)
+>                        ^^: any   (Any) (Identifier)
 
     : Ms extends [[infer Mi, infer Ma], ...infer Mrs]
->                                  ^^: any   (TyAny) (TSTypeParameter)
+>                                  ^^: any   (Any) (Identifier)
 
     : Ms extends [[infer Mi, infer Ma], ...infer Mrs]
->                                                ^^^: any   (TyAny) (TSTypeParameter)
+>                                                ^^^: any   (Any) (Identifier)
 
       ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs>
->       ^^^^^^: any   (TyAny) (TSTypeReference)
+>       ^^^^^^: any   (Any) (Identifier)
 
       ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs>
->              ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs>
->              ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>              ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs>
->                            ^: any   (TyAny) (TSTypeReference)
+>                            ^: any   (Any) (Identifier)
 
       ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs>
->                               ^^: any   (TyAny) (TSTypeReference)
+>                               ^^: any   (Any) (Identifier)
 
       ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs>
->                                   ^^: any   (TyAny) (TSTypeReference)
+>                                   ^^: any   (Any) (Identifier)
 
       ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs>
->                                        ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                        ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs>
->                                                                 ^^^: any   (TyAny) (TSTypeReference)
+>                                                                 ^^^: any   (Any) (Identifier)
 
 export type StateCreator<
->           ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
                 expected: ((setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>, getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }
 
   T,
-> ^: any   (TyAny) (TSTypeParameter)
+> ^: any   (Any) (Identifier)
 
   Mis extends [StoreMutatorIdentifier, unknown][] = [],
-> ^^^: any   (TyAny) (TSTypeParameter)
+> ^^^: any   (Any) (Identifier)
 
   Mis extends [StoreMutatorIdentifier, unknown][] = [],
->              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   Mos extends [StoreMutatorIdentifier, unknown][] = [],
-> ^^^: any   (TyAny) (TSTypeParameter)
+> ^^^: any   (Any) (Identifier)
 
   Mos extends [StoreMutatorIdentifier, unknown][] = [],
->              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   U = T,
-> ^: any   (TyAny) (TSTypeParameter)
+> ^: any   (Any) (Identifier)
 
   U = T,
->     ^: any   (TyAny) (TSTypeReference)
+>     ^: any   (Any) (Identifier)
 
   setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>,
-> ^^^^^^^^: Get<Mutate<StoreApi<T>, Mis>, "setState", never>   (TyTypeReference) (BindingIdentifier)
+> ^^^^^^^^: Get<Mutate<StoreApi<T>, Mis>, "setState", never>   (TypeReference) (Identifier)
 
   setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>,
->           ^^^: any   (TyAny) (TSTypeReference)
+>           ^^^: any   (Any) (Identifier)
 
   setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>,
->               ^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^: any   (Any) (Identifier)
 
   setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>,
->                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
   setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>,
->                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
   setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>,
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
   setState: Get<Mutate<StoreApi<T>, Mis>, 'setState', never>,
->                                   ^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^: any   (Any) (Identifier)
 
   getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>,
-> ^^^^^^^^: Get<Mutate<StoreApi<T>, Mis>, "getState", never>   (TyTypeReference) (BindingIdentifier)
+> ^^^^^^^^: Get<Mutate<StoreApi<T>, Mis>, "getState", never>   (TypeReference) (Identifier)
 
   getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>,
->           ^^^: any   (TyAny) (TSTypeReference)
+>           ^^^: any   (Any) (Identifier)
 
   getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>,
->               ^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^: any   (Any) (Identifier)
 
   getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>,
->                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
   getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>,
->                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
   getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>,
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
   getState: Get<Mutate<StoreApi<T>, Mis>, 'getState', never>,
->                                   ^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^: any   (Any) (Identifier)
 
   store: Mutate<StoreApi<T>, Mis>,
-> ^^^^^: Mutate<StoreApi<T>, Mis>   (TyTypeReference) (BindingIdentifier)
+> ^^^^^: Mutate<StoreApi<T>, Mis>   (TypeReference) (Identifier)
 
   store: Mutate<StoreApi<T>, Mis>,
->        ^^^^^^: any   (TyAny) (TSTypeReference)
+>        ^^^^^^: any   (Any) (Identifier)
 
   store: Mutate<StoreApi<T>, Mis>,
->               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^: any   (Any) (Identifier)
 
   store: Mutate<StoreApi<T>, Mis>,
->               ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>               ^^^^^^^^: any   (Any) (Identifier)
 
   store: Mutate<StoreApi<T>, Mis>,
->                        ^: any   (TyAny) (TSTypeReference)
+>                        ^: any   (Any) (Identifier)
 
   store: Mutate<StoreApi<T>, Mis>,
->                            ^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^: any   (Any) (Identifier)
 
 ) => U) & { $$storeMutators?: Mos }
->    ^: any   (TyAny) (TSTypeReference)
+>    ^: any   (Any) (Identifier)
 
 ) => U) & { $$storeMutators?: Mos }
->           ^^^^^^^^^^^^^^^: Mos | undefined   (TyUnion) (TSPropertySignature)
+>           ^^^^^^^^^^^^^^^: Mos | undefined   (Union) (Identifier)
 
 ) => U) & { $$storeMutators?: Mos }
->                             ^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^: any   (Any) (Identifier)
 
 type Get<T, K, F> = K extends keyof T ? T[K] : F
->    ^^^: K extends keyof T ? T[K] : F   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^: K extends keyof T ? T[K] : F   (Conditional) (Identifier)
 
 type Get<T, K, F> = K extends keyof T ? T[K] : F
->        ^: any   (TyAny) (TSTypeParameter)
+>        ^: any   (Any) (Identifier)
 
 type Get<T, K, F> = K extends keyof T ? T[K] : F
->           ^: any   (TyAny) (TSTypeParameter)
+>           ^: any   (Any) (Identifier)
 
 type Get<T, K, F> = K extends keyof T ? T[K] : F
->              ^: any   (TyAny) (TSTypeParameter)
+>              ^: any   (Any) (Identifier)
 
 type Get<T, K, F> = K extends keyof T ? T[K] : F
->                   ^: any   (TyAny) (TSTypeReference)
+>                   ^: any   (Any) (Identifier)
 
 type Get<T, K, F> = K extends keyof T ? T[K] : F
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
 type Get<T, K, F> = K extends keyof T ? T[K] : F
->                                       ^: any   (TyAny) (TSTypeReference)
+>                                       ^: any   (Any) (Identifier)
 
 type Get<T, K, F> = K extends keyof T ? T[K] : F
->                                         ^: any   (TyAny) (TSTypeReference)
+>                                         ^: any   (Any) (Identifier)
 
 type Get<T, K, F> = K extends keyof T ? T[K] : F
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
 export type ExtractState<S> = S extends { getState: () => infer T } ? T : never
->           ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (Conditional) (Identifier)
 
 export type ExtractState<S> = S extends { getState: () => infer T } ? T : never
->                        ^: any   (TyAny) (TSTypeParameter)
+>                        ^: any   (Any) (Identifier)
 
 export type ExtractState<S> = S extends { getState: () => infer T } ? T : never
->                             ^: any   (TyAny) (TSTypeReference)
+>                             ^: any   (Any) (Identifier)
 
 export type ExtractState<S> = S extends { getState: () => infer T } ? T : never
->                                         ^^^^^^^^: () => infer T   (TyFunction) (TSPropertySignature)
+>                                         ^^^^^^^^: () => infer T   (Function) (Identifier)
 
 export type ExtractState<S> = S extends { getState: () => infer T } ? T : never
->                                                               ^: any   (TyAny) (TSTypeParameter)
+>                                                               ^: any   (Any) (Identifier)
 
 export type ExtractState<S> = S extends { getState: () => infer T } ? T : never
->                                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                                     ^: any   (Any) (Identifier)
 
 export type CreateStore = {
->           ^^^^^^^^^^^: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): Mutate<StoreApi<T>, Mos>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => Mutate<StoreApi<T>, Mos>; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): Mutate<StoreApi<T>, Mos>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => Mutate<StoreApi<T>, Mos>; }   (Object) (Identifier)
 
   <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->  ^: any   (TyAny) (TSTypeParameter)
+>  ^: any   (Any) (Identifier)
 
   <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->     ^^^: any   (TyAny) (TSTypeParameter)
+>     ^^^: any   (Any) (Identifier)
 
   <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->                  ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->   ^^^^^^^^^^^: StateCreator<T, [], Mos, T>   (TyTypeReference) (BindingIdentifier)
+>   ^^^^^^^^^^^: StateCreator<T, [], Mos, T>   (TypeReference) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                             ^: any   (TyAny) (TSTypeReference)
+>                             ^: any   (Any) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                                    ^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^: any   (Any) (Identifier)
 
   ): Mutate<StoreApi<T>, Mos>
->    ^^^^^^: any   (TyAny) (TSTypeReference)
+>    ^^^^^^: any   (Any) (Identifier)
 
   ): Mutate<StoreApi<T>, Mos>
->           ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^^^: any   (Any) (Identifier)
 
   ): Mutate<StoreApi<T>, Mos>
->           ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>           ^^^^^^^^: any   (Any) (Identifier)
 
   ): Mutate<StoreApi<T>, Mos>
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
   ): Mutate<StoreApi<T>, Mos>
->                        ^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^: any   (Any) (Identifier)
 
   <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->  ^: any   (TyAny) (TSTypeParameter)
+>  ^: any   (Any) (Identifier)
 
   <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->         ^^^: any   (TyAny) (TSTypeParameter)
+>         ^^^: any   (Any) (Identifier)
 
   <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->                      ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->   ^^^^^^^^^^^: StateCreator<T, [], Mos, T>   (TyTypeReference) (BindingIdentifier)
+>   ^^^^^^^^^^^: StateCreator<T, [], Mos, T>   (TypeReference) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                             ^: any   (TyAny) (TSTypeReference)
+>                             ^: any   (Any) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                                    ^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^: any   (Any) (Identifier)
 
   ) => Mutate<StoreApi<T>, Mos>
->      ^^^^^^: any   (TyAny) (TSTypeReference)
+>      ^^^^^^: any   (Any) (Identifier)
 
   ) => Mutate<StoreApi<T>, Mos>
->             ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
   ) => Mutate<StoreApi<T>, Mos>
->             ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
   ) => Mutate<StoreApi<T>, Mos>
->                      ^: any   (TyAny) (TSTypeReference)
+>                      ^: any   (Any) (Identifier)
 
   ) => Mutate<StoreApi<T>, Mos>
->                          ^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^: any   (Any) (Identifier)
 
 export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
->            ^^^^^^^^^^^: CreateStore   (TyTypeReference) (BindingIdentifier)
+>            ^^^^^^^^^^^: CreateStore   (TypeReference) (Identifier)
 
 export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
->                         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
->                                         ^^^^^^^^^^^: StateCreator<any> | undefined   (TyUnion) (BindingIdentifier)
+>                                         ^^^^^^^^^^^: StateCreator<any> | undefined   (Union) (Identifier)
                                              expected: StateCreator<any, [], [], any> | undefined
 
 export const createStore: CreateStore = ((initializer?: StateCreator<any>) => {
->                                                       ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                       ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   if (!initializer) {
->      ^^^^^^^^^^^: StateCreator<any> | undefined   (TyUnion) (IdentifierReference)
+>      ^^^^^^^^^^^: StateCreator<any> | undefined   (Union) (Identifier)
           expected: StateCreator<any, [], [], any> | undefined
 
     return (nextInitializer: StateCreator<any>) => createStore(nextInitializer)
->           ^^^^^^^^^^^^^^^: StateCreator<any>   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^^^^^^^^^^: StateCreator<any>   (TypeReference) (Identifier)
                    expected: StateCreator<any, [], [], any>
 
     return (nextInitializer: StateCreator<any>) => createStore(nextInitializer)
->                            ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     return (nextInitializer: StateCreator<any>) => createStore(nextInitializer)
->                                                  ^^^^^^^^^^^: CreateStore   (TyTypeReference) (IdentifierReference)
+>                                                  ^^^^^^^^^^^: CreateStore   (TypeReference) (Identifier)
 
     return (nextInitializer: StateCreator<any>) => createStore(nextInitializer)
->                                                              ^^^^^^^^^^^^^^^: StateCreator<any>   (TyTypeReference) (IdentifierReference)
+>                                                              ^^^^^^^^^^^^^^^: StateCreator<any>   (TypeReference) (Identifier)
                                                                       expected: StateCreator<any, [], [], any>
 
   let state: any
->     ^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^: any   (Any) (Identifier)
 
   const listeners = new Set<(state: any, prevState: any) => void>()
->       ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TypeReference) (Identifier)
 
   const listeners = new Set<(state: any, prevState: any) => void>()
->                       ^^^: SetConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^: SetConstructor   (TypeReference) (Identifier)
 
   const listeners = new Set<(state: any, prevState: any) => void>()
->                            ^^^^^: any   (TyAny) (BindingIdentifier)
+>                            ^^^^^: any   (Any) (Identifier)
 
   const listeners = new Set<(state: any, prevState: any) => void>()
->                                        ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                                        ^^^^^^^^^: any   (Any) (Identifier)
 
   const api: StoreApi<any> = {
->       ^^^: StoreApi<any>   (TyTypeReference) (BindingIdentifier)
+>       ^^^: StoreApi<any>   (TypeReference) (Identifier)
 
   const api: StoreApi<any> = {
->            ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^^^^: any   (Any) (Identifier)
 
   const api: StoreApi<any> = {
->            ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>            ^^^^^^^^: any   (Any) (Identifier)
 
     setState(partial: any) {
->   ^^^^^^^^: (partial: any) => void   (TyFunction) (ObjectProperty)
+>   ^^^^^^^^: (partial: any) => void   (Function) (Identifier)
 
     setState(partial: any) {
->            ^^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^^: any   (Any) (Identifier)
 
       const prevState = state
->           ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>           ^^^^^^^^^: any   (Any) (Identifier)
 
       const prevState = state
->                       ^^^^^: any   (TyAny) (IdentifierReference)
+>                       ^^^^^: any   (Any) (Identifier)
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
->     ^^^^^: any   (TyAny) (IdentifierReference)
+>     ^^^^^: any   (Any) (Identifier)
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
->                    ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                    ^^^^^^^: any   (Any) (Identifier)
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
->                                                  ^^^^^: any   (TyAny) (IdentifierReference)
+>                                                  ^^^^^: any   (Any) (Identifier)
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
->                                                            ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                            ^^^^^^^: any   (Any) (Identifier)
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
->                                                                    ^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                    ^^^^^: any   (Any) (Identifier)
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
->                                                                                    ^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                                    ^^^^^: any   (Any) (Identifier)
 
       state = typeof partial === 'function' ? { ...state, ...partial(state) } : { ...state, ...partial }
->                                                                                              ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                                              ^^^^^^^: any   (Any) (Identifier)
 
       listeners.forEach(listener => listener(state, prevState))
->     ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TyTypeReference) (IdentifierReference)
+>     ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TypeReference) (Identifier)
 
       listeners.forEach(listener => listener(state, prevState))
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
       listeners.forEach(listener => listener(state, prevState))
->               ^^^^^^^: (callbackfn: (value: (state: any, prevState: any) => void, value2: (state: any, prevState: any) => void, set: Set<(state: any, prevState: any) => void>) => void, thisArg?: any) => void   (TyFunction) (StaticMemberExpression)
+>               ^^^^^^^: (callbackfn: (value: (state: any, prevState: any) => void, value2: (state: any, prevState: any) => void, set: Set<(state: any, prevState: any) => void>) => void, thisArg?: any) => void   (Function) (Identifier)
 
       listeners.forEach(listener => listener(state, prevState))
->                       ^^^^^^^^: (state: any, prevState: any) => void   (TyFunction) (BindingIdentifier)
+>                       ^^^^^^^^: (state: any, prevState: any) => void   (Function) (Identifier)
 
       listeners.forEach(listener => listener(state, prevState))
->                                   ^^^^^^^^: (state: any, prevState: any) => void   (TyFunction) (IdentifierReference)
+>                                   ^^^^^^^^: (state: any, prevState: any) => void   (Function) (Identifier)
 
       listeners.forEach(listener => listener(state, prevState))
->                                            ^^^^^: any   (TyAny) (IdentifierReference)
+>                                            ^^^^^: any   (Any) (Identifier)
 
       listeners.forEach(listener => listener(state, prevState))
->                                                   ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                   ^^^^^^^^^: any   (Any) (Identifier)
 
     getState: () => state,
->   ^^^^^^^^: () => any   (TyFunction) (ObjectProperty)
+>   ^^^^^^^^: () => any   (Function) (Identifier)
 
     getState: () => state,
->                   ^^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^^: any   (Any) (Identifier)
 
     getInitialState: () => state,
->   ^^^^^^^^^^^^^^^: () => any   (TyFunction) (ObjectProperty)
+>   ^^^^^^^^^^^^^^^: () => any   (Function) (Identifier)
 
     getInitialState: () => state,
->                          ^^^^^: any   (TyAny) (IdentifierReference)
+>                          ^^^^^: any   (Any) (Identifier)
 
     subscribe(listener) {
->   ^^^^^^^^^: (listener: (state: any, prevState: any) => void) => () => boolean   (TyFunction) (ObjectProperty)
+>   ^^^^^^^^^: (listener: (state: any, prevState: any) => void) => () => boolean   (Function) (Identifier)
 
     subscribe(listener) {
->             ^^^^^^^^: (state: any, prevState: any) => void   (TyFunction) (BindingIdentifier)
+>             ^^^^^^^^: (state: any, prevState: any) => void   (Function) (Identifier)
 
       listeners.add(listener)
->     ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TyTypeReference) (IdentifierReference)
+>     ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TypeReference) (Identifier)
 
       listeners.add(listener)
->     ^^^^^^^^^^^^^^^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TyTypeReference) (ExpressionStatement)
+>     ^^^^^^^^^^^^^^^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TypeReference) (ExpressionStatement)
 
       listeners.add(listener)
->               ^^^: (value: (state: any, prevState: any) => void) => Set<(state: any, prevState: any) => void>   (TyFunction) (StaticMemberExpression)
+>               ^^^: (value: (state: any, prevState: any) => void) => Set<(state: any, prevState: any) => void>   (Function) (Identifier)
 
       listeners.add(listener)
->                   ^^^^^^^^: (state: any, prevState: any) => void   (TyFunction) (IdentifierReference)
+>                   ^^^^^^^^: (state: any, prevState: any) => void   (Function) (Identifier)
 
       return () => listeners.delete(listener)
->                  ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TyTypeReference) (IdentifierReference)
+>                  ^^^^^^^^^: Set<(state: any, prevState: any) => void>   (TypeReference) (Identifier)
 
       return () => listeners.delete(listener)
->                            ^^^^^^: (value: (state: any, prevState: any) => void) => boolean   (TyFunction) (StaticMemberExpression)
+>                            ^^^^^^: (value: (state: any, prevState: any) => void) => boolean   (Function) (Identifier)
 
       return () => listeners.delete(listener)
->                                   ^^^^^^^^: (state: any, prevState: any) => void   (TyFunction) (IdentifierReference)
+>                                   ^^^^^^^^: (state: any, prevState: any) => void   (Function) (Identifier)
 
   state = initializer(api.setState, api.getState, api)
-> ^^^^^: any   (TyAny) (IdentifierReference)
+> ^^^^^: any   (Any) (Identifier)
 
   state = initializer(api.setState, api.getState, api)
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
   state = initializer(api.setState, api.getState, api)
->         ^^^^^^^^^^^: StateCreator<any> | undefined   (TyUnion) (IdentifierReference)
+>         ^^^^^^^^^^^: StateCreator<any> | undefined   (Union) (Identifier)
              expected: StateCreator<any, [], [], any>
 
   state = initializer(api.setState, api.getState, api)
->                     ^^^: StoreApi<any>   (TyTypeReference) (IdentifierReference)
+>                     ^^^: StoreApi<any>   (TypeReference) (Identifier)
 
   state = initializer(api.setState, api.getState, api)
->                         ^^^^^^^^: SetStateInternal<any>   (TyTypeReference) (StaticMemberExpression)
+>                         ^^^^^^^^: SetStateInternal<any>   (TypeReference) (Identifier)
                           expected: { (partial: any, replace?: false): void; (state: any, replace: true): void; }
 
   state = initializer(api.setState, api.getState, api)
->                                   ^^^: StoreApi<any>   (TyTypeReference) (IdentifierReference)
+>                                   ^^^: StoreApi<any>   (TypeReference) (Identifier)
 
   state = initializer(api.setState, api.getState, api)
->                                       ^^^^^^^^: () => any   (TyFunction) (StaticMemberExpression)
+>                                       ^^^^^^^^: () => any   (Function) (Identifier)
 
   state = initializer(api.setState, api.getState, api)
->                                                 ^^^: StoreApi<any>   (TyTypeReference) (IdentifierReference)
+>                                                 ^^^: StoreApi<any>   (TypeReference) (Identifier)
 
   return api
->        ^^^: StoreApi<any>   (TyTypeReference) (IdentifierReference)
+>        ^^^: StoreApi<any>   (TypeReference) (Identifier)
 
 }) as CreateStore
->     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^^^^^^: any   (Any) (Identifier)
 
 import { createStore } from './vanilla'
->        ^^^^^^^^^^^: CreateStore   (TyTypeReference) (BindingIdentifier)
+>        ^^^^^^^^^^^: CreateStore   (TypeReference) (Identifier)
 
   ExtractState,
-> ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (TyConditional) (BindingIdentifier)
+> ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (Conditional) (Identifier)
 
   Mutate,
-> ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional) (BindingIdentifier)
+> ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (Conditional) (Identifier)
 expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
   StateCreator,
-> ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (BindingIdentifier)
+> ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
   StoreApi,
-> ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+> ^^^^^^^^: any   (Any) (Identifier)
 
   StoreMutatorIdentifier,
-> ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof) (BindingIdentifier)
+> ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (Keyof) (Identifier)
                 expected: never
 
 export type ReadonlyStoreApi<T> = Pick<
->           ^^^^^^^^^^^^^^^^: { getState: () => T; getInitialState: () => T; subscribe: (listener: (state: T, prevState: T) => void) => () => void; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^: { getState: () => T; getInitialState: () => T; subscribe: (listener: (state: T, prevState: T) => void) => () => void; }   (Object) (Identifier)
 
 export type ReadonlyStoreApi<T> = Pick<
->                            ^: any   (TyAny) (TSTypeParameter)
+>                            ^: any   (Any) (Identifier)
 
 export type ReadonlyStoreApi<T> = Pick<
->                                 ^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^: any   (Any) (Identifier)
 
 export type ReadonlyStoreApi<T> = Pick<
->                                 ^^^^: any   (TyError) (IdentifierReference)
+>                                 ^^^^: any   (Error) (Identifier)
 
   StoreApi<T>,
-> ^^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^^: any   (Any) (Identifier)
 
   StoreApi<T>,
-> ^^^^^^^^: any   (TyAny) (IdentifierReference)
+> ^^^^^^^^: any   (Any) (Identifier)
 
   StoreApi<T>,
->          ^: any   (TyAny) (TSTypeReference)
+>          ^: any   (Any) (Identifier)
 
 export type UseBoundStore<S extends ReadonlyStoreApi<unknown>> = {
->           ^^^^^^^^^^^^^: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S   (TyIntersection) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S   (Intersection) (Identifier)
 
 export type UseBoundStore<S extends ReadonlyStoreApi<unknown>> = {
->                         ^: any   (TyAny) (TSTypeParameter)
+>                         ^: any   (Any) (Identifier)
 
 export type UseBoundStore<S extends ReadonlyStoreApi<unknown>> = {
->                                   ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   (): ExtractState<S>
->     ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (TyConditional) (TSTypeReference)
+>     ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (Conditional) (Identifier)
 
   (): ExtractState<S>
->     ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (TyConditional) (IdentifierReference)
+>     ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (Conditional) (Identifier)
 
   (): ExtractState<S>
->                  ^: any   (TyAny) (TSTypeReference)
+>                  ^: any   (Any) (Identifier)
 
   <U>(selector: (state: ExtractState<S>) => U): U
->  ^: any   (TyAny) (TSTypeParameter)
+>  ^: any   (Any) (Identifier)
 
   <U>(selector: (state: ExtractState<S>) => U): U
->     ^^^^^^^^: (state: ExtractState<S>) => U   (TyFunction) (BindingIdentifier)
+>     ^^^^^^^^: (state: ExtractState<S>) => U   (Function) (Identifier)
 
   <U>(selector: (state: ExtractState<S>) => U): U
->                ^^^^^: ExtractState<S>   (TyTypeReference) (BindingIdentifier)
+>                ^^^^^: ExtractState<S>   (TypeReference) (Identifier)
 
   <U>(selector: (state: ExtractState<S>) => U): U
->                       ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (TyConditional) (TSTypeReference)
+>                       ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (Conditional) (Identifier)
 
   <U>(selector: (state: ExtractState<S>) => U): U
->                       ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (TyConditional) (IdentifierReference)
+>                       ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (Conditional) (Identifier)
 
   <U>(selector: (state: ExtractState<S>) => U): U
->                                    ^: any   (TyAny) (TSTypeReference)
+>                                    ^: any   (Any) (Identifier)
 
   <U>(selector: (state: ExtractState<S>) => U): U
->                                           ^: any   (TyAny) (TSTypeReference)
+>                                           ^: any   (Any) (Identifier)
 
   <U>(selector: (state: ExtractState<S>) => U): U
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
 } & S
->   ^: any   (TyAny) (TSTypeReference)
+>   ^: any   (Any) (Identifier)
 
 export type Create = {
->           ^^^^^^: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }   (Object) (Identifier)
 
   <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->  ^: any   (TyAny) (TSTypeParameter)
+>  ^: any   (Any) (Identifier)
 
   <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->     ^^^: any   (TyAny) (TSTypeParameter)
+>     ^^^: any   (Any) (Identifier)
 
   <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->                  ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (Keyof) (Identifier)
                                  expected: never
 
   <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->                  ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof) (IdentifierReference)
+>                  ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (Keyof) (Identifier)
                                  expected: never
 
     initializer: StateCreator<T, [], Mos>,
->   ^^^^^^^^^^^: StateCreator<T, [], Mos>   (TyTypeReference) (BindingIdentifier)
+>   ^^^^^^^^^^^: StateCreator<T, [], Mos>   (TypeReference) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (TSTypeReference)
+>                ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (IdentifierReference)
+>                ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                             ^: any   (TyAny) (TSTypeReference)
+>                             ^: any   (Any) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                                    ^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^: any   (Any) (Identifier)
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
->    ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>    ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                  ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional) (TSTypeReference)
+>                  ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (Conditional) (Identifier)
                  expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                  ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional) (IdentifierReference)
+>                  ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (Conditional) (Identifier)
                  expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                         ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^: any   (Any) (Identifier)
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                         ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                         ^^^^^^^^: any   (Any) (Identifier)
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                                  ^: any   (TyAny) (TSTypeReference)
+>                                  ^: any   (Any) (Identifier)
 
   ): UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                                      ^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^: any   (Any) (Identifier)
 
   <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->  ^: any   (TyAny) (TSTypeParameter)
+>  ^: any   (Any) (Identifier)
 
   <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->         ^^^: any   (TyAny) (TSTypeParameter)
+>         ^^^: any   (Any) (Identifier)
 
   <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->                      ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (Keyof) (Identifier)
                                      expected: never
 
   <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(
->                      ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (TyKeyof) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^^^^^^^^: keyof StoreMutators<unknown, unknown>   (Keyof) (Identifier)
                                      expected: never
 
     initializer: StateCreator<T, [], Mos>,
->   ^^^^^^^^^^^: StateCreator<T, [], Mos>   (TyTypeReference) (BindingIdentifier)
+>   ^^^^^^^^^^^: StateCreator<T, [], Mos>   (TypeReference) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (TSTypeReference)
+>                ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (IdentifierReference)
+>                ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                             ^: any   (TyAny) (TSTypeReference)
+>                             ^: any   (Any) (Identifier)
 
     initializer: StateCreator<T, [], Mos>,
->                                    ^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^: any   (Any) (Identifier)
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
->      ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>      ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                    ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional) (TSTypeReference)
+>                    ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (Conditional) (Identifier)
                    expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                    ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (TyConditional) (IdentifierReference)
+>                    ^^^^^^: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<StoreMutators<S, Ma>[Mi & StoreMutatorIdentifier], Mrs> : never   (Conditional) (Identifier)
                    expected: number extends Ms["length" & keyof Ms] ? S : Ms extends [] ? S : Ms extends [[infer Mi, infer Ma], ...infer Mrs] ? Mutate<never, Mrs> : never
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                           ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^: any   (Any) (Identifier)
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                           ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                           ^^^^^^^^: any   (Any) (Identifier)
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                                    ^: any   (TyAny) (TSTypeReference)
+>                                    ^: any   (Any) (Identifier)
 
   ) => UseBoundStore<Mutate<StoreApi<T>, Mos>>
->                                        ^^^: any   (TyAny) (TSTypeReference)
+>                                        ^^^: any   (Any) (Identifier)
 
 export const create: Create = ((initializer?: StateCreator<any>) => {
->            ^^^^^^: Create   (TyTypeReference) (BindingIdentifier)
+>            ^^^^^^: Create   (TypeReference) (Identifier)
 
 export const create: Create = ((initializer?: StateCreator<any>) => {
->                    ^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^: any   (Any) (Identifier)
 
 export const create: Create = ((initializer?: StateCreator<any>) => {
->                               ^^^^^^^^^^^: StateCreator<any> | undefined   (TyUnion) (BindingIdentifier)
+>                               ^^^^^^^^^^^: StateCreator<any> | undefined   (Union) (Identifier)
 
 export const create: Create = ((initializer?: StateCreator<any>) => {
->                                             ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (TSTypeReference)
+>                                             ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
 export const create: Create = ((initializer?: StateCreator<any>) => {
->                                             ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (IdentifierReference)
+>                                             ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
   if (!initializer) {
->      ^^^^^^^^^^^: StateCreator<any> | undefined   (TyUnion) (IdentifierReference)
+>      ^^^^^^^^^^^: StateCreator<any> | undefined   (Union) (Identifier)
 
     return (nextInitializer: StateCreator<any>) => create(nextInitializer)
->           ^^^^^^^^^^^^^^^: StateCreator<any>   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^^^^^^^^^^: StateCreator<any>   (TypeReference) (Identifier)
 
     return (nextInitializer: StateCreator<any>) => create(nextInitializer)
->                            ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (TSTypeReference)
+>                            ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
     return (nextInitializer: StateCreator<any>) => create(nextInitializer)
->                            ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (IdentifierReference)
+>                            ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
     return (nextInitializer: StateCreator<any>) => create(nextInitializer)
->                                                  ^^^^^^: Create   (TyTypeReference) (IdentifierReference)
+>                                                  ^^^^^^: Create   (TypeReference) (Identifier)
 
     return (nextInitializer: StateCreator<any>) => create(nextInitializer)
->                                                         ^^^^^^^^^^^^^^^: StateCreator<any>   (TyTypeReference) (IdentifierReference)
+>                                                         ^^^^^^^^^^^^^^^: StateCreator<any>   (TypeReference) (Identifier)
 
   const api = createStore(initializer)
->       ^^^: StoreApi<T>   (TyTypeReference) (BindingIdentifier)
+>       ^^^: StoreApi<T>   (TypeReference) (Identifier)
    expected: StoreApi<any>
 
   const api = createStore(initializer)
->             ^^^^^^^^^^^: CreateStore   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^^^^^^: CreateStore   (TypeReference) (Identifier)
 
   const api = createStore(initializer)
->                         ^^^^^^^^^^^: StateCreator<any> | undefined   (TyUnion) (IdentifierReference)
+>                         ^^^^^^^^^^^: StateCreator<any> | undefined   (Union) (Identifier)
                              expected: StateCreator<any>
 
   function useBoundStore(selector?: (state: any) => any) {
->          ^^^^^^^^^^^^^: (selector?: (state: any) => any) => any   (TyFunction) (BindingIdentifier)
+>          ^^^^^^^^^^^^^: (selector?: (state: any) => any) => any   (Function) (Identifier)
 
   function useBoundStore(selector?: (state: any) => any) {
->                        ^^^^^^^^: ((state: any) => any) | undefined   (TyUnion) (BindingIdentifier)
+>                        ^^^^^^^^: ((state: any) => any) | undefined   (Union) (Identifier)
 
   function useBoundStore(selector?: (state: any) => any) {
->                                    ^^^^^: any   (TyAny) (BindingIdentifier)
+>                                    ^^^^^: any   (Any) (Identifier)
 
     return selector ? selector(api.getState()) : api.getState()
->          ^^^^^^^^: ((state: any) => any) | undefined   (TyUnion) (IdentifierReference)
+>          ^^^^^^^^: ((state: any) => any) | undefined   (Union) (Identifier)
 
     return selector ? selector(api.getState()) : api.getState()
->                     ^^^^^^^^: (state: any) => any   (TyFunction) (IdentifierReference)
+>                     ^^^^^^^^: (state: any) => any   (Function) (Identifier)
 
     return selector ? selector(api.getState()) : api.getState()
->                              ^^^: StoreApi<T>   (TyTypeReference) (IdentifierReference)
+>                              ^^^: StoreApi<T>   (TypeReference) (Identifier)
                           expected: StoreApi<any>
 
     return selector ? selector(api.getState()) : api.getState()
->                                  ^^^^^^^^: () => T   (TyFunction) (StaticMemberExpression)
+>                                  ^^^^^^^^: () => T   (Function) (Identifier)
                                    expected: () => any
 
     return selector ? selector(api.getState()) : api.getState()
->                                                ^^^: StoreApi<T>   (TyTypeReference) (IdentifierReference)
+>                                                ^^^: StoreApi<T>   (TypeReference) (Identifier)
                                             expected: StoreApi<any>
 
     return selector ? selector(api.getState()) : api.getState()
->                                                    ^^^^^^^^: () => T   (TyFunction) (StaticMemberExpression)
+>                                                    ^^^^^^^^: () => T   (Function) (Identifier)
                                                      expected: () => any
 
   return Object.assign(useBoundStore, api)
->        ^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
+>        ^^^^^^: ObjectConstructor   (TypeReference) (Identifier)
 
   return Object.assign(useBoundStore, api)
->               ^^^^^^: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }   (TyObject) (StaticMemberExpression)
+>               ^^^^^^: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }   (Object) (Identifier)
 
   return Object.assign(useBoundStore, api)
->                      ^^^^^^^^^^^^^: (selector?: (state: any) => any) => any   (TyFunction) (IdentifierReference)
+>                      ^^^^^^^^^^^^^: (selector?: (state: any) => any) => any   (Function) (Identifier)
 
   return Object.assign(useBoundStore, api)
->                                     ^^^: StoreApi<T>   (TyTypeReference) (IdentifierReference)
+>                                     ^^^: StoreApi<T>   (TypeReference) (Identifier)
                                  expected: StoreApi<any>
 
 }) as Create
->     ^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^: any   (Any) (Identifier)
 
 import { create } from '../src/react'
->        ^^^^^^: Create   (TyTypeReference) (BindingIdentifier)
+>        ^^^^^^: Create   (TypeReference) (Identifier)
 
 import type { ExtractState, StateCreator, StoreApi } from '../src/vanilla'
->             ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (TyConditional) (BindingIdentifier)
+>             ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (Conditional) (Identifier)
 
 import type { ExtractState, StateCreator, StoreApi } from '../src/vanilla'
->                           ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (BindingIdentifier)
+>                           ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
 import type { ExtractState, StateCreator, StoreApi } from '../src/vanilla'
->                                         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                                         ^^^^^^^^: any   (Any) (Identifier)
 
 type CounterState = {
->    ^^^^^^^^^^^^: { count: number; label?: string; increment: (by?: number) => void; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: { count: number; label?: string; increment: (by?: number) => void; }   (Object) (Identifier)
 
   count: number
-> ^^^^^: number   (TyNumber) (TSPropertySignature)
+> ^^^^^: number   (Number) (Identifier)
 
   label?: string
-> ^^^^^: string | undefined   (TyUnion) (TSPropertySignature)
+> ^^^^^: string | undefined   (Union) (Identifier)
 
   increment: (by?: number) => void
-> ^^^^^^^^^: (by?: number) => void   (TyFunction) (TSPropertySignature)
+> ^^^^^^^^^: (by?: number) => void   (Function) (Identifier)
 
   increment: (by?: number) => void
->             ^^: number | undefined   (TyUnion) (BindingIdentifier)
+>             ^^: number | undefined   (Union) (Identifier)
 
 const counterInitializer: StateCreator<CounterState> = (set, get) => ({
->     ^^^^^^^^^^^^^^^^^^: StateCreator<CounterState>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^: StateCreator<CounterState>   (TypeReference) (Identifier)
 
 const counterInitializer: StateCreator<CounterState> = (set, get) => ({
->                         ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (TSTypeReference)
+>                         ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
 const counterInitializer: StateCreator<CounterState> = (set, get) => ({
->                         ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (TyIntersection) (IdentifierReference)
+>                         ^^^^^^^^^^^^: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }   (Intersection) (Identifier)
 
 const counterInitializer: StateCreator<CounterState> = (set, get) => ({
->                                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const counterInitializer: StateCreator<CounterState> = (set, get) => ({
->                                                       ^^^: any   (TyAny) (BindingIdentifier)
+>                                                       ^^^: any   (Any) (Identifier)
                                                    expected: { (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
 
 const counterInitializer: StateCreator<CounterState> = (set, get) => ({
->                                                            ^^^: any   (TyAny) (BindingIdentifier)
+>                                                            ^^^: any   (Any) (Identifier)
                                                         expected: () => CounterState
 
   count: 0,
-> ^^^^^: number   (TyNumber) (ObjectProperty)
+> ^^^^^: number   (Number) (Identifier)
 
   increment: (by = 1) => set({ count: get().count + by }),
-> ^^^^^^^^^: (by: any) => any   (TyFunction) (ObjectProperty)
+> ^^^^^^^^^: (by: any) => any   (Function) (Identifier)
    expected: (by?: number | undefined) => void
 
   increment: (by = 1) => set({ count: get().count + by }),
->             ^^: any   (TyAny) (BindingIdentifier)
+>             ^^: any   (Any) (Identifier)
         expected: number | undefined
 
   increment: (by = 1) => set({ count: get().count + by }),
->                        ^^^: any   (TyAny) (IdentifierReference)
+>                        ^^^: any   (Any) (Identifier)
                     expected: { (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
 
   increment: (by = 1) => set({ count: get().count + by }),
->                              ^^^^^: number   (TyNumber) (ObjectProperty)
+>                              ^^^^^: number   (Number) (Identifier)
 
   increment: (by = 1) => set({ count: get().count + by }),
->                                     ^^^: any   (TyAny) (IdentifierReference)
+>                                     ^^^: any   (Any) (Identifier)
                                  expected: () => CounterState
 
   increment: (by = 1) => set({ count: get().count + by }),
->                                           ^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                           ^^^^^: any   (Any) (Identifier)
                                          expected: number
 
   increment: (by = 1) => set({ count: get().count + by }),
->                                                   ^^: any   (TyAny) (IdentifierReference)
+>                                                   ^^: any   (Any) (Identifier)
                                               expected: number
 
 const useCounter = create(counterInitializer)
->     ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TypeReference) (Identifier)
         expected: UseBoundStore<StoreApi<CounterState>>
 
 const useCounter = create(counterInitializer)
->                  ^^^^^^: Create   (TyTypeReference) (IdentifierReference)
+>                  ^^^^^^: Create   (TypeReference) (Identifier)
 
 const useCounter = create(counterInitializer)
->                         ^^^^^^^^^^^^^^^^^^: StateCreator<CounterState>   (TyTypeReference) (IdentifierReference)
+>                         ^^^^^^^^^^^^^^^^^^: StateCreator<CounterState>   (TypeReference) (Identifier)
 
 type CounterFromHook = ExtractState<typeof useCounter>
->    ^^^^^^^^^^^^^^^: ({ (): ExtractState<Mutate<StoreApi<CounterState>, []>>; <U>(selector: (state: ExtractState<Mutate<StoreApi<CounterState>, []>>) => U): U; } & { setState: SetStateInternal<CounterState>; getState: () => CounterState; getInitialState: () => CounterState; subscribe: (listener: (state: CounterState, prevState: CounterState) => void) => () => void; }) extends { getState: () => infer T; } ? T : never   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^: ({ (): ExtractState<Mutate<StoreApi<CounterState>, []>>; <U>(selector: (state: ExtractState<Mutate<StoreApi<CounterState>, []>>) => U): U; } & { setState: SetStateInternal<CounterState>; getState: () => CounterState; getInitialState: () => CounterState; subscribe: (listener: (state: CounterState, prevState: CounterState) => void) => () => void; }) extends { getState: () => infer T; } ? T : never   (Conditional) (Identifier)
             expected: { count: number; label?: string; increment: (by?: number) => void; }
 
 type CounterFromHook = ExtractState<typeof useCounter>
->                      ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (TyConditional) (TSTypeReference)
+>                      ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (Conditional) (Identifier)
 
 type CounterFromHook = ExtractState<typeof useCounter>
->                      ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (TyConditional) (IdentifierReference)
+>                      ^^^^^^^^^^^^: S extends { getState: () => infer T; } ? T : never   (Conditional) (Identifier)
 
 type CounterFromHook = ExtractState<typeof useCounter>
->                                          ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference) (IdentifierReference)
+>                                          ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TypeReference) (Identifier)
                                              expected: UseBoundStore<StoreApi<CounterState>>
 
 type CounterStore = StoreApi<CounterState>
->    ^^^^^^^^^^^^: StoreApi<CounterState>   (TyTypeReference) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: StoreApi<CounterState>   (TypeReference) (Identifier)
 
 type CounterStore = StoreApi<CounterState>
->                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^: any   (Any) (Identifier)
 
 type CounterStore = StoreApi<CounterState>
->                   ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^^^^^: any   (Any) (Identifier)
 
 type CounterStore = StoreApi<CounterState>
->                            ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const current = useCounter()
->     ^^^^^^^: ExtractState<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^: ExtractState<Mutate<StoreApi<CounterState>, []>>   (TypeReference) (Identifier)
      expected: CounterState
 
 const current = useCounter()
->               ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference) (IdentifierReference)
+>               ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TypeReference) (Identifier)
                   expected: UseBoundStore<StoreApi<CounterState>>
 
 const count = useCounter(state => state.count)
->     ^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^: any   (Any) (Identifier)
    expected: number
 
 const count = useCounter(state => state.count)
->             ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TypeReference) (Identifier)
                 expected: UseBoundStore<StoreApi<CounterState>>
 
 const count = useCounter(state => state.count)
->                        ^^^^^: any   (TyAny) (BindingIdentifier)
+>                        ^^^^^: any   (Any) (Identifier)
                       expected: CounterState
 
 const count = useCounter(state => state.count)
->                                 ^^^^^: any   (TyAny) (IdentifierReference)
+>                                 ^^^^^: any   (Any) (Identifier)
                                expected: CounterState
 
 const count = useCounter(state => state.count)
->                                       ^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                       ^^^^^: any   (Any) (Identifier)
                                      expected: number
 
 const increment = useCounter(state => state.increment)
->     ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^: any   (Any) (Identifier)
        expected: (by?: number) => void
 
 const increment = useCounter(state => state.increment)
->                 ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference) (IdentifierReference)
+>                 ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TypeReference) (Identifier)
                     expected: UseBoundStore<StoreApi<CounterState>>
 
 const increment = useCounter(state => state.increment)
->                            ^^^^^: any   (TyAny) (BindingIdentifier)
+>                            ^^^^^: any   (Any) (Identifier)
                           expected: CounterState
 
 const increment = useCounter(state => state.increment)
->                                     ^^^^^: any   (TyAny) (IdentifierReference)
+>                                     ^^^^^: any   (Any) (Identifier)
                                    expected: CounterState
 
 const increment = useCounter(state => state.increment)
->                                           ^^^^^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                           ^^^^^^^^^: any   (Any) (Identifier)
                                              expected: (by?: number) => void
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
->     ^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
+>     ^^^^^^^^^^^: any   (Error) (Identifier)
          expected: () => void
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
->                   ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference) (IdentifierReference)
+>                   ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TypeReference) (Identifier)
                       expected: UseBoundStore<StoreApi<CounterState>>
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
->                              ^^^^^^^^^: any   (TyError) (StaticMemberExpression)
+>                              ^^^^^^^^^: any   (Error) (Identifier)
                                 expected: (listener: (state: CounterState, prevState: CounterState) => void) => () => void
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
->                                         ^^^^^: any   (TyAny) (BindingIdentifier)
+>                                         ^^^^^: any   (Any) (Identifier)
                                        expected: CounterState
 
 const unsubscribe = useCounter.subscribe((state, prevState) => {
->                                                ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                                                ^^^^^^^^^: any   (Any) (Identifier)
                                                   expected: CounterState
 
   const nextCount = state.count
->       ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>       ^^^^^^^^^: any   (Any) (Identifier)
          expected: number
 
   const nextCount = state.count
->                   ^^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^^: any   (Any) (Identifier)
                  expected: CounterState
 
   const nextCount = state.count
->                         ^^^^^: any   (TyAny) (StaticMemberExpression)
+>                         ^^^^^: any   (Any) (Identifier)
                        expected: number
 
   const prevCount = prevState.count
->       ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>       ^^^^^^^^^: any   (Any) (Identifier)
          expected: number
 
   const prevCount = prevState.count
->                   ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^^^^^^: any   (Any) (Identifier)
                      expected: CounterState
 
   const prevCount = prevState.count
->                             ^^^^^: any   (TyAny) (StaticMemberExpression)
+>                             ^^^^^: any   (Any) (Identifier)
                            expected: number
 
   nextCount + prevCount
-> ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+> ^^^^^^^^^: any   (Any) (Identifier)
    expected: number
 
   nextCount + prevCount
-> ^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^: number   (Number) (ExpressionStatement)
 
   nextCount + prevCount
->             ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>             ^^^^^^^^^: any   (Any) (Identifier)
                expected: number
 
 const explicitState: CounterFromHook = current
->     ^^^^^^^^^^^^^: CounterFromHook   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: CounterFromHook   (TypeReference) (Identifier)
            expected: CounterState
 
 const explicitState: CounterFromHook = current
->                    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const explicitState: CounterFromHook = current
->                                      ^^^^^^^: ExtractState<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference) (IdentifierReference)
+>                                      ^^^^^^^: ExtractState<Mutate<StoreApi<CounterState>, []>>   (TypeReference) (Identifier)
                                       expected: CounterState
 
 const api: CounterStore = useCounter
->     ^^^: CounterStore   (TyTypeReference) (BindingIdentifier)
+>     ^^^: CounterStore   (TypeReference) (Identifier)
 
 const api: CounterStore = useCounter
->          ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>          ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const api: CounterStore = useCounter
->                         ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference) (IdentifierReference)
+>                         ^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TypeReference) (Identifier)
                             expected: UseBoundStore<StoreApi<CounterState>>
 
 useCounter.setState({ label: 'ready' })
->^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TyTypeReference) (IdentifierReference)
+>^^^^^^^^^^: UseBoundStore<Mutate<StoreApi<CounterState>, []>>   (TypeReference) (Identifier)
    expected: UseBoundStore<StoreApi<CounterState>>
 
 useCounter.setState({ label: 'ready' })
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (ExpressionStatement)
                                 expected: void
 
 useCounter.setState({ label: 'ready' })
->          ^^^^^^^^: any   (TyError) (StaticMemberExpression)
+>          ^^^^^^^^: any   (Error) (Identifier)
            expected: { (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
 
 useCounter.setState({ label: 'ready' })
->                     ^^^^^: string   (TyString) (ObjectProperty)
+>                     ^^^^^: string   (String) (Identifier)
 
 increment(2)
->^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>^^^^^^^^^: any   (Any) (Identifier)
   expected: (by?: number) => void
 
 increment(2)
->^^^^^^^^^^^^: any   (TyAny) (ExpressionStatement)
+>^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
      expected: void
 
 unsubscribe()
->^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>^^^^^^^^^^^: any   (Error) (Identifier)
     expected: () => void
 
 unsubscribe()
->^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
+>^^^^^^^^^^^^^: any   (Error) (ExpressionStatement)
       expected: void

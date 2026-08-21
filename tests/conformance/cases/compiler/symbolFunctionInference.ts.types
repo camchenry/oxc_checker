@@ -1,77 +1,77 @@
 const predicate = () => false;
->     ^^^^^^^^^: () => boolean   (TyFunction) (BindingIdentifier)
+>     ^^^^^^^^^: () => boolean   (Function) (Identifier)
 
 async function returnsString() { return "value"; }
->              ^^^^^^^^^^^^^: () => Promise<string>   (TyFunction) (BindingIdentifier)
+>              ^^^^^^^^^^^^^: () => Promise<string>   (Function) (Identifier)
 
 async function empty() {}
->              ^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
+>              ^^^^^: () => Promise<void>   (Function) (Identifier)
 
 async function unwrapPromise(value: Promise<number>) { return value; }
->              ^^^^^^^^^^^^^: (value: Promise<number>) => Promise<number>   (TyFunction) (BindingIdentifier)
+>              ^^^^^^^^^^^^^: (value: Promise<number>) => Promise<number>   (Function) (Identifier)
 
 async function unwrapPromise(value: Promise<number>) { return value; }
->                            ^^^^^: Promise<number>   (TyTypeReference) (BindingIdentifier)
+>                            ^^^^^: Promise<number>   (TypeReference) (Identifier)
 
 async function unwrapPromise(value: Promise<number>) { return value; }
->                                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                   ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 async function unwrapPromise(value: Promise<number>) { return value; }
->                                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                   ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 async function unwrapPromise(value: Promise<number>) { return value; }
->                                                             ^^^^^: Promise<number>   (TyTypeReference) (IdentifierReference)
+>                                                             ^^^^^: Promise<number>   (TypeReference) (Identifier)
 
 async function preserveGeneric<T>(value: T) { return value; }
->              ^^^^^^^^^^^^^^^: <T>(value: T) => Promise<T>   (TyFunction) (BindingIdentifier)
+>              ^^^^^^^^^^^^^^^: <T>(value: T) => Promise<T>   (Function) (Identifier)
 
 async function preserveGeneric<T>(value: T) { return value; }
->                              ^: any   (TyAny) (TSTypeParameter)
+>                              ^: any   (Any) (Identifier)
 
 async function preserveGeneric<T>(value: T) { return value; }
->                                 ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                 ^^^^^: T   (TypeReference) (Identifier)
 
 async function preserveGeneric<T>(value: T) { return value; }
->                                        ^: any   (TyAny) (TSTypeReference)
+>                                        ^: any   (Any) (Identifier)
 
 async function preserveGeneric<T>(value: T) { return value; }
->                                                    ^^^^^: T   (TyTypeReference) (IdentifierReference)
+>                                                    ^^^^^: T   (TypeReference) (Identifier)
 
 const returnsNumber = async () => 1;
->     ^^^^^^^^^^^^^: () => Promise<number>   (TyFunction) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: () => Promise<number>   (Function) (Identifier)
 
 const stringResult = returnsString();
->     ^^^^^^^^^^^^: Promise<string>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^: Promise<string>   (TypeReference) (Identifier)
 
 const stringResult = returnsString();
->                    ^^^^^^^^^^^^^: () => Promise<string>   (TyFunction) (IdentifierReference)
+>                    ^^^^^^^^^^^^^: () => Promise<string>   (Function) (Identifier)
 
 const emptyResult = empty();
->     ^^^^^^^^^^^: Promise<void>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^: Promise<void>   (TypeReference) (Identifier)
 
 const emptyResult = empty();
->                   ^^^^^: () => Promise<void>   (TyFunction) (IdentifierReference)
+>                   ^^^^^: () => Promise<void>   (Function) (Identifier)
 
 const unwrappedResult = unwrapPromise(Promise.resolve(1));
->     ^^^^^^^^^^^^^^^: Promise<number>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: Promise<number>   (TypeReference) (Identifier)
 
 const unwrappedResult = unwrapPromise(Promise.resolve(1));
->                       ^^^^^^^^^^^^^: (value: Promise<number>) => Promise<number>   (TyFunction) (IdentifierReference)
+>                       ^^^^^^^^^^^^^: (value: Promise<number>) => Promise<number>   (Function) (Identifier)
 
 const unwrappedResult = unwrapPromise(Promise.resolve(1));
->                                     ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                     ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 const unwrappedResult = unwrapPromise(Promise.resolve(1));
->                                             ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
+>                                             ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (Object) (Identifier)
 
 const genericResult = preserveGeneric("value");
->     ^^^^^^^^^^^^^: Promise<string>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: Promise<string>   (TypeReference) (Identifier)
 
 const genericResult = preserveGeneric("value");
->                     ^^^^^^^^^^^^^^^: <T>(value: T) => Promise<T>   (TyFunction) (IdentifierReference)
+>                     ^^^^^^^^^^^^^^^: <T>(value: T) => Promise<T>   (Function) (Identifier)
 
 const numberResult = returnsNumber();
->     ^^^^^^^^^^^^: Promise<number>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^: Promise<number>   (TypeReference) (Identifier)
 
 const numberResult = returnsNumber();
->                    ^^^^^^^^^^^^^: () => Promise<number>   (TyFunction) (IdentifierReference)
+>                    ^^^^^^^^^^^^^: () => Promise<number>   (Function) (Identifier)

@@ -1,71 +1,71 @@
 type UnionAny = any | 'foo';
->    ^^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: any   (Any) (Identifier)
 
 type UnionUnknown = unknown | 'foo';
->    ^^^^^^^^^^^^: unknown   (TyUnknown) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: unknown   (Unknown) (Identifier)
 
 type UnionNever = never | 'foo';
->    ^^^^^^^^^^: "foo"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: "foo"   (StringLiteral) (Identifier)
 
 type UnionBooleanLiteral = boolean | false;
->    ^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 type UnionNumberLiteral = number | 1;
->    ^^^^^^^^^^^^^^^^^^: number   (TyNumber) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 type UnionStringLiteral = string | 'foo';
->    ^^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 type IntersectionAny = any & 'foo';
->    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type IntersectionUnknown = string & unknown;
->    ^^^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 type IntersectionNever = string | never;
->    ^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 type IntersectionBooleanLiteral = boolean & false;
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^: false   (TyBooleanLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^: false   (BooleanLiteral) (Identifier)
 
 type IntersectionNumberLiteral = number & 1;
->    ^^^^^^^^^^^^^^^^^^^^^^^^^: 1   (TyNumberLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: 1   (NumberLiteral) (Identifier)
 
 type IntersectionStringLiteral = string & 'foo';
->    ^^^^^^^^^^^^^^^^^^^^^^^^^: "foo"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: "foo"   (StringLiteral) (Identifier)
 
 type UnionAny = any;
->    ^^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: any   (Any) (Identifier)
 
 type UnionUnknown = unknown;
->    ^^^^^^^^^^^^: unknown   (TyUnknown) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: unknown   (Unknown) (Identifier)
 
 type UnionNever = never;
->    ^^^^^^^^^^: never   (TyNever) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: never   (Never) (Identifier)
 
 type UnionBooleanLiteral = boolean;
->    ^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 type UnionNumberLiteral = number;
->    ^^^^^^^^^^^^^^^^^^: number   (TyNumber) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 type UnionStringLiteral = string;
->    ^^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 type IntersectionAny = any;
->    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type IntersectionUnknown = string;
->    ^^^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 type IntersectionNever = string;
->    ^^^^^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 type IntersectionBooleanLiteral = false;
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^: false   (TyBooleanLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^: false   (BooleanLiteral) (Identifier)
 
 type IntersectionNumberLiteral = 1;
->    ^^^^^^^^^^^^^^^^^^^^^^^^^: 1   (TyNumberLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: 1   (NumberLiteral) (Identifier)
 
 type IntersectionStringLiteral = 'foo';
->    ^^^^^^^^^^^^^^^^^^^^^^^^^: "foo"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: "foo"   (StringLiteral) (Identifier)

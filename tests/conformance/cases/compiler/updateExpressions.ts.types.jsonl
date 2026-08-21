@@ -1,0 +1,24 @@
+{"path":"compiler/updateExpressions.ts","start":5,"end":16,"text":"numberValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":26,"end":37,"text":"bigintValue","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"compiler/updateExpressions.ts","start":56,"end":64,"text":"anyValue","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/updateExpressions.ts","start":81,"end":93,"text":"numberObject","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}
+{"path":"compiler/updateExpressions.ts","start":98,"end":103,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":117,"end":133,"text":"_prefixIncrement","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":138,"end":149,"text":"numberValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":157,"end":174,"text":"_postfixIncrement","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":177,"end":188,"text":"numberValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":198,"end":214,"text":"_prefixDecrement","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":219,"end":230,"text":"numberValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":238,"end":255,"text":"_postfixDecrement","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":258,"end":269,"text":"numberValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":279,"end":292,"text":"_prefixBigInt","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"compiler/updateExpressions.ts","start":297,"end":308,"text":"bigintValue","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"compiler/updateExpressions.ts","start":316,"end":330,"text":"_postfixBigInt","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"compiler/updateExpressions.ts","start":333,"end":344,"text":"bigintValue","nodeType":"Identifier","type":{"name":"Bigint","display":"bigint"}}
+{"path":"compiler/updateExpressions.ts","start":354,"end":364,"text":"_prefixAny","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":369,"end":377,"text":"anyValue","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/updateExpressions.ts","start":385,"end":401,"text":"_memberIncrement","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":406,"end":418,"text":"numberObject","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}
+{"path":"compiler/updateExpressions.ts","start":419,"end":424,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":432,"end":456,"text":"_computedMemberDecrement","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/updateExpressions.ts","start":459,"end":471,"text":"numberObject","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}

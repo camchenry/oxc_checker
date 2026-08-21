@@ -1,383 +1,383 @@
 const x: number = 1 satisfies 2 | 3
->     ^: number   (TyNumber) (BindingIdentifier)
+>     ^: number   (Number) (Identifier)
 
 const y = 1 satisfies 2 | 3
->     ^: 1   (TyNumberLiteral) (BindingIdentifier)
+>     ^: 1   (NumberLiteral) (Identifier)
 
 type Point = { x: number; y: number }
->    ^^^^^: { x: number; y: number; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^: { x: number; y: number; }   (Object) (Identifier)
 
 type Point = { x: number; y: number }
->              ^: number   (TyNumber) (TSPropertySignature)
+>              ^: number   (Number) (Identifier)
 
 type Point = { x: number; y: number }
->                         ^: number   (TyNumber) (TSPropertySignature)
+>                         ^: number   (Number) (Identifier)
 
 type Named = { name: string }
->    ^^^^^: { name: string; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^: { name: string; }   (Object) (Identifier)
 
 type Named = { name: string }
->              ^^^^: string   (TyString) (TSPropertySignature)
+>              ^^^^: string   (String) (Identifier)
 
 type Handler<T> = (value: T) => T
->    ^^^^^^^: (value: T) => T   (TyFunction) (TSTypeAliasDeclaration)
+>    ^^^^^^^: (value: T) => T   (Function) (Identifier)
 
 type Handler<T> = (value: T) => T
->            ^: any   (TyAny) (TSTypeParameter)
+>            ^: any   (Any) (Identifier)
 
 type Handler<T> = (value: T) => T
->                  ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                  ^^^^^: T   (TypeReference) (Identifier)
 
 type Handler<T> = (value: T) => T
->                         ^: any   (TyAny) (TSTypeReference)
+>                         ^: any   (Any) (Identifier)
 
 type Handler<T> = (value: T) => T
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
 type Status = "idle" | "loading" | "done"
->    ^^^^^^: "idle" | "loading" | "done"   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^: "idle" | "loading" | "done"   (Union) (Identifier)
 
 type StringNumberRecord = { [key: string]: number }
->    ^^^^^^^^^^^^^^^^^^: { [key: string]: number; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^: { [key: string]: number; }   (Object) (Identifier)
 
 type StringNumberRecord = { [key: string]: number }
->                            ^^^: string   (TyString) (TSIndexSignatureName)
+>                            ^^^: string   (String) (Identifier)
 
 type StatusMap = { idle: number; loading: number; done: number }
->    ^^^^^^^^^: { idle: number; loading: number; done: number; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: { idle: number; loading: number; done: number; }   (Object) (Identifier)
 
 type StatusMap = { idle: number; loading: number; done: number }
->                  ^^^^: number   (TyNumber) (TSPropertySignature)
+>                  ^^^^: number   (Number) (Identifier)
 
 type StatusMap = { idle: number; loading: number; done: number }
->                                ^^^^^^^: number   (TyNumber) (TSPropertySignature)
+>                                ^^^^^^^: number   (Number) (Identifier)
 
 type StatusMap = { idle: number; loading: number; done: number }
->                                                 ^^^^: number   (TyNumber) (TSPropertySignature)
+>                                                 ^^^^: number   (Number) (Identifier)
 
 const literalNumber = 1 satisfies number
->     ^^^^^^^^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: 1   (NumberLiteral) (Identifier)
 
 const literalString = "hello" satisfies string
->     ^^^^^^^^^^^^^: "hello"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: "hello"   (StringLiteral) (Identifier)
 
 const literalBoolean = true satisfies boolean
->     ^^^^^^^^^^^^^^: true   (TyBooleanLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: true   (BooleanLiteral) (Identifier)
 
 const literalUnion = "idle" satisfies Status
->     ^^^^^^^^^^^^: "idle"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^: "idle"   (StringLiteral) (Identifier)
 
 const literalUnion = "idle" satisfies Status
->                                     ^^^^^^: any   (TyAny) (TSTypeReference)
+>                                     ^^^^^^: any   (Any) (Identifier)
 
 const literalTemplate = `id-${literalNumber}` satisfies `id-${number}`
->     ^^^^^^^^^^^^^^^: "id-1"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: "id-1"   (StringLiteral) (Identifier)
 
 const literalTemplate = `id-${literalNumber}` satisfies `id-${number}`
->                             ^^^^^^^^^^^^^: 1   (TyNumberLiteral) (IdentifierReference)
+>                             ^^^^^^^^^^^^^: 1   (NumberLiteral) (Identifier)
 
 const tuple = [1, "two"] satisfies [number, string]
->     ^^^^^: [number, string]   (TyTuple) (BindingIdentifier)
+>     ^^^^^: [number, string]   (Tuple) (Identifier)
 
 const readonlyTuple = [1, 2, 3] as const satisfies readonly number[]
->     ^^^^^^^^^^^^^: readonly [1, 2, 3]   (TyTuple) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: readonly [1, 2, 3]   (Tuple) (Identifier)
 
 const readonlyTuple = [1, 2, 3] as const satisfies readonly number[]
->                                  ^^^^^: any   (TyAny) (TSTypeReference)
+>                                  ^^^^^: any   (Any) (Identifier)
 
 const readonlyTuple = [1, 2, 3] as const satisfies readonly number[]
->                                  ^^^^^: any   (TyError) (IdentifierReference)
+>                                  ^^^^^: any   (Error) (Identifier)
 
 const array = ["red", "green", "blue"] satisfies string[]
->     ^^^^^: string[]   (TyArray) (BindingIdentifier)
+>     ^^^^^: string[]   (Array) (Identifier)
 
 const nestedArray = [[1], [2, 3]] satisfies number[][]
->     ^^^^^^^^^^^: number[][]   (TyArray) (BindingIdentifier)
+>     ^^^^^^^^^^^: number[][]   (Array) (Identifier)
 
 const point = { x: 0, y: 1 } satisfies Point
->     ^^^^^: { x: number; y: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^: { x: number; y: number; }   (Object) (Identifier)
 
 const point = { x: 0, y: 1 } satisfies Point
->               ^: number   (TyNumber) (ObjectProperty)
+>               ^: number   (Number) (Identifier)
 
 const point = { x: 0, y: 1 } satisfies Point
->                     ^: number   (TyNumber) (ObjectProperty)
+>                     ^: number   (Number) (Identifier)
 
 const point = { x: 0, y: 1 } satisfies Point
->                                      ^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^: any   (Any) (Identifier)
 
 const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
->     ^^^^^^^^^^: { name: string; x: number; y: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^: { name: string; x: number; y: number; }   (Object) (Identifier)
 
 const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
->                    ^^^^: string   (TyString) (ObjectProperty)
+>                    ^^^^: string   (String) (Identifier)
 
 const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
->                                    ^: number   (TyNumber) (ObjectProperty)
+>                                    ^: number   (Number) (Identifier)
 
 const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
->                                          ^: number   (TyNumber) (ObjectProperty)
+>                                          ^: number   (Number) (Identifier)
 
 const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
->                                                           ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                           ^^^^^: any   (Any) (Identifier)
 
 const namedPoint = { name: "origin", x: 0, y: 0 } satisfies Named & Point
->                                                                   ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                   ^^^^^: any   (Any) (Identifier)
 
 const optionalShape = { x: 1 } satisfies { x: number; y?: number }
->     ^^^^^^^^^^^^^: { x: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: { x: number; }   (Object) (Identifier)
 
 const optionalShape = { x: 1 } satisfies { x: number; y?: number }
->                       ^: number   (TyNumber) (ObjectProperty)
+>                       ^: number   (Number) (Identifier)
 
 const optionalShape = { x: 1 } satisfies { x: number; y?: number }
->                                          ^: number   (TyNumber) (TSPropertySignature)
+>                                          ^: number   (Number) (Identifier)
 
 const optionalShape = { x: 1 } satisfies { x: number; y?: number }
->                                                     ^: number | undefined   (TyUnion) (TSPropertySignature)
+>                                                     ^: number | undefined   (Union) (Identifier)
 
 const recordShape = { a: 1, b: 2 } satisfies StringNumberRecord
->     ^^^^^^^^^^^: { a: number; b: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^: { a: number; b: number; }   (Object) (Identifier)
 
 const recordShape = { a: 1, b: 2 } satisfies StringNumberRecord
->                     ^: number   (TyNumber) (ObjectProperty)
+>                     ^: number   (Number) (Identifier)
 
 const recordShape = { a: 1, b: 2 } satisfies StringNumberRecord
->                           ^: number   (TyNumber) (ObjectProperty)
+>                           ^: number   (Number) (Identifier)
 
 const recordShape = { a: 1, b: 2 } satisfies StringNumberRecord
->                                            ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                            ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const literalRecord = { idle: 0, loading: 1, done: 2 } satisfies StatusMap
->     ^^^^^^^^^^^^^: { idle: number; loading: number; done: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: { idle: number; loading: number; done: number; }   (Object) (Identifier)
 
 const literalRecord = { idle: 0, loading: 1, done: 2 } satisfies StatusMap
->                       ^^^^: number   (TyNumber) (ObjectProperty)
+>                       ^^^^: number   (Number) (Identifier)
 
 const literalRecord = { idle: 0, loading: 1, done: 2 } satisfies StatusMap
->                                ^^^^^^^: number   (TyNumber) (ObjectProperty)
+>                                ^^^^^^^: number   (Number) (Identifier)
 
 const literalRecord = { idle: 0, loading: 1, done: 2 } satisfies StatusMap
->                                            ^^^^: number   (TyNumber) (ObjectProperty)
+>                                            ^^^^: number   (Number) (Identifier)
 
 const literalRecord = { idle: 0, loading: 1, done: 2 } satisfies StatusMap
->                                                                ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                ^^^^^^^^^: any   (Any) (Identifier)
 
 const nestedObject = {
->     ^^^^^^^^^^^^: { id: string; child: { x: number; y: number; }; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^: { id: string; child: { x: number; y: number; }; }   (Object) (Identifier)
 
 	id: "root",
->^^: string   (TyString) (ObjectProperty)
+>^^: string   (String) (Identifier)
 
 	child: { x: 1, y: 2 },
->^^^^^: { x: number; y: number; }   (TyObject) (ObjectProperty)
+>^^^^^: { x: number; y: number; }   (Object) (Identifier)
 
 	child: { x: 1, y: 2 },
->         ^: number   (TyNumber) (ObjectProperty)
+>         ^: number   (Number) (Identifier)
 
 	child: { x: 1, y: 2 },
->               ^: number   (TyNumber) (ObjectProperty)
+>               ^: number   (Number) (Identifier)
 
 } satisfies { id: string; child: Point }
->             ^^: string   (TyString) (TSPropertySignature)
+>             ^^: string   (String) (Identifier)
 
 } satisfies { id: string; child: Point }
->                         ^^^^^: Point   (TyTypeReference) (TSPropertySignature)
+>                         ^^^^^: Point   (TypeReference) (Identifier)
 
 } satisfies { id: string; child: Point }
->                                ^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^: any   (Any) (Identifier)
 
 const methodObject = {
->     ^^^^^^^^^^^^: { scale(value: number): number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^: { scale(value: number): number; }   (Object) (Identifier)
 
 	scale(value: number) {
->^^^^^: (value: number) => number   (TyFunction) (ObjectProperty)
+>^^^^^: (value: number) => number   (Function) (Identifier)
 
 	scale(value: number) {
->      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>      ^^^^^: number   (Number) (Identifier)
 
 		return value * 2
->        ^^^^^: number   (TyNumber) (IdentifierReference)
+>        ^^^^^: number   (Number) (Identifier)
 
 } satisfies { scale(value: number): number }
->             ^^^^^: (value: number) => number   (TyFunction) (TSMethodSignature)
+>             ^^^^^: (value: number) => number   (Function) (Identifier)
 
 } satisfies { scale(value: number): number }
->                   ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                   ^^^^^: number   (Number) (Identifier)
 
 const arrow = ((value: number) => value + 1) satisfies Handler<number>
->     ^^^^^: (value: number) => number   (TyFunction) (BindingIdentifier)
+>     ^^^^^: (value: number) => number   (Function) (Identifier)
 
 const arrow = ((value: number) => value + 1) satisfies Handler<number>
->               ^^^^^: number   (TyNumber) (BindingIdentifier)
+>               ^^^^^: number   (Number) (Identifier)
 
 const arrow = ((value: number) => value + 1) satisfies Handler<number>
->                                 ^^^^^: number   (TyNumber) (IdentifierReference)
+>                                 ^^^^^: number   (Number) (Identifier)
 
 const arrow = ((value: number) => value + 1) satisfies Handler<number>
->                                                      ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                      ^^^^^^^: any   (Any) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->     ^^^^^^^^^^^^: <T>(value: T) => T   (TyFunction) (BindingIdentifier)
+>     ^^^^^^^^^^^^: <T>(value: T) => T   (Function) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->                      ^: any   (TyAny) (TSTypeParameter)
+>                      ^: any   (Any) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->                         ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                         ^^^^^: T   (TypeReference) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->                                ^: any   (TyAny) (TSTypeReference)
+>                                ^: any   (Any) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->                                      ^^^^^: T   (TyTypeReference) (IdentifierReference)
+>                                      ^^^^^: T   (TypeReference) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->                                                        ^: any   (TyAny) (TSTypeParameter)
+>                                                        ^: any   (Any) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->                                                           ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                                           ^^^^^: T   (TypeReference) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->                                                                  ^: any   (TyAny) (TSTypeReference)
+>                                                                  ^: any   (Any) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->                                                                        ^: any   (TyAny) (TSTypeReference)
+>                                                                        ^: any   (Any) (Identifier)
 
 const constructorLike = class {
->     ^^^^^^^^^^^^^^^: { new (): { value: number; }; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: { new (): { value: number; }; }   (Object) (Identifier)
 
 	value = 1
->^^^^^: number   (TyNumber) (PropertyDefinition)
+>^^^^^: number   (Number) (Identifier)
 
 } satisfies new () => { value: number }
->                       ^^^^^: number   (TyNumber) (TSPropertySignature)
+>                       ^^^^^: number   (Number) (Identifier)
 
 const parenthesized = (1 + 2) satisfies number
->     ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const conditional = (literalBoolean ? "yes" : "no") satisfies "yes" | "no"
->     ^^^^^^^^^^^: "yes" | "no"   (TyUnion) (BindingIdentifier)
+>     ^^^^^^^^^^^: "yes" | "no"   (Union) (Identifier)
 
 const conditional = (literalBoolean ? "yes" : "no") satisfies "yes" | "no"
->                    ^^^^^^^^^^^^^^: true   (TyBooleanLiteral) (IdentifierReference)
+>                    ^^^^^^^^^^^^^^: true   (BooleanLiteral) (Identifier)
 
 const nullish = (undefined ?? "fallback") satisfies string
->     ^^^^^^^: "fallback"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^: "fallback"   (StringLiteral) (Identifier)
 
 const nullish = (undefined ?? "fallback") satisfies string
->                ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>                ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 const chained = ({ x: 1, y: 2 } satisfies Point).x satisfies number
->     ^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^: number   (Number) (Identifier)
 
 const chained = ({ x: 1, y: 2 } satisfies Point).x satisfies number
->                  ^: number   (TyNumber) (ObjectProperty)
+>                  ^: number   (Number) (Identifier)
 
 const chained = ({ x: 1, y: 2 } satisfies Point).x satisfies number
->                        ^: number   (TyNumber) (ObjectProperty)
+>                        ^: number   (Number) (Identifier)
 
 const chained = ({ x: 1, y: 2 } satisfies Point).x satisfies number
->                                         ^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^: any   (Any) (Identifier)
 
 const chained = ({ x: 1, y: 2 } satisfies Point).x satisfies number
->                                                ^: number   (TyNumber) (StaticMemberExpression)
+>                                                ^: number   (Number) (Identifier)
 
 declare const maybePoint: Point | undefined
->             ^^^^^^^^^^: Point | undefined   (TyUnion) (BindingIdentifier)
+>             ^^^^^^^^^^: Point | undefined   (Union) (Identifier)
 
 declare const maybePoint: Point | undefined
->                         ^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^: any   (Any) (Identifier)
 
 const narrowed = maybePoint?.x satisfies number | undefined
->     ^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>     ^^^^^^^^: number | undefined   (Union) (Identifier)
 
 const narrowed = maybePoint?.x satisfies number | undefined
->                ^^^^^^^^^^: Point | undefined   (TyUnion) (IdentifierReference)
+>                ^^^^^^^^^^: Point | undefined   (Union) (Identifier)
 
 const narrowed = maybePoint?.x satisfies number | undefined
->                            ^: number | undefined   (TyUnion) (StaticMemberExpression)
+>                            ^: number | undefined   (Union) (Identifier)
 
 declare function takesPoint<T extends Point>(value: T): T
->                ^^^^^^^^^^: <T extends Point>(value: T) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^: <T extends Point>(value: T) => T   (Function) (Identifier)
 
 declare function takesPoint<T extends Point>(value: T): T
->                           ^: any   (TyAny) (TSTypeParameter)
+>                           ^: any   (Any) (Identifier)
 
 declare function takesPoint<T extends Point>(value: T): T
->                                     ^^^^^: any   (TyAny) (TSTypeReference)
+>                                     ^^^^^: any   (Any) (Identifier)
 
 declare function takesPoint<T extends Point>(value: T): T
->                                            ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                            ^^^^^: T   (TypeReference) (Identifier)
 
 declare function takesPoint<T extends Point>(value: T): T
->                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                   ^: any   (Any) (Identifier)
 
 declare function takesPoint<T extends Point>(value: T): T
->                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                       ^: any   (Any) (Identifier)
 
 const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
->     ^^^^^^^^^^^: { x: number; y: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^: { x: number; y: number; }   (Object) (Identifier)
 
 const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
->                   ^^^^^^^^^^: <T extends Point>(value: T) => T   (TyFunction) (IdentifierReference)
+>                   ^^^^^^^^^^: <T extends Point>(value: T) => T   (Function) (Identifier)
 
 const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
->                                ^: number   (TyNumber) (ObjectProperty)
+>                                ^: number   (Number) (Identifier)
 
 const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
->                                      ^: number   (TyNumber) (ObjectProperty)
+>                                      ^: number   (Number) (Identifier)
 
 const genericCall = takesPoint({ x: 1, y: 2 }) satisfies Point
->                                                        ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                        ^^^^^: any   (Any) (Identifier)
 
 const missingProperty = { x: 1 } satisfies Point
->     ^^^^^^^^^^^^^^^: { x: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: { x: number; }   (Object) (Identifier)
 
 const missingProperty = { x: 1 } satisfies Point
->                         ^: number   (TyNumber) (ObjectProperty)
+>                         ^: number   (Number) (Identifier)
 
 const missingProperty = { x: 1 } satisfies Point
->                                          ^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^: any   (Any) (Identifier)
 
 const wrongPropertyType = { x: 1, y: "two" } satisfies Point
->     ^^^^^^^^^^^^^^^^^: { x: number; y: string; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^: { x: number; y: string; }   (Object) (Identifier)
 
 const wrongPropertyType = { x: 1, y: "two" } satisfies Point
->                           ^: number   (TyNumber) (ObjectProperty)
+>                           ^: number   (Number) (Identifier)
 
 const wrongPropertyType = { x: 1, y: "two" } satisfies Point
->                                 ^: string   (TyString) (ObjectProperty)
+>                                 ^: string   (String) (Identifier)
 
 const wrongPropertyType = { x: 1, y: "two" } satisfies Point
->                                                      ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                      ^^^^^: any   (Any) (Identifier)
 
 const excessProperty = { x: 1, y: 2, z: 3 } satisfies Point
->     ^^^^^^^^^^^^^^: { x: number; y: number; z: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: { x: number; y: number; z: number; }   (Object) (Identifier)
 
 const excessProperty = { x: 1, y: 2, z: 3 } satisfies Point
->                        ^: number   (TyNumber) (ObjectProperty)
+>                        ^: number   (Number) (Identifier)
 
 const excessProperty = { x: 1, y: 2, z: 3 } satisfies Point
->                              ^: number   (TyNumber) (ObjectProperty)
+>                              ^: number   (Number) (Identifier)
 
 const excessProperty = { x: 1, y: 2, z: 3 } satisfies Point
->                                    ^: number   (TyNumber) (ObjectProperty)
+>                                    ^: number   (Number) (Identifier)
 
 const excessProperty = { x: 1, y: 2, z: 3 } satisfies Point
->                                                     ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                     ^^^^^: any   (Any) (Identifier)
 
 const wrongTuple = [1, 2] satisfies [number, string]
->     ^^^^^^^^^^: [number, number]   (TyTuple) (BindingIdentifier)
+>     ^^^^^^^^^^: [number, number]   (Tuple) (Identifier)
 
 const wrongFunction = ((value: string) => value) satisfies Handler<number>
->     ^^^^^^^^^^^^^: (value: string) => string   (TyFunction) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: (value: string) => string   (Function) (Identifier)
 
 const wrongFunction = ((value: string) => value) satisfies Handler<number>
->                       ^^^^^: string   (TyString) (BindingIdentifier)
+>                       ^^^^^: string   (String) (Identifier)
 
 const wrongFunction = ((value: string) => value) satisfies Handler<number>
->                                         ^^^^^: string   (TyString) (IdentifierReference)
+>                                         ^^^^^: string   (String) (Identifier)
 
 const wrongFunction = ((value: string) => value) satisfies Handler<number>
->                                                          ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                          ^^^^^^^: any   (Any) (Identifier)

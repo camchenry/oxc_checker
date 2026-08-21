@@ -1,0 +1,58 @@
+{"path":"compiler/iterationSymbolTypes.ts","start":15,"end":24,"text":"useStream","nodeType":"Identifier","type":{"name":"Function","display":"<TQueryFnData>(streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>) => Promise<void>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":25,"end":37,"text":"TQueryFnData","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":42,"end":50,"text":"streamFn","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":58,"end":71,"text":"AsyncIterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":58,"end":71,"text":"AsyncIterable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":72,"end":84,"text":"TQueryFnData","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":88,"end":95,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":88,"end":95,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":96,"end":109,"text":"AsyncIterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":96,"end":109,"text":"AsyncIterable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":110,"end":122,"text":"TQueryFnData","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":138,"end":144,"text":"stream","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncIterable<TQueryFnData>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":153,"end":161,"text":"streamFn","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":184,"end":189,"text":"chunk","nodeType":"Identifier","type":{"name":"TypeReference","display":"Awaited<TQueryFnData>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":193,"end":199,"text":"stream","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncIterable<TQueryFnData>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":207,"end":212,"text":"chunk","nodeType":"Identifier","type":{"name":"TypeReference","display":"Awaited<TQueryFnData>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":207,"end":213,"text":"chunk;","nodeType":"ExpressionStatement","type":{"name":"TypeReference","display":"Awaited<TQueryFnData>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":237,"end":257,"text":"asyncGeneratorValues","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncGenerator<1 | 2, void, unknown>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":264,"end":272,"text":"yield 1;","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":275,"end":283,"text":"yield 2;","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":301,"end":317,"text":"consumeGenerator","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":341,"end":355,"text":"generatedValue","nodeType":"Identifier","type":{"name":"Union","display":"1 | 2"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":359,"end":379,"text":"asyncGeneratorValues","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncGenerator<1 | 2, void, unknown>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":389,"end":403,"text":"generatedValue","nodeType":"Identifier","type":{"name":"Union","display":"1 | 2"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":389,"end":404,"text":"generatedValue;","nodeType":"ExpressionStatement","type":{"name":"Union","display":"1 | 2"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":422,"end":439,"text":"TextAsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":422,"end":439,"text":"TextAsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":444,"end":448,"text":"next","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<IteratorResult<\"chunk\", void>>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":452,"end":459,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":452,"end":459,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":460,"end":474,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":460,"end":474,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":504,"end":524,"text":"StructuralTextStream","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":504,"end":524,"text":"StructuralTextStream","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":530,"end":536,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":537,"end":550,"text":"asyncIterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":555,"end":572,"text":"TextAsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":555,"end":572,"text":"TextAsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":590,"end":606,"text":"structuralStream","nodeType":"Identifier","type":{"name":"TypeReference","display":"StructuralTextStream"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":608,"end":628,"text":"StructuralTextStream","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":608,"end":628,"text":"StructuralTextStream","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":645,"end":668,"text":"consumeStructuralStream","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":692,"end":707,"text":"structuralChunk","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"chunk\""}}
+{"path":"compiler/iterationSymbolTypes.ts","start":711,"end":727,"text":"structuralStream","nodeType":"Identifier","type":{"name":"TypeReference","display":"StructuralTextStream"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":735,"end":750,"text":"structuralChunk","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"chunk\""}}
+{"path":"compiler/iterationSymbolTypes.ts","start":735,"end":751,"text":"structuralChunk;","nodeType":"ExpressionStatement","type":{"name":"StringLiteral","display":"\"chunk\""}}
+{"path":"compiler/iterationSymbolTypes.ts","start":769,"end":788,"text":"InheritedTextStream","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":769,"end":788,"text":"InheritedTextStream","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":797,"end":810,"text":"AsyncIterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":797,"end":810,"text":"AsyncIterable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":837,"end":852,"text":"inheritedStream","nodeType":"Identifier","type":{"name":"TypeReference","display":"InheritedTextStream"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":854,"end":873,"text":"InheritedTextStream","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":854,"end":873,"text":"InheritedTextStream","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":890,"end":912,"text":"consumeInheritedStream","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":936,"end":950,"text":"inheritedChunk","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"chunk\""}}
+{"path":"compiler/iterationSymbolTypes.ts","start":954,"end":969,"text":"inheritedStream","nodeType":"Identifier","type":{"name":"TypeReference","display":"InheritedTextStream"}}
+{"path":"compiler/iterationSymbolTypes.ts","start":977,"end":991,"text":"inheritedChunk","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"chunk\""}}
+{"path":"compiler/iterationSymbolTypes.ts","start":977,"end":992,"text":"inheritedChunk;","nodeType":"ExpressionStatement","type":{"name":"StringLiteral","display":"\"chunk\""}}

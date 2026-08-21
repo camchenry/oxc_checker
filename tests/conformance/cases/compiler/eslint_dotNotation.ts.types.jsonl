@@ -1,0 +1,18 @@
+{"path":"compiler/eslint_dotNotation.ts::a.ts","start":6,"end":7,"text":"X","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof X"}}
+{"path":"compiler/eslint_dotNotation.ts::a.ts","start":20,"end":29,"text":"priv_prop","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_dotNotation.ts::a.ts","start":46,"end":47,"text":"x","nodeType":"Identifier","type":{"name":"TypeReference","display":"X"}}
+{"path":"compiler/eslint_dotNotation.ts::a.ts","start":54,"end":55,"text":"X","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof X"}}
+{"path":"compiler/eslint_dotNotation.ts::a.ts","start":59,"end":60,"text":"x","nodeType":"Identifier","type":{"name":"TypeReference","display":"X"}}
+{"path":"compiler/eslint_dotNotation.ts::a.ts","start":59,"end":80,"text":"x['priv_prop'] = 123;","nodeType":"ExpressionStatement","type":{"name":"NumberLiteral","display":"123"}}
+{"path":"compiler/eslint_dotNotation.ts::b.ts","start":6,"end":7,"text":"X","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof X"}}
+{"path":"compiler/eslint_dotNotation.ts::b.ts","start":22,"end":36,"text":"protected_prop","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_dotNotation.ts::b.ts","start":53,"end":54,"text":"x","nodeType":"Identifier","type":{"name":"TypeReference","display":"X"}}
+{"path":"compiler/eslint_dotNotation.ts::b.ts","start":61,"end":62,"text":"X","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof X"}}
+{"path":"compiler/eslint_dotNotation.ts::b.ts","start":66,"end":67,"text":"x","nodeType":"Identifier","type":{"name":"TypeReference","display":"X"}}
+{"path":"compiler/eslint_dotNotation.ts::b.ts","start":66,"end":92,"text":"x['protected_prop'] = 123;","nodeType":"ExpressionStatement","type":{"name":"NumberLiteral","display":"123"}}
+{"path":"compiler/eslint_dotNotation.ts::c.ts","start":6,"end":7,"text":"X","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof X"}}
+{"path":"compiler/eslint_dotNotation.ts::c.ts","start":13,"end":16,"text":"key","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_dotNotation.ts::c.ts","start":44,"end":45,"text":"x","nodeType":"Identifier","type":{"name":"TypeReference","display":"X"}}
+{"path":"compiler/eslint_dotNotation.ts::c.ts","start":52,"end":53,"text":"X","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof X"}}
+{"path":"compiler/eslint_dotNotation.ts::c.ts","start":57,"end":58,"text":"x","nodeType":"Identifier","type":{"name":"TypeReference","display":"X"}}
+{"path":"compiler/eslint_dotNotation.ts::c.ts","start":57,"end":74,"text":"x['hello'] = 123;","nodeType":"ExpressionStatement","type":{"name":"NumberLiteral","display":"123"}}

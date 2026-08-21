@@ -1,19 +1,19 @@
 interface String {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: StringConstructor
 
 interface String {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: StringConstructor
 
     trimEnd(): string;
->   ^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { (): string; (): string; }   (Object) (Identifier)
 
     trimStart(): string;
->   ^^^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^: { (): string; (): string; }   (Object) (Identifier)
 
     trimLeft(): string;
->   ^^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (): string; (): string; }   (Object) (Identifier)
 
     trimRight(): string;
->   ^^^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^: { (): string; (): string; }   (Object) (Identifier)

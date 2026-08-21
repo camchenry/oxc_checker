@@ -1,230 +1,230 @@
 class Item {
->     ^^^^: typeof Item   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^: typeof Item   (TypeQuery) (Identifier)
 
   name: string = "item";
-> ^^^^: string   (TyString) (PropertyDefinition)
+> ^^^^: string   (String) (Identifier)
 
 class Example {
->     ^^^^^^^: typeof Example   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^^^^: typeof Example   (TypeQuery) (Identifier)
 
   ready: boolean = false;
-> ^^^^^: boolean   (TyBoolean) (PropertyDefinition)
+> ^^^^^: boolean   (Boolean) (Identifier)
 
   count = 1;
-> ^^^^^: number   (TyNumber) (PropertyDefinition)
+> ^^^^^: number   (Number) (Identifier)
 
   item: Item = new Item();
-> ^^^^: Item   (TyTypeReference) (PropertyDefinition)
+> ^^^^: Item   (TypeReference) (Identifier)
 
   item: Item = new Item();
->       ^^^^: typeof Item   (TyTypeQuery) (TSTypeReference)
+>       ^^^^: typeof Item   (TypeQuery) (Identifier)
 
   item: Item = new Item();
->       ^^^^: typeof Item   (TyTypeQuery) (IdentifierReference)
+>       ^^^^: typeof Item   (TypeQuery) (Identifier)
 
   item: Item = new Item();
->                  ^^^^: typeof Item   (TyTypeQuery) (IdentifierReference)
+>                  ^^^^: typeof Item   (TypeQuery) (Identifier)
 
   static enabled: boolean = true;
->        ^^^^^^^: boolean   (TyBoolean) (PropertyDefinition)
+>        ^^^^^^^: boolean   (Boolean) (Identifier)
 
   getReady() { return this.ready; }
-> ^^^^^^^^: () => boolean   (TyFunction) (MethodDefinition)
+> ^^^^^^^^: () => boolean   (Function) (Identifier)
 
   getReady() { return this.ready; }
->                          ^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+>                          ^^^^^: boolean   (Boolean) (Identifier)
 
   getCount() { return this.count; }
-> ^^^^^^^^: () => number   (TyFunction) (MethodDefinition)
+> ^^^^^^^^: () => number   (Function) (Identifier)
 
   getCount() { return this.count; }
->                          ^^^^^: number   (TyNumber) (StaticMemberExpression)
+>                          ^^^^^: number   (Number) (Identifier)
 
   getItemName() { return this.item.name; }
-> ^^^^^^^^^^^: () => string   (TyFunction) (MethodDefinition)
+> ^^^^^^^^^^^: () => string   (Function) (Identifier)
 
   getItemName() { return this.item.name; }
->                             ^^^^: Item   (TyTypeReference) (StaticMemberExpression)
+>                             ^^^^: Item   (TypeReference) (Identifier)
 
   getItemName() { return this.item.name; }
->                                  ^^^^: string   (TyString) (StaticMemberExpression)
+>                                  ^^^^: string   (String) (Identifier)
 
   static getEnabled() { return Example.enabled; }
->        ^^^^^^^^^^: () => boolean   (TyFunction) (MethodDefinition)
+>        ^^^^^^^^^^: () => boolean   (Function) (Identifier)
 
   static getEnabled() { return Example.enabled; }
->                              ^^^^^^^: typeof Example   (TyTypeQuery) (IdentifierReference)
+>                              ^^^^^^^: typeof Example   (TypeQuery) (Identifier)
 
   static getEnabled() { return Example.enabled; }
->                                      ^^^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+>                                      ^^^^^^^: boolean   (Boolean) (Identifier)
 
 const instance = new Example();
->     ^^^^^^^^: Example   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^: Example   (TypeReference) (Identifier)
 
 const instance = new Example();
->                    ^^^^^^^: typeof Example   (TyTypeQuery) (IdentifierReference)
+>                    ^^^^^^^: typeof Example   (TypeQuery) (Identifier)
 
 const ready = instance.ready;
->     ^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^: boolean   (Boolean) (Identifier)
 
 const ready = instance.ready;
->             ^^^^^^^^: Example   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^^^: Example   (TypeReference) (Identifier)
 
 const ready = instance.ready;
->                      ^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+>                      ^^^^^: boolean   (Boolean) (Identifier)
 
 const count = instance.count;
->     ^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^: number   (Number) (Identifier)
 
 const count = instance.count;
->             ^^^^^^^^: Example   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^^^: Example   (TypeReference) (Identifier)
 
 const count = instance.count;
->                      ^^^^^: number   (TyNumber) (StaticMemberExpression)
+>                      ^^^^^: number   (Number) (Identifier)
 
 const itemName = instance.item.name;
->     ^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^: string   (String) (Identifier)
 
 const itemName = instance.item.name;
->                ^^^^^^^^: Example   (TyTypeReference) (IdentifierReference)
+>                ^^^^^^^^: Example   (TypeReference) (Identifier)
 
 const itemName = instance.item.name;
->                         ^^^^: Item   (TyTypeReference) (StaticMemberExpression)
+>                         ^^^^: Item   (TypeReference) (Identifier)
 
 const itemName = instance.item.name;
->                              ^^^^: string   (TyString) (StaticMemberExpression)
+>                              ^^^^: string   (String) (Identifier)
 
 const readyFromThis = instance.getReady();
->     ^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const readyFromThis = instance.getReady();
->                     ^^^^^^^^: Example   (TyTypeReference) (IdentifierReference)
+>                     ^^^^^^^^: Example   (TypeReference) (Identifier)
 
 const readyFromThis = instance.getReady();
->                              ^^^^^^^^: () => boolean   (TyFunction) (StaticMemberExpression)
+>                              ^^^^^^^^: () => boolean   (Function) (Identifier)
 
 const countFromThis = instance.getCount();
->     ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const countFromThis = instance.getCount();
->                     ^^^^^^^^: Example   (TyTypeReference) (IdentifierReference)
+>                     ^^^^^^^^: Example   (TypeReference) (Identifier)
 
 const countFromThis = instance.getCount();
->                              ^^^^^^^^: () => number   (TyFunction) (StaticMemberExpression)
+>                              ^^^^^^^^: () => number   (Function) (Identifier)
 
 const nameFromThis = instance.getItemName();
->     ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^: string   (String) (Identifier)
 
 const nameFromThis = instance.getItemName();
->                    ^^^^^^^^: Example   (TyTypeReference) (IdentifierReference)
+>                    ^^^^^^^^: Example   (TypeReference) (Identifier)
 
 const nameFromThis = instance.getItemName();
->                             ^^^^^^^^^^^: () => string   (TyFunction) (StaticMemberExpression)
+>                             ^^^^^^^^^^^: () => string   (Function) (Identifier)
 
 const enabled = Example.enabled;
->     ^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^^^: boolean   (Boolean) (Identifier)
 
 const enabled = Example.enabled;
->               ^^^^^^^: typeof Example   (TyTypeQuery) (IdentifierReference)
+>               ^^^^^^^: typeof Example   (TypeQuery) (Identifier)
 
 const enabled = Example.enabled;
->                       ^^^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+>                       ^^^^^^^: boolean   (Boolean) (Identifier)
 
 const enabledFromMethod = Example.getEnabled();
->     ^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const enabledFromMethod = Example.getEnabled();
->                         ^^^^^^^: typeof Example   (TyTypeQuery) (IdentifierReference)
+>                         ^^^^^^^: typeof Example   (TypeQuery) (Identifier)
 
 const enabledFromMethod = Example.getEnabled();
->                                 ^^^^^^^^^^: () => boolean   (TyFunction) (StaticMemberExpression)
+>                                 ^^^^^^^^^^: () => boolean   (Function) (Identifier)
 
 class Ship { isSunk: boolean = false; }
->     ^^^^: typeof Ship   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^: typeof Ship   (TypeQuery) (Identifier)
 
 class Ship { isSunk: boolean = false; }
->            ^^^^^^: boolean   (TyBoolean) (PropertyDefinition)
+>            ^^^^^^: boolean   (Boolean) (Identifier)
 
 class Board {
->     ^^^^^: typeof Board   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^^: typeof Board   (TypeQuery) (Identifier)
 
   ships: Ship[] = [];
-> ^^^^^: Ship[]   (TyArray) (PropertyDefinition)
+> ^^^^^: Ship[]   (Array) (Identifier)
 
   ships: Ship[] = [];
->        ^^^^: typeof Ship   (TyTypeQuery) (TSTypeReference)
+>        ^^^^: typeof Ship   (TypeQuery) (Identifier)
 
   ships: Ship[] = [];
->        ^^^^: typeof Ship   (TyTypeQuery) (IdentifierReference)
+>        ^^^^: typeof Ship   (TypeQuery) (Identifier)
 
   allShipsSunk() {
-> ^^^^^^^^^^^^: () => boolean   (TyFunction) (MethodDefinition)
+> ^^^^^^^^^^^^: () => boolean   (Function) (Identifier)
 
     return this.ships.every(function (value) { return value.isSunk; });
->               ^^^^^: Ship[]   (TyArray) (StaticMemberExpression)
+>               ^^^^^: Ship[]   (Array) (Identifier)
 
     return this.ships.every(function (value) { return value.isSunk; });
->                     ^^^^^: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }   (TyObject) (StaticMemberExpression)
+>                     ^^^^^: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }   (Object) (Identifier)
 
     return this.ships.every(function (value) { return value.isSunk; });
->                                     ^^^^^: Ship   (TyTypeReference) (BindingIdentifier)
+>                                     ^^^^^: Ship   (TypeReference) (Identifier)
 
     return this.ships.every(function (value) { return value.isSunk; });
->                                                     ^^^^^: Ship   (TyTypeReference) (IdentifierReference)
+>                                                     ^^^^^: Ship   (TypeReference) (Identifier)
 
     return this.ships.every(function (value) { return value.isSunk; });
->                                                           ^^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+>                                                           ^^^^^^: boolean   (Boolean) (Identifier)
 
 const board = new Board();
->     ^^^^^: Board   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^: Board   (TypeReference) (Identifier)
 
 const board = new Board();
->                 ^^^^^: typeof Board   (TyTypeQuery) (IdentifierReference)
+>                 ^^^^^: typeof Board   (TypeQuery) (Identifier)
 
 const sunk = board.allShipsSunk();
->     ^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^: boolean   (Boolean) (Identifier)
 
 const sunk = board.allShipsSunk();
->            ^^^^^: Board   (TyTypeReference) (IdentifierReference)
+>            ^^^^^: Board   (TypeReference) (Identifier)
 
 const sunk = board.allShipsSunk();
->                  ^^^^^^^^^^^^: () => boolean   (TyFunction) (StaticMemberExpression)
+>                  ^^^^^^^^^^^^: () => boolean   (Function) (Identifier)
 
 const mapped = [1, 2, 3].map(async value => value + 1);
->     ^^^^^^: Promise<number>[]   (TyArray) (BindingIdentifier)
+>     ^^^^^^: Promise<number>[]   (Array) (Identifier)
 
 const mapped = [1, 2, 3].map(async value => value + 1);
->                        ^^^: <U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]   (TyFunction) (StaticMemberExpression)
+>                        ^^^: <U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]   (Function) (Identifier)
 
 const mapped = [1, 2, 3].map(async value => value + 1);
->                                  ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                  ^^^^^: number   (Number) (Identifier)
 
 const mapped = [1, 2, 3].map(async value => value + 1);
->                                           ^^^^^: number   (TyNumber) (IdentifierReference)
+>                                           ^^^^^: number   (Number) (Identifier)
 
 const lengths = ["a", "bb", "ccc"].map(value => value.length);
->     ^^^^^^^: number[]   (TyArray) (BindingIdentifier)
+>     ^^^^^^^: number[]   (Array) (Identifier)
 
 const lengths = ["a", "bb", "ccc"].map(value => value.length);
->                                  ^^^: <U>(callbackfn: (value: string, index: number, array: string[]) => U, thisArg?: any) => U[]   (TyFunction) (StaticMemberExpression)
+>                                  ^^^: <U>(callbackfn: (value: string, index: number, array: string[]) => U, thisArg?: any) => U[]   (Function) (Identifier)
 
 const lengths = ["a", "bb", "ccc"].map(value => value.length);
->                                      ^^^^^: string   (TyString) (BindingIdentifier)
+>                                      ^^^^^: string   (String) (Identifier)
 
 const lengths = ["a", "bb", "ccc"].map(value => value.length);
->                                               ^^^^^: string   (TyString) (IdentifierReference)
+>                                               ^^^^^: string   (String) (Identifier)
 
 const lengths = ["a", "bb", "ccc"].map(value => value.length);
->                                                     ^^^^^^: number   (TyNumber) (StaticMemberExpression)
+>                                                     ^^^^^^: number   (Number) (Identifier)
 
 abstract class DestructuredBase {
->              ^^^^^^^^^^^^^^^^: typeof DestructuredBase   (TyTypeQuery) (BindingIdentifier)
+>              ^^^^^^^^^^^^^^^^: typeof DestructuredBase   (TypeQuery) (Identifier)
 
   abstract value: string;
->          ^^^^^: string   (TyString) (PropertyDefinition)
+>          ^^^^^: string   (String) (Identifier)
 
     const { value: renamed } = this;
->           ^^^^^: string   (TyString) (BindingProperty)
+>           ^^^^^: string   (String) (Identifier)
 
     const { value: renamed } = this;
->                  ^^^^^^^: string   (TyString) (BindingIdentifier)
+>                  ^^^^^^^: string   (String) (Identifier)

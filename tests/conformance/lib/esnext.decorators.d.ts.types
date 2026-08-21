@@ -1,28 +1,28 @@
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly metadata: unique symbol;
->            ^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Function {
->         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^: any   (Any) (Identifier)
           expected: FunctionConstructor
 
 interface Function {
->         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^: any   (Any) (Identifier)
           expected: FunctionConstructor
 
     [Symbol.metadata]: DecoratorMetadata | null;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.metadata]: DecoratorMetadata | null;
->           ^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.metadata]: DecoratorMetadata | null;
->                      ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.metadata]: DecoratorMetadata | null;
->                      ^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)

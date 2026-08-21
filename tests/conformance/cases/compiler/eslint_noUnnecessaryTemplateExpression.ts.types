@@ -1,161 +1,160 @@
 const ab1 = `${'a'}${'b'}`;
->     ^^^: "ab"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^: "ab"   (StringLiteral) (Identifier)
 
 const ab2 = `a${'b'}`;
->     ^^^: "ab"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^: "ab"   (StringLiteral) (Identifier)
 
 type AB1 = `${'A'}${'B'}`;
->    ^^^: "AB"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^: "AB"   (StringLiteral) (Identifier)
 
 type AB2 = `A${'B'}`;
->    ^^^: "AB"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^: "AB"   (StringLiteral) (Identifier)
 
 const stringWithNumber = `${'1 + 1 = '}${2}`;
->     ^^^^^^^^^^^^^^^^: "1 + 1 = 2"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^: "1 + 1 = 2"   (StringLiteral) (Identifier)
 
 const stringWithBoolean = `${'true is '}${true}`;
->     ^^^^^^^^^^^^^^^^^: "true is true"   (TyStringLiteral) (BindingIdentifier)
-               expected: string
+>     ^^^^^^^^^^^^^^^^^: "true is true"   (StringLiteral) (Identifier)
 
 const text = 'a';
->     ^^^^: "a"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^: "a"   (StringLiteral) (Identifier)
 
 const wrappedText = `${text}`;
->     ^^^^^^^^^^^: "a"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^: "a"   (StringLiteral) (Identifier)
 
 const wrappedText = `${text}`;
->                      ^^^^: "a"   (TyStringLiteral) (IdentifierReference)
+>                      ^^^^: "a"   (StringLiteral) (Identifier)
 
 type Text = 'A';
->    ^^^^: "A"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^: "A"   (StringLiteral) (Identifier)
 
 type WrappedText = `${Text}`;
->    ^^^^^^^^^^^: "A"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: "A"   (StringLiteral) (Identifier)
 
 type WrappedText = `${Text}`;
->                     ^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^: any   (Any) (Identifier)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
->             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
->                                                ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
+>                                                ^^^^^^: "test-brand"   (StringLiteral) (Identifier)
 
 const wrappedIntersection = `${intersectionWithString}`;
->     ^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const wrappedIntersection = `${intersectionWithString}`;
->                              ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
->    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
->                                        ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
+>                                        ^^^^^^: "test-brand"   (StringLiteral) (Identifier)
 
 type WrappedIntersection = `${IntersectionWithString}`;
->    ^^^^^^^^^^^^^^^^^^^: `${IntersectionWithString}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^: `${IntersectionWithString}`   (TemplateLiteral) (Identifier)
 
 type WrappedIntersection = `${IntersectionWithString}`;
->                             ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const ab1 = `ab`;
->     ^^^: "ab"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^: "ab"   (StringLiteral) (Identifier)
 
 const ab2 = `ab`;
->     ^^^: "ab"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^: "ab"   (StringLiteral) (Identifier)
 
 type AB = `AB`;
->    ^^: "AB"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^: "AB"   (StringLiteral) (Identifier)
 
 enum ABC {
->    ^^^: typeof ABC   (TyTypeQuery) (TSEnumDeclaration)
+>    ^^^: typeof ABC   (TypeQuery) (Identifier)
 
 enum ABC {
->    ^^^: typeof ABC   (TyTypeQuery) (BindingIdentifier)
+>    ^^^: typeof ABC   (TypeQuery) (Identifier)
 
   A = 'A',
-> ^: ABC.A   (TyTypeReference) (TSEnumMember)
+> ^: ABC.A   (TypeReference) (Identifier)
 
   B = 'B',
-> ^: ABC.B   (TyTypeReference) (TSEnumMember)
+> ^: ABC.B   (TypeReference) (Identifier)
 
   C = 'C',
-> ^: ABC.C   (TyTypeReference) (TSEnumMember)
+> ^: ABC.C   (TypeReference) (Identifier)
 
 type ABCUnion = `${ABC}`;
->    ^^^^^^^^: `${ABC}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: `${ABC}`   (TemplateLiteral) (Identifier)
      expected: "A" | "B" | "C"
 
 type ABCUnion = `${ABC}`;
->                  ^^^: typeof ABC   (TyTypeQuery) (TSTypeReference)
+>                  ^^^: typeof ABC   (TypeQuery) (Identifier)
 
 type ABCUnion = `${ABC}`;
->                  ^^^: typeof ABC   (TyTypeQuery) (IdentifierReference)
+>                  ^^^: typeof ABC   (TypeQuery) (Identifier)
 
 type A = `${ABC.A}`;
->    ^: `${ABC.A}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
+>    ^: `${ABC.A}`   (TemplateLiteral) (Identifier)
 expected: "A"
 
 type A = `${ABC.A}`;
->           ^^^: typeof ABC   (TyTypeQuery) (IdentifierReference)
+>           ^^^: typeof ABC   (TypeQuery) (Identifier)
 
 type A = `${ABC.A}`;
->               ^: ABC.A   (TyTypeReference) (TSTypeReference)
+>               ^: ABC.A   (TypeReference) (Identifier)
 
 type TextUtil<T extends string> = `${T}`;
->    ^^^^^^^^: `${T}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: `${T}`   (TemplateLiteral) (Identifier)
 
 type TextUtil<T extends string> = `${T}`;
->             ^: any   (TyAny) (TSTypeParameter)
+>             ^: any   (Any) (Identifier)
 
 type TextUtil<T extends string> = `${T}`;
->                                    ^: any   (TyAny) (TSTypeReference)
+>                                    ^: any   (Any) (Identifier)
 
 const stringWithNumber = `1 + 1 = 2`;
->     ^^^^^^^^^^^^^^^^: "1 + 1 = 2"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^: "1 + 1 = 2"   (StringLiteral) (Identifier)
 
 const stringWithBoolean = `true is true`;
->     ^^^^^^^^^^^^^^^^^: "true is true"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^: "true is true"   (StringLiteral) (Identifier)
 
 const text = 'a';
->     ^^^^: "a"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^: "a"   (StringLiteral) (Identifier)
 
 const wrappedText = text;
->     ^^^^^^^^^^^: "a"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^: "a"   (StringLiteral) (Identifier)
 
 const wrappedText = text;
->                   ^^^^: "a"   (TyStringLiteral) (IdentifierReference)
+>                   ^^^^: "a"   (StringLiteral) (Identifier)
 
 type Text = 'A';
->    ^^^^: "A"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^: "A"   (StringLiteral) (Identifier)
 
 type WrappedText = Text;
->    ^^^^^^^^^^^: "A"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: "A"   (StringLiteral) (Identifier)
 
 type WrappedText = Text;
->                  ^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^: any   (Any) (Identifier)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
->             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
->                                                ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
+>                                                ^^^^^^: "test-brand"   (StringLiteral) (Identifier)
 
 const wrappedIntersection = intersectionWithString;
->     ^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
 
 const wrappedIntersection = intersectionWithString;
->                           ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (IdentifierReference)
+>                           ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
->    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
->                                        ^^^^^^: "test-brand"   (TyStringLiteral) (TSPropertySignature)
+>                                        ^^^^^^: "test-brand"   (StringLiteral) (Identifier)
 
 type WrappedIntersection = IntersectionWithString;
->    ^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (TyIntersection) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
 
 type WrappedIntersection = IntersectionWithString;
->                          ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)

@@ -1,10 +1,10 @@
 interface RegExp {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: RegExpConstructor
 
 interface RegExp {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: RegExpConstructor
 
     readonly unicodeSets: boolean;
->            ^^^^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+>            ^^^^^^^^^^^: boolean   (Boolean) (Identifier)

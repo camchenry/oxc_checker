@@ -1,0 +1,9 @@
+{"path":"es2020.number.d.ts","start":47,"end":53,"text":"Number","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.number.d.ts","start":47,"end":53,"text":"Number","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.number.d.ts","start":640,"end":654,"text":"toLocaleString","nodeType":"Identifier","type":{"name":"Object","display":"{ (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; }"}}
+{"path":"es2020.number.d.ts","start":655,"end":662,"text":"locales","nodeType":"Identifier","type":{"name":"Union","display":"Intl.LocalesArgument | undefined"}}
+{"path":"es2020.number.d.ts","start":665,"end":669,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2020.number.d.ts","start":670,"end":685,"text":"LocalesArgument","nodeType":"Identifier","type":{"name":"TypeReference","display":"Intl.LocalesArgument"}}
+{"path":"es2020.number.d.ts","start":687,"end":694,"text":"options","nodeType":"Identifier","type":{"name":"Union","display":"Intl.NumberFormatOptions | undefined"}}
+{"path":"es2020.number.d.ts","start":697,"end":701,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2020.number.d.ts","start":702,"end":721,"text":"NumberFormatOptions","nodeType":"Identifier","type":{"name":"TypeReference","display":"Intl.NumberFormatOptions"}}

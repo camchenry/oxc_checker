@@ -1,0 +1,89 @@
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":17,"end":20,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, arg3: string) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":21,"end":25,"text":"arg1","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":35,"end":39,"text":"arg2","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":49,"end":53,"text":"arg3","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":77,"end":85,"text":"anyTyped","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":99,"end":102,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, arg3: string) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":99,"end":116,"text":"foo(...anyTyped);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":106,"end":114,"text":"anyTyped","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":117,"end":120,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, arg3: string) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":117,"end":139,"text":"foo(anyTyped, 1, 'a');","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":121,"end":129,"text":"anyTyped","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":147,"end":155,"text":"anyArray","nodeType":"Identifier","type":{"name":"Array","display":"any[]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":169,"end":172,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, arg3: string) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":169,"end":186,"text":"foo(...anyArray);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":176,"end":184,"text":"anyArray","nodeType":"Identifier","type":{"name":"Array","display":"any[]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":194,"end":200,"text":"tuple1","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [\"a\", any, \"b\"]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":209,"end":217,"text":"anyTyped","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":227,"end":232,"text":"const","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":227,"end":232,"text":"const","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":234,"end":237,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, arg3: string) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":234,"end":249,"text":"foo(...tuple1);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":241,"end":247,"text":"tuple1","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [\"a\", any, \"b\"]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":257,"end":263,"text":"tuple2","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [1]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":273,"end":278,"text":"const","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":273,"end":278,"text":"const","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":280,"end":283,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, arg3: string) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":280,"end":310,"text":"foo('a', ...tuple2, anyTyped);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":292,"end":298,"text":"tuple2","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [1]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":300,"end":308,"text":"anyTyped","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":329,"end":332,"text":"bar","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, ...rest: string[]) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":333,"end":337,"text":"arg1","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":347,"end":351,"text":"arg2","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":364,"end":368,"text":"rest","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":393,"end":394,"text":"x","nodeType":"Identifier","type":{"name":"Tuple","display":"[number, ...number[]]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":430,"end":433,"text":"bar","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, ...rest: string[]) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":430,"end":455,"text":"bar('a', ...x, anyTyped);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":442,"end":443,"text":"x","nodeType":"Identifier","type":{"name":"Tuple","display":"[number, ...number[]]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":445,"end":453,"text":"anyTyped","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":474,"end":477,"text":"baz","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: Set<string>, arg2: Map<string, string>) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":478,"end":482,"text":"arg1","nodeType":"Identifier","type":{"name":"TypeReference","display":"Set<string>"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":484,"end":487,"text":"Set","nodeType":"Identifier","type":{"name":"TypeReference","display":"SetConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":484,"end":487,"text":"Set","nodeType":"Identifier","type":{"name":"TypeReference","display":"SetConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":497,"end":501,"text":"arg2","nodeType":"Identifier","type":{"name":"TypeReference","display":"Map<string, string>"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":503,"end":506,"text":"Map","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":503,"end":506,"text":"Map","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":531,"end":534,"text":"baz","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: Set<string>, arg2: Map<string, string>) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":531,"end":575,"text":"baz(new Set<any>(), new Map<any, string>());","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":539,"end":542,"text":"Set","nodeType":"Identifier","type":{"name":"TypeReference","display":"SetConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::a.ts","start":555,"end":558,"text":"Map","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":17,"end":20,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, arg3: string) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":21,"end":25,"text":"arg1","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":35,"end":39,"text":"arg2","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":49,"end":53,"text":"arg3","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":71,"end":74,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, arg3: string) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":71,"end":88,"text":"foo('a', 1, 'b');","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":96,"end":102,"text":"tuple1","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [\"a\", 1, \"b\"]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":122,"end":127,"text":"const","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":122,"end":127,"text":"const","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":129,"end":132,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, arg3: string) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":129,"end":144,"text":"foo(...tuple1);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":136,"end":142,"text":"tuple1","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [\"a\", 1, \"b\"]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":163,"end":166,"text":"bar","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, ...rest: string[]) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":167,"end":171,"text":"arg1","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":181,"end":185,"text":"arg2","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":198,"end":202,"text":"rest","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":227,"end":232,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":252,"end":255,"text":"bar","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: string, arg2: number, ...rest: string[]) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":252,"end":274,"text":"bar('a', 1, ...array);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":267,"end":272,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":293,"end":296,"text":"baz","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: Set<string>, arg2: Map<string, string>) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":297,"end":301,"text":"arg1","nodeType":"Identifier","type":{"name":"TypeReference","display":"Set<string>"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":303,"end":306,"text":"Set","nodeType":"Identifier","type":{"name":"TypeReference","display":"SetConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":303,"end":306,"text":"Set","nodeType":"Identifier","type":{"name":"TypeReference","display":"SetConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":316,"end":320,"text":"arg2","nodeType":"Identifier","type":{"name":"TypeReference","display":"Map<string, string>"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":322,"end":325,"text":"Map","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":322,"end":325,"text":"Map","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":350,"end":353,"text":"baz","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: Set<string>, arg2: Map<string, string>) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":350,"end":400,"text":"baz(new Set<string>(), new Map<string, string>());","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":358,"end":361,"text":"Set","nodeType":"Identifier","type":{"name":"TypeReference","display":"SetConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::b.ts","start":377,"end":380,"text":"Map","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::c.ts","start":17,"end":20,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::c.ts","start":21,"end":25,"text":"arg1","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::c.ts","start":36,"end":40,"text":"arg2","nodeType":"Identifier","type":{"name":"TypeReference","display":"Set<unknown>"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::c.ts","start":42,"end":45,"text":"Set","nodeType":"Identifier","type":{"name":"TypeReference","display":"SetConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::c.ts","start":42,"end":45,"text":"Set","nodeType":"Identifier","type":{"name":"TypeReference","display":"SetConstructor"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::c.ts","start":56,"end":60,"text":"arg3","nodeType":"Identifier","type":{"name":"Array","display":"unknown[]"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::c.ts","start":80,"end":83,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]) => void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::c.ts","start":80,"end":123,"text":"foo(1 as any, new Set<any>(), [] as any[]);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnsafeArguments.ts::c.ts","start":98,"end":101,"text":"Set","nodeType":"Identifier","type":{"name":"TypeReference","display":"SetConstructor"}}

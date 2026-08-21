@@ -9,6 +9,7 @@ import {
   API,
   NodeBuilderFlags,
   SymbolFlags,
+  TypeFlags,
   type Checker,
   type Symbol as TypeScriptSymbol,
   type Type as TypeScriptType,
@@ -66,6 +67,18 @@ interface WorkerMessage {
 
 interface WorkerData {
   tasks: CompilerTask[];
+}
+
+interface TypeRecord {
+  path: string;
+  start: number;
+  end: number;
+  text: string;
+  nodeType: string;
+  type: {
+    name: string;
+    display: string;
+  };
 }
 
 interface CliArgs {
@@ -362,7 +375,7 @@ function collectProgramRecords(
       const sourceFile = project.program.getSourceFile(virtualFile.fileName);
       if (!sourceFile) {
         if (isCompilableRootFile(virtualFile.fileName)) {
-          records.push(`${virtualFile.recordPath}\t0\t0\t<file>\t<missing source file>`);
+          records.push(JSON.stringify(errorRecord(virtualFile.recordPath, "<file>", "<missing source file>")));
         }
         continue;
       }
@@ -370,7 +383,7 @@ function collectProgramRecords(
         records.push(...collectRecords(project.checker, sourceFile, virtualFile.recordPath));
       } catch (error) {
         const message = sanitize(error instanceof Error && error.message ? error.message : String(error));
-        records.push(`${virtualFile.recordPath}\t0\t0\t<extractor-error>\t${message}`);
+        records.push(JSON.stringify(errorRecord(virtualFile.recordPath, "<extractor-error>", message)));
       }
     }
   } finally {
@@ -423,6 +436,46 @@ function sanitize(value: unknown): string {
   return String(value).replace(/[\t\r\n]+/g, " ").trim();
 }
 
+function errorRecord(recordPath: string, text: string, display: string): TypeRecord {
+  return {
+    path: recordPath,
+    start: 0,
+    end: 0,
+    text,
+    nodeType: "Program",
+    type: { name: "Error", display },
+  };
+}
+
+function typeName(type: TypeScriptType): string {
+  const names: Array<[TypeFlags, string]> = [
+    [TypeFlags.StringLiteral, "StringLiteral"],
+    [TypeFlags.NumberLiteral, "NumberLiteral"],
+    [TypeFlags.BigIntLiteral, "BigIntLiteral"],
+    [TypeFlags.BooleanLiteral, "BooleanLiteral"],
+    [TypeFlags.String, "String"],
+    [TypeFlags.Number, "Number"],
+    [TypeFlags.BigInt, "BigInt"],
+    [TypeFlags.Boolean, "Boolean"],
+    [TypeFlags.ESSymbol, "Symbol"],
+    [TypeFlags.UniqueESSymbol, "UniqueSymbol"],
+    [TypeFlags.Undefined, "Undefined"],
+    [TypeFlags.Null, "Null"],
+    [TypeFlags.Any, "Any"],
+    [TypeFlags.Unknown, "Unknown"],
+    [TypeFlags.Void, "Void"],
+    [TypeFlags.Never, "Never"],
+    [TypeFlags.TypeParameter, "TypeParameter"],
+    [TypeFlags.TemplateLiteral, "TemplateLiteral"],
+    [TypeFlags.IndexedAccess, "IndexedAccess"],
+    [TypeFlags.Conditional, "Conditional"],
+    [TypeFlags.Union, "Union"],
+    [TypeFlags.Intersection, "Intersection"],
+    [TypeFlags.Object, "Object"],
+  ];
+  return names.find(([flag]) => (type.flags & flag) !== 0)?.[1] ?? "Unknown";
+}
+
 function utf16ToUtf8ByteOffsets(sourceText: string): Uint32Array {
   const offsets = new Uint32Array(sourceText.length + 1);
   let utf8Offset = 0;
@@ -459,9 +512,17 @@ function recordForNode(
   }
 
   if (isExpressionStatement(node)) {
-    const typeText = typeToString(checker, checker.getTypeAtLocation(node.expression), node);
+    const type = checker.getTypeAtLocation(node.expression);
+    const typeText = typeToString(checker, type, node);
     const text = sanitize(node.getText(sourceFile));
-    return `${relativePath}\t${start}\t${end}\t${text}\t${sanitize(typeText)}`;
+    return JSON.stringify({
+      path: relativePath,
+      start,
+      end,
+      text,
+      nodeType: "ExpressionStatement",
+      type: { name: typeName(type), display: sanitize(typeText) },
+    } satisfies TypeRecord);
   }
 
   if (!isIdentifier(node)) {
@@ -469,47 +530,47 @@ function recordForNode(
   }
 
   const symbol = checker.getSymbolAtLocation(node);
-  const typeText = typeTextForIdentifier(checker, symbol, node);
-  if (!typeText) {
+  const typeInfo = typeInfoForIdentifier(checker, symbol, node);
+  if (!typeInfo) {
     return undefined;
   }
 
   const text = sanitize(node.getText(sourceFile));
-  return `${relativePath}\t${start}\t${end}\t${text}\t${sanitize(typeText)}`;
+  return JSON.stringify({
+    path: relativePath,
+    start,
+    end,
+    text,
+    nodeType: "Identifier",
+    type: {
+      name: typeName(typeInfo.type),
+      display: sanitize(typeToString(checker, typeInfo.type, node, typeInfo.flags)),
+    },
+  } satisfies TypeRecord);
 }
 
-function typeTextForIdentifier(
+function typeInfoForIdentifier(
   checker: Checker,
   symbol: TypeScriptSymbol | undefined,
   node: TypeScriptNode,
-): string | undefined {
+): { type: TypeScriptType; flags?: number } | undefined {
   if (isTypeAliasDeclaration(node.parent) && node.parent.name === node) {
-    return typeToString(
-      checker,
-      checker.getTypeFromTypeNode(node.parent.type),
-      node,
-      NodeBuilderFlags.InTypeAlias,
-    );
+    return { type: checker.getTypeFromTypeNode(node.parent.type), flags: NodeBuilderFlags.InTypeAlias };
   }
   if (symbol) {
     if (symbol.flags & SymbolFlags.Alias) {
       const aliased = checker.getAliasedSymbol(symbol);
       if (aliased && aliased !== symbol) {
         if (aliased.flags & SymbolFlags.TypeAlias) {
-          return typeToString(
-            checker,
-            checker.getDeclaredTypeOfSymbol(aliased),
-            node,
-            NodeBuilderFlags.InTypeAlias,
-          );
+          return { type: checker.getDeclaredTypeOfSymbol(aliased), flags: NodeBuilderFlags.InTypeAlias };
         }
-        return typeToString(checker, checker.getTypeOfSymbolAtLocation(aliased, node), node);
+        return { type: checker.getTypeOfSymbolAtLocation(aliased, node) };
       }
     }
-    return typeToString(checker, checker.getTypeOfSymbolAtLocation(symbol, node), node);
+    return { type: checker.getTypeOfSymbolAtLocation(symbol, node) };
   }
   if (isPropertyAccessExpression(node.parent) && node.parent.name === node) {
-    return typeToString(checker, checker.getTypeAtLocation(node), node);
+    return { type: checker.getTypeAtLocation(node) };
   }
   return undefined;
 }

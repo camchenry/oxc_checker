@@ -1,0 +1,133 @@
+{"path":"compiler/eslint_noMisusedPromises.ts::a.ts","start":6,"end":13,"text":"promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::a.ts","start":16,"end":23,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::a.ts","start":24,"end":31,"text":"resolve","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::a.ts","start":47,"end":54,"text":"promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::a.ts","start":85,"end":88,"text":"val","nodeType":"Identifier","type":{"name":"Union","display":"123 | 456"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::a.ts","start":91,"end":98,"text":"promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::a.ts","start":113,"end":145,"text":"[1, 2, 3].filter(() => promise);","nodeType":"ExpressionStatement","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::a.ts","start":123,"end":129,"text":"filter","nodeType":"Identifier","type":{"name":"Object","display":"{ <S>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::a.ts","start":136,"end":143,"text":"promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::a.ts","start":154,"end":161,"text":"promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":6,"end":13,"text":"promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":16,"end":23,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":24,"end":31,"text":"resolve","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":100,"end":107,"text":"promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":138,"end":141,"text":"val","nodeType":"Identifier","type":{"name":"Union","display":"123 | 456"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":151,"end":158,"text":"promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":180,"end":189,"text":"returnVal","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":198,"end":205,"text":"promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":207,"end":241,"text":"[1, 2, 3].filter(() => returnVal);","nodeType":"ExpressionStatement","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":217,"end":223,"text":"filter","nodeType":"Identifier","type":{"name":"Object","display":"{ <S>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":230,"end":239,"text":"returnVal","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::b.ts","start":256,"end":263,"text":"promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":0,"end":66,"text":"[1, 2, 3].forEach(async value => {   await fetch(`/${value}`); });","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":10,"end":17,"text":"forEach","nodeType":"Identifier","type":{"name":"Function","display":"(callbackfn: (value: number, index: number, array: number[]) => void, thisArg?: any) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":24,"end":29,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":37,"end":62,"text":"await fetch(`/${value}`);","nodeType":"ExpressionStatement","type":{"name":"TypeReference","display":"Response"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":43,"end":48,"text":"fetch","nodeType":"Identifier","type":{"name":"Function","display":"(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":53,"end":58,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":68,"end":151,"text":"new Promise<void>(async (resolve, reject) => {   await fetch('/');   resolve(); });","nodeType":"ExpressionStatement","type":{"name":"TypeReference","display":"Promise<void>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":72,"end":79,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":93,"end":100,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: void | PromiseLike<void>) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":102,"end":108,"text":"reject","nodeType":"Identifier","type":{"name":"Function","display":"(reason?: any) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":117,"end":134,"text":"await fetch('/');","nodeType":"ExpressionStatement","type":{"name":"TypeReference","display":"Response"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":123,"end":128,"text":"fetch","nodeType":"Identifier","type":{"name":"Function","display":"(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":137,"end":144,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: void | PromiseLike<void>) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":137,"end":147,"text":"resolve();","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":153,"end":161,"text":"document","nodeType":"Identifier","type":{"name":"TypeReference","display":"Document"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":153,"end":295,"text":"document.addEventListener('click', async () => {   console.log('synchronous call');   await fetch('/');   console.log('synchronous call'); });","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":162,"end":178,"text":"addEventListener","nodeType":"Identifier","type":{"name":"Object","display":"{ <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":204,"end":211,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":204,"end":236,"text":"console.log('synchronous call');","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":212,"end":215,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":239,"end":256,"text":"await fetch('/');","nodeType":"ExpressionStatement","type":{"name":"TypeReference","display":"Response"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":245,"end":250,"text":"fetch","nodeType":"Identifier","type":{"name":"Function","display":"(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":259,"end":266,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":259,"end":291,"text":"console.log('synchronous call');","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":267,"end":270,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":307,"end":322,"text":"MySyncInterface","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":307,"end":322,"text":"MySyncInterface","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":327,"end":335,"text":"setThing","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":353,"end":360,"text":"MyClass","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof MyClass"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":372,"end":387,"text":"MySyncInterface","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":372,"end":387,"text":"MySyncInterface","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":398,"end":406,"text":"setThing","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":410,"end":417,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":410,"end":417,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":430,"end":462,"text":"this.thing = await fetchThing();","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":435,"end":440,"text":"thing","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":51,"end":56,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":75,"end":100,"text":"await doSomething(value);","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":93,"end":98,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":164,"end":171,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":164,"end":267,"text":"Promise.all(   [1, 2, 3].map(async value => {     await doSomething(value);   }), ).catch(handleError);","nodeType":"ExpressionStatement","type":{"name":"TypeReference","display":"Promise<void[]>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":172,"end":175,"text":"all","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":189,"end":192,"text":"map","nodeType":"Identifier","type":{"name":"Function","display":"<U>(callbackfn: (value: number, index: number, array: number[]) => U, thisArg?: any) => U[]"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":199,"end":204,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":214,"end":239,"text":"await doSomething(value);","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":232,"end":237,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":248,"end":253,"text":"catch","nodeType":"Identifier","type":{"name":"Function","display":"<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<void[] | TResult>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":298,"end":505,"text":"new Promise((resolve, reject) => {   // combine with `void` keyword to tell `no-floating-promises` rule to ignore unhandled rejection   void (async () => {     await doSomething();     resolve();   })(); });","nodeType":"ExpressionStatement","type":{"name":"TypeReference","display":"Promise<unknown>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":302,"end":309,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":311,"end":318,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":320,"end":326,"text":"reject","nodeType":"Identifier","type":{"name":"Function","display":"(reason?: any) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":434,"end":501,"text":"void (async () => {     await doSomething();     resolve();   })();","nodeType":"ExpressionStatement","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":458,"end":478,"text":"await doSomething();","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":483,"end":490,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":483,"end":493,"text":"resolve();","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":550,"end":558,"text":"document","nodeType":"Identifier","type":{"name":"TypeReference","display":"Document"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":550,"end":803,"text":"document.addEventListener('click', () => {   const handler = async () => {     await doSomething();     otherSynchronousCall();   };   try {     synchronousCall();   } catch (err) {     handleSpecificError(err);   }   handler().catch(handleError); });","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":559,"end":575,"text":"addEventListener","nodeType":"Identifier","type":{"name":"Object","display":"{ <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":601,"end":608,"text":"handler","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":629,"end":649,"text":"await doSomething();","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":654,"end":677,"text":"otherSynchronousCall();","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":696,"end":714,"text":"synchronousCall();","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":726,"end":729,"text":"err","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":737,"end":762,"text":"handleSpecificError(err);","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":757,"end":760,"text":"err","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":770,"end":777,"text":"handler","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":770,"end":799,"text":"handler().catch(handleError);","nodeType":"ExpressionStatement","type":{"name":"TypeReference","display":"Promise<void>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":780,"end":785,"text":"catch","nodeType":"Identifier","type":{"name":"Function","display":"<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<void | TResult>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":815,"end":831,"text":"MyAsyncInterface","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":815,"end":831,"text":"MyAsyncInterface","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":836,"end":844,"text":"setThing","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":848,"end":855,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":848,"end":855,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":871,"end":878,"text":"MyClass","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof MyClass"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":890,"end":906,"text":"MyAsyncInterface","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":890,"end":906,"text":"MyAsyncInterface","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":917,"end":925,"text":"setThing","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":929,"end":936,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":929,"end":936,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":949,"end":981,"text":"this.thing = await fetchThing();","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":954,"end":959,"text":"thing","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":6,"end":13,"text":"getData","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<Response>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":22,"end":27,"text":"fetch","nodeType":"Identifier","type":{"name":"Function","display":"(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":35,"end":42,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":35,"end":74,"text":"console.log({ foo: 42, ...getData() });","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":43,"end":46,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":49,"end":52,"text":"foo","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":61,"end":68,"text":"getData","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<Response>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":82,"end":91,"text":"awaitData","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":110,"end":127,"text":"await fetch('/');","nodeType":"ExpressionStatement","type":{"name":"TypeReference","display":"Response"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":116,"end":121,"text":"fetch","nodeType":"Identifier","type":{"name":"Function","display":"(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":132,"end":139,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":132,"end":173,"text":"console.log({ foo: 42, ...awaitData() });","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":140,"end":143,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":146,"end":149,"text":"foo","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::e.ts","start":158,"end":167,"text":"awaitData","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":6,"end":13,"text":"getData","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<Response>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":22,"end":27,"text":"fetch","nodeType":"Identifier","type":{"name":"Function","display":"(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":35,"end":42,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":35,"end":82,"text":"console.log({ foo: 42, ...(await getData()) });","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":43,"end":46,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":49,"end":52,"text":"foo","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":68,"end":75,"text":"getData","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<Response>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":90,"end":99,"text":"awaitData","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":118,"end":135,"text":"await fetch('/');","nodeType":"ExpressionStatement","type":{"name":"TypeReference","display":"Response"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":124,"end":129,"text":"fetch","nodeType":"Identifier","type":{"name":"Function","display":"(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":140,"end":147,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":140,"end":189,"text":"console.log({ foo: 42, ...(await awaitData()) });","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":148,"end":151,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":154,"end":157,"text":"foo","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::f.ts","start":173,"end":182,"text":"awaitData","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}

@@ -1,92 +1,92 @@
 type T0 = string | null | undefined;
->    ^^: string | null | undefined   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^: string | null | undefined   (Union) (Identifier)
 
 type T1 = NonNullable<T0>;
->    ^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^: string   (String) (Identifier)
 
 type T1 = NonNullable<T0>;
->         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type T1 = NonNullable<T0>;
->         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>         ^^^^^^^^^^^: any   (Error) (Identifier)
 
 type T1 = NonNullable<T0>;
->                     ^^: any   (TyAny) (TSTypeReference)
+>                     ^^: any   (Any) (Identifier)
 
 type T2 = NonNullable<T0 | number | boolean | {}>;
->    ^^: string | number | boolean | {}   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^: string | number | boolean | {}   (Union) (Identifier)
 
 type T2 = NonNullable<T0 | number | boolean | {}>;
->         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type T2 = NonNullable<T0 | number | boolean | {}>;
->         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>         ^^^^^^^^^^^: any   (Error) (Identifier)
 
 type T2 = NonNullable<T0 | number | boolean | {}>;
->                     ^^: any   (TyAny) (TSTypeReference)
+>                     ^^: any   (Any) (Identifier)
 
 type T3 = NonNullable<any>;
->    ^^: any   (TyAny) (TSTypeAliasDeclaration)
+>    ^^: any   (Any) (Identifier)
 
 type T3 = NonNullable<any>;
->         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type T3 = NonNullable<any>;
->         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>         ^^^^^^^^^^^: any   (Error) (Identifier)
 
 type T4 = NonNullable<unknown>;
->    ^^: {}   (TyObject) (TSTypeAliasDeclaration)
+>    ^^: {}   (Object) (Identifier)
 
 type T4 = NonNullable<unknown>;
->         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type T4 = NonNullable<unknown>;
->         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>         ^^^^^^^^^^^: any   (Error) (Identifier)
 
 type T5 = NonNullable<never>;
->    ^^: never   (TyNever) (TSTypeAliasDeclaration)
+>    ^^: never   (Never) (Identifier)
 
 type T5 = NonNullable<never>;
->         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type T5 = NonNullable<never>;
->         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>         ^^^^^^^^^^^: any   (Error) (Identifier)
 
 type T6 = NonNullable<Array<number>>;
->    ^^: number[]   (TyArray) (TSTypeAliasDeclaration)
+>    ^^: number[]   (Array) (Identifier)
 
 type T6 = NonNullable<Array<number>>;
->         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type T6 = NonNullable<Array<number>>;
->         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>         ^^^^^^^^^^^: any   (Error) (Identifier)
 
 type T6 = NonNullable<Array<number>>;
->                     ^^^^^: ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                     ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
 type T6 = NonNullable<Array<number>>;
->                     ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                     ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
 type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
->    ^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^: string   (String) (Identifier)
 
 type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
->         ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
->         ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>         ^^^^^^^^^^^: any   (Error) (Identifier)
 
 type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
->                     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
->                     ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                     ^^^^^^^^^^^: any   (Error) (Identifier)
 
 type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
->                                 ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
->                                 ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                 ^^^^^^^^^^^: any   (Error) (Identifier)
 
 type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
->                                             ^^: any   (TyAny) (TSTypeReference)
+>                                             ^^: any   (Any) (Identifier)

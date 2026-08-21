@@ -1,0 +1,78 @@
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":9,"end":15,"text":"second","nodeType":"Identifier","type":{"name":"Function","display":"<A, B>(a: A, b: B) => B"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":16,"end":17,"text":"A","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":19,"end":20,"text":"B","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":22,"end":23,"text":"a","nodeType":"Identifier","type":{"name":"TypeReference","display":"A"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":25,"end":26,"text":"A","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":28,"end":29,"text":"b","nodeType":"Identifier","type":{"name":"TypeReference","display":"B"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":31,"end":32,"text":"B","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":35,"end":36,"text":"B","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":48,"end":49,"text":"b","nodeType":"Identifier","type":{"name":"TypeReference","display":"B"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":63,"end":72,"text":"parseJSON","nodeType":"Identifier","type":{"name":"Function","display":"<T>(input: string) => T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":73,"end":74,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":76,"end":81,"text":"input","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":92,"end":93,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":105,"end":109,"text":"JSON","nodeType":"Identifier","type":{"name":"TypeReference","display":"JSON"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":110,"end":115,"text":"parse","nodeType":"Identifier","type":{"name":"Function","display":"(text: string, reviver?: (this: any, key: string, value: any) => any) => any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":116,"end":121,"text":"input","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":136,"end":149,"text":"printProperty","nodeType":"Identifier","type":{"name":"Function","display":"<T, K extends keyof T>(obj: T, key: K) => void"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":150,"end":151,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":153,"end":154,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":169,"end":170,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":172,"end":175,"text":"obj","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":177,"end":178,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":180,"end":183,"text":"key","nodeType":"Identifier","type":{"name":"TypeReference","display":"K"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":185,"end":186,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":192,"end":199,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":192,"end":214,"text":"console.log(obj[key]);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":200,"end":203,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":204,"end":207,"text":"obj","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts","start":208,"end":211,"text":"key","nodeType":"Identifier","type":{"name":"TypeReference","display":"K"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":9,"end":15,"text":"second","nodeType":"Identifier","type":{"name":"Function","display":"<B>(a: unknown, b: B) => B"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":16,"end":17,"text":"B","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":19,"end":20,"text":"a","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":31,"end":32,"text":"b","nodeType":"Identifier","type":{"name":"TypeReference","display":"B"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":34,"end":35,"text":"B","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":38,"end":39,"text":"B","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":51,"end":52,"text":"b","nodeType":"Identifier","type":{"name":"TypeReference","display":"B"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":66,"end":75,"text":"parseJSON","nodeType":"Identifier","type":{"name":"Function","display":"(input: string) => unknown"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":76,"end":81,"text":"input","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":111,"end":115,"text":"JSON","nodeType":"Identifier","type":{"name":"TypeReference","display":"JSON"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":116,"end":121,"text":"parse","nodeType":"Identifier","type":{"name":"Function","display":"(text: string, reviver?: (this: any, key: string, value: any) => any) => any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":122,"end":127,"text":"input","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":142,"end":155,"text":"printProperty","nodeType":"Identifier","type":{"name":"Function","display":"<T>(obj: T, key: keyof T) => void"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":156,"end":157,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":159,"end":162,"text":"obj","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":164,"end":165,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":167,"end":170,"text":"key","nodeType":"Identifier","type":{"name":"Keyof","display":"keyof T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":178,"end":179,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":185,"end":192,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":185,"end":207,"text":"console.log(obj[key]);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":193,"end":196,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":197,"end":200,"text":"obj","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":201,"end":204,"text":"key","nodeType":"Identifier","type":{"name":"Keyof","display":"keyof T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":282,"end":290,"text":"identity","nodeType":"Identifier","type":{"name":"Function","display":"<T>(arg: T) => T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":291,"end":292,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":294,"end":297,"text":"arg","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":299,"end":300,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":303,"end":304,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":316,"end":319,"text":"arg","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":472,"end":483,"text":"getProperty","nodeType":"Identifier","type":{"name":"Function","display":"<T, K extends keyof T>(obj: T, key: K) => T[K]"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":484,"end":485,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":487,"end":488,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":503,"end":504,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":506,"end":509,"text":"obj","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":511,"end":512,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":514,"end":517,"text":"key","nodeType":"Identifier","type":{"name":"TypeReference","display":"K"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":519,"end":520,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":533,"end":536,"text":"obj","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts","start":537,"end":540,"text":"key","nodeType":"Identifier","type":{"name":"TypeReference","display":"K"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts","start":17,"end":23,"text":"length","nodeType":"Identifier","type":{"name":"Function","display":"<T>(array: ReadonlyArray<T>) => number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts","start":24,"end":25,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts","start":27,"end":32,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"readonly T[]"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts","start":34,"end":47,"text":"ReadonlyArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts","start":34,"end":47,"text":"ReadonlyArray","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts","start":48,"end":49,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts","start":79,"end":86,"text":"length2","nodeType":"Identifier","type":{"name":"Function","display":"(array: ReadonlyArray<unknown>) => number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts","start":87,"end":92,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"readonly unknown[]"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts","start":94,"end":107,"text":"ReadonlyArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts","start":94,"end":107,"text":"ReadonlyArray","nodeType":"Identifier","type":{"name":"Error","display":"any"}}

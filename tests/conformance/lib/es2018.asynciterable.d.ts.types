@@ -1,249 +1,249 @@
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly asyncIterator: unique symbol;
->            ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface AsyncIterator<T, TReturn = any, TNext = any> {
->         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterator<T, TReturn = any, TNext = any> {
->         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterator<T, TReturn = any, TNext = any> {
->                       ^: any   (TyAny) (TSTypeParameter)
+>                       ^: any   (Any) (Identifier)
 
 interface AsyncIterator<T, TReturn = any, TNext = any> {
->                          ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                          ^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterator<T, TReturn = any, TNext = any> {
->                                         ^^^^^: any   (TyAny) (TSTypeParameter)
+>                                         ^^^^^: any   (Any) (Identifier)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
->   ^^^^: { (...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>; (...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { (...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>; (...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>; }   (Object) (Identifier)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
->            ^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^: any   (Any) (Identifier)
           expected: TNext | undefined
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
->                          ^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^: any   (Any) (Identifier)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
->                                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                   ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
->                                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                   ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
->                                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
->                                           ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
->                                                          ^: any   (TyAny) (TSTypeReference)
+>                                                          ^: any   (Any) (Identifier)
 
     next(...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>;
->                                                             ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^: any   (Any) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->   ^^^^^^: { (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; } | undefined   (TyUnion) (TSMethodSignature)
+>   ^^^^^^: { (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; } | undefined   (Union) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->           ^^^^^: TReturn | PromiseLike<TReturn> | undefined   (TyUnion) (BindingIdentifier)
+>           ^^^^^: TReturn | PromiseLike<TReturn> | undefined   (Union) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                   ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^: any   (Any) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^: any   (Any) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                             ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                             ^^^^^^^^^^^: any   (Error) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                                         ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^: any   (Any) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                                                    ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                                    ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                                                    ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                                    ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                                                            ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                            ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                                                            ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                            ^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                                                                           ^: any   (TyAny) (TSTypeReference)
+>                                                                           ^: any   (Any) (Identifier)
 
     return?(value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>;
->                                                                              ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                              ^^^^^^^: any   (Any) (Identifier)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
->   ^^^^^: { (e?: any): Promise<IteratorResult<T, TReturn>>; (e?: any): Promise<IteratorResult<T, TReturn>>; } | undefined   (TyUnion) (TSMethodSignature)
+>   ^^^^^: { (e?: any): Promise<IteratorResult<T, TReturn>>; (e?: any): Promise<IteratorResult<T, TReturn>>; } | undefined   (Union) (Identifier)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
->          ^: any   (TyAny) (BindingIdentifier)
+>          ^: any   (Any) (Identifier)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
->                    ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                    ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
->                    ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                    ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
->                            ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
->                            ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
->                                           ^: any   (TyAny) (TSTypeReference)
+>                                           ^: any   (Any) (Identifier)
 
     throw?(e?: any): Promise<IteratorResult<T, TReturn>>;
->                                              ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                              ^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterable<T, TReturn = any, TNext = any> {
->         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterable<T, TReturn = any, TNext = any> {
->         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterable<T, TReturn = any, TNext = any> {
->                       ^: any   (TyAny) (TSTypeParameter)
+>                       ^: any   (Any) (Identifier)
 
 interface AsyncIterable<T, TReturn = any, TNext = any> {
->                          ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                          ^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterable<T, TReturn = any, TNext = any> {
->                                         ^^^^^: any   (TyAny) (TSTypeParameter)
+>                                         ^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterator<T, TReturn, TNext>;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterator<T, TReturn, TNext>;
->           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterator<T, TReturn, TNext>;
->                             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterator<T, TReturn, TNext>;
->                             ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                             ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterator<T, TReturn, TNext>;
->                                           ^: any   (TyAny) (TSTypeReference)
+>                                           ^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterator<T, TReturn, TNext>;
->                                              ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                              ^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterator<T, TReturn, TNext>;
->                                                       ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                       ^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterableIterator<T, TReturn = any, TNext = any> extends AsyncIterator<T, TReturn, TNext> {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterableIterator<T, TReturn = any, TNext = any> extends AsyncIterator<T, TReturn, TNext> {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterableIterator<T, TReturn = any, TNext = any> extends AsyncIterator<T, TReturn, TNext> {
->                               ^: any   (TyAny) (TSTypeParameter)
+>                               ^: any   (Any) (Identifier)
 
 interface AsyncIterableIterator<T, TReturn = any, TNext = any> extends AsyncIterator<T, TReturn, TNext> {
->                                  ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                  ^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterableIterator<T, TReturn = any, TNext = any> extends AsyncIterator<T, TReturn, TNext> {
->                                                 ^^^^^: any   (TyAny) (TSTypeParameter)
+>                                                 ^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterableIterator<T, TReturn = any, TNext = any> extends AsyncIterator<T, TReturn, TNext> {
->                                                                      ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+>                                                                      ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterableIterator<T, TReturn = any, TNext = any> extends AsyncIterator<T, TReturn, TNext> {
->                                                                      ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                      ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterableIterator<T, TReturn = any, TNext = any> extends AsyncIterator<T, TReturn, TNext> {
->                                                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                                                    ^: any   (Any) (Identifier)
 
 interface AsyncIterableIterator<T, TReturn = any, TNext = any> extends AsyncIterator<T, TReturn, TNext> {
->                                                                                       ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                       ^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIterableIterator<T, TReturn = any, TNext = any> extends AsyncIterator<T, TReturn, TNext> {
->                                                                                                ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                ^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterableIterator<T, TReturn, TNext>;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterableIterator<T, TReturn, TNext>;
->           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterableIterator<T, TReturn, TNext>;
->                             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterableIterator<T, TReturn, TNext>;
->                             ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                             ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterableIterator<T, TReturn, TNext>;
->                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                   ^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterableIterator<T, TReturn, TNext>;
->                                                      ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                      ^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIterableIterator<T, TReturn, TNext>;
->                                                               ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                               ^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn = unknown, TNext = unknown> extends AsyncIterator<T, TReturn, TNext> {
->         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn = unknown, TNext = unknown> extends AsyncIterator<T, TReturn, TNext> {
->         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn = unknown, TNext = unknown> extends AsyncIterator<T, TReturn, TNext> {
->                             ^: any   (TyAny) (TSTypeParameter)
+>                             ^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn = unknown, TNext = unknown> extends AsyncIterator<T, TReturn, TNext> {
->                                ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                ^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn = unknown, TNext = unknown> extends AsyncIterator<T, TReturn, TNext> {
->                                                   ^^^^^: any   (TyAny) (TSTypeParameter)
+>                                                   ^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn = unknown, TNext = unknown> extends AsyncIterator<T, TReturn, TNext> {
->                                                                            ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+>                                                                            ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn = unknown, TNext = unknown> extends AsyncIterator<T, TReturn, TNext> {
->                                                                            ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                            ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn = unknown, TNext = unknown> extends AsyncIterator<T, TReturn, TNext> {
->                                                                                          ^: any   (TyAny) (TSTypeReference)
+>                                                                                          ^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn = unknown, TNext = unknown> extends AsyncIterator<T, TReturn, TNext> {
->                                                                                             ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                             ^^^^^^^: any   (Any) (Identifier)
 
 interface AsyncIteratorObject<T, TReturn = unknown, TNext = unknown> extends AsyncIterator<T, TReturn, TNext> {
->                                                                                                      ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                      ^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIteratorObject<T, TReturn, TNext>;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIteratorObject<T, TReturn, TNext>;
->           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIteratorObject<T, TReturn, TNext>;
->                             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIteratorObject<T, TReturn, TNext>;
->                             ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIteratorObject<T, TReturn, TNext>;
->                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                 ^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIteratorObject<T, TReturn, TNext>;
->                                                    ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                    ^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.asyncIterator](): AsyncIteratorObject<T, TReturn, TNext>;
->                                                             ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^: any   (Any) (Identifier)

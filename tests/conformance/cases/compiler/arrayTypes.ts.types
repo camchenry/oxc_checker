@@ -1,32 +1,32 @@
 const a1: number[] = [1, 2, 3];
->     ^^: number[]   (TyArray) (BindingIdentifier)
+>     ^^: number[]   (Array) (Identifier)
 
 const a2 = [1, 2, 3];
->     ^^: number[]   (TyArray) (BindingIdentifier)
+>     ^^: number[]   (Array) (Identifier)
 
 const a3 = [];
->     ^^: any[]   (TyArray) (BindingIdentifier)
+>     ^^: any[]   (Array) (Identifier)
 
 const a4 = [null];
->     ^^: null[]   (TyArray) (BindingIdentifier)
+>     ^^: null[]   (Array) (Identifier)
 
 const a5 = [undefined];
->     ^^: undefined[]   (TyArray) (BindingIdentifier)
+>     ^^: undefined[]   (Array) (Identifier)
 
 const a5 = [undefined];
->           ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>           ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 const a6 = [""];
->     ^^: string[]   (TyArray) (BindingIdentifier)
+>     ^^: string[]   (Array) (Identifier)
 
 const a7 = ["test", "foo"];
->     ^^: string[]   (TyArray) (BindingIdentifier)
+>     ^^: string[]   (Array) (Identifier)
 
 const a8 = [1, [2]];
->     ^^: (number | number[])[]   (TyArray) (BindingIdentifier)
+>     ^^: (number | number[])[]   (Array) (Identifier)
 
 const a9 = [1, ["foo", [{ bar: 1 }]]]
->     ^^: (number | (string | { bar: number; }[])[])[]   (TyArray) (BindingIdentifier)
+>     ^^: (number | (string | { bar: number; }[])[])[]   (Array) (Identifier)
 
 const a9 = [1, ["foo", [{ bar: 1 }]]]
->                         ^^^: number   (TyNumber) (ObjectProperty)
+>                         ^^^: number   (Number) (Identifier)

@@ -1,0 +1,14 @@
+{"path":"es2021.string.d.ts","start":10,"end":16,"text":"String","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2021.string.d.ts","start":10,"end":16,"text":"String","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2021.string.d.ts","start":316,"end":326,"text":"replaceAll","nodeType":"Identifier","type":{"name":"Object","display":"{ (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }"}}
+{"path":"es2021.string.d.ts","start":327,"end":338,"text":"searchValue","nodeType":"Identifier","type":{"name":"Union","display":"string | RegExp"}}
+{"path":"es2021.string.d.ts","start":349,"end":355,"text":"RegExp","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExpConstructor"}}
+{"path":"es2021.string.d.ts","start":349,"end":355,"text":"RegExp","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExpConstructor"}}
+{"path":"es2021.string.d.ts","start":357,"end":369,"text":"replaceValue","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2021.string.d.ts","start":630,"end":640,"text":"replaceAll","nodeType":"Identifier","type":{"name":"Object","display":"{ (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }"}}
+{"path":"es2021.string.d.ts","start":641,"end":652,"text":"searchValue","nodeType":"Identifier","type":{"name":"Union","display":"string | RegExp"}}
+{"path":"es2021.string.d.ts","start":663,"end":669,"text":"RegExp","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExpConstructor"}}
+{"path":"es2021.string.d.ts","start":663,"end":669,"text":"RegExp","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExpConstructor"}}
+{"path":"es2021.string.d.ts","start":671,"end":679,"text":"replacer","nodeType":"Identifier","type":{"name":"Function","display":"(substring: string, ...args: any[]) => string"}}
+{"path":"es2021.string.d.ts","start":682,"end":691,"text":"substring","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2021.string.d.ts","start":704,"end":708,"text":"args","nodeType":"Identifier","type":{"name":"Array","display":"any[]"}}

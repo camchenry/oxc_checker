@@ -1,0 +1,47 @@
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":0,"end":6,"text":"String","nodeType":"Identifier","type":{"name":"TypeReference","display":"StringConstructor"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":0,"end":14,"text":"String('123');","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":15,"end":32,"text":"'123'.toString();","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":21,"end":29,"text":"toString","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":33,"end":44,"text":"'' + '123';","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":45,"end":56,"text":"'123' + '';","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":58,"end":64,"text":"Number","nodeType":"Identifier","type":{"name":"TypeReference","display":"NumberConstructor"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":58,"end":70,"text":"Number(123);","nodeType":"ExpressionStatement","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":71,"end":76,"text":"+123;","nodeType":"ExpressionStatement","type":{"name":"NumberLiteral","display":"123"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":77,"end":83,"text":"~~123;","nodeType":"ExpressionStatement","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":85,"end":92,"text":"Boolean","nodeType":"Identifier","type":{"name":"TypeReference","display":"BooleanConstructor"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":85,"end":99,"text":"Boolean(true);","nodeType":"ExpressionStatement","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":100,"end":107,"text":"!!true;","nodeType":"ExpressionStatement","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":109,"end":115,"text":"BigInt","nodeType":"Identifier","type":{"name":"TypeReference","display":"BigIntConstructor"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":109,"end":127,"text":"BigInt(BigInt(1));","nodeType":"ExpressionStatement","type":{"name":"Bigint","display":"bigint"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":116,"end":122,"text":"BigInt","nodeType":"Identifier","type":{"name":"TypeReference","display":"BigIntConstructor"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":133,"end":136,"text":"str","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":146,"end":149,"text":"str","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts","start":146,"end":156,"text":"str += '';","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":9,"end":12,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"(bar: string | number) => void"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":13,"end":16,"text":"bar","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":39,"end":45,"text":"String","nodeType":"Identifier","type":{"name":"TypeReference","display":"StringConstructor"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":39,"end":51,"text":"String(bar);","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":46,"end":49,"text":"bar","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":54,"end":57,"text":"bar","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":54,"end":69,"text":"bar.toString();","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":58,"end":66,"text":"toString","nodeType":"Identifier","type":{"name":"Union","display":"(() => string) | ((radix?: number) => string)"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":72,"end":81,"text":"'' + bar;","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":77,"end":80,"text":"bar","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":84,"end":87,"text":"bar","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":84,"end":93,"text":"bar + '';","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":97,"end":103,"text":"Number","nodeType":"Identifier","type":{"name":"TypeReference","display":"NumberConstructor"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":97,"end":109,"text":"Number(bar);","nodeType":"ExpressionStatement","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":104,"end":107,"text":"bar","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":112,"end":117,"text":"+bar;","nodeType":"ExpressionStatement","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":113,"end":116,"text":"bar","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":120,"end":126,"text":"~~bar;","nodeType":"ExpressionStatement","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":122,"end":125,"text":"bar","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":130,"end":137,"text":"Boolean","nodeType":"Identifier","type":{"name":"TypeReference","display":"BooleanConstructor"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":130,"end":143,"text":"Boolean(bar);","nodeType":"ExpressionStatement","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":138,"end":141,"text":"bar","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":146,"end":152,"text":"!!bar;","nodeType":"ExpressionStatement","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":148,"end":151,"text":"bar","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":156,"end":162,"text":"BigInt","nodeType":"Identifier","type":{"name":"TypeReference","display":"BigIntConstructor"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":156,"end":166,"text":"BigInt(1);","nodeType":"ExpressionStatement","type":{"name":"Bigint","display":"bigint"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":170,"end":173,"text":"bar","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts","start":170,"end":180,"text":"bar += '';","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}

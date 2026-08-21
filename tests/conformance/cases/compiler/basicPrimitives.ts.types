@@ -1,83 +1,83 @@
 let count: number = 1;
->   ^^^^^: number   (TyNumber) (BindingIdentifier)
+>   ^^^^^: number   (Number) (Identifier)
 
 let label: string = "ready";
->   ^^^^^: string   (TyString) (BindingIdentifier)
+>   ^^^^^: string   (String) (Identifier)
 
 let big: bigint = 1n;
->   ^^^: bigint   (TyBigint) (BindingIdentifier)
+>   ^^^: bigint   (Bigint) (Identifier)
 
 let _null: null = null;
->   ^^^^^: null   (TyNull) (BindingIdentifier)
+>   ^^^^^: null   (Null) (Identifier)
 
 let _undefined: undefined;
->   ^^^^^^^^^^: undefined   (TyUndefined) (BindingIdentifier)
+>   ^^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 let _unknown: unknown;
->   ^^^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>   ^^^^^^^^: unknown   (Unknown) (Identifier)
 
 let _any: any;
->   ^^^^: any   (TyAny) (BindingIdentifier)
+>   ^^^^: any   (Any) (Identifier)
 
 let count2 = 1;
->   ^^^^^^: number   (TyNumber) (BindingIdentifier)
+>   ^^^^^^: number   (Number) (Identifier)
 
 let label2 = "ready";
->   ^^^^^^: string   (TyString) (BindingIdentifier)
+>   ^^^^^^: string   (String) (Identifier)
 
 let big2 = 1n
->   ^^^^: bigint   (TyBigint) (BindingIdentifier)
+>   ^^^^: bigint   (Bigint) (Identifier)
 
 let _null2 = null
->   ^^^^^^: any   (TyAny) (BindingIdentifier)
+>   ^^^^^^: any   (Any) (Identifier)
 
 let _undefined2 = undefined;
->   ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>   ^^^^^^^^^^^: any   (Any) (Identifier)
 
 let _undefined2 = undefined;
->                 ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>                 ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 let template = `Hello`
->   ^^^^^^^^: string   (TyString) (BindingIdentifier)
+>   ^^^^^^^^: string   (String) (Identifier)
 
 let template2 = `Count: ${count}`
->   ^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>   ^^^^^^^^^: string   (String) (Identifier)
 
 let template2 = `Count: ${count}`
->                         ^^^^^: number   (TyNumber) (IdentifierReference)
+>                         ^^^^^: number   (Number) (Identifier)
 
 const count3 = 1;
->     ^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^^: 1   (NumberLiteral) (Identifier)
 
 const label3 = "ready";
->     ^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const big3 = 1n;
->     ^^^^: 1n   (TyBigIntLiteral) (BindingIdentifier)
+>     ^^^^: 1n   (BigIntLiteral) (Identifier)
 
 const _null3 = null;
->     ^^^^^^: null   (TyNull) (BindingIdentifier)
+>     ^^^^^^: null   (Null) (Identifier)
 
 const _undefined3 = undefined;
->     ^^^^^^^^^^^: undefined   (TyUndefined) (BindingIdentifier)
+>     ^^^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 const _undefined3 = undefined;
->                   ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>                   ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 const template3 = `Hello`;
->     ^^^^^^^^^: "Hello"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^: "Hello"   (StringLiteral) (Identifier)
 
 const template4 = `Count: ${count3}`;
->     ^^^^^^^^^: "Count: 1"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^: "Count: 1"   (StringLiteral) (Identifier)
 
 const template4 = `Count: ${count3}`;
->                           ^^^^^^: 1   (TyNumberLiteral) (IdentifierReference)
+>                           ^^^^^^: 1   (NumberLiteral) (Identifier)
 
 const never = null!
->     ^^^^^: never   (TyNever) (BindingIdentifier)
+>     ^^^^^: never   (Never) (Identifier)
 
 const never2 = _undefined3!
->     ^^^^^^: never   (TyNever) (BindingIdentifier)
+>     ^^^^^^: never   (Never) (Identifier)
 
 const never2 = _undefined3!
->              ^^^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>              ^^^^^^^^^^^: undefined   (Undefined) (Identifier)

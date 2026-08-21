@@ -1,155 +1,155 @@
 type Box<T> = { value: T };
->    ^^^: { value: T; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^: { value: T; }   (Object) (Identifier)
 
 type Box<T> = { value: T };
->        ^: any   (TyAny) (TSTypeParameter)
+>        ^: any   (Any) (Identifier)
 
 type Box<T> = { value: T };
->               ^^^^^: T   (TyTypeReference) (TSPropertySignature)
+>               ^^^^^: T   (TypeReference) (Identifier)
 
 type Box<T> = { value: T };
->                      ^: any   (TyAny) (TSTypeReference)
+>                      ^: any   (Any) (Identifier)
 
 type DefaultBox<T = number> = { value: T };
->    ^^^^^^^^^^: { value: T; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: { value: T; }   (Object) (Identifier)
 
 type DefaultBox<T = number> = { value: T };
->               ^: any   (TyAny) (TSTypeParameter)
+>               ^: any   (Any) (Identifier)
 
 type DefaultBox<T = number> = { value: T };
->                               ^^^^^: T   (TyTypeReference) (TSPropertySignature)
+>                               ^^^^^: T   (TypeReference) (Identifier)
 
 type DefaultBox<T = number> = { value: T };
->                                      ^: any   (TyAny) (TSTypeReference)
+>                                      ^: any   (Any) (Identifier)
 
 type SelfDefault<T = T> = { value: T };
->    ^^^^^^^^^^^: { value: T; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: { value: T; }   (Object) (Identifier)
 
 type SelfDefault<T = T> = { value: T };
->                ^: any   (TyAny) (TSTypeParameter)
+>                ^: any   (Any) (Identifier)
 
 type SelfDefault<T = T> = { value: T };
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
 type SelfDefault<T = T> = { value: T };
->                           ^^^^^: T   (TyTypeReference) (TSPropertySignature)
+>                           ^^^^^: T   (TypeReference) (Identifier)
 
 type SelfDefault<T = T> = { value: T };
->                                  ^: any   (TyAny) (TSTypeReference)
+>                                  ^: any   (Any) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->    ^^^^^^^^^^^^^^: { t: T; u: U; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^: { t: T; u: U; }   (Object) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                   ^: any   (TyAny) (TSTypeParameter)
+>                   ^: any   (Any) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                       ^: any   (TyAny) (TSTypeReference)
+>                       ^: any   (Any) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                          ^: any   (TyAny) (TSTypeParameter)
+>                          ^: any   (Any) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                                          ^: T   (TyTypeReference) (TSPropertySignature)
+>                                          ^: T   (TypeReference) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                                             ^: any   (TyAny) (TSTypeReference)
+>                                             ^: any   (Any) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                                                ^: U   (TyTypeReference) (TSPropertySignature)
+>                                                ^: U   (TypeReference) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                   ^: any   (Any) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->    ^^^^^^^^^^^^^^^^: { t: T; u: U; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^: { t: T; u: U; }   (Object) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                     ^: any   (TyAny) (TSTypeParameter)
+>                     ^: any   (Any) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                 ^: any   (TyAny) (TSTypeParameter)
+>                                 ^: any   (Any) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                     ^: any   (TyAny) (TSTypeReference)
+>                                     ^: any   (Any) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                            ^: T   (TyTypeReference) (TSPropertySignature)
+>                                            ^: T   (TypeReference) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                                  ^: U   (TyTypeReference) (TSPropertySignature)
+>                                                  ^: U   (TypeReference) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
 function box<T>(x: T): Box<T> {
->        ^^^: <T>(x: T) => Box<T>   (TyFunction) (BindingIdentifier)
+>        ^^^: <T>(x: T) => Box<T>   (Function) (Identifier)
 
 function box<T>(x: T): Box<T> {
->            ^: any   (TyAny) (TSTypeParameter)
+>            ^: any   (Any) (Identifier)
 
 function box<T>(x: T): Box<T> {
->               ^: T   (TyTypeReference) (BindingIdentifier)
+>               ^: T   (TypeReference) (Identifier)
 
 function box<T>(x: T): Box<T> {
->                  ^: any   (TyAny) (TSTypeReference)
+>                  ^: any   (Any) (Identifier)
 
 function box<T>(x: T): Box<T> {
->                      ^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^: any   (Any) (Identifier)
 
 function box<T>(x: T): Box<T> {
->                          ^: any   (TyAny) (TSTypeReference)
+>                          ^: any   (Any) (Identifier)
 
   return { value: x };
->          ^^^^^: T   (TyTypeReference) (ObjectProperty)
+>          ^^^^^: T   (TypeReference) (Identifier)
 
   return { value: x };
->                 ^: T   (TyTypeReference) (IdentifierReference)
+>                 ^: T   (TypeReference) (Identifier)
 
 const explicit: Box<string> = { value: "test" };
->     ^^^^^^^^: Box<string>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^: Box<string>   (TypeReference) (Identifier)
 
 const explicit: Box<string> = { value: "test" };
->               ^^^: any   (TyAny) (TSTypeReference)
+>               ^^^: any   (Any) (Identifier)
 
 const explicit: Box<string> = { value: "test" };
->                               ^^^^^: string   (TyString) (ObjectProperty)
+>                               ^^^^^: string   (String) (Identifier)
 
 const inferred = box(123);
->     ^^^^^^^^: Box<number>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^: Box<number>   (TypeReference) (Identifier)
 
 const inferred = box(123);
->                ^^^: <T>(x: T) => Box<T>   (TyFunction) (IdentifierReference)
+>                ^^^: <T>(x: T) => Box<T>   (Function) (Identifier)
 
 const fromExplicitCall = box<string>("test");
->     ^^^^^^^^^^^^^^^^: Box<string>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^: Box<string>   (TypeReference) (Identifier)
 
 const fromExplicitCall = box<string>("test");
->                        ^^^: <T>(x: T) => Box<T>   (TyFunction) (IdentifierReference)
+>                        ^^^: <T>(x: T) => Box<T>   (Function) (Identifier)
 
 declare const defaultBox: DefaultBox;
->             ^^^^^^^^^^: DefaultBox<number>   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^: DefaultBox<number>   (TypeReference) (Identifier)
 
 declare const defaultBox: DefaultBox;
->                         ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const selfDefault: SelfDefault;
->             ^^^^^^^^^^^: SelfDefault<any>   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^^: SelfDefault<any>   (TypeReference) (Identifier)
 
 declare const selfDefault: SelfDefault;
->                          ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const forwardDefault: ForwardDefault;
->             ^^^^^^^^^^^^^^: ForwardDefault<any, string>   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^: ForwardDefault<any, string>   (TypeReference) (Identifier)
 
 declare const forwardDefault: ForwardDefault;
->                             ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const dependentDefault: DependentDefault;
->             ^^^^^^^^^^^^^^^^: DependentDefault<string, string>   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^: DependentDefault<string, string>   (TypeReference) (Identifier)
 
 declare const dependentDefault: DependentDefault;
->                               ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)

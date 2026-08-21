@@ -1,38 +1,38 @@
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly prototype: Symbol;
->            ^^^^^^^^^: Symbol   (TyTypeReference) (TSPropertySignature)
+>            ^^^^^^^^^: Symbol   (TypeReference) (Identifier)
 
     readonly prototype: Symbol;
->                       ^^^^^^: SymbolConstructor   (TyTypeReference) (TSTypeReference)
+>                       ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly prototype: Symbol;
->                       ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     (description?: string | number): symbol;
->    ^^^^^^^^^^^: string | number | undefined   (TyUnion) (BindingIdentifier)
+>    ^^^^^^^^^^^: string | number | undefined   (Union) (Identifier)
 
     for(key: string): symbol;
->   ^^^: { (key: string): symbol; (key: string): symbol; }   (TyObject) (TSMethodSignature)
+>   ^^^: { (key: string): symbol; (key: string): symbol; }   (Object) (Identifier)
 
     for(key: string): symbol;
->       ^^^: string   (TyString) (BindingIdentifier)
+>       ^^^: string   (String) (Identifier)
 
     keyFor(sym: symbol): string | undefined;
->   ^^^^^^: { (sym: symbol): string | undefined; (sym: symbol): string | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^: { (sym: symbol): string | undefined; (sym: symbol): string | undefined; }   (Object) (Identifier)
 
     keyFor(sym: symbol): string | undefined;
->          ^^^: symbol   (TySymbol) (BindingIdentifier)
+>          ^^^: symbol   (Symbol) (Identifier)
 
 declare var Symbol: SymbolConstructor;
->           ^^^^^^: SymbolConstructor   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
 declare var Symbol: SymbolConstructor;
->                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare var Symbol: SymbolConstructor;
->                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)

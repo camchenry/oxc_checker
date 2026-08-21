@@ -1,0 +1,6 @@
+{"path":"compiler/functionReturnTypes.ts","start":10,"end":15,"text":"empty","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/functionReturnTypes.ts","start":33,"end":42,"text":"emptyVoid","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/functionReturnTypes.ts","start":65,"end":76,"text":"EmptyGetter","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof EmptyGetter"}}
+{"path":"compiler/functionReturnTypes.ts","start":92,"end":93,"text":"x","nodeType":"Identifier","type":{"name":"Void","display":"void"}}
+{"path":"compiler/functionReturnTypes.ts","start":115,"end":125,"text":"returnsBig","nodeType":"Identifier","type":{"name":"Function","display":"() => bigint"}}
+{"path":"compiler/functionReturnTypes.ts","start":154,"end":165,"text":"returnsBig2","nodeType":"Identifier","type":{"name":"Function","display":"() => 0n | 1n"}}

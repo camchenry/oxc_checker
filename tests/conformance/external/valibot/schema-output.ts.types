@@ -1,844 +1,844 @@
 export type BaseIssue<Expected extends string = string> = {
->           ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (Object) (Identifier)
 
 export type BaseIssue<Expected extends string = string> = {
->                     ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                     ^^^^^^^^: any   (Any) (Identifier)
 
   readonly kind: 'schema'
->          ^^^^: "schema"   (TyStringLiteral) (TSPropertySignature)
+>          ^^^^: "schema"   (StringLiteral) (Identifier)
 
   readonly expected: Expected
->          ^^^^^^^^: Expected   (TyTypeReference) (TSPropertySignature)
+>          ^^^^^^^^: Expected   (TypeReference) (Identifier)
 
   readonly expected: Expected
->                    ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^: any   (Any) (Identifier)
 
   readonly message: string
->          ^^^^^^^: string   (TyString) (TSPropertySignature)
+>          ^^^^^^^: string   (String) (Identifier)
 
 export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
->           ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
 export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
->                      ^^^^^: any   (TyAny) (TSTypeParameter)
+>                      ^^^^^: any   (Any) (Identifier)
 
 export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
->                             ^^^^^^: any   (TyAny) (TSTypeParameter)
+>                             ^^^^^^: any   (Any) (Identifier)
 
 export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
->                                     ^^^^^: any   (TyAny) (TSTypeParameter)
+>                                     ^^^^^: any   (Any) (Identifier)
 
 export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
->                                                   ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                   ^^^^^^^^^: any   (Any) (Identifier)
 
     readonly input: Input
->            ^^^^^: Input   (TyTypeReference) (TSPropertySignature)
+>            ^^^^^: Input   (TypeReference) (Identifier)
 
     readonly input: Input
->                   ^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^: any   (Any) (Identifier)
 
     readonly output: Output
->            ^^^^^^: Output   (TyTypeReference) (TSPropertySignature)
+>            ^^^^^^: Output   (TypeReference) (Identifier)
 
     readonly output: Output
->                    ^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^: any   (Any) (Identifier)
 
     readonly issue: Issue
->            ^^^^^: Issue   (TyTypeReference) (TSPropertySignature)
+>            ^^^^^: Issue   (TypeReference) (Identifier)
 
     readonly issue: Issue
->                   ^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^: any   (Any) (Identifier)
 
   readonly '~run': (input: unknown) => Output
->                   ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>                   ^^^^^: unknown   (Unknown) (Identifier)
 
   readonly '~run': (input: unknown) => Output
->                                      ^^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^^: any   (Any) (Identifier)
 
 export type GenericSchema = BaseSchema<any, any, BaseIssue>
->           ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
                  expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export type GenericSchema = BaseSchema<any, any, BaseIssue>
->                           ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^^^: any   (Any) (Identifier)
 
 export type GenericSchema = BaseSchema<any, any, BaseIssue>
->                                                ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                ^^^^^^^^^: any   (Any) (Identifier)
 
 export type InferInput<TSchema extends GenericSchema> = NonNullable<
->           ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
 
 export type InferInput<TSchema extends GenericSchema> = NonNullable<
->                      ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                      ^^^^^^^: any   (Any) (Identifier)
 
 export type InferInput<TSchema extends GenericSchema> = NonNullable<
->                                      ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type InferInput<TSchema extends GenericSchema> = NonNullable<
->                                                       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                       ^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type InferInput<TSchema extends GenericSchema> = NonNullable<
->                                                       ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                       ^^^^^^^^^^^: any   (Error) (Identifier)
 
   TSchema['~types']
-> ^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^: any   (Any) (Identifier)
 
 export type InferOutput<TSchema extends GenericSchema> = NonNullable<
->           ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
 
 export type InferOutput<TSchema extends GenericSchema> = NonNullable<
->                       ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                       ^^^^^^^: any   (Any) (Identifier)
 
 export type InferOutput<TSchema extends GenericSchema> = NonNullable<
->                                       ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                       ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type InferOutput<TSchema extends GenericSchema> = NonNullable<
->                                                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                        ^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type InferOutput<TSchema extends GenericSchema> = NonNullable<
->                                                        ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                        ^^^^^^^^^^^: any   (Error) (Identifier)
 
   TSchema['~types']
-> ^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^: any   (Any) (Identifier)
 
 export type InferIssue<TSchema extends GenericSchema> = NonNullable<
->           ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (IndexedAccess) (Identifier)
 
 export type InferIssue<TSchema extends GenericSchema> = NonNullable<
->                      ^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                      ^^^^^^^: any   (Any) (Identifier)
 
 export type InferIssue<TSchema extends GenericSchema> = NonNullable<
->                                      ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type InferIssue<TSchema extends GenericSchema> = NonNullable<
->                                                       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                       ^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type InferIssue<TSchema extends GenericSchema> = NonNullable<
->                                                       ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                       ^^^^^^^^^^^: any   (Error) (Identifier)
 
   TSchema['~types']
-> ^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^: any   (Any) (Identifier)
 
   BaseIssue,
-> ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (BindingIdentifier)
+> ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (Object) (Identifier)
 
   BaseSchema,
-> ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (BindingIdentifier)
+> ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
   GenericSchema,
-> ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (BindingIdentifier)
+> ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
        expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
   InferInput,
-> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (BindingIdentifier)
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
 
   InferIssue,
-> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (BindingIdentifier)
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (IndexedAccess) (Identifier)
 
   InferOutput,
-> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (BindingIdentifier)
+> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
 
 export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
->           ^^^^^^^^^^^^: { readonly '~types'?: { readonly input: string; readonly output: string; readonly issue: { readonly kind: 'schema'; readonly expected: "string"; readonly message: string; }; }; readonly '~run': (input: unknown) => string; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^: { readonly '~types'?: { readonly input: string; readonly output: string; readonly issue: { readonly kind: 'schema'; readonly expected: "string"; readonly message: string; }; }; readonly '~run': (input: unknown) => string; }   (Object) (Identifier)
                 expected: { readonly '~types'?: { readonly input: string; readonly output: string; readonly issue: BaseIssue<"string">; } | undefined; readonly '~run': (input: unknown) => string; }
 
 export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
->                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (TSTypeReference)
+>                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
 export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
->                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (IdentifierReference)
+>                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
 export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
->                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeReference)
+>                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (Object) (Identifier)
 
 export type StringSchema = BaseSchema<string, string, BaseIssue<'string'>>
->                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (IdentifierReference)
+>                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (Object) (Identifier)
 
 export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
->           ^^^^^^^^^^^^: { readonly '~types'?: { readonly input: number; readonly output: number; readonly issue: { readonly kind: 'schema'; readonly expected: "number"; readonly message: string; }; }; readonly '~run': (input: unknown) => number; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^: { readonly '~types'?: { readonly input: number; readonly output: number; readonly issue: { readonly kind: 'schema'; readonly expected: "number"; readonly message: string; }; }; readonly '~run': (input: unknown) => number; }   (Object) (Identifier)
                 expected: { readonly '~types'?: { readonly input: number; readonly output: number; readonly issue: BaseIssue<"number">; } | undefined; readonly '~run': (input: unknown) => number; }
 
 export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
->                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (TSTypeReference)
+>                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
 export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
->                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (IdentifierReference)
+>                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
 export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
->                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeReference)
+>                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (Object) (Identifier)
 
 export type NumberSchema = BaseSchema<number, number, BaseIssue<'number'>>
->                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (IdentifierReference)
+>                                                     ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (Object) (Identifier)
 
 export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
->           ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: boolean; readonly output: boolean; readonly issue: { readonly kind: 'schema'; readonly expected: "boolean"; readonly message: string; }; }; readonly '~run': (input: unknown) => boolean; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: boolean; readonly output: boolean; readonly issue: { readonly kind: 'schema'; readonly expected: "boolean"; readonly message: string; }; }; readonly '~run': (input: unknown) => boolean; }   (Object) (Identifier)
                  expected: { readonly '~types'?: { readonly input: boolean; readonly output: boolean; readonly issue: BaseIssue<"boolean">; } | undefined; readonly '~run': (input: unknown) => boolean; }
 
 export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
->                           ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (TSTypeReference)
+>                           ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
 export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
->                           ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (IdentifierReference)
+>                           ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
 export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
->                                                        ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (TSTypeReference)
+>                                                        ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (Object) (Identifier)
 
 export type BooleanSchema = BaseSchema<boolean, boolean, BaseIssue<'boolean'>>
->                                                        ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (TyObject) (IdentifierReference)
+>                                                        ^^^^^^^^^: { readonly kind: 'schema'; readonly expected: Expected; readonly message: string; }   (Object) (Identifier)
 
 export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
->           ^^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: (TWrapped["~types"] & {})["input"] | undefined; readonly output: (TWrapped["~types"] & {})["output"] | TDefault; readonly issue: (TWrapped["~types"] & {})["issue"]; }; readonly '~run': (input: unknown) => (TWrapped["~types"] & {})["output"] | TDefault; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: (TWrapped["~types"] & {})["input"] | undefined; readonly output: (TWrapped["~types"] & {})["output"] | TDefault; readonly issue: (TWrapped["~types"] & {})["issue"]; }; readonly '~run': (input: unknown) => (TWrapped["~types"] & {})["output"] | TDefault; }   (Object) (Identifier)
                   expected: { readonly '~types'?: { readonly input: InferInput<TWrapped> | undefined; readonly output: TDefault | InferOutput<TWrapped>; readonly issue: InferIssue<TWrapped>; } | undefined; readonly '~run': (input: unknown) => TDefault | InferOutput<TWrapped>; }
 
 export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
->                          ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                          ^^^^^^^^: any   (Any) (Identifier)
 
 export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
->                                           ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (TSTypeReference)
+>                                           ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
                                                  expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
->                                           ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
                                                  expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
->                                                          ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                                          ^^^^^^^^: any   (Any) (Identifier)
 
 export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
->                                                                                  ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (TSTypeReference)
+>                                                                                  ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
 export type OptionalSchema<TWrapped extends GenericSchema, TDefault = undefined> = BaseSchema<
->                                                                                  ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (IdentifierReference)
+>                                                                                  ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
   InferInput<TWrapped> | undefined,
-> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (TSTypeReference)
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
 
   InferInput<TWrapped> | undefined,
-> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (IdentifierReference)
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
 
   InferInput<TWrapped> | undefined,
->            ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^^^^: any   (Any) (Identifier)
 
   InferOutput<TWrapped> | TDefault,
-> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (TSTypeReference)
+> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
 
   InferOutput<TWrapped> | TDefault,
-> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (IdentifierReference)
+> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
 
   InferOutput<TWrapped> | TDefault,
->             ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
   InferOutput<TWrapped> | TDefault,
->                         ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^: any   (Any) (Identifier)
 
   InferIssue<TWrapped>
-> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (TSTypeReference)
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (IndexedAccess) (Identifier)
 
   InferIssue<TWrapped>
-> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (IdentifierReference)
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (IndexedAccess) (Identifier)
 
   InferIssue<TWrapped>
->            ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^^^^: any   (Any) (Identifier)
 
 export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
->           ^^^^^^^^^^^: { readonly '~types'?: { readonly input: InferInput<TItem>[]; readonly output: InferOutput<TItem>[]; readonly issue: (TItem["~types"] & {})["issue"]; }; readonly '~run': (input: unknown) => InferOutput<TItem>[]; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^: { readonly '~types'?: { readonly input: InferInput<TItem>[]; readonly output: InferOutput<TItem>[]; readonly issue: (TItem["~types"] & {})["issue"]; }; readonly '~run': (input: unknown) => InferOutput<TItem>[]; }   (Object) (Identifier)
                expected: { readonly '~types'?: { readonly input: InferInput<TItem>[]; readonly output: InferOutput<TItem>[]; readonly issue: InferIssue<TItem>; } | undefined; readonly '~run': (input: unknown) => InferOutput<TItem>[]; }
 
 export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
->                       ^^^^^: any   (TyAny) (TSTypeParameter)
+>                       ^^^^^: any   (Any) (Identifier)
 
 export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
->                                     ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (TSTypeReference)
+>                                     ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
                                            expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
->                                     ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (IdentifierReference)
+>                                     ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
                                            expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
->                                                      ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (TSTypeReference)
+>                                                      ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
 export type ArraySchema<TItem extends GenericSchema> = BaseSchema<
->                                                      ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (IdentifierReference)
+>                                                      ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
   InferInput<TItem>[],
-> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (TSTypeReference)
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
 
   InferInput<TItem>[],
-> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (IdentifierReference)
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
 
   InferInput<TItem>[],
->            ^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^: any   (Any) (Identifier)
 
   InferOutput<TItem>[],
-> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (TSTypeReference)
+> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
 
   InferOutput<TItem>[],
-> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (IdentifierReference)
+> ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
 
   InferOutput<TItem>[],
->             ^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^: any   (Any) (Identifier)
 
   InferIssue<TItem>
-> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (TSTypeReference)
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (IndexedAccess) (Identifier)
 
   InferIssue<TItem>
-> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (IdentifierReference)
+> ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (IndexedAccess) (Identifier)
 
   InferIssue<TItem>
->            ^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^: any   (Any) (Identifier)
 
 export type ObjectEntries = Record<string, GenericSchema>
->           ^^^^^^^^^^^^^: { [x: string]: { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^: { [x: string]: { readonly "~types"?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly "~run": (input: unknown) => any; }; }   (Object) (Identifier)
                  expected: { [x: string]: GenericSchema; }
 
 export type ObjectEntries = Record<string, GenericSchema>
->                           ^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^: any   (Any) (Identifier)
 
 export type ObjectEntries = Record<string, GenericSchema>
->                           ^^^^^^: any   (TyError) (IdentifierReference)
+>                           ^^^^^^: any   (Error) (Identifier)
 
 export type ObjectEntries = Record<string, GenericSchema>
->                                          ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (TSTypeReference)
+>                                          ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
                                                 expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export type ObjectEntries = Record<string, GenericSchema>
->                                          ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (IdentifierReference)
+>                                          ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
                                                 expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export type ObjectInput<TEntries extends ObjectEntries> = {
->           ^^^^^^^^^^^: { [Key in keyof TEntries]: InferInput<TEntries[Key]>; }   (TyMapped) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^: { [Key in keyof TEntries]: InferInput<TEntries[Key]>; }   (Mapped) (Identifier)
 
 export type ObjectInput<TEntries extends ObjectEntries> = {
->                       ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                       ^^^^^^^^: any   (Any) (Identifier)
 
 export type ObjectInput<TEntries extends ObjectEntries> = {
->                                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                        ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferInput<TEntries[Key]>
->  ^^^: any   (TyAny) (TSMappedType)
+>  ^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferInput<TEntries[Key]>
->               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferInput<TEntries[Key]>
->                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (TSTypeReference)
+>                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
 
   [Key in keyof TEntries]: InferInput<TEntries[Key]>
->                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (IdentifierReference)
+>                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
 
   [Key in keyof TEntries]: InferInput<TEntries[Key]>
->                                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                     ^^^^^^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferInput<TEntries[Key]>
->                                              ^^^: any   (TyAny) (TSTypeReference)
+>                                              ^^^: any   (Any) (Identifier)
 
 export type ObjectOutput<TEntries extends ObjectEntries> = {
->           ^^^^^^^^^^^^: { [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }   (TyMapped) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^: { [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }   (Mapped) (Identifier)
 
 export type ObjectOutput<TEntries extends ObjectEntries> = {
->                        ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                        ^^^^^^^^: any   (Any) (Identifier)
 
 export type ObjectOutput<TEntries extends ObjectEntries> = {
->                                         ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferOutput<TEntries[Key]>
->  ^^^: any   (TyAny) (TSMappedType)
+>  ^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferOutput<TEntries[Key]>
->               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferOutput<TEntries[Key]>
->                          ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (TSTypeReference)
+>                          ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
 
   [Key in keyof TEntries]: InferOutput<TEntries[Key]>
->                          ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (IdentifierReference)
+>                          ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
 
   [Key in keyof TEntries]: InferOutput<TEntries[Key]>
->                                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferOutput<TEntries[Key]>
->                                               ^^^: any   (TyAny) (TSTypeReference)
+>                                               ^^^: any   (Any) (Identifier)
 
 export type ObjectIssue<TEntries extends ObjectEntries> = {
->           ^^^^^^^^^^^: { [Key in keyof TEntries]: InferIssue<TEntries[Key]>; }[keyof TEntries]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^: { [Key in keyof TEntries]: InferIssue<TEntries[Key]>; }[keyof TEntries]   (IndexedAccess) (Identifier)
 
 export type ObjectIssue<TEntries extends ObjectEntries> = {
->                       ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                       ^^^^^^^^: any   (Any) (Identifier)
 
 export type ObjectIssue<TEntries extends ObjectEntries> = {
->                                        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                        ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferIssue<TEntries[Key]>
->  ^^^: any   (TyAny) (TSMappedType)
+>  ^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferIssue<TEntries[Key]>
->               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferIssue<TEntries[Key]>
->                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (TSTypeReference)
+>                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (IndexedAccess) (Identifier)
 
   [Key in keyof TEntries]: InferIssue<TEntries[Key]>
->                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (IdentifierReference)
+>                          ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (IndexedAccess) (Identifier)
 
   [Key in keyof TEntries]: InferIssue<TEntries[Key]>
->                                     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                     ^^^^^^^^: any   (Any) (Identifier)
 
   [Key in keyof TEntries]: InferIssue<TEntries[Key]>
->                                              ^^^: any   (TyAny) (TSTypeReference)
+>                                              ^^^: any   (Any) (Identifier)
 
 }[keyof TEntries]
->       ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>       ^^^^^^^^: any   (Any) (Identifier)
 
 export type ObjectSchema<TEntries extends ObjectEntries> = BaseSchema<
->           ^^^^^^^^^^^^: { readonly '~types'?: { readonly input: { [Key in keyof TEntries]: InferInput<TEntries[Key]>; }; readonly output: { [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }; readonly issue: { [Key in keyof TEntries]: InferIssue<TEntries[Key]>; }[keyof TEntries]; }; readonly '~run': (input: unknown) => { [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^: { readonly '~types'?: { readonly input: { [Key in keyof TEntries]: InferInput<TEntries[Key]>; }; readonly output: { [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }; readonly issue: { [Key in keyof TEntries]: InferIssue<TEntries[Key]>; }[keyof TEntries]; }; readonly '~run': (input: unknown) => { [Key in keyof TEntries]: InferOutput<TEntries[Key]>; }; }   (Object) (Identifier)
                 expected: { readonly '~types'?: { readonly input: ObjectInput<TEntries>; readonly output: ObjectOutput<TEntries>; readonly issue: ObjectIssue<TEntries>; } | undefined; readonly '~run': (input: unknown) => ObjectOutput<TEntries>; }
 
 export type ObjectSchema<TEntries extends ObjectEntries> = BaseSchema<
->                        ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                        ^^^^^^^^: any   (Any) (Identifier)
 
 export type ObjectSchema<TEntries extends ObjectEntries> = BaseSchema<
->                                         ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type ObjectSchema<TEntries extends ObjectEntries> = BaseSchema<
->                                                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (TSTypeReference)
+>                                                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
 export type ObjectSchema<TEntries extends ObjectEntries> = BaseSchema<
->                                                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (TyObject) (IdentifierReference)
+>                                                          ^^^^^^^^^^: { readonly '~types'?: { readonly input: Input; readonly output: Output; readonly issue: Issue; }; readonly '~run': (input: unknown) => Output; }   (Object) (Identifier)
 
   ObjectInput<TEntries>,
-> ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^^^^^: any   (Any) (Identifier)
 
   ObjectInput<TEntries>,
->             ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
   ObjectOutput<TEntries>,
-> ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   ObjectOutput<TEntries>,
->              ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^: any   (Any) (Identifier)
 
   ObjectIssue<TEntries>
-> ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^^^^^: any   (Any) (Identifier)
 
   ObjectIssue<TEntries>
->             ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
 export function string(): StringSchema {
->               ^^^^^^: () => StringSchema   (TyFunction) (BindingIdentifier)
+>               ^^^^^^: () => StringSchema   (Function) (Identifier)
 
 export function string(): StringSchema {
->                         ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   return { '~run': input => String(input) }
->                  ^^^^^: any   (TyAny) (BindingIdentifier)
+>                  ^^^^^: any   (Any) (Identifier)
                 expected: unknown
 
   return { '~run': input => String(input) }
->                           ^^^^^^: StringConstructor   (TyTypeReference) (IdentifierReference)
+>                           ^^^^^^: StringConstructor   (TypeReference) (Identifier)
 
   return { '~run': input => String(input) }
->                                  ^^^^^: any   (TyAny) (IdentifierReference)
+>                                  ^^^^^: any   (Any) (Identifier)
                                 expected: unknown
 
 export function number(): NumberSchema {
->               ^^^^^^: () => NumberSchema   (TyFunction) (BindingIdentifier)
+>               ^^^^^^: () => NumberSchema   (Function) (Identifier)
 
 export function number(): NumberSchema {
->                         ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   return { '~run': input => Number(input) }
->                  ^^^^^: any   (TyAny) (BindingIdentifier)
+>                  ^^^^^: any   (Any) (Identifier)
                 expected: unknown
 
   return { '~run': input => Number(input) }
->                           ^^^^^^: NumberConstructor   (TyTypeReference) (IdentifierReference)
+>                           ^^^^^^: NumberConstructor   (TypeReference) (Identifier)
 
   return { '~run': input => Number(input) }
->                                  ^^^^^: any   (TyAny) (IdentifierReference)
+>                                  ^^^^^: any   (Any) (Identifier)
                                 expected: unknown
 
 export function boolean(): BooleanSchema {
->               ^^^^^^^: () => BooleanSchema   (TyFunction) (BindingIdentifier)
+>               ^^^^^^^: () => BooleanSchema   (Function) (Identifier)
 
 export function boolean(): BooleanSchema {
->                          ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   return { '~run': input => Boolean(input) }
->                  ^^^^^: any   (TyAny) (BindingIdentifier)
+>                  ^^^^^: any   (Any) (Identifier)
                 expected: unknown
 
   return { '~run': input => Boolean(input) }
->                           ^^^^^^^: BooleanConstructor   (TyTypeReference) (IdentifierReference)
+>                           ^^^^^^^: BooleanConstructor   (TypeReference) (Identifier)
 
   return { '~run': input => Boolean(input) }
->                                   ^^^^^: any   (TyAny) (IdentifierReference)
+>                                   ^^^^^: any   (Any) (Identifier)
                                  expected: unknown
 
 export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
->               ^^^^^^^^: <TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>   (TyFunction) (BindingIdentifier)
+>               ^^^^^^^^: <TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>   (Function) (Identifier)
 
 export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
->                        ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                        ^^^^^^^^: any   (Any) (Identifier)
 
 export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
->                                         ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
                                                expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
->                                         ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
                                                expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
->                                                        ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                                        ^^^^^^^^: any   (Any) (Identifier)
 
   wrapped: TWrapped,
-> ^^^^^^^: TWrapped   (TyTypeReference) (BindingIdentifier)
+> ^^^^^^^: TWrapped   (TypeReference) (Identifier)
 
   wrapped: TWrapped,
->          ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>          ^^^^^^^^: any   (Any) (Identifier)
 
   default_: TDefault,
-> ^^^^^^^^: TDefault   (TyTypeReference) (BindingIdentifier)
+> ^^^^^^^^: TDefault   (TypeReference) (Identifier)
 
   default_: TDefault,
->           ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^^^: any   (Any) (Identifier)
 
 ): OptionalSchema<TWrapped, TDefault> {
->  ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>  ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 ): OptionalSchema<TWrapped, TDefault> {
->                 ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^: any   (Any) (Identifier)
 
 ): OptionalSchema<TWrapped, TDefault> {
->                           ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^: any   (Any) (Identifier)
 
   return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
->                  ^^^^^: any   (TyAny) (BindingIdentifier)
+>                  ^^^^^: any   (Any) (Identifier)
                 expected: unknown
 
   return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
->                            ^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^: any   (Any) (Identifier)
                           expected: unknown
 
   return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
->                                      ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>                                      ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
   return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
->                                                  ^^^^^^^^: TDefault   (TyTypeReference) (IdentifierReference)
+>                                                  ^^^^^^^^: TDefault   (TypeReference) (Identifier)
 
   return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
->                                                             ^^^^^^^: TWrapped   (TyTypeReference) (IdentifierReference)
+>                                                             ^^^^^^^: TWrapped   (TypeReference) (Identifier)
 
   return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
->                                                                             ^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                             ^^^^^: any   (Any) (Identifier)
                                                                            expected: {} | null
 
 export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
->               ^^^^^: <TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>   (TyFunction) (BindingIdentifier)
+>               ^^^^^: <TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>   (Function) (Identifier)
 
 export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
->                     ^^^^^: any   (TyAny) (TSTypeParameter)
+>                     ^^^^^: any   (Any) (Identifier)
 
 export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
->                                   ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (TSTypeReference)
+>                                   ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
                                          expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
->                                   ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (TyObject) (IdentifierReference)
+>                                   ^^^^^^^^^^^^^: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue; }; readonly '~run': (input: unknown) => any; }   (Object) (Identifier)
                                          expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
->                                                  ^^^^: TItem   (TyTypeReference) (BindingIdentifier)
+>                                                  ^^^^: TItem   (TypeReference) (Identifier)
 
 export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
->                                                        ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                        ^^^^^: any   (Any) (Identifier)
 
 export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
->                                                                ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                ^^^^^^^^^^^: any   (Any) (Identifier)
 
 export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
->                                                                            ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                            ^^^^^: any   (Any) (Identifier)
 
   return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
->                  ^^^^^: any   (TyAny) (BindingIdentifier)
+>                  ^^^^^: any   (Any) (Identifier)
                 expected: unknown
 
   return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
->                            ^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^: any   (Any) (Identifier)
                           expected: unknown
 
   return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
->                                                ^^^: <U>(callbackfn: (value: unknown, index: number, array: unknown[]) => U, thisArg?: any) => U[]   (TyFunction) (StaticMemberExpression)
+>                                                ^^^: <U>(callbackfn: (value: unknown, index: number, array: unknown[]) => U, thisArg?: any) => U[]   (Function) (Identifier)
 
   return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
->                                                    ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>                                                    ^^^^^: unknown   (Unknown) (Identifier)
 
   return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
->                                                             ^^^^: TItem   (TyTypeReference) (IdentifierReference)
+>                                                             ^^^^: TItem   (TypeReference) (Identifier)
 
   return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
->                                                                          ^^^^^: unknown   (TyUnknown) (IdentifierReference)
+>                                                                          ^^^^^: unknown   (Unknown) (Identifier)
 
 export function object<TEntries extends ObjectEntries>(
->               ^^^^^^: <TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>   (TyFunction) (BindingIdentifier)
+>               ^^^^^^: <TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>   (Function) (Identifier)
 
 export function object<TEntries extends ObjectEntries>(
->                      ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
 export function object<TEntries extends ObjectEntries>(
->                                       ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                       ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   entries: TEntries,
-> ^^^^^^^: TEntries   (TyTypeReference) (BindingIdentifier)
+> ^^^^^^^: TEntries   (TypeReference) (Identifier)
 
   entries: TEntries,
->          ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>          ^^^^^^^^: any   (Any) (Identifier)
 
 ): ObjectSchema<TEntries> {
->  ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>  ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 ): ObjectSchema<TEntries> {
->               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^: any   (Any) (Identifier)
 
     '~run': input => {
->           ^^^^^: any   (TyAny) (BindingIdentifier)
+>           ^^^^^: any   (Any) (Identifier)
          expected: unknown
 
       const out: Record<string, unknown> = {}
->           ^^^: Record<string, unknown>   (TyTypeReference) (BindingIdentifier)
+>           ^^^: Record<string, unknown>   (TypeReference) (Identifier)
 
       const out: Record<string, unknown> = {}
->                ^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^: any   (Any) (Identifier)
 
       const out: Record<string, unknown> = {}
->                ^^^^^^: any   (TyError) (IdentifierReference)
+>                ^^^^^^: any   (Error) (Identifier)
 
       for (const key in entries) {
->                ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (BindingIdentifier)
+>                ^^^: Extract<keyof TEntries, string>   (TypeReference) (Identifier)
 
       for (const key in entries) {
->                       ^^^^^^^: TEntries   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^^: TEntries   (TypeReference) (Identifier)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->       ^^^: Record<string, unknown>   (TyTypeReference) (IdentifierReference)
+>       ^^^: Record<string, unknown>   (TypeReference) (Identifier)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->           ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (IdentifierReference)
+>           ^^^: Extract<keyof TEntries, string>   (TypeReference) (Identifier)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->                  ^^^^^^^: TEntries   (TyTypeReference) (IdentifierReference)
+>                  ^^^^^^^: TEntries   (TypeReference) (Identifier)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->                          ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (IdentifierReference)
+>                          ^^^: Extract<keyof TEntries, string>   (TypeReference) (Identifier)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->                                        ^^^^^: any   (TyAny) (IdentifierReference)
+>                                        ^^^^^: any   (Any) (Identifier)
                                       expected: unknown
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->                                                 ^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                 ^^^^^^: any   (Any) (Identifier)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->                                                 ^^^^^^: any   (TyError) (IdentifierReference)
+>                                                 ^^^^^^: any   (Error) (Identifier)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->                                                                          ^^^: Extract<keyof TEntries, string>   (TyTypeReference) (IdentifierReference)
+>                                                                          ^^^: Extract<keyof TEntries, string>   (TypeReference) (Identifier)
 
       return out as ObjectOutput<TEntries>
->            ^^^: Record<string, unknown>   (TyTypeReference) (IdentifierReference)
+>            ^^^: Record<string, unknown>   (TypeReference) (Identifier)
 
       return out as ObjectOutput<TEntries>
->                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^^^: any   (Any) (Identifier)
 
       return out as ObjectOutput<TEntries>
->                                ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^: any   (Any) (Identifier)
 
 import { array, boolean, number, object, optional, string } from '../library/schemas'
->        ^^^^^: <TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>   (TyFunction) (BindingIdentifier)
+>        ^^^^^: <TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>   (Function) (Identifier)
 
 import { array, boolean, number, object, optional, string } from '../library/schemas'
->               ^^^^^^^: () => BooleanSchema   (TyFunction) (BindingIdentifier)
+>               ^^^^^^^: () => BooleanSchema   (Function) (Identifier)
 
 import { array, boolean, number, object, optional, string } from '../library/schemas'
->                        ^^^^^^: () => NumberSchema   (TyFunction) (BindingIdentifier)
+>                        ^^^^^^: () => NumberSchema   (Function) (Identifier)
 
 import { array, boolean, number, object, optional, string } from '../library/schemas'
->                                ^^^^^^: <TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>   (TyFunction) (BindingIdentifier)
+>                                ^^^^^^: <TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>   (Function) (Identifier)
 
 import { array, boolean, number, object, optional, string } from '../library/schemas'
->                                        ^^^^^^^^: <TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>   (TyFunction) (BindingIdentifier)
+>                                        ^^^^^^^^: <TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>   (Function) (Identifier)
 
 import { array, boolean, number, object, optional, string } from '../library/schemas'
->                                                  ^^^^^^: () => StringSchema   (TyFunction) (BindingIdentifier)
+>                                                  ^^^^^^: () => StringSchema   (Function) (Identifier)
 
 import type { InferInput, InferIssue, InferOutput } from '../library/types'
->             ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (BindingIdentifier)
+>             ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
 
 import type { InferInput, InferIssue, InferOutput } from '../library/types'
->                         ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (BindingIdentifier)
+>                         ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (IndexedAccess) (Identifier)
 
 import type { InferInput, InferIssue, InferOutput } from '../library/types'
->                                     ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (BindingIdentifier)
+>                                     ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
 
 const userSchema = object({
->     ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TypeReference) (Identifier)
 
 const userSchema = object({
->                  ^^^^^^: <TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>   (TyFunction) (IdentifierReference)
+>                  ^^^^^^: <TEntries extends ObjectEntries>(entries: TEntries) => ObjectSchema<TEntries>   (Function) (Identifier)
 
   id: string(),
-> ^^: StringSchema   (TyTypeReference) (ObjectProperty)
+> ^^: StringSchema   (TypeReference) (Identifier)
 
   id: string(),
->     ^^^^^^: () => StringSchema   (TyFunction) (IdentifierReference)
+>     ^^^^^^: () => StringSchema   (Function) (Identifier)
 
   age: optional(number(), 0),
-> ^^^: OptionalSchema<NumberSchema, number>   (TyTypeReference) (ObjectProperty)
+> ^^^: OptionalSchema<NumberSchema, number>   (TypeReference) (Identifier)
 
   age: optional(number(), 0),
->      ^^^^^^^^: <TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>   (TyFunction) (IdentifierReference)
+>      ^^^^^^^^: <TWrapped extends GenericSchema, TDefault = undefined>(wrapped: TWrapped, default_: TDefault) => OptionalSchema<TWrapped, TDefault>   (Function) (Identifier)
 
   age: optional(number(), 0),
->               ^^^^^^: () => NumberSchema   (TyFunction) (IdentifierReference)
+>               ^^^^^^: () => NumberSchema   (Function) (Identifier)
 
   active: boolean(),
-> ^^^^^^: BooleanSchema   (TyTypeReference) (ObjectProperty)
+> ^^^^^^: BooleanSchema   (TypeReference) (Identifier)
 
   active: boolean(),
->         ^^^^^^^: () => BooleanSchema   (TyFunction) (IdentifierReference)
+>         ^^^^^^^: () => BooleanSchema   (Function) (Identifier)
 
   tags: array(string()),
-> ^^^^: ArraySchema<StringSchema>   (TyTypeReference) (ObjectProperty)
+> ^^^^: ArraySchema<StringSchema>   (TypeReference) (Identifier)
 
   tags: array(string()),
->       ^^^^^: <TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>   (TyFunction) (IdentifierReference)
+>       ^^^^^: <TItem extends GenericSchema>(item: TItem) => ArraySchema<TItem>   (Function) (Identifier)
 
   tags: array(string()),
->             ^^^^^^: () => StringSchema   (TyFunction) (IdentifierReference)
+>             ^^^^^^: () => StringSchema   (Function) (Identifier)
 
 type UserInput = InferInput<typeof userSchema>
->    ^^^^^^^^^: { id: string; age: number | undefined; active: boolean; tags: InferInput<StringSchema>[]; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: { id: string; age: number | undefined; active: boolean; tags: InferInput<StringSchema>[]; }   (Object) (Identifier)
       expected: { id: string; age: number | undefined; active: boolean; tags: string[]; }
 
 type UserInput = InferInput<typeof userSchema>
->                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (TSTypeReference)
+>                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
 
 type UserInput = InferInput<typeof userSchema>
->                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (TyIndexedAccess) (IdentifierReference)
+>                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
 
 type UserInput = InferInput<typeof userSchema>
->                                  ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TyTypeReference) (IdentifierReference)
+>                                  ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TypeReference) (Identifier)
 
 type UserOutput = InferOutput<typeof userSchema>
->    ^^^^^^^^^^: { id: string; age: number; active: boolean; tags: InferOutput<StringSchema>[]; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: { id: string; age: number; active: boolean; tags: InferOutput<StringSchema>[]; }   (Object) (Identifier)
        expected: { id: string; age: number; active: boolean; tags: string[]; }
 
 type UserOutput = InferOutput<typeof userSchema>
->                 ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (TSTypeReference)
+>                 ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
 
 type UserOutput = InferOutput<typeof userSchema>
->                 ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (TyIndexedAccess) (IdentifierReference)
+>                 ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
 
 type UserOutput = InferOutput<typeof userSchema>
->                                    ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TyTypeReference) (IdentifierReference)
+>                                    ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TypeReference) (Identifier)
 
 type UserIssue = InferIssue<typeof userSchema>
->    ^^^^^^^^^: { id: { readonly kind: 'schema'; readonly expected: "string"; readonly message: string; }; age: { readonly kind: 'schema'; readonly expected: "number"; readonly message: string; }; active: { readonly kind: 'schema'; readonly expected: "boolean"; readonly message: string; }; tags: { readonly kind: 'schema'; readonly expected: "string"; readonly message: string; }; }[keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: { id: { readonly kind: 'schema'; readonly expected: "string"; readonly message: string; }; age: { readonly kind: 'schema'; readonly expected: "number"; readonly message: string; }; active: { readonly kind: 'schema'; readonly expected: "boolean"; readonly message: string; }; tags: { readonly kind: 'schema'; readonly expected: "string"; readonly message: string; }; }[keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]   (IndexedAccess) (Identifier)
       expected: BaseIssue<"boolean"> | BaseIssue<"number"> | BaseIssue<"string">
 
 type UserIssue = InferIssue<typeof userSchema>
->                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (TSTypeReference)
+>                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (IndexedAccess) (Identifier)
 
 type UserIssue = InferIssue<typeof userSchema>
->                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (TyIndexedAccess) (IdentifierReference)
+>                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["issue"]   (IndexedAccess) (Identifier)
 
 type UserIssue = InferIssue<typeof userSchema>
->                                  ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TyTypeReference) (IdentifierReference)
+>                                  ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TypeReference) (Identifier)
 
 const input: UserInput = {
->     ^^^^^: UserInput   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^: UserInput   (TypeReference) (Identifier)
    expected: ObjectInput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const input: UserInput = {
->            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^^^^^: any   (Any) (Identifier)
 
   id: 'user-1',
-> ^^: string   (TyString) (ObjectProperty)
+> ^^: string   (String) (Identifier)
 
   age: undefined,
-> ^^^: undefined   (TyUndefined) (ObjectProperty)
+> ^^^: undefined   (Undefined) (Identifier)
 
   age: undefined,
->      ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>      ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
   active: true,
-> ^^^^^^: true   (TyBooleanLiteral) (ObjectProperty)
+> ^^^^^^: true   (BooleanLiteral) (Identifier)
 
   tags: ['admin'],
-> ^^^^: string[]   (TyArray) (ObjectProperty)
+> ^^^^: string[]   (Array) (Identifier)
 
 const output = userSchema['~run'](input)
->     ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (TyMapped) (BindingIdentifier)
+>     ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (Mapped) (Identifier)
     expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const output = userSchema['~run'](input)
->              ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TyTypeReference) (IdentifierReference)
+>              ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TypeReference) (Identifier)
 
 const output = userSchema['~run'](input)
->                                 ^^^^^: UserInput   (TyTypeReference) (IdentifierReference)
+>                                 ^^^^^: UserInput   (TypeReference) (Identifier)
                                expected: ObjectInput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const explicitOutput: UserOutput = output
->     ^^^^^^^^^^^^^^: UserOutput   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: UserOutput   (TypeReference) (Identifier)
             expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const explicitOutput: UserOutput = output
->                     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^: any   (Any) (Identifier)
 
 const explicitOutput: UserOutput = output
->                                  ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (TyMapped) (IdentifierReference)
+>                                  ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (Mapped) (Identifier)
                                  expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userAge = output.age
->     ^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^: number   (Number) (Identifier)
 
 const userAge = output.age
->               ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (TyMapped) (IdentifierReference)
+>               ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (Mapped) (Identifier)
               expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userAge = output.age
->                      ^^^: number   (TyNumber) (StaticMemberExpression)
+>                      ^^^: number   (Number) (Identifier)
 
 const userTags = output.tags
->     ^^^^^^^^: InferOutput<StringSchema>[]   (TyArray) (BindingIdentifier)
+>     ^^^^^^^^: InferOutput<StringSchema>[]   (Array) (Identifier)
       expected: string[]
 
 const userTags = output.tags
->                ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (TyMapped) (IdentifierReference)
+>                ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (Mapped) (Identifier)
                expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userTags = output.tags
->                       ^^^^: InferOutput<StringSchema>[]   (TyArray) (StaticMemberExpression)
+>                       ^^^^: InferOutput<StringSchema>[]   (Array) (Identifier)
                     expected: string[]
 
 const issue: UserIssue = {
->     ^^^^^: UserIssue   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^: UserIssue   (TypeReference) (Identifier)
    expected: ObjectIssue<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const issue: UserIssue = {
->            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^^^^^: any   (Any) (Identifier)
 
   kind: 'schema',
-> ^^^^: string   (TyString) (ObjectProperty)
+> ^^^^: string   (String) (Identifier)
 expected: "schema"
 
   expected: 'string',
-> ^^^^^^^^: string   (TyString) (ObjectProperty)
+> ^^^^^^^^: string   (String) (Identifier)
   expected: "string"
 
   message: 'Invalid string',
-> ^^^^^^^: string   (TyString) (ObjectProperty)
+> ^^^^^^^: string   (String) (Identifier)

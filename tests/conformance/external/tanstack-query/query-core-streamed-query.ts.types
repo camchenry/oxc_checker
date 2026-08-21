@@ -1,1115 +1,1115 @@
 export interface Register {
->                ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>                ^^^^^^^^: any   (Any) (Identifier)
 
 export interface Register {
->                ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                ^^^^^^^^: any   (Any) (Identifier)
 
 export type QueryKey = Register extends {
->           ^^^^^^^^: readonly unknown[]   (TyArray) (TSTypeAliasDeclaration)
+>           ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
 export type QueryKey = Register extends {
->                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
 export type QueryKey = Register extends {
->                      ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
   queryKey: infer TQueryKey
-> ^^^^^^^^: TQueryKey   (TyTypeReference) (TSPropertySignature)
+> ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
 
   queryKey: infer TQueryKey
->                 ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                 ^^^^^^^^^: any   (Any) (Identifier)
 
   ? TQueryKey extends ReadonlyArray<unknown>
->   ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^^^: any   (Any) (Identifier)
 
   ? TQueryKey extends ReadonlyArray<unknown>
->                     ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   ? TQueryKey extends ReadonlyArray<unknown>
->                     ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                     ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     ? TQueryKey
->     ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^^^^: any   (Any) (Identifier)
 
     : TQueryKey extends Array<unknown>
->     ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^^^^: any   (Any) (Identifier)
 
     : TQueryKey extends Array<unknown>
->                       ^^^^^: ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                       ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
     : TQueryKey extends Array<unknown>
->                       ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
       ? TQueryKey
->       ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>       ^^^^^^^^^: any   (Any) (Identifier)
 
       : ReadonlyArray<unknown>
->       ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>       ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       : ReadonlyArray<unknown>
->       ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>       ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
   : ReadonlyArray<unknown>
->   ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   : ReadonlyArray<unknown>
->   ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>   ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
 export declare const dataTagSymbol: unique symbol
->                    ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
+>                    ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type dataTagSymbol = typeof dataTagSymbol
->           ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type dataTagSymbol = typeof dataTagSymbol
->                                  ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+>                                  ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export declare const dataTagErrorSymbol: unique symbol
->                    ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
+>                    ^^^^^^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol
->           ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type dataTagErrorSymbol = typeof dataTagErrorSymbol
->                                       ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+>                                       ^^^^^^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export declare const unsetMarker: unique symbol
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (BindingIdentifier)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type UnsetMarker = typeof unsetMarker
->           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type UnsetMarker = typeof unsetMarker
->                                ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+>                                ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type AnyDataTag = {
->           ^^^^^^^^^^: { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^: { [dataTagSymbol]: any; [dataTagErrorSymbol]: any; }   (Object) (Identifier)
 
   [dataTagSymbol]: any
->  ^^^^^^^^^^^^^: any   (TyAny) (TSPropertySignature)
+>  ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   [dataTagSymbol]: any
->  ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+>  ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
   [dataTagErrorSymbol]: any
->  ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSPropertySignature)
+>  ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   [dataTagErrorSymbol]: any
->  ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+>  ^^^^^^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->           ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (Conditional) (Identifier)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->                   ^^^^^: any   (TyAny) (TSTypeParameter)
+>                   ^^^^^: any   (Any) (Identifier)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->                          ^^^^^^: any   (TyAny) (TSTypeParameter)
+>                          ^^^^^^: any   (Any) (Identifier)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->                                  ^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                  ^^^^^^: any   (Any) (Identifier)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->                                           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSTypeReference)
+>                                           ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
                                                expected: any
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->                                           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+>                                           ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
                                                expected: any
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->                                                          ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                          ^^^^^: any   (Any) (Identifier)
 
 export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyDataTag
->                                                                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                        ^^^^^^^^^^: any   (Any) (Identifier)
 
   ? TType
->   ^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^: any   (Any) (Identifier)
 
   : TType & {
->   ^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^: any   (Any) (Identifier)
 
       [dataTagSymbol]: TValue
->      ^^^^^^^^^^^^^: TValue   (TyTypeReference) (TSPropertySignature)
+>      ^^^^^^^^^^^^^: TValue   (TypeReference) (Identifier)
 
       [dataTagSymbol]: TValue
->      ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+>      ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
       [dataTagSymbol]: TValue
->                      ^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^: any   (Any) (Identifier)
 
       [dataTagErrorSymbol]: TError
->      ^^^^^^^^^^^^^^^^^^: TError   (TyTypeReference) (TSPropertySignature)
+>      ^^^^^^^^^^^^^^^^^^: TError   (TypeReference) (Identifier)
 
       [dataTagErrorSymbol]: TError
->      ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (IdentifierReference)
+>      ^^^^^^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
       [dataTagErrorSymbol]: TError
->                           ^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^: any   (Any) (Identifier)
 
 export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
->           ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (Conditional) (Identifier)
                     expected: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
 
 export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
->                            ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                            ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
->                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                          ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type InferDataFromTag<TQueryFnData, TTaggedQueryKey extends QueryKey> =
->                                                                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                  ^^^^^^^^: any   (Any) (Identifier)
 
   TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown>
-> ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown>
->                         ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^: any   (Any) (Identifier)
 
   TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown>
->                                                ^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                                ^^^^^^^^^^^: any   (Any) (Identifier)
 
     ? TaggedValue
->     ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^^^^^^: any   (Any) (Identifier)
 
     : TQueryFnData
->     ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export interface QueryClient {
->                ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>                ^^^^^^^^^^^: any   (Any) (Identifier)
 
 export interface QueryClient {
->                ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                ^^^^^^^^^^^: any   (Any) (Identifier)
 
   getQueryData<TData>(queryKey: QueryKey): TData | undefined
-> ^^^^^^^^^^^^: <TData>(queryKey: QueryKey) => TData | undefined   (TyFunction) (TSMethodSignature)
+> ^^^^^^^^^^^^: <TData>(queryKey: QueryKey) => TData | undefined   (Function) (Identifier)
 
   getQueryData<TData>(queryKey: QueryKey): TData | undefined
->              ^^^^^: any   (TyAny) (TSTypeParameter)
+>              ^^^^^: any   (Any) (Identifier)
 
   getQueryData<TData>(queryKey: QueryKey): TData | undefined
->                     ^^^^^^^^: readonly unknown[]   (TyArray) (BindingIdentifier)
+>                     ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
   getQueryData<TData>(queryKey: QueryKey): TData | undefined
->                               ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^^: any   (Any) (Identifier)
 
   getQueryData<TData>(queryKey: QueryKey): TData | undefined
->                                          ^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^: any   (Any) (Identifier)
 
   setQueryData<TData>(
-> ^^^^^^^^^^^^: <TData>(queryKey: QueryKey, updater: TData | ((previous: TData | undefined) => TData)) => void   (TyFunction) (TSMethodSignature)
+> ^^^^^^^^^^^^: <TData>(queryKey: QueryKey, updater: TData | ((previous: TData | undefined) => TData)) => void   (Function) (Identifier)
 
   setQueryData<TData>(
->              ^^^^^: any   (TyAny) (TSTypeParameter)
+>              ^^^^^: any   (Any) (Identifier)
 
     queryKey: QueryKey,
->   ^^^^^^^^: readonly unknown[]   (TyArray) (BindingIdentifier)
+>   ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
     queryKey: QueryKey,
->             ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
     updater: TData | ((previous: TData | undefined) => TData),
->   ^^^^^^^: TData | ((previous: TData | undefined) => TData)   (TyUnion) (BindingIdentifier)
+>   ^^^^^^^: TData | ((previous: TData | undefined) => TData)   (Union) (Identifier)
 
     updater: TData | ((previous: TData | undefined) => TData),
->            ^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^: any   (Any) (Identifier)
 
     updater: TData | ((previous: TData | undefined) => TData),
->                      ^^^^^^^^: TData | undefined   (TyUnion) (BindingIdentifier)
+>                      ^^^^^^^^: TData | undefined   (Union) (Identifier)
 
     updater: TData | ((previous: TData | undefined) => TData),
->                                ^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^: any   (Any) (Identifier)
 
     updater: TData | ((previous: TData | undefined) => TData),
->                                                      ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                      ^^^^^: any   (Any) (Identifier)
 
 export type QueryMeta = Register extends {
->           ^^^^^^^^^: { [x: string]: unknown; }   (TyObject) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^: { [x: string]: unknown; }   (Object) (Identifier)
 
 export type QueryMeta = Register extends {
->                       ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^: any   (Any) (Identifier)
 
 export type QueryMeta = Register extends {
->                       ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                       ^^^^^^^^: any   (Any) (Identifier)
 
   queryMeta: infer TQueryMeta
-> ^^^^^^^^^: TQueryMeta   (TyTypeReference) (TSPropertySignature)
+> ^^^^^^^^^: TQueryMeta   (TypeReference) (Identifier)
 
   queryMeta: infer TQueryMeta
->                  ^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                  ^^^^^^^^^^: any   (Any) (Identifier)
 
   ? TQueryMeta extends Record<string, unknown>
->   ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^^^^: any   (Any) (Identifier)
 
   ? TQueryMeta extends Record<string, unknown>
->                      ^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^: any   (Any) (Identifier)
 
   ? TQueryMeta extends Record<string, unknown>
->                      ^^^^^^: any   (TyError) (IdentifierReference)
+>                      ^^^^^^: any   (Error) (Identifier)
 
     ? TQueryMeta
->     ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^^^^^: any   (Any) (Identifier)
 
     : Record<string, unknown>
->     ^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^: any   (Any) (Identifier)
 
     : Record<string, unknown>
->     ^^^^^^: any   (TyError) (IdentifierReference)
+>     ^^^^^^: any   (Error) (Identifier)
 
   : Record<string, unknown>
->   ^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^: any   (Any) (Identifier)
 
   : Record<string, unknown>
->   ^^^^^^: any   (TyError) (IdentifierReference)
+>   ^^^^^^: any   (Error) (Identifier)
 
 export type FetchDirection = 'forward' | 'backward'
->           ^^^^^^^^^^^^^^: "forward" | "backward"   (TyUnion) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^: "forward" | "backward"   (Union) (Identifier)
 
 export type QueryFunctionContext<
->           ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (Conditional) (Identifier)
 
   TQueryKey extends QueryKey = QueryKey,
-> ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey = QueryKey,
->                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey = QueryKey,
->                              ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^: any   (Any) (Identifier)
 
   TPageParam = never,
-> ^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^: any   (Any) (Identifier)
 
 > = [TPageParam] extends [never]
->    ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>    ^^^^^^^^^^: any   (Any) (Identifier)
 
       client: QueryClient
->     ^^^^^^: QueryClient   (TyTypeReference) (TSPropertySignature)
+>     ^^^^^^: QueryClient   (TypeReference) (Identifier)
 
       client: QueryClient
->             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^: any   (Any) (Identifier)
 
       client: QueryClient
->             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>             ^^^^^^^^^^^: any   (Any) (Identifier)
 
       queryKey: TQueryKey
->     ^^^^^^^^: TQueryKey   (TyTypeReference) (TSPropertySignature)
+>     ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
 
       queryKey: TQueryKey
->               ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^^: any   (Any) (Identifier)
 
       signal: AbortSignal
->     ^^^^^^: AbortSignal   (TyTypeReference) (TSPropertySignature)
+>     ^^^^^^: AbortSignal   (TypeReference) (Identifier)
 
       signal: AbortSignal
->             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }   (TyObject) (TSTypeReference)
+>             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }   (Object) (Identifier)
 
       signal: AbortSignal
->             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }   (TyObject) (IdentifierReference)
+>             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }   (Object) (Identifier)
 
       meta: QueryMeta | undefined
->     ^^^^: Record<string, unknown> | undefined   (TyUnion) (TSPropertySignature)
+>     ^^^^: Record<string, unknown> | undefined   (Union) (Identifier)
 
       meta: QueryMeta | undefined
->           ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^^^^: any   (Any) (Identifier)
 
       pageParam?: unknown
->     ^^^^^^^^^: unknown   (TyUnknown) (TSPropertySignature)
+>     ^^^^^^^^^: unknown   (Unknown) (Identifier)
 
       direction?: unknown
->     ^^^^^^^^^: unknown   (TyUnknown) (TSPropertySignature)
+>     ^^^^^^^^^: unknown   (Unknown) (Identifier)
 
       client: QueryClient
->     ^^^^^^: QueryClient   (TyTypeReference) (TSPropertySignature)
+>     ^^^^^^: QueryClient   (TypeReference) (Identifier)
 
       client: QueryClient
->             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^: any   (Any) (Identifier)
 
       client: QueryClient
->             ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>             ^^^^^^^^^^^: any   (Any) (Identifier)
 
       queryKey: TQueryKey
->     ^^^^^^^^: TQueryKey   (TyTypeReference) (TSPropertySignature)
+>     ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
 
       queryKey: TQueryKey
->               ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^^: any   (Any) (Identifier)
 
       signal: AbortSignal
->     ^^^^^^: AbortSignal   (TyTypeReference) (TSPropertySignature)
+>     ^^^^^^: AbortSignal   (TypeReference) (Identifier)
 
       signal: AbortSignal
->             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }   (TyObject) (TSTypeReference)
+>             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }   (Object) (Identifier)
 
       signal: AbortSignal
->             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }   (TyObject) (IdentifierReference)
+>             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }   (Object) (Identifier)
 
       pageParam: TPageParam
->     ^^^^^^^^^: TPageParam   (TyTypeReference) (TSPropertySignature)
+>     ^^^^^^^^^: TPageParam   (TypeReference) (Identifier)
 
       pageParam: TPageParam
->                ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^^^^^: any   (Any) (Identifier)
 
       direction: FetchDirection
->     ^^^^^^^^^: FetchDirection   (TyTypeReference) (TSPropertySignature)
+>     ^^^^^^^^^: FetchDirection   (TypeReference) (Identifier)
 
       direction: FetchDirection
->                ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       meta: QueryMeta | undefined
->     ^^^^: Record<string, unknown> | undefined   (TyUnion) (TSPropertySignature)
+>     ^^^^: Record<string, unknown> | undefined   (Union) (Identifier)
 
       meta: QueryMeta | undefined
->           ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^^^^: any   (Any) (Identifier)
 
 export type QueryFunction<
->           ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (Function) (Identifier)
 
   T = unknown,
-> ^: any   (TyAny) (TSTypeParameter)
+> ^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey = QueryKey,
-> ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey = QueryKey,
->                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey = QueryKey,
->                              ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^: any   (Any) (Identifier)
 
   TPageParam = never,
-> ^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^: any   (Any) (Identifier)
 
 > = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
->    ^^^^^^^: QueryFunctionContext<TQueryKey, TPageParam>   (TyTypeReference) (BindingIdentifier)
+>    ^^^^^^^: QueryFunctionContext<TQueryKey, TPageParam>   (TypeReference) (Identifier)
 
 > = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
->             ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 > = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
->                                  ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                  ^^^^^^^^^: any   (Any) (Identifier)
 
 > = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
->                                             ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                             ^^^^^^^^^^: any   (Any) (Identifier)
 
 > = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
->                                                             ^: any   (TyAny) (TSTypeReference)
+>                                                             ^: any   (Any) (Identifier)
 
 > = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
->                                                                 ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                                                 ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 > = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
->                                                                 ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                                                 ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 > = (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>
->                                                                         ^: any   (TyAny) (TSTypeReference)
+>                                                                         ^: any   (Any) (Identifier)
 
 export interface InfiniteData<TData, TPageParam = unknown> {
->                ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export interface InfiniteData<TData, TPageParam = unknown> {
->                ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export interface InfiniteData<TData, TPageParam = unknown> {
->                             ^^^^^: any   (TyAny) (TSTypeParameter)
+>                             ^^^^^: any   (Any) (Identifier)
 
 export interface InfiniteData<TData, TPageParam = unknown> {
->                                    ^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                    ^^^^^^^^^^: any   (Any) (Identifier)
 
   pages: Array<TData>
-> ^^^^^: TData[]   (TyArray) (TSPropertySignature)
+> ^^^^^: TData[]   (Array) (Identifier)
 
   pages: Array<TData>
->        ^^^^^: ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>        ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
   pages: Array<TData>
->        ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>        ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
   pages: Array<TData>
->              ^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^: any   (Any) (Identifier)
 
   pageParams: Array<TPageParam>
-> ^^^^^^^^^^: TPageParam[]   (TyArray) (TSPropertySignature)
+> ^^^^^^^^^^: TPageParam[]   (Array) (Identifier)
 
   pageParams: Array<TPageParam>
->             ^^^^^: ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>             ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
   pageParams: Array<TPageParam>
->             ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
   pageParams: Array<TPageParam>
->                   ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^: any   (Any) (Identifier)
 
 export type OmitKeyof<
->           ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (Mapped) (Identifier)
 
   TObject,
-> ^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^: any   (Any) (Identifier)
 
   TKey extends TStrictly extends 'safely'
-> ^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^: any   (Any) (Identifier)
 
   TKey extends TStrictly extends 'safely'
->              ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^^: any   (Any) (Identifier)
 
     ? keyof TObject | (string & Record<never, never>)
->           ^^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^^: any   (Any) (Identifier)
 
     ? keyof TObject | (string & Record<never, never>)
->                               ^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^: any   (Any) (Identifier)
 
     ? keyof TObject | (string & Record<never, never>)
->                               ^^^^^^: any   (TyError) (IdentifierReference)
+>                               ^^^^^^: any   (Error) (Identifier)
 
     : keyof TObject,
->           ^^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^^: any   (Any) (Identifier)
 
   TStrictly extends 'strictly' | 'safely' = 'strictly',
-> ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^: any   (Any) (Identifier)
 
 > = Omit<TObject, TKey>
->   ^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^: any   (Any) (Identifier)
 
 > = Omit<TObject, TKey>
->   ^^^^: any   (TyError) (IdentifierReference)
+>   ^^^^: any   (Error) (Identifier)
 
 > = Omit<TObject, TKey>
->        ^^^^^^^: any   (TyAny) (TSTypeReference)
+>        ^^^^^^^: any   (Any) (Identifier)
 
 > = Omit<TObject, TKey>
->                 ^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^: any   (Any) (Identifier)
 
   OmitKeyof,
-> ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped) (BindingIdentifier)
+> ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (Mapped) (Identifier)
 
   QueryFunction,
-> ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction) (BindingIdentifier)
+> ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (Function) (Identifier)
 
   QueryFunctionContext,
-> ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional) (BindingIdentifier)
+> ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (Conditional) (Identifier)
 
   QueryKey,
-> ^^^^^^^^: readonly unknown[]   (TyArray) (BindingIdentifier)
+> ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
->    ^^^^^^^^^^^^^^^^^^^^^^^: { streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode?: "append" | "reset" | "replace"; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^: { streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode?: "append" | "reset" | "replace"; }   (Object) (Identifier)
                     expected: { streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode?: 'append' | 'reset' | 'replace'; }
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
->                            ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                            ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
->                                          ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                          ^^^^^^^^^: any   (Any) (Identifier)
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
->                                                            ^^^^^^^^: readonly unknown[]   (TyArray) (TSTypeReference)
+>                                                            ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
->                                                            ^^^^^^^^: readonly unknown[]   (TyArray) (IdentifierReference)
+>                                                            ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
   streamFn: (
-> ^^^^^^^^: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction) (TSPropertySignature)
+> ^^^^^^^^: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (Function) (Identifier)
 
     context: QueryFunctionContext<TQueryKey>,
->   ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (BindingIdentifier)
+>   ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
     context: QueryFunctionContext<TQueryKey>,
->            ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional) (TSTypeReference)
+>            ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (Conditional) (Identifier)
 
     context: QueryFunctionContext<TQueryKey>,
->            ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional) (IdentifierReference)
+>            ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (Conditional) (Identifier)
 
     context: QueryFunctionContext<TQueryKey>,
->                                 ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^^^^: any   (Any) (Identifier)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
->      ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>      ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
->      ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>      ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
->                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
->                                    ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                    ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
->                                    ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                    ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
->                                            ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                            ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
->                                            ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                            ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
   ) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>
->                                                          ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                          ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   refetchMode?: 'append' | 'reset' | 'replace'
-> ^^^^^^^^^^^: "append" | "reset" | "replace" | undefined   (TyUnion) (TSPropertySignature)
+> ^^^^^^^^^^^: "append" | "reset" | "replace" | undefined   (Union) (Identifier)
 
 type SimpleStreamedQueryParams<
->    ^^^^^^^^^^^^^^^^^^^^^^^^^: BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer?: never; initialValue?: never; }   (TyIntersection) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer?: never; initialValue?: never; }   (Intersection) (Identifier)
 
   TQueryFnData,
-> ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey,
-> ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: readonly unknown[]   (TyArray) (TSTypeReference)
+>                   ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: readonly unknown[]   (TyArray) (IdentifierReference)
+>                   ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
 > = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
->   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 > = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
->                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 > = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
->                                         ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^: any   (Any) (Identifier)
 
   reducer?: never
-> ^^^^^^^: undefined   (TyUndefined) (TSPropertySignature)
+> ^^^^^^^: undefined   (Undefined) (Identifier)
 
   initialValue?: never
-> ^^^^^^^^^^^^: undefined   (TyUndefined) (TSPropertySignature)
+> ^^^^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 type ReducibleStreamedQueryParams<
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer: (acc: TData, chunk: TQueryFnData) => TData; initialValue: TData; }   (TyIntersection) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: BaseStreamedQueryParams<TQueryFnData, TQueryKey> & { reducer: (acc: TData, chunk: TQueryFnData) => TData; initialValue: TData; }   (Intersection) (Identifier)
 
   TQueryFnData,
-> ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   TData,
-> ^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey,
-> ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: readonly unknown[]   (TyArray) (TSTypeReference)
+>                   ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: readonly unknown[]   (TyArray) (IdentifierReference)
+>                   ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
 > = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
->   ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 > = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
->                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 > = BaseStreamedQueryParams<TQueryFnData, TQueryKey> & {
->                                         ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^: any   (Any) (Identifier)
 
   reducer: (acc: TData, chunk: TQueryFnData) => TData
-> ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction) (TSPropertySignature)
+> ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (Function) (Identifier)
 
   reducer: (acc: TData, chunk: TQueryFnData) => TData
->           ^^^: TData   (TyTypeReference) (BindingIdentifier)
+>           ^^^: TData   (TypeReference) (Identifier)
 
   reducer: (acc: TData, chunk: TQueryFnData) => TData
->                ^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^: any   (Any) (Identifier)
 
   reducer: (acc: TData, chunk: TQueryFnData) => TData
->                       ^^^^^: TQueryFnData   (TyTypeReference) (BindingIdentifier)
+>                       ^^^^^: TQueryFnData   (TypeReference) (Identifier)
 
   reducer: (acc: TData, chunk: TQueryFnData) => TData
->                              ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   reducer: (acc: TData, chunk: TQueryFnData) => TData
->                                               ^^^^^: any   (TyAny) (TSTypeReference)
+>                                               ^^^^^: any   (Any) (Identifier)
 
   initialValue: TData
-> ^^^^^^^^^^^^: TData   (TyTypeReference) (TSPropertySignature)
+> ^^^^^^^^^^^^: TData   (TypeReference) (Identifier)
 
   initialValue: TData
->               ^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^: any   (Any) (Identifier)
 
 type StreamedQueryParams<
->    ^^^^^^^^^^^^^^^^^^^: SimpleStreamedQueryParams<TQueryFnData, TQueryKey> | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^: SimpleStreamedQueryParams<TQueryFnData, TQueryKey> | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>   (Union) (Identifier)
 
   TQueryFnData,
-> ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   TData,
-> ^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey,
-> ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: readonly unknown[]   (TyArray) (TSTypeReference)
+>                   ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
   TQueryKey extends QueryKey,
->                   ^^^^^^^^: readonly unknown[]   (TyArray) (IdentifierReference)
+>                   ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
   | SimpleStreamedQueryParams<TQueryFnData, TQueryKey>
->   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   | SimpleStreamedQueryParams<TQueryFnData, TQueryKey>
->                             ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   | SimpleStreamedQueryParams<TQueryFnData, TQueryKey>
->                                           ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^^^: any   (Any) (Identifier)
 
   | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>
->   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>
->                                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>
->                                              ^^^^^: any   (TyAny) (TSTypeReference)
+>                                              ^^^^^: any   (Any) (Identifier)
 
   | ReducibleStreamedQueryParams<TQueryFnData, TData, TQueryKey>
->                                                     ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                     ^^^^^^^^^: any   (Any) (Identifier)
 
 export function streamedQuery<
->               ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>   (TyFunction) (BindingIdentifier)
+>               ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>   (Function) (Identifier)
 
   TQueryFnData = unknown,
-> ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   TData = Array<TQueryFnData>,
-> ^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^: any   (Any) (Identifier)
 
   TData = Array<TQueryFnData>,
->         ^^^^^: ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>         ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
   TData = Array<TQueryFnData>,
->         ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>         ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
   TData = Array<TQueryFnData>,
->               ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey = QueryKey,
-> ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^: any   (Any) (Identifier)
 
   TQueryKey extends QueryKey = QueryKey,
->                   ^^^^^^^^: readonly unknown[]   (TyArray) (TSTypeReference)
+>                   ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
   TQueryKey extends QueryKey = QueryKey,
->                   ^^^^^^^^: readonly unknown[]   (TyArray) (IdentifierReference)
+>                   ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
   TQueryKey extends QueryKey = QueryKey,
->                              ^^^^^^^^: readonly unknown[]   (TyArray) (TSTypeReference)
+>                              ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
   TQueryKey extends QueryKey = QueryKey,
->                              ^^^^^^^^: readonly unknown[]   (TyArray) (IdentifierReference)
+>                              ^^^^^^^^: readonly unknown[]   (Array) (Identifier)
 
   streamFn,
-> ^^^^^^^^: (context: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction) (BindingIdentifier)
+> ^^^^^^^^: (context: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (Function) (Identifier)
 
   refetchMode = 'reset',
-> ^^^^^^^^^^^: "append" | "reset" | "replace"   (TyUnion) (BindingIdentifier)
+> ^^^^^^^^^^^: "append" | "reset" | "replace"   (Union) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
-> ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction) (BindingIdentifier)
+> ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (Function) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->            ^^^^^: TData   (TyTypeReference) (BindingIdentifier)
+>            ^^^^^: TData   (TypeReference) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                   ^^^^^: TQueryFnData   (TyTypeReference) (BindingIdentifier)
+>                   ^^^^^: TQueryFnData   (TypeReference) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                                  ^^^^^: TData   (TyTypeReference) (IdentifierReference)
+>                                  ^^^^^: TData   (TypeReference) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                                           ^^^^^: ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                                           ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                                           ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                           ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                                                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                 ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                                                                 ^^^^^: TQueryFnData   (TyTypeReference) (IdentifierReference)
+>                                                                 ^^^^^: TQueryFnData   (TypeReference) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                                                                           ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                           ^^^^^: any   (Any) (Identifier)
 
   initialValue = [] as TData,
-> ^^^^^^^^^^^^: TData   (TyTypeReference) (BindingIdentifier)
+> ^^^^^^^^^^^^: TData   (TypeReference) (Identifier)
 
   initialValue = [] as TData,
->                      ^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^: any   (Any) (Identifier)
 
 }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
->  ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>  ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
->                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
->                                    ^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^: any   (Any) (Identifier)
 
 }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
->                                           ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^^^: any   (Any) (Identifier)
 
 }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
->                                                        ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction) (TSTypeReference)
+>                                                        ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (Function) (Identifier)
 
 }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<
->                                                        ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction) (IdentifierReference)
+>                                                        ^^^^^^^^^^^^^: (context: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (Function) (Identifier)
 
   TData,
-> ^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^: any   (Any) (Identifier)
 
   TQueryKey
-> ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^^^^^: any   (Any) (Identifier)
 
   return async (context) => {
->               ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (BindingIdentifier)
+>               ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
->         ^^^^^^^^^^^^^^^^^: OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, "signal">   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, "signal">   (TypeReference) (Identifier)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
->                            ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped) (TSTypeReference)
+>                            ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (Mapped) (Identifier)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
->                            ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (TyMapped) (IdentifierReference)
+>                            ^^^^^^^^^: { [P in Exclude<keyof TObject, TKey>]: TObject[P]; }   (Mapped) (Identifier)
 
     const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
->                                             ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (IdentifierReference)
+>                                             ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
       client: context.client,
->     ^^^^^^: QueryClient   (TyTypeReference) (ObjectProperty)
+>     ^^^^^^: QueryClient   (TypeReference) (Identifier)
 
       client: context.client,
->             ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (IdentifierReference)
+>             ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
       client: context.client,
->                     ^^^^^^: QueryClient   (TyTypeReference) (StaticMemberExpression)
+>                     ^^^^^^: QueryClient   (TypeReference) (Identifier)
 
       meta: context.meta,
->     ^^^^: Record<string, unknown> | undefined   (TyUnion) (ObjectProperty)
+>     ^^^^: Record<string, unknown> | undefined   (Union) (Identifier)
 
       meta: context.meta,
->           ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (IdentifierReference)
+>           ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
       meta: context.meta,
->                   ^^^^: Record<string, unknown> | undefined   (TyUnion) (StaticMemberExpression)
+>                   ^^^^: Record<string, unknown> | undefined   (Union) (Identifier)
 
       queryKey: context.queryKey,
->     ^^^^^^^^: TQueryKey   (TyTypeReference) (ObjectProperty)
+>     ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
 
       queryKey: context.queryKey,
->               ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (IdentifierReference)
+>               ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
       queryKey: context.queryKey,
->                       ^^^^^^^^: TQueryKey   (TyTypeReference) (StaticMemberExpression)
+>                       ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
 
       pageParam: context.pageParam,
->     ^^^^^^^^^: unknown   (TyUnknown) (ObjectProperty)
+>     ^^^^^^^^^: unknown   (Unknown) (Identifier)
 
       pageParam: context.pageParam,
->                ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (IdentifierReference)
+>                ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
       pageParam: context.pageParam,
->                        ^^^^^^^^^: unknown   (TyUnknown) (StaticMemberExpression)
+>                        ^^^^^^^^^: unknown   (Unknown) (Identifier)
 
       direction: context.direction,
->     ^^^^^^^^^: unknown   (TyUnknown) (ObjectProperty)
+>     ^^^^^^^^^: unknown   (Unknown) (Identifier)
 
       direction: context.direction,
->                ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (IdentifierReference)
+>                ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
       direction: context.direction,
->                        ^^^^^^^^^: unknown   (TyUnknown) (StaticMemberExpression)
+>                        ^^^^^^^^^: unknown   (Unknown) (Identifier)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->         ^^^^^^: AsyncIterable<TQueryFnData>   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^: AsyncIterable<TQueryFnData>   (TypeReference) (Identifier)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->                        ^^^^^^^^: (context: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction) (IdentifierReference)
+>                        ^^^^^^^^: (context: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (Function) (Identifier)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->                                 ^^^^^^^^^^^^^^^^^: OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, "signal">   (TyTypeReference) (IdentifierReference)
+>                                 ^^^^^^^^^^^^^^^^^: OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, "signal">   (TypeReference) (Identifier)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->                                                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional) (TSTypeReference)
+>                                                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (Conditional) (Identifier)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->                                                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional) (IdentifierReference)
+>                                                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (Conditional) (Identifier)
 
     const stream = await streamFn(signalLessContext as QueryFunctionContext<TQueryKey>)
->                                                                           ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                           ^^^^^^^^^: any   (Any) (Identifier)
 
     let result = initialValue
->       ^^^^^^: TData   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^: TData   (TypeReference) (Identifier)
 
     let result = initialValue
->                ^^^^^^^^^^^^: TData   (TyTypeReference) (IdentifierReference)
+>                ^^^^^^^^^^^^: TData   (TypeReference) (Identifier)
 
     for await (const chunk of stream) {
->                    ^^^^^: Awaited<TQueryFnData>   (TyTypeReference) (BindingIdentifier)
+>                    ^^^^^: Awaited<TQueryFnData>   (TypeReference) (Identifier)
 
     for await (const chunk of stream) {
->                             ^^^^^^: AsyncIterable<TQueryFnData>   (TyTypeReference) (IdentifierReference)
+>                             ^^^^^^: AsyncIterable<TQueryFnData>   (TypeReference) (Identifier)
 
       if (refetchMode === 'replace') {
->         ^^^^^^^^^^^: "append" | "reset" | "replace"   (TyUnion) (IdentifierReference)
+>         ^^^^^^^^^^^: "append" | "reset" | "replace"   (Union) (Identifier)
 
         result = reducer(result, chunk)
->       ^^^^^^: TData   (TyTypeReference) (IdentifierReference)
+>       ^^^^^^: TData   (TypeReference) (Identifier)
 
         result = reducer(result, chunk)
->       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: TData   (TyTypeReference) (ExpressionStatement)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: TData   (TypeReference) (ExpressionStatement)
 
         result = reducer(result, chunk)
->                ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction) (IdentifierReference)
+>                ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (Function) (Identifier)
 
         result = reducer(result, chunk)
->                        ^^^^^^: TData   (TyTypeReference) (IdentifierReference)
+>                        ^^^^^^: TData   (TypeReference) (Identifier)
 
         result = reducer(result, chunk)
->                                ^^^^^: Awaited<TQueryFnData>   (TyTypeReference) (IdentifierReference)
+>                                ^^^^^: Awaited<TQueryFnData>   (TypeReference) (Identifier)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->       ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (IdentifierReference)
+>       ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->               ^^^^^^: QueryClient   (TyTypeReference) (StaticMemberExpression)
+>               ^^^^^^: QueryClient   (TypeReference) (Identifier)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->                      ^^^^^^^^^^^^: <TData>(queryKey: QueryKey, updater: TData | ((previous: TData | undefined) => TData)) => void   (TyFunction) (StaticMemberExpression)
+>                      ^^^^^^^^^^^^: <TData>(queryKey: QueryKey, updater: TData | ((previous: TData | undefined) => TData)) => void   (Function) (Identifier)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->                                   ^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^: any   (Any) (Identifier)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->                                          ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (IdentifierReference)
+>                                          ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->                                                  ^^^^^^^^: TQueryKey   (TyTypeReference) (StaticMemberExpression)
+>                                                  ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->                                                             ^^^^^^^^: TData | undefined   (TyUnion) (BindingIdentifier)
+>                                                             ^^^^^^^^: TData | undefined   (Union) (Identifier)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->         ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (TyFunction) (IdentifierReference)
+>         ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (Function) (Identifier)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                 ^^^^^^^^: TData | undefined   (TyUnion) (IdentifierReference)
+>                 ^^^^^^^^: TData | undefined   (Union) (Identifier)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                              ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>                              ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                                          ^^^^^^^^^^^^: TData   (TyTypeReference) (IdentifierReference)
+>                                          ^^^^^^^^^^^^: TData   (TypeReference) (Identifier)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                                                         ^^^^^^^^: TData & ({} | null)   (TyIntersection) (IdentifierReference)
+>                                                         ^^^^^^^^: TData & ({} | null)   (Intersection) (Identifier)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                                                                   ^^^^^: Awaited<TQueryFnData>   (TyTypeReference) (IdentifierReference)
+>                                                                   ^^^^^: Awaited<TQueryFnData>   (TypeReference) (Identifier)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->          ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (IdentifierReference)
+>          ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                  ^^^^^^: QueryClient   (TyTypeReference) (StaticMemberExpression)
+>                  ^^^^^^: QueryClient   (TypeReference) (Identifier)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                         ^^^^^^^^^^^^: <TData>(queryKey: QueryKey) => TData | undefined   (TyFunction) (StaticMemberExpression)
+>                         ^^^^^^^^^^^^: <TData>(queryKey: QueryKey) => TData | undefined   (Function) (Identifier)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                                      ^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^: any   (Any) (Identifier)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                                             ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (TyObject) (IdentifierReference)
+>                                             ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                                                     ^^^^^^^^: TQueryKey   (TyTypeReference) (StaticMemberExpression)
+>                                                     ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                                                                  ^^^^^^: TData   (TyTypeReference) (IdentifierReference)
+>                                                                  ^^^^^^: TData   (TypeReference) (Identifier)
 
 import { streamedQuery } from '../packages/query-core/src/streamedQuery'
->        ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>   (Function) (Identifier)
 
   DataTag,
-> ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional) (BindingIdentifier)
+> ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (Conditional) (Identifier)
 
   InferDataFromTag,
-> ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional) (BindingIdentifier)
+> ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (Conditional) (Identifier)
           expected: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
 
   InfiniteData,
-> ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+> ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   QueryFunctionContext,
-> ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional) (BindingIdentifier)
+> ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (Conditional) (Identifier)
 
 type Todo = {
->    ^^^^: { id: number; title: string; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^: { id: number; title: string; }   (Object) (Identifier)
 
   id: number
-> ^^: number   (TyNumber) (TSPropertySignature)
+> ^^: number   (Number) (Identifier)
 
   title: string
-> ^^^^^: string   (TyString) (TSPropertySignature)
+> ^^^^^: string   (String) (Identifier)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
->    ^^^^^^^^^^^^: readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }   (TyIntersection) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }   (Intersection) (Identifier)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
->                   ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional) (TSTypeReference)
+>                   ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (Conditional) (Identifier)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
->                   ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (TyConditional) (IdentifierReference)
+>                   ^^^^^^^: TType extends AnyDataTag ? TType : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError; }   (Conditional) (Identifier)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
->                                               ^^^^: any   (TyAny) (TSTypeReference)
+>                                               ^^^^: any   (Any) (Identifier)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
->                                                       ^^^^^: ErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                                       ^^^^^: ErrorConstructor   (TypeReference) (Identifier)
 
 type TodoQueryKey = DataTag<readonly ['todos'], Todo[], Error>
->                                                       ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                                       ^^^^^: ErrorConstructor   (TypeReference) (Identifier)
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->    ^^^^^^^^^^^^^^: (readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }) extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : string   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^: (readonly ["todos"] & { [dataTagSymbol]: Todo[]; [dataTagErrorSymbol]: Error; }) extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : string   (Conditional) (Identifier)
            expected: Todo[]
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional) (TSTypeReference)
+>                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (Conditional) (Identifier)
                               expected: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (TyConditional) (IdentifierReference)
+>                     ^^^^^^^^^^^^^^^^: TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown> ? TaggedValue : TQueryFnData   (Conditional) (Identifier)
                               expected: TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData
 
 type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>
->                                              ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                              ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const todoStream: AsyncIterable<Todo>
->             ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^: AsyncIterable<Todo>   (TypeReference) (Identifier)
 
 declare const todoStream: AsyncIterable<Todo>
->                         ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const todoStream: AsyncIterable<Todo>
->                         ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                         ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
 declare const todoStream: AsyncIterable<Todo>
->                                       ^^^^: any   (TyAny) (TSTypeReference)
+>                                       ^^^^: any   (Any) (Identifier)
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
->             ^^^^^^^: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyObject) (BindingIdentifier)
+>             ^^^^^^^: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }   (Object) (Identifier)
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
->                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional) (TSTypeReference)
+>                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (Conditional) (Identifier)
 
 declare const context: QueryFunctionContext<readonly ['todos'], number>
->                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyConditional) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; } : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; direction: FetchDirection; meta: QueryMeta | undefined; }   (Conditional) (Identifier)
 
 const pageParam = context.pageParam
->     ^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^: number   (Number) (Identifier)
 
 const pageParam = context.pageParam
->                 ^^^^^^^: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyObject) (IdentifierReference)
+>                 ^^^^^^^: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }   (Object) (Identifier)
 
 const pageParam = context.pageParam
->                         ^^^^^^^^^: number   (TyNumber) (StaticMemberExpression)
+>                         ^^^^^^^^^: number   (Number) (Identifier)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
->     ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"]>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"]>   (TypeReference) (Identifier)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
->               ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>   (TyFunction) (IdentifierReference)
+>               ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>   (Function) (Identifier)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
->                             ^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^: any   (Any) (Identifier)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
->                                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
->                                   ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                   ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const queryFn = streamedQuery<Todo, InfiniteData<Todo, number>, readonly ['todos']>({
->                                                ^^^^: any   (TyAny) (TSTypeReference)
+>                                                ^^^^: any   (Any) (Identifier)
 
   streamFn: () => todoStream,
-> ^^^^^^^^: () => AsyncIterable<Todo>   (TyFunction) (ObjectProperty)
+> ^^^^^^^^: () => AsyncIterable<Todo>   (Function) (Identifier)
 
   streamFn: () => todoStream,
->                 ^^^^^^^^^^: AsyncIterable<Todo>   (TyTypeReference) (IdentifierReference)
+>                 ^^^^^^^^^^: AsyncIterable<Todo>   (TypeReference) (Identifier)
 
   reducer: (data, todo) => ({
-> ^^^^^^^: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }   (TyFunction) (ObjectProperty)
+> ^^^^^^^: (data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }   (Function) (Identifier)
 
   reducer: (data, todo) => ({
->           ^^^^: InfiniteData<Todo, number>   (TyTypeReference) (BindingIdentifier)
+>           ^^^^: InfiniteData<Todo, number>   (TypeReference) (Identifier)
 
   reducer: (data, todo) => ({
->                 ^^^^: Todo   (TyTypeReference) (BindingIdentifier)
+>                 ^^^^: Todo   (TypeReference) (Identifier)
 
     pages: [...data.pages, todo],
->   ^^^^^: Todo[]   (TyArray) (ObjectProperty)
+>   ^^^^^: Todo[]   (Array) (Identifier)
 
     pages: [...data.pages, todo],
->              ^^^^: InfiniteData<Todo, number>   (TyTypeReference) (IdentifierReference)
+>              ^^^^: InfiniteData<Todo, number>   (TypeReference) (Identifier)
 
     pages: [...data.pages, todo],
->                   ^^^^^: Todo[]   (TyArray) (StaticMemberExpression)
+>                   ^^^^^: Todo[]   (Array) (Identifier)
 
     pages: [...data.pages, todo],
->                          ^^^^: Todo   (TyTypeReference) (IdentifierReference)
+>                          ^^^^: Todo   (TypeReference) (Identifier)
 
     pageParams: [...data.pageParams, pageParam],
->   ^^^^^^^^^^: number[]   (TyArray) (ObjectProperty)
+>   ^^^^^^^^^^: number[]   (Array) (Identifier)
 
     pageParams: [...data.pageParams, pageParam],
->                   ^^^^: InfiniteData<Todo, number>   (TyTypeReference) (IdentifierReference)
+>                   ^^^^: InfiniteData<Todo, number>   (TypeReference) (Identifier)
 
     pageParams: [...data.pageParams, pageParam],
->                        ^^^^^^^^^^: number[]   (TyArray) (StaticMemberExpression)
+>                        ^^^^^^^^^^: number[]   (Array) (Identifier)
 
     pageParams: [...data.pageParams, pageParam],
->                                    ^^^^^^^^^: number   (TyNumber) (IdentifierReference)
+>                                    ^^^^^^^^^: number   (Number) (Identifier)
 
   initialValue: { pages: [], pageParams: [] },
-> ^^^^^^^^^^^^: { pages: never[]; pageParams: never[]; }   (TyObject) (ObjectProperty)
+> ^^^^^^^^^^^^: { pages: never[]; pageParams: never[]; }   (Object) (Identifier)
 
   initialValue: { pages: [], pageParams: [] },
->                 ^^^^^: never[]   (TyArray) (ObjectProperty)
+>                 ^^^^^: never[]   (Array) (Identifier)
 
   initialValue: { pages: [], pageParams: [] },
->                            ^^^^^^^^^^: never[]   (TyArray) (ObjectProperty)
+>                            ^^^^^^^^^^: never[]   (Array) (Identifier)
 
   refetchMode: 'append',
-> ^^^^^^^^^^^: "append"   (TyStringLiteral) (ObjectProperty)
+> ^^^^^^^^^^^: "append"   (StringLiteral) (Identifier)
 
 const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
->     ^^^^^^^^^^: TaggedTodoData   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^: TaggedTodoData   (TypeReference) (Identifier)
         expected: Todo[]
 
 const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
->                 ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
->                                     ^^: number   (TyNumber) (ObjectProperty)
+>                                     ^^: number   (Number) (Identifier)
 
 const taggedData: TaggedTodoData = [{ id: 1, title: 'read fixture' }]
->                                            ^^^^^: string   (TyString) (ObjectProperty)
+>                                            ^^^^^: string   (String) (Identifier)
 
 const queryResult = queryFn(context)
->     ^^^^^^^^^^^: InfiniteData<Todo, number> | Promise<InfiniteData<Todo, number>>   (TyUnion) (BindingIdentifier)
+>     ^^^^^^^^^^^: InfiniteData<Todo, number> | Promise<InfiniteData<Todo, number>>   (Union) (Identifier)
 
 const queryResult = queryFn(context)
->                   ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"]>   (TyTypeReference) (IdentifierReference)
+>                   ^^^^^^^: QueryFunction<InfiniteData<Todo, number>, readonly ["todos"]>   (TypeReference) (Identifier)
 
 const queryResult = queryFn(context)
->                           ^^^^^^^: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }   (TyObject) (IdentifierReference)
+>                           ^^^^^^^: { client: QueryClient; queryKey: readonly ["todos"]; signal: AbortSignal; pageParam: number; direction: FetchDirection; meta: QueryMeta | undefined; }   (Object) (Identifier)

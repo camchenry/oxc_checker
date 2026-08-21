@@ -206,15 +206,15 @@ fn explicit_virtual_module_files_do_not_merge_same_named_functions() {
     assert!(records.iter().any(|record| {
         record.path.as_ref() == "compiler/virtualModules.ts::a.ts"
             && record.text == "value"
-            && record.ty_repr == "() => number"
+            && record.r#type.display == "() => number"
     }));
     assert!(records.iter().any(|record| {
         record.path.as_ref() == "compiler/virtualModules.ts::b.ts"
             && record.text == "value"
-            && record.ty_repr == "() => number"
+            && record.r#type.display == "() => number"
     }));
     assert!(!records.iter().any(|record| {
-        record.text == "value" && record.ty_repr == "{ (): number; (): number; }"
+        record.text == "value" && record.r#type.display == "{ (): number; (): number; }"
     }));
 }
 
@@ -233,7 +233,7 @@ fn renamed_object_binding_keys_use_the_bound_property_type() {
         .collect::<Vec<_>>();
 
     assert_eq!(key_records.len(), 1);
-    assert_eq!(key_records[0].ty_repr, "string");
+    assert_eq!(key_records[0].r#type.display, "string");
 }
 
 #[test]
@@ -252,7 +252,7 @@ fn renamed_object_assignment_keys_use_the_target_type() {
         .collect::<Vec<_>>();
 
     assert_eq!(key_records.len(), 1);
-    assert_eq!(key_records[0].ty_repr, "string");
+    assert_eq!(key_records[0].r#type.display, "string");
 }
 
 #[test]
@@ -272,12 +272,12 @@ fn explicit_virtual_module_files_do_not_merge_same_named_interfaces() {
         assert!(records.iter().any(|record| {
             record.path.as_ref() == path
                 && record.text == "then"
-                && record.ty_repr == "(onFulfilled: () => void) => MyThenable"
+                && record.r#type.display == "(onFulfilled: () => void) => MyThenable"
         }));
     }
     assert!(!records.iter().any(|record| {
         record.text == "then"
-            && record.ty_repr
+            && record.r#type.display
                 == "{ (onFulfilled: () => void): MyThenable; (onFulfilled: () => void): MyThenable; }"
     }));
 }
@@ -300,10 +300,10 @@ fn type_alias_name_emits_one_type_meaning_record_for_merged_symbol() {
 
     assert_eq!(alias_records.len(), 1);
     assert_eq!(
-        alias_records[0].ty_repr,
+        alias_records[0].r#type.display,
         "((value: string) => number) | { accept(value: string): number; }"
     );
-    assert_eq!(alias_records[0].ast_kind, Some("TSTypeAliasDeclaration"));
+    assert_eq!(alias_records[0].node_type, "Identifier");
 }
 
 #[test]
@@ -314,9 +314,11 @@ fn type_output_renders_line_span_and_type() {
         start: 27,
         end: 32,
         text: "label".to_string(),
-        ty_variant: Some("TyString"),
-        ast_kind: Some("IdentifierReference"),
-        ty_repr: "string".to_string(),
+        node_type: "Identifier".to_string(),
+        r#type: TypeRecordType {
+            name: "String".to_string(),
+            display: "string".to_string(),
+        },
     };
     let mut output = String::new();
 
@@ -324,7 +326,7 @@ fn type_output_renders_line_span_and_type() {
 
     assert_eq!(
         output,
-        "let label: string = \"ready\";\n>   ^^^^^: string   (TyString) (IdentifierReference)\n"
+        "let label: string = \"ready\";\n>   ^^^^^: string   (String) (Identifier)\n"
     );
 }
 
@@ -336,19 +338,27 @@ fn type_output_renders_mismatch_expected_type_on_separate_line() {
         start: 4,
         end: 9,
         text: "count".to_string(),
-        ty_variant: Some("TyString"),
-        ast_kind: Some("IdentifierReference"),
-        ty_repr: "string".to_string(),
+        node_type: "Identifier".to_string(),
+        r#type: TypeRecordType {
+            name: "String".to_string(),
+            display: "string".to_string(),
+        },
     };
     let mut mismatches = TypeRecordMap::new();
-    mismatches.insert(record.key(), "number".to_string());
+    mismatches.insert(
+        record.key(),
+        TypeRecordType {
+            name: "Number".to_string(),
+            display: "number".to_string(),
+        },
+    );
     let mut output = String::new();
 
     write_type_output_for_source_file(&mut output, source_text, &[&record], Some(&mismatches));
 
     assert_eq!(
         output,
-        "let count: number = 1;\n>   ^^^^^: string   (TyString) (IdentifierReference)\n expected: number\n"
+        "let count: number = 1;\n>   ^^^^^: string   (String) (Identifier)\n expected: number\n"
     );
 }
 
@@ -391,18 +401,62 @@ fn type_repr_equivalence_ignores_union_order() {
 }
 
 #[test]
+fn type_record_json_shape_is_strict_and_round_trips() {
+    let json = r#"{"path":"compiler/example.ts","start":4,"end":9,"text":"value","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"foo\""}}"#;
+    let record = parse_records(json, "test record").unwrap().remove(0);
+
+    assert_eq!(record.node_type, "Identifier");
+    assert_eq!(record.r#type.name, "StringLiteral");
+    assert_eq!(serde_json::to_string(&record).unwrap(), json);
+    assert!(
+        parse_records(
+            &json.replace("\"display\":", "\"extra\":true,\"display\":"),
+            "test record"
+        )
+        .is_err()
+    );
+    assert!(
+        parse_records(
+            &json.replace(",\"display\":\"\\\"foo\\\"\"", ""),
+            "test record"
+        )
+        .is_err()
+    );
+}
+
+#[test]
+fn literal_type_is_compatible_with_expected_primitive() {
+    let expected = TypeRecordType {
+        name: "String".to_string(),
+        display: "string".to_string(),
+    };
+    let actual = TypeRecordType {
+        name: "StringLiteral".to_string(),
+        display: r#""foo""#.to_string(),
+    };
+
+    assert!(type_records_are_compatible(&expected, &actual));
+    assert!(!type_records_are_compatible(&actual, &expected));
+}
+
+#[test]
 fn compare_records_counts_union_order_only_differences_as_matches() {
     let expected = TypeRecord {
         path: Arc::from("compiler/unionOrder.ts"),
         start: 0,
         end: 5,
         text: "value".to_string(),
-        ty_variant: None,
-        ast_kind: None,
-        ty_repr: "<T, U = B | T>(value: A | B) => B | A".to_string(),
+        node_type: "Identifier".to_string(),
+        r#type: TypeRecordType {
+            name: "Object".to_string(),
+            display: "<T, U = B | T>(value: A | B) => B | A".to_string(),
+        },
     };
     let actual = TypeRecord {
-        ty_repr: "<T, U = T | B>(value: B | A) => A | B".to_string(),
+        r#type: TypeRecordType {
+            name: "Object".to_string(),
+            display: "<T, U = T | B>(value: B | A) => A | B".to_string(),
+        },
         ..expected.clone()
     };
 
@@ -425,12 +479,12 @@ fn ambient_namespace_with_statement_emits_namespace_and_export_records() {
     assert!(records.iter().any(|record| {
         record.path.as_ref() == "compiler/ambientStatement1.ts"
             && record.text == "M1"
-            && record.ty_repr == "typeof M1"
+            && record.r#type.display == "typeof M1"
     }));
     assert!(records.iter().any(|record| {
         record.path.as_ref() == "compiler/ambientStatement1.ts"
             && record.text == "v1"
-            && record.ty_repr == "() => boolean"
+            && record.r#type.display == "() => boolean"
     }));
 }
 
@@ -446,7 +500,7 @@ fn expression_statement_records_use_whole_statement_text() {
     assert!(records.iter().any(|record| {
         record.path.as_ref() == "compiler/expressionStatement.ts"
             && record.text == "x();"
-            && record.ty_repr == "number"
+            && record.r#type.display == "number"
     }));
 }
 

@@ -1,0 +1,83 @@
+{"path":"es2018.intl.d.ts","start":18,"end":22,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2018.intl.d.ts","start":18,"end":22,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2018.intl.d.ts","start":128,"end":142,"text":"LDMLPluralRule","nodeType":"Identifier","type":{"name":"Union","display":"\"zero\" | \"one\" | \"two\" | \"few\" | \"many\" | \"other\""}}
+{"path":"es2018.intl.d.ts","start":205,"end":219,"text":"PluralRuleType","nodeType":"Identifier","type":{"name":"Union","display":"\"cardinal\" | \"ordinal\""}}
+{"path":"es2018.intl.d.ts","start":261,"end":279,"text":"PluralRulesOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":261,"end":279,"text":"PluralRulesOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":290,"end":303,"text":"localeMatcher","nodeType":"Identifier","type":{"name":"Union","display":"\"lookup\" | \"best fit\" | undefined"}}
+{"path":"es2018.intl.d.ts","start":349,"end":353,"text":"type","nodeType":"Identifier","type":{"name":"Union","display":"PluralRuleType | undefined"}}
+{"path":"es2018.intl.d.ts","start":356,"end":370,"text":"PluralRuleType","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":392,"end":412,"text":"minimumIntegerDigits","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2018.intl.d.ts","start":443,"end":464,"text":"minimumFractionDigits","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2018.intl.d.ts","start":495,"end":516,"text":"maximumFractionDigits","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2018.intl.d.ts","start":547,"end":571,"text":"minimumSignificantDigits","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2018.intl.d.ts","start":602,"end":626,"text":"maximumSignificantDigits","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2018.intl.d.ts","start":670,"end":696,"text":"ResolvedPluralRulesOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":670,"end":696,"text":"ResolvedPluralRulesOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":707,"end":713,"text":"locale","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2018.intl.d.ts","start":731,"end":747,"text":"pluralCategories","nodeType":"Identifier","type":{"name":"Array","display":"LDMLPluralRule[]"}}
+{"path":"es2018.intl.d.ts","start":749,"end":763,"text":"LDMLPluralRule","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":775,"end":779,"text":"type","nodeType":"Identifier","type":{"name":"TypeReference","display":"PluralRuleType"}}
+{"path":"es2018.intl.d.ts","start":781,"end":795,"text":"PluralRuleType","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":805,"end":825,"text":"minimumIntegerDigits","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2018.intl.d.ts","start":843,"end":864,"text":"minimumFractionDigits","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2018.intl.d.ts","start":882,"end":903,"text":"maximumFractionDigits","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2018.intl.d.ts","start":921,"end":945,"text":"minimumSignificantDigits","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2018.intl.d.ts","start":964,"end":988,"text":"maximumSignificantDigits","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2018.intl.d.ts","start":1020,"end":1031,"text":"PluralRules","nodeType":"Identifier","type":{"name":"TypeReference","display":"PluralRulesConstructor"}}
+{"path":"es2018.intl.d.ts","start":1020,"end":1031,"text":"PluralRules","nodeType":"Identifier","type":{"name":"TypeReference","display":"PluralRulesConstructor"}}
+{"path":"es2018.intl.d.ts","start":1042,"end":1057,"text":"resolvedOptions","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ResolvedPluralRulesOptions; (): ResolvedPluralRulesOptions; }"}}
+{"path":"es2018.intl.d.ts","start":1061,"end":1087,"text":"ResolvedPluralRulesOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1061,"end":1087,"text":"ResolvedPluralRulesOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1097,"end":1103,"text":"select","nodeType":"Identifier","type":{"name":"Object","display":"{ (n: number): LDMLPluralRule; (n: number): LDMLPluralRule; }"}}
+{"path":"es2018.intl.d.ts","start":1104,"end":1105,"text":"n","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2018.intl.d.ts","start":1116,"end":1130,"text":"LDMLPluralRule","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1153,"end":1175,"text":"PluralRulesConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1153,"end":1175,"text":"PluralRulesConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1191,"end":1198,"text":"locales","nodeType":"Identifier","type":{"name":"Union","display":"string | readonly string[] | undefined"}}
+{"path":"es2018.intl.d.ts","start":1229,"end":1236,"text":"options","nodeType":"Identifier","type":{"name":"Union","display":"PluralRulesOptions | undefined"}}
+{"path":"es2018.intl.d.ts","start":1239,"end":1257,"text":"PluralRulesOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1239,"end":1257,"text":"PluralRulesOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1260,"end":1271,"text":"PluralRules","nodeType":"Identifier","type":{"name":"TypeReference","display":"PluralRulesConstructor"}}
+{"path":"es2018.intl.d.ts","start":1260,"end":1271,"text":"PluralRules","nodeType":"Identifier","type":{"name":"TypeReference","display":"PluralRulesConstructor"}}
+{"path":"es2018.intl.d.ts","start":1282,"end":1289,"text":"locales","nodeType":"Identifier","type":{"name":"Union","display":"string | readonly string[] | undefined"}}
+{"path":"es2018.intl.d.ts","start":1320,"end":1327,"text":"options","nodeType":"Identifier","type":{"name":"Union","display":"PluralRulesOptions | undefined"}}
+{"path":"es2018.intl.d.ts","start":1330,"end":1348,"text":"PluralRulesOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1330,"end":1348,"text":"PluralRulesOptions","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1351,"end":1362,"text":"PluralRules","nodeType":"Identifier","type":{"name":"TypeReference","display":"PluralRulesConstructor"}}
+{"path":"es2018.intl.d.ts","start":1351,"end":1362,"text":"PluralRules","nodeType":"Identifier","type":{"name":"TypeReference","display":"PluralRulesConstructor"}}
+{"path":"es2018.intl.d.ts","start":1372,"end":1390,"text":"supportedLocalesOf","nodeType":"Identifier","type":{"name":"Object","display":"{ (locales: string | readonly string[], options?: { localeMatcher?: \"lookup\" | \"best fit\"; }): string[]; (locales: LocalesArgument, options?: { localeMatcher?: \"lookup\" | \"best fit\"; }): string[]; (locales: string | readonly string[], options?: { localeMatcher?: \"lookup\" | \"best fit\"; }): string[]; }"}}
+{"path":"es2018.intl.d.ts","start":1391,"end":1398,"text":"locales","nodeType":"Identifier","type":{"name":"Union","display":"string | readonly string[]"}}
+{"path":"es2018.intl.d.ts","start":1428,"end":1435,"text":"options","nodeType":"Identifier","type":{"name":"Union","display":"{ localeMatcher?: \"lookup\" | \"best fit\"; } | undefined"}}
+{"path":"es2018.intl.d.ts","start":1440,"end":1453,"text":"localeMatcher","nodeType":"Identifier","type":{"name":"Union","display":"\"lookup\" | \"best fit\" | undefined"}}
+{"path":"es2018.intl.d.ts","start":1510,"end":1521,"text":"PluralRules","nodeType":"Identifier","type":{"name":"TypeReference","display":"PluralRulesConstructor"}}
+{"path":"es2018.intl.d.ts","start":1523,"end":1545,"text":"PluralRulesConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1523,"end":1545,"text":"PluralRulesConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1562,"end":1590,"text":"NumberFormatPartTypeRegistry","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1562,"end":1590,"text":"NumberFormatPartTypeRegistry","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1601,"end":1608,"text":"literal","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1625,"end":1628,"text":"nan","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1645,"end":1653,"text":"infinity","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1670,"end":1677,"text":"percent","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1694,"end":1701,"text":"integer","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1718,"end":1723,"text":"group","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1740,"end":1747,"text":"decimal","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1764,"end":1772,"text":"fraction","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1789,"end":1797,"text":"plusSign","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1814,"end":1823,"text":"minusSign","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1840,"end":1851,"text":"percentSign","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1868,"end":1876,"text":"currency","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"es2018.intl.d.ts","start":1901,"end":1922,"text":"NumberFormatPartTypes","nodeType":"Identifier","type":{"name":"Keyof","display":"keyof NumberFormatPartTypeRegistry"}}
+{"path":"es2018.intl.d.ts","start":1931,"end":1959,"text":"NumberFormatPartTypeRegistry","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1931,"end":1959,"text":"NumberFormatPartTypeRegistry","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1976,"end":1992,"text":"NumberFormatPart","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":1976,"end":1992,"text":"NumberFormatPart","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":2003,"end":2007,"text":"type","nodeType":"Identifier","type":{"name":"TypeReference","display":"NumberFormatPartTypes"}}
+{"path":"es2018.intl.d.ts","start":2009,"end":2030,"text":"NumberFormatPartTypes","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":2040,"end":2045,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2018.intl.d.ts","start":2076,"end":2088,"text":"NumberFormat","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":2076,"end":2088,"text":"NumberFormat","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":2099,"end":2112,"text":"formatToParts","nodeType":"Identifier","type":{"name":"Object","display":"{ (number?: number | bigint): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; (number?: number | bigint): NumberFormatPart[]; }"}}
+{"path":"es2018.intl.d.ts","start":2113,"end":2119,"text":"number","nodeType":"Identifier","type":{"name":"Union","display":"number | bigint | undefined"}}
+{"path":"es2018.intl.d.ts","start":2140,"end":2156,"text":"NumberFormatPart","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.intl.d.ts","start":2140,"end":2156,"text":"NumberFormatPart","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

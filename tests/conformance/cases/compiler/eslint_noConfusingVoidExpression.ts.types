@@ -1,251 +1,251 @@
 const response = alert('Are you sure?');
->     ^^^^^^^^: void   (TyVoid) (BindingIdentifier)
+>     ^^^^^^^^: void   (Void) (Identifier)
 
 const response = alert('Are you sure?');
->                ^^^^^: (message?: any) => void   (TyFunction) (IdentifierReference)
+>                ^^^^^: (message?: any) => void   (Function) (Identifier)
 
 console.log(alert('Are you sure?'));
->^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>^^^^^^^: Console   (TypeReference) (Identifier)
 
 console.log(alert('Are you sure?'));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 console.log(alert('Are you sure?'));
->       ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>       ^^^: (...data: any[]) => void   (Function) (Identifier)
 
 console.log(alert('Are you sure?'));
->           ^^^^^: (message?: any) => void   (TyFunction) (IdentifierReference)
+>           ^^^^^: (message?: any) => void   (Function) (Identifier)
 
 promise.then(value => window.postMessage(value));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
 promise.then(value => window.postMessage(value));
->       ^^^^: any   (TyError) (StaticMemberExpression)
+>       ^^^^: any   (Error) (Identifier)
 
 promise.then(value => window.postMessage(value));
->            ^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^: any   (Any) (Identifier)
 
 promise.then(value => window.postMessage(value));
->                     ^^^^^^: Window & typeof globalThis   (TyIntersection) (IdentifierReference)
+>                     ^^^^^^: Window & typeof globalThis   (Intersection) (Identifier)
 
 promise.then(value => window.postMessage(value));
->                            ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (TyIntersection) (StaticMemberExpression)
+>                            ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (Intersection) (Identifier)
 
 promise.then(value => window.postMessage(value));
->                                        ^^^^^: any   (TyAny) (IdentifierReference)
+>                                        ^^^^^: any   (Any) (Identifier)
 
 function doSomething() {
->        ^^^^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^^^^^: () => void   (Function) (Identifier)
 
     return console.error('Nothing to do!');
->          ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>          ^^^^^^^: Console   (TypeReference) (Identifier)
 
     return console.error('Nothing to do!');
->                  ^^^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>                  ^^^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log('Doing a thing...');
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log('Doing a thing...');
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log('Doing a thing...');
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
 alert('Hello, world!');
->^^^^^: (message?: any) => void   (TyFunction) (IdentifierReference)
+>^^^^^: (message?: any) => void   (Function) (Identifier)
 
 alert('Hello, world!');
->^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 const response = confirm('Are you sure?');
->     ^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const response = confirm('Are you sure?');
->                ^^^^^^^: (message?: string) => boolean   (TyFunction) (IdentifierReference)
+>                ^^^^^^^: (message?: string) => boolean   (Function) (Identifier)
 
 console.log(confirm('Are you sure?'));
->^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>^^^^^^^: Console   (TypeReference) (Identifier)
 
 console.log(confirm('Are you sure?'));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 console.log(confirm('Are you sure?'));
->       ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>       ^^^: (...data: any[]) => void   (Function) (Identifier)
 
 console.log(confirm('Are you sure?'));
->           ^^^^^^^: (message?: string) => boolean   (TyFunction) (IdentifierReference)
+>           ^^^^^^^: (message?: string) => boolean   (Function) (Identifier)
 
 promise.then(value => {
->^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
 promise.then(value => {
->       ^^^^: any   (TyError) (StaticMemberExpression)
+>       ^^^^: any   (Error) (Identifier)
 
 promise.then(value => {
->            ^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^: any   (Any) (Identifier)
 
   window.postMessage(value);
-> ^^^^^^: Window & typeof globalThis   (TyIntersection) (IdentifierReference)
+> ^^^^^^: Window & typeof globalThis   (Intersection) (Identifier)
 
   window.postMessage(value);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   window.postMessage(value);
->        ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (TyIntersection) (StaticMemberExpression)
+>        ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (Intersection) (Identifier)
 
   window.postMessage(value);
->                    ^^^^^: any   (TyAny) (IdentifierReference)
+>                    ^^^^^: any   (Any) (Identifier)
 
 function doSomething() {
->        ^^^^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^^^^^: () => void   (Function) (Identifier)
 
     console.error('Nothing to do!');
->   ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>   ^^^^^^^: Console   (TypeReference) (Identifier)
 
     console.error('Nothing to do!');
->   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
     console.error('Nothing to do!');
->           ^^^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>           ^^^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log('Doing a thing...');
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log('Doing a thing...');
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log('Doing a thing...');
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
 cond && console.log('true');
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
 cond && console.log('true');
->       ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>       ^^^^^^^: Console   (TypeReference) (Identifier)
 
 cond && console.log('true');
->               ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>               ^^^: (...data: any[]) => void   (Function) (Identifier)
 
 cond || console.error('false');
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
 cond || console.error('false');
->       ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>       ^^^^^^^: Console   (TypeReference) (Identifier)
 
 cond || console.error('false');
->               ^^^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>               ^^^^^: (...data: any[]) => void   (Function) (Identifier)
 
 cond ? console.log('true') : console.error('false');
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 cond ? console.log('true') : console.error('false');
->      ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>      ^^^^^^^: Console   (TypeReference) (Identifier)
 
 cond ? console.log('true') : console.error('false');
->              ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>              ^^^: (...data: any[]) => void   (Function) (Identifier)
 
 cond ? console.log('true') : console.error('false');
->                            ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>                            ^^^^^^^: Console   (TypeReference) (Identifier)
 
 cond ? console.log('true') : console.error('false');
->                                    ^^^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>                                    ^^^^^: (...data: any[]) => void   (Function) (Identifier)
 
 promise.then(value => window.postMessage(value));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
 promise.then(value => window.postMessage(value));
->       ^^^^: any   (TyError) (StaticMemberExpression)
+>       ^^^^: any   (Error) (Identifier)
 
 promise.then(value => window.postMessage(value));
->            ^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^: any   (Any) (Identifier)
 
 promise.then(value => window.postMessage(value));
->                     ^^^^^^: Window & typeof globalThis   (TyIntersection) (IdentifierReference)
+>                     ^^^^^^: Window & typeof globalThis   (Intersection) (Identifier)
 
 promise.then(value => window.postMessage(value));
->                            ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (TyIntersection) (StaticMemberExpression)
+>                            ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (Intersection) (Identifier)
 
 promise.then(value => window.postMessage(value));
->                                        ^^^^^: any   (TyAny) (IdentifierReference)
+>                                        ^^^^^: any   (Any) (Identifier)
 
 promise.then(value => void window.postMessage(value));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
 promise.then(value => void window.postMessage(value));
->       ^^^^: any   (TyError) (StaticMemberExpression)
+>       ^^^^: any   (Error) (Identifier)
 
 promise.then(value => void window.postMessage(value));
->            ^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^: any   (Any) (Identifier)
 
 promise.then(value => void window.postMessage(value));
->                          ^^^^^^: Window & typeof globalThis   (TyIntersection) (IdentifierReference)
+>                          ^^^^^^: Window & typeof globalThis   (Intersection) (Identifier)
 
 promise.then(value => void window.postMessage(value));
->                                 ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (TyIntersection) (StaticMemberExpression)
+>                                 ^^^^^^^^^^^: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }   (Intersection) (Identifier)
 
 promise.then(value => void window.postMessage(value));
->                                             ^^^^^: any   (TyAny) (IdentifierReference)
+>                                             ^^^^^: any   (Any) (Identifier)
 
 function doSomething() {
->        ^^^^^^^^^^^: () => undefined   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^^^^^: () => undefined   (Function) (Identifier)
 
     return void console.error('Nothing to do!');
->               ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>               ^^^^^^^: Console   (TypeReference) (Identifier)
 
     return void console.error('Nothing to do!');
->                       ^^^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>                       ^^^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log('Doing a thing...');
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log('Doing a thing...');
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log('Doing a thing...');
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
 console.log(void alert('Hello, world!'));
->^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>^^^^^^^: Console   (TypeReference) (Identifier)
 
 console.log(void alert('Hello, world!'));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 console.log(void alert('Hello, world!'));
->       ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>       ^^^: (...data: any[]) => void   (Function) (Identifier)
 
 console.log(void alert('Hello, world!'));
->                ^^^^^: (message?: any) => void   (TyFunction) (IdentifierReference)
+>                ^^^^^: (message?: any) => void   (Function) (Identifier)
 
 function foo(): void {
->        ^^^: () => void   (TyFunction) (BindingIdentifier)
+>        ^^^: () => void   (Function) (Identifier)
 
   return console.log();
->        ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>        ^^^^^^^: Console   (TypeReference) (Identifier)
 
   return console.log();
->                ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>                ^^^: (...data: any[]) => void   (Function) (Identifier)
 
 function onError(callback: () => void): void {
->        ^^^^^^^: (callback: () => void) => void   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^: (callback: () => void) => void   (Function) (Identifier)
 
 function onError(callback: () => void): void {
->                ^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^: () => void   (Function) (Identifier)
 
   callback();
-> ^^^^^^^^: () => void   (TyFunction) (IdentifierReference)
+> ^^^^^^^^: () => void   (Function) (Identifier)
 
   callback();
-> ^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 onError(() => console.log('oops'));
->^^^^^^^: (callback: () => void) => void   (TyFunction) (IdentifierReference)
+>^^^^^^^: (callback: () => void) => void   (Function) (Identifier)
 
 onError(() => console.log('oops'));
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 onError(() => console.log('oops'));
->             ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^^: Console   (TypeReference) (Identifier)
 
 onError(() => console.log('oops'));
->                     ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>                     ^^^: (...data: any[]) => void   (Function) (Identifier)

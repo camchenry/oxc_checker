@@ -1,8 +1,8 @@
 interface WeakKeyTypes {
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface WeakKeyTypes {
->         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     symbol: symbol;
->   ^^^^^^: symbol   (TySymbol) (TSPropertySignature)
+>   ^^^^^^: symbol   (Symbol) (Identifier)

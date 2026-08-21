@@ -1,26 +1,26 @@
 interface Widget {}
->         ^^^^^^: WidgetConstructor   (TyTypeReference) (TSInterfaceDeclaration)
+>         ^^^^^^: WidgetConstructor   (TypeReference) (Identifier)
 
 interface Widget {}
->         ^^^^^^: WidgetConstructor   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^: WidgetConstructor   (TypeReference) (Identifier)
 
 interface WidgetConstructor { new (): Widget }
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface WidgetConstructor { new (): Widget }
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface WidgetConstructor { new (): Widget }
->                                     ^^^^^^: WidgetConstructor   (TyTypeReference) (TSTypeReference)
+>                                     ^^^^^^: WidgetConstructor   (TypeReference) (Identifier)
 
 interface WidgetConstructor { new (): Widget }
->                                     ^^^^^^: WidgetConstructor   (TyTypeReference) (IdentifierReference)
+>                                     ^^^^^^: WidgetConstructor   (TypeReference) (Identifier)
 
 declare var Widget: WidgetConstructor;
->           ^^^^^^: WidgetConstructor   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^: WidgetConstructor   (TypeReference) (Identifier)
 
 declare var Widget: WidgetConstructor;
->                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare var Widget: WidgetConstructor;
->                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                   ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)

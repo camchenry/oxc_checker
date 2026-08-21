@@ -1,0 +1,4 @@
+{"path":"es2025.regexp.d.ts","start":10,"end":27,"text":"RegExpConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.regexp.d.ts","start":10,"end":27,"text":"RegExpConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.regexp.d.ts","start":407,"end":413,"text":"escape","nodeType":"Identifier","type":{"name":"Object","display":"{ (string: string): string; (string: string): string; }"}}
+{"path":"es2025.regexp.d.ts","start":414,"end":420,"text":"string","nodeType":"Identifier","type":{"name":"String","display":"string"}}

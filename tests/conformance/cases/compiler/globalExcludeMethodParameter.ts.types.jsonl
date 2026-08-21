@@ -1,0 +1,8 @@
+{"path":"compiler/globalExcludeMethodParameter.ts","start":10,"end":15,"text":"Shape","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/globalExcludeMethodParameter.ts","start":10,"end":15,"text":"Shape","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/globalExcludeMethodParameter.ts","start":20,"end":26,"text":"method","nodeType":"Identifier","type":{"name":"Function","display":"(format: Exclude<KeyFormat, \"jwk\">) => void"}}
+{"path":"compiler/globalExcludeMethodParameter.ts","start":27,"end":33,"text":"format","nodeType":"Identifier","type":{"name":"Union","display":"\"pkcs8\" | \"raw\" | \"spki\""}}
+{"path":"compiler/globalExcludeMethodParameter.ts","start":35,"end":42,"text":"Exclude","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/globalExcludeMethodParameter.ts","start":35,"end":42,"text":"Exclude","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/globalExcludeMethodParameter.ts","start":43,"end":52,"text":"KeyFormat","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/globalExcludeMethodParameter.ts","start":43,"end":52,"text":"KeyFormat","nodeType":"Identifier","type":{"name":"Error","display":"any"}}

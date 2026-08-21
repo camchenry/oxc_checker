@@ -1,0 +1,50 @@
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":64,"end":72,"text":"'' + {};","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":80,"end":87,"text":"MyClass","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof MyClass"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":97,"end":102,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"MyClass"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":109,"end":116,"text":"MyClass","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof MyClass"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":120,"end":125,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"MyClass"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":120,"end":131,"text":"value + '';","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":207,"end":225,"text":"`Value: ${value}`;","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":217,"end":222,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"MyClass"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":226,"end":232,"text":"String","nodeType":"Identifier","type":{"name":"TypeReference","display":"StringConstructor"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":226,"end":237,"text":"String({});","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":238,"end":254,"text":"({}).toString();","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":243,"end":251,"text":"toString","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":255,"end":277,"text":"({}).toLocaleString();","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":260,"end":274,"text":"toLocaleString","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":361,"end":390,"text":"[{}, new MyClass()].join('');","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":370,"end":377,"text":"MyClass","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof MyClass"}}
+{"path":"compiler/eslint_noBaseToString.ts::a.ts","start":381,"end":385,"text":"join","nodeType":"Identifier","type":{"name":"Function","display":"(separator?: string) => string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":74,"end":88,"text":"'Text' + true;","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":89,"end":105,"text":"`Value: ${123}`;","nodeType":"ExpressionStatement","type":{"name":"StringLiteral","display":"\"Value: 123\""}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":106,"end":133,"text":"`Arrays too: ${[1, 2, 3]}`;","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":134,"end":156,"text":"(() => {}).toString();","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":145,"end":153,"text":"toString","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":157,"end":163,"text":"String","nodeType":"Identifier","type":{"name":"TypeReference","display":"StringConstructor"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":157,"end":168,"text":"String(42);","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":169,"end":197,"text":"(() => {}).toLocaleString();","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":180,"end":194,"text":"toLocaleString","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":267,"end":281,"text":"CustomToString","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof CustomToString"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":286,"end":294,"text":"toString","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":333,"end":366,"text":"`Value: ${new CustomToString()}`;","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":347,"end":361,"text":"CustomToString","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof CustomToString"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":374,"end":393,"text":"literalWithToString","nodeType":"Identifier","type":{"name":"Object","display":"{ toString: () => string; }"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":400,"end":408,"text":"toString","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":437,"end":469,"text":"`Value: ${literalWithToString}`;","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::b.ts","start":447,"end":466,"text":"literalWithToString","nodeType":"Identifier","type":{"name":"Object","display":"{ toString: () => string; }"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":0,"end":13,"text":"`${/regex/}`;","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":14,"end":27,"text":"'' + /regex/;","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":28,"end":47,"text":"/regex/.toString();","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":36,"end":44,"text":"toString","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":52,"end":57,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExp"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":69,"end":74,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExp"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":69,"end":86,"text":"value.toString();","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":75,"end":83,"text":"toString","nodeType":"Identifier","type":{"name":"Function","display":"() => string"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":91,"end":95,"text":"text","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":101,"end":106,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExp"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":110,"end":116,"text":"String","nodeType":"Identifier","type":{"name":"TypeReference","display":"StringConstructor"}}
+{"path":"compiler/eslint_noBaseToString.ts::c.ts","start":110,"end":126,"text":"String(/regex/);","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::d.ts","start":14,"end":15,"text":"x","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/eslint_noBaseToString.ts::d.ts","start":26,"end":32,"text":"String","nodeType":"Identifier","type":{"name":"TypeReference","display":"StringConstructor"}}
+{"path":"compiler/eslint_noBaseToString.ts::d.ts","start":26,"end":36,"text":"String(x);","nodeType":"ExpressionStatement","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noBaseToString.ts::d.ts","start":33,"end":34,"text":"x","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}

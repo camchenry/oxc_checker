@@ -1,0 +1,12 @@
+{"path":"compiler/newable.ts","start":9,"end":11,"text":"f6","nodeType":"Identifier","type":{"name":"Function","display":"<T extends string | (new () => {})>(a: T) => void"}}
+{"path":"compiler/newable.ts","start":12,"end":13,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/newable.ts","start":47,"end":48,"text":"a","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/newable.ts","start":50,"end":51,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/newable.ts","start":68,"end":69,"text":"a","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/newable.ts","start":90,"end":98,"text":"new a();","nodeType":"ExpressionStatement","type":{"name":"Object","display":"{}"}}
+{"path":"compiler/newable.ts","start":94,"end":95,"text":"a","nodeType":"Identifier","type":{"name":"Object","display":"new () => {}"}}
+{"path":"compiler/newable.ts","start":110,"end":113,"text":"x13","nodeType":"Identifier","type":{"name":"Object","display":"{ (): {}; new (): number; new (n: number): number; x: string; w: { y: number; }; }"}}
+{"path":"compiler/newable.ts","start":135,"end":136,"text":"n","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/newable.ts","start":153,"end":154,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/newable.ts","start":164,"end":165,"text":"w","nodeType":"Identifier","type":{"name":"Object","display":"{ y: number; }"}}
+{"path":"compiler/newable.ts","start":168,"end":169,"text":"y","nodeType":"Identifier","type":{"name":"Number","display":"number"}}

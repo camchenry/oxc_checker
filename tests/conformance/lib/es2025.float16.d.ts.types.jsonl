@@ -1,0 +1,345 @@
+{"path":"es2025.float16.d.ts","start":256,"end":268,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":256,"end":268,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":269,"end":281,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":290,"end":305,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":290,"end":305,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":308,"end":323,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":308,"end":323,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":411,"end":428,"text":"BYTES_PER_ELEMENT","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":525,"end":531,"text":"buffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"TArrayBuffer"}}
+{"path":"es2025.float16.d.ts","start":533,"end":545,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":618,"end":628,"text":"byteLength","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":709,"end":719,"text":"byteOffset","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":926,"end":928,"text":"at","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number): number | undefined; (index: number): number | undefined; }"}}
+{"path":"es2025.float16.d.ts","start":929,"end":934,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":1479,"end":1489,"text":"copyWithin","nodeType":"Identifier","type":{"name":"Object","display":"{ (target: number, start: number, end?: number): this; (target: number, start: number, end?: number): this; }"}}
+{"path":"es2025.float16.d.ts","start":1490,"end":1496,"text":"target","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":1506,"end":1511,"text":"start","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":1521,"end":1524,"text":"end","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":2082,"end":2087,"text":"every","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean; }"}}
+{"path":"es2025.float16.d.ts","start":2088,"end":2097,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2025.float16.d.ts","start":2100,"end":2105,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":2115,"end":2120,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":2130,"end":2135,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":2155,"end":2162,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":2634,"end":2638,"text":"fill","nodeType":"Identifier","type":{"name":"Object","display":"{ (value: number, start?: number, end?: number): this; (value: number, start?: number, end?: number): this; }"}}
+{"path":"es2025.float16.d.ts","start":2639,"end":2644,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":2654,"end":2659,"text":"start","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":2670,"end":2673,"text":"end","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":3137,"end":3143,"text":"filter","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>; (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Float16Array<ArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":3144,"end":3153,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => any"}}
+{"path":"es2025.float16.d.ts","start":3156,"end":3161,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":3171,"end":3176,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":3186,"end":3191,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":3207,"end":3214,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":3223,"end":3235,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":3223,"end":3235,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":3236,"end":3247,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":3236,"end":3247,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":3820,"end":3824,"text":"find","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number | undefined; (predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number | undefined; }"}}
+{"path":"es2025.float16.d.ts","start":3825,"end":3834,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, obj: this) => boolean"}}
+{"path":"es2025.float16.d.ts","start":3837,"end":3842,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":3852,"end":3857,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":3867,"end":3870,"text":"obj","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":3890,"end":3897,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":4492,"end":4501,"text":"findIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number; (predicate: (value: number, index: number, obj: this) => boolean, thisArg?: any): number; }"}}
+{"path":"es2025.float16.d.ts","start":4502,"end":4511,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, obj: this) => boolean"}}
+{"path":"es2025.float16.d.ts","start":4514,"end":4519,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":4529,"end":4534,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":4544,"end":4547,"text":"obj","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":4567,"end":4574,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":5173,"end":5181,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2025.float16.d.ts","start":5182,"end":5183,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":5209,"end":5218,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => value is S"}}
+{"path":"es2025.float16.d.ts","start":5234,"end":5239,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":5261,"end":5266,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":5288,"end":5293,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":5314,"end":5319,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":5323,"end":5324,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":5334,"end":5341,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":5356,"end":5357,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":5375,"end":5383,"text":"findLast","nodeType":"Identifier","type":{"name":"Object","display":"{ <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; <S extends number>(predicate: (value: number, index: number, array: this) => value is S, thisArg?: any): S | undefined; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number | undefined; }"}}
+{"path":"es2025.float16.d.ts","start":5393,"end":5402,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2025.float16.d.ts","start":5418,"end":5423,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":5445,"end":5450,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":5472,"end":5477,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":5515,"end":5522,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":6140,"end":6153,"text":"findLastIndex","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): number; }"}}
+{"path":"es2025.float16.d.ts","start":6163,"end":6172,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2025.float16.d.ts","start":6188,"end":6193,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":6215,"end":6220,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":6242,"end":6247,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":6285,"end":6292,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":6723,"end":6730,"text":"forEach","nodeType":"Identifier","type":{"name":"Object","display":"{ (callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): void; (callbackfn: (value: number, index: number, array: this) => void, thisArg?: any): void; }"}}
+{"path":"es2025.float16.d.ts","start":6731,"end":6741,"text":"callbackfn","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => void"}}
+{"path":"es2025.float16.d.ts","start":6744,"end":6749,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":6759,"end":6764,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":6774,"end":6779,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":6796,"end":6803,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":7095,"end":7103,"text":"includes","nodeType":"Identifier","type":{"name":"Object","display":"{ (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }"}}
+{"path":"es2025.float16.d.ts","start":7104,"end":7117,"text":"searchElement","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":7127,"end":7136,"text":"fromIndex","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":7445,"end":7452,"text":"indexOf","nodeType":"Identifier","type":{"name":"Object","display":"{ (searchElement: number, fromIndex?: number): number; (searchElement: number, fromIndex?: number): number; }"}}
+{"path":"es2025.float16.d.ts","start":7453,"end":7466,"text":"searchElement","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":7476,"end":7485,"text":"fromIndex","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":7791,"end":7795,"text":"join","nodeType":"Identifier","type":{"name":"Object","display":"{ (separator?: string): string; (separator?: string): string; }"}}
+{"path":"es2025.float16.d.ts","start":7796,"end":7805,"text":"separator","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"es2025.float16.d.ts","start":8112,"end":8123,"text":"lastIndexOf","nodeType":"Identifier","type":{"name":"Object","display":"{ (searchElement: number, fromIndex?: number): number; (searchElement: number, fromIndex?: number): number; }"}}
+{"path":"es2025.float16.d.ts","start":8124,"end":8137,"text":"searchElement","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":8147,"end":8156,"text":"fromIndex","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":8238,"end":8244,"text":"length","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":8727,"end":8730,"text":"map","nodeType":"Identifier","type":{"name":"Object","display":"{ (callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>; (callbackfn: (value: number, index: number, array: this) => number, thisArg?: any): Float16Array<ArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":8731,"end":8741,"text":"callbackfn","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => number"}}
+{"path":"es2025.float16.d.ts","start":8744,"end":8749,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":8759,"end":8764,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":8774,"end":8779,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":8798,"end":8805,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":8814,"end":8826,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":8814,"end":8826,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":8827,"end":8838,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":8827,"end":8838,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":9498,"end":9504,"text":"reduce","nodeType":"Identifier","type":{"name":"Object","display":"{ (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }"}}
+{"path":"es2025.float16.d.ts","start":9505,"end":9515,"text":"callbackfn","nodeType":"Identifier","type":{"name":"Function","display":"(previousValue: number, currentValue: number, currentIndex: number, array: this) => number"}}
+{"path":"es2025.float16.d.ts","start":9518,"end":9531,"text":"previousValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":9541,"end":9553,"text":"currentValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":9563,"end":9575,"text":"currentIndex","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":9585,"end":9590,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":9622,"end":9628,"text":"reduce","nodeType":"Identifier","type":{"name":"Object","display":"{ (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }"}}
+{"path":"es2025.float16.d.ts","start":9629,"end":9639,"text":"callbackfn","nodeType":"Identifier","type":{"name":"Function","display":"(previousValue: number, currentValue: number, currentIndex: number, array: this) => number"}}
+{"path":"es2025.float16.d.ts","start":9642,"end":9655,"text":"previousValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":9665,"end":9677,"text":"currentValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":9687,"end":9699,"text":"currentIndex","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":9709,"end":9714,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":9733,"end":9745,"text":"initialValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":10421,"end":10427,"text":"reduce","nodeType":"Identifier","type":{"name":"Object","display":"{ (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }"}}
+{"path":"es2025.float16.d.ts","start":10428,"end":10429,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":10431,"end":10441,"text":"callbackfn","nodeType":"Identifier","type":{"name":"Function","display":"(previousValue: U, currentValue: number, currentIndex: number, array: this) => U"}}
+{"path":"es2025.float16.d.ts","start":10444,"end":10457,"text":"previousValue","nodeType":"Identifier","type":{"name":"TypeReference","display":"U"}}
+{"path":"es2025.float16.d.ts","start":10459,"end":10460,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":10462,"end":10474,"text":"currentValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":10484,"end":10496,"text":"currentIndex","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":10506,"end":10511,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":10522,"end":10523,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":10525,"end":10537,"text":"initialValue","nodeType":"Identifier","type":{"name":"TypeReference","display":"U"}}
+{"path":"es2025.float16.d.ts","start":10539,"end":10540,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":10543,"end":10544,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":11229,"end":11240,"text":"reduceRight","nodeType":"Identifier","type":{"name":"Object","display":"{ (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }"}}
+{"path":"es2025.float16.d.ts","start":11241,"end":11251,"text":"callbackfn","nodeType":"Identifier","type":{"name":"Function","display":"(previousValue: number, currentValue: number, currentIndex: number, array: this) => number"}}
+{"path":"es2025.float16.d.ts","start":11254,"end":11267,"text":"previousValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":11277,"end":11289,"text":"currentValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":11299,"end":11311,"text":"currentIndex","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":11321,"end":11326,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":11358,"end":11369,"text":"reduceRight","nodeType":"Identifier","type":{"name":"Object","display":"{ (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }"}}
+{"path":"es2025.float16.d.ts","start":11370,"end":11380,"text":"callbackfn","nodeType":"Identifier","type":{"name":"Function","display":"(previousValue: number, currentValue: number, currentIndex: number, array: this) => number"}}
+{"path":"es2025.float16.d.ts","start":11383,"end":11396,"text":"previousValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":11406,"end":11418,"text":"currentValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":11428,"end":11440,"text":"currentIndex","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":11450,"end":11455,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":11474,"end":11486,"text":"initialValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":12188,"end":12199,"text":"reduceRight","nodeType":"Identifier","type":{"name":"Object","display":"{ (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }"}}
+{"path":"es2025.float16.d.ts","start":12200,"end":12201,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":12203,"end":12213,"text":"callbackfn","nodeType":"Identifier","type":{"name":"Function","display":"(previousValue: U, currentValue: number, currentIndex: number, array: this) => U"}}
+{"path":"es2025.float16.d.ts","start":12216,"end":12229,"text":"previousValue","nodeType":"Identifier","type":{"name":"TypeReference","display":"U"}}
+{"path":"es2025.float16.d.ts","start":12231,"end":12232,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":12234,"end":12246,"text":"currentValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":12256,"end":12268,"text":"currentIndex","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":12278,"end":12283,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":12294,"end":12295,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":12297,"end":12309,"text":"initialValue","nodeType":"Identifier","type":{"name":"TypeReference","display":"U"}}
+{"path":"es2025.float16.d.ts","start":12311,"end":12312,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":12315,"end":12316,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":12381,"end":12388,"text":"reverse","nodeType":"Identifier","type":{"name":"Object","display":"{ (): this; (): this; }"}}
+{"path":"es2025.float16.d.ts","start":12616,"end":12619,"text":"set","nodeType":"Identifier","type":{"name":"Object","display":"{ (array: ArrayLike<number>, offset?: number): void; (array: ArrayLike<number>, offset?: number): void; }"}}
+{"path":"es2025.float16.d.ts","start":12620,"end":12625,"text":"array","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayLike<number>"}}
+{"path":"es2025.float16.d.ts","start":12627,"end":12636,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":12627,"end":12636,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":12646,"end":12652,"text":"offset","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":12920,"end":12925,"text":"slice","nodeType":"Identifier","type":{"name":"Object","display":"{ (start?: number, end?: number): Float16Array<ArrayBuffer>; (start?: number, end?: number): Float16Array<ArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":12926,"end":12931,"text":"start","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":12942,"end":12945,"text":"end","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":12957,"end":12969,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":12957,"end":12969,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":12970,"end":12981,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":12970,"end":12981,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":13540,"end":13544,"text":"some","nodeType":"Identifier","type":{"name":"Object","display":"{ (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean; (predicate: (value: number, index: number, array: this) => unknown, thisArg?: any): boolean; }"}}
+{"path":"es2025.float16.d.ts","start":13545,"end":13554,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: number, index: number, array: this) => unknown"}}
+{"path":"es2025.float16.d.ts","start":13557,"end":13562,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":13572,"end":13577,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":13587,"end":13592,"text":"array","nodeType":"Identifier","type":{"name":"This","display":"this"}}
+{"path":"es2025.float16.d.ts","start":13612,"end":13619,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":14038,"end":14042,"text":"sort","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: number, b: number) => number): this; (compareFn?: (a: number, b: number) => number): this; }"}}
+{"path":"es2025.float16.d.ts","start":14043,"end":14052,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: number, b: number) => number) | undefined"}}
+{"path":"es2025.float16.d.ts","start":14056,"end":14057,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":14067,"end":14068,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":14383,"end":14391,"text":"subarray","nodeType":"Identifier","type":{"name":"Object","display":"{ (begin?: number, end?: number): Float16Array<TArrayBuffer>; (begin?: number, end?: number): Float16Array<TArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":14392,"end":14397,"text":"begin","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":14408,"end":14411,"text":"end","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":14423,"end":14435,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":14423,"end":14435,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":14436,"end":14448,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":14538,"end":14552,"text":"toLocaleString","nodeType":"Identifier","type":{"name":"Object","display":"{ (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: string | string[], options?: Intl.NumberFormatOptions): string; }"}}
+{"path":"es2025.float16.d.ts","start":14553,"end":14560,"text":"locales","nodeType":"Identifier","type":{"name":"Union","display":"string | string[] | undefined"}}
+{"path":"es2025.float16.d.ts","start":14582,"end":14589,"text":"options","nodeType":"Identifier","type":{"name":"Union","display":"Intl.NumberFormatOptions | undefined"}}
+{"path":"es2025.float16.d.ts","start":14592,"end":14596,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2025.float16.d.ts","start":14597,"end":14616,"text":"NumberFormatOptions","nodeType":"Identifier","type":{"name":"TypeReference","display":"Intl.NumberFormatOptions"}}
+{"path":"es2025.float16.d.ts","start":14729,"end":14739,"text":"toReversed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Float16Array<ArrayBuffer>; (): Float16Array<ArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":14743,"end":14755,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":14743,"end":14755,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":14756,"end":14767,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":14756,"end":14767,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":15293,"end":15301,"text":"toSorted","nodeType":"Identifier","type":{"name":"Object","display":"{ (compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Float16Array<ArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":15302,"end":15311,"text":"compareFn","nodeType":"Identifier","type":{"name":"Union","display":"((a: number, b: number) => number) | undefined"}}
+{"path":"es2025.float16.d.ts","start":15315,"end":15316,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":15326,"end":15327,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":15349,"end":15361,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":15349,"end":15361,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":15362,"end":15373,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":15362,"end":15373,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":15449,"end":15457,"text":"toString","nodeType":"Identifier","type":{"name":"Object","display":"{ (): string; (): string; }"}}
+{"path":"es2025.float16.d.ts","start":15538,"end":15545,"text":"valueOf","nodeType":"Identifier","type":{"name":"Object","display":"{ (): this; (): this; }"}}
+{"path":"es2025.float16.d.ts","start":15919,"end":15923,"text":"with","nodeType":"Identifier","type":{"name":"Object","display":"{ (index: number, value: number): Float16Array<ArrayBuffer>; (index: number, value: number): Float16Array<ArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":15924,"end":15929,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":15939,"end":15944,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":15955,"end":15967,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":15955,"end":15967,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":15968,"end":15979,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":15968,"end":15979,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":15988,"end":15993,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":16018,"end":16024,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2025.float16.d.ts","start":16025,"end":16033,"text":"iterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2025.float16.d.ts","start":16038,"end":16051,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16038,"end":16051,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16155,"end":16162,"text":"entries","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<[number, number]>; (): ArrayIterator<[number, number]>; }"}}
+{"path":"es2025.float16.d.ts","start":16166,"end":16179,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16166,"end":16179,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16264,"end":16268,"text":"keys","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2025.float16.d.ts","start":16272,"end":16285,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16272,"end":16285,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16362,"end":16368,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ (): ArrayIterator<number>; (): ArrayIterator<number>; }"}}
+{"path":"es2025.float16.d.ts","start":16372,"end":16385,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16372,"end":16385,"text":"ArrayIterator","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16410,"end":16416,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2025.float16.d.ts","start":16417,"end":16428,"text":"toStringTag","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2025.float16.d.ts","start":16460,"end":16483,"text":"Float16ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16460,"end":16483,"text":"Float16ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16499,"end":16508,"text":"prototype","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16Array<ArrayBufferLike>"}}
+{"path":"es2025.float16.d.ts","start":16510,"end":16522,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16510,"end":16522,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16523,"end":16538,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16523,"end":16538,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16550,"end":16556,"text":"length","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":16568,"end":16580,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16568,"end":16580,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16581,"end":16592,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16581,"end":16592,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16604,"end":16609,"text":"array","nodeType":"Identifier","type":{"name":"Union","display":"ArrayLike<number> | Iterable<number>"}}
+{"path":"es2025.float16.d.ts","start":16611,"end":16620,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16611,"end":16620,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16631,"end":16639,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16631,"end":16639,"text":"Iterable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16650,"end":16662,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16650,"end":16662,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16663,"end":16674,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16663,"end":16674,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16686,"end":16698,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16707,"end":16722,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16707,"end":16722,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16725,"end":16736,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16725,"end":16736,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16738,"end":16744,"text":"buffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"TArrayBuffer"}}
+{"path":"es2025.float16.d.ts","start":16746,"end":16758,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16760,"end":16770,"text":"byteOffset","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":16781,"end":16787,"text":"length","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":16799,"end":16811,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16799,"end":16811,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16812,"end":16824,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16836,"end":16842,"text":"buffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBuffer"}}
+{"path":"es2025.float16.d.ts","start":16844,"end":16855,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16844,"end":16855,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16857,"end":16867,"text":"byteOffset","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":16878,"end":16884,"text":"length","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"es2025.float16.d.ts","start":16896,"end":16908,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16896,"end":16908,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16909,"end":16920,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16909,"end":16920,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16932,"end":16937,"text":"array","nodeType":"Identifier","type":{"name":"Union","display":"ArrayLike<number> | ArrayBuffer"}}
+{"path":"es2025.float16.d.ts","start":16939,"end":16948,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16939,"end":16948,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":16959,"end":16970,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16959,"end":16970,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16973,"end":16985,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16973,"end":16985,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":16986,"end":16997,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":16986,"end":16997,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":17085,"end":17102,"text":"BYTES_PER_ELEMENT","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":17258,"end":17260,"text":"of","nodeType":"Identifier","type":{"name":"Object","display":"{ (...items: number[]): Float16Array<ArrayBuffer>; (...items: number[]): Float16Array<ArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":17264,"end":17269,"text":"items","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"es2025.float16.d.ts","start":17282,"end":17294,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":17282,"end":17294,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":17295,"end":17306,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":17295,"end":17306,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":17462,"end":17466,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":17467,"end":17476,"text":"arrayLike","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayLike<number>"}}
+{"path":"es2025.float16.d.ts","start":17478,"end":17487,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":17478,"end":17487,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":17498,"end":17510,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":17498,"end":17510,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":17511,"end":17522,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":17511,"end":17522,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":17820,"end":17824,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":17825,"end":17826,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":17828,"end":17837,"text":"arrayLike","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayLike<T>"}}
+{"path":"es2025.float16.d.ts","start":17839,"end":17848,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":17839,"end":17848,"text":"ArrayLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":17849,"end":17850,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":17853,"end":17858,"text":"mapfn","nodeType":"Identifier","type":{"name":"Function","display":"(v: T, k: number) => number"}}
+{"path":"es2025.float16.d.ts","start":17861,"end":17862,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2025.float16.d.ts","start":17864,"end":17865,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":17867,"end":17868,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":17889,"end":17896,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":17905,"end":17917,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":17905,"end":17917,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":17918,"end":17929,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":17918,"end":17929,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":18082,"end":18086,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":18087,"end":18095,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<number>"}}
+{"path":"es2025.float16.d.ts","start":18097,"end":18105,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18097,"end":18105,"text":"Iterable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18116,"end":18128,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":18116,"end":18128,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":18129,"end":18140,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":18129,"end":18140,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":18435,"end":18439,"text":"from","nodeType":"Identifier","type":{"name":"Object","display":"{ (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Float16Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; (elements: Iterable<number>): Float16Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>; }"}}
+{"path":"es2025.float16.d.ts","start":18440,"end":18441,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18443,"end":18451,"text":"elements","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2025.float16.d.ts","start":18453,"end":18461,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18453,"end":18461,"text":"Iterable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18462,"end":18463,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18466,"end":18471,"text":"mapfn","nodeType":"Identifier","type":{"name":"Union","display":"((v: T, k: number) => number) | undefined"}}
+{"path":"es2025.float16.d.ts","start":18475,"end":18476,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2025.float16.d.ts","start":18478,"end":18479,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18481,"end":18482,"text":"k","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":18503,"end":18510,"text":"thisArg","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18519,"end":18531,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":18519,"end":18531,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":18532,"end":18543,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":18532,"end":18543,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2025.float16.d.ts","start":18560,"end":18572,"text":"Float16Array","nodeType":"Identifier","type":{"name":"TypeReference","display":"Float16ArrayConstructor"}}
+{"path":"es2025.float16.d.ts","start":18574,"end":18597,"text":"Float16ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18574,"end":18597,"text":"Float16ArrayConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18610,"end":18614,"text":"Math","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18610,"end":18614,"text":"Math","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18751,"end":18759,"text":"f16round","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: number): number; (x: number): number; }"}}
+{"path":"es2025.float16.d.ts","start":18760,"end":18761,"text":"x","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":18793,"end":18801,"text":"DataView","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18793,"end":18801,"text":"DataView","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18802,"end":18814,"text":"TArrayBuffer","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18823,"end":18838,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.float16.d.ts","start":18823,"end":18838,"text":"ArrayBufferLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.float16.d.ts","start":19214,"end":19224,"text":"getFloat16","nodeType":"Identifier","type":{"name":"Object","display":"{ (byteOffset: number, littleEndian?: boolean): number; (byteOffset: number, littleEndian?: boolean): number; }"}}
+{"path":"es2025.float16.d.ts","start":19225,"end":19235,"text":"byteOffset","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":19245,"end":19257,"text":"littleEndian","nodeType":"Identifier","type":{"name":"Union","display":"boolean | undefined"}}
+{"path":"es2025.float16.d.ts","start":19596,"end":19606,"text":"setFloat16","nodeType":"Identifier","type":{"name":"Object","display":"{ (byteOffset: number, value: number, littleEndian?: boolean): void; (byteOffset: number, value: number, littleEndian?: boolean): void; }"}}
+{"path":"es2025.float16.d.ts","start":19607,"end":19617,"text":"byteOffset","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":19627,"end":19632,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2025.float16.d.ts","start":19642,"end":19654,"text":"littleEndian","nodeType":"Identifier","type":{"name":"Union","display":"boolean | undefined"}}

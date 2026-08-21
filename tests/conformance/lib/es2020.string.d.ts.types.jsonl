@@ -1,0 +1,26 @@
+{"path":"es2020.string.d.ts","start":135,"end":141,"text":"String","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.string.d.ts","start":135,"end":141,"text":"String","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.string.d.ts","start":338,"end":346,"text":"matchAll","nodeType":"Identifier","type":{"name":"Object","display":"{ (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; }"}}
+{"path":"es2020.string.d.ts","start":347,"end":353,"text":"regexp","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExp"}}
+{"path":"es2020.string.d.ts","start":355,"end":361,"text":"RegExp","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExpConstructor"}}
+{"path":"es2020.string.d.ts","start":355,"end":361,"text":"RegExp","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExpConstructor"}}
+{"path":"es2020.string.d.ts","start":364,"end":384,"text":"RegExpStringIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.string.d.ts","start":364,"end":384,"text":"RegExpStringIterator","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2020.string.d.ts","start":385,"end":400,"text":"RegExpExecArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2020.string.d.ts","start":385,"end":400,"text":"RegExpExecArray","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2020.string.d.ts","start":527,"end":544,"text":"toLocaleLowerCase","nodeType":"Identifier","type":{"name":"Object","display":"{ (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }"}}
+{"path":"es2020.string.d.ts","start":545,"end":552,"text":"locales","nodeType":"Identifier","type":{"name":"Union","display":"Intl.LocalesArgument | undefined"}}
+{"path":"es2020.string.d.ts","start":555,"end":559,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2020.string.d.ts","start":560,"end":575,"text":"LocalesArgument","nodeType":"Identifier","type":{"name":"TypeReference","display":"Intl.LocalesArgument"}}
+{"path":"es2020.string.d.ts","start":744,"end":761,"text":"toLocaleUpperCase","nodeType":"Identifier","type":{"name":"Object","display":"{ (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }"}}
+{"path":"es2020.string.d.ts","start":762,"end":769,"text":"locales","nodeType":"Identifier","type":{"name":"Union","display":"Intl.LocalesArgument | undefined"}}
+{"path":"es2020.string.d.ts","start":772,"end":776,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2020.string.d.ts","start":777,"end":792,"text":"LocalesArgument","nodeType":"Identifier","type":{"name":"TypeReference","display":"Intl.LocalesArgument"}}
+{"path":"es2020.string.d.ts","start":1534,"end":1547,"text":"localeCompare","nodeType":"Identifier","type":{"name":"Object","display":"{ (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; }"}}
+{"path":"es2020.string.d.ts","start":1548,"end":1552,"text":"that","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2020.string.d.ts","start":1562,"end":1569,"text":"locales","nodeType":"Identifier","type":{"name":"Union","display":"Intl.LocalesArgument | undefined"}}
+{"path":"es2020.string.d.ts","start":1572,"end":1576,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2020.string.d.ts","start":1577,"end":1592,"text":"LocalesArgument","nodeType":"Identifier","type":{"name":"TypeReference","display":"Intl.LocalesArgument"}}
+{"path":"es2020.string.d.ts","start":1594,"end":1601,"text":"options","nodeType":"Identifier","type":{"name":"Union","display":"Intl.CollatorOptions | undefined"}}
+{"path":"es2020.string.d.ts","start":1604,"end":1608,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2020.string.d.ts","start":1609,"end":1624,"text":"CollatorOptions","nodeType":"Identifier","type":{"name":"TypeReference","display":"Intl.CollatorOptions"}}

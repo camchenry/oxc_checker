@@ -1,233 +1,233 @@
 type FlatArray<Arr, Depth extends number> = {
->    ^^^^^^^^^: { done: Arr; recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]> : Arr; }[Depth extends -1 ? "done" : "recur"]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: { done: Arr; recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]> : Arr; }[Depth extends -1 ? "done" : "recur"]   (IndexedAccess) (Identifier)
 
 type FlatArray<Arr, Depth extends number> = {
->              ^^^: any   (TyAny) (TSTypeParameter)
+>              ^^^: any   (Any) (Identifier)
 
 type FlatArray<Arr, Depth extends number> = {
->                   ^^^^^: any   (TyAny) (TSTypeParameter)
+>                   ^^^^^: any   (Any) (Identifier)
 
     done: Arr;
->   ^^^^: Arr   (TyTypeReference) (TSPropertySignature)
+>   ^^^^: Arr   (TypeReference) (Identifier)
 
     done: Arr;
->         ^^^: any   (TyAny) (TSTypeReference)
+>         ^^^: any   (Any) (Identifier)
 
     recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
->   ^^^^^: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]> : Arr   (TyConditional) (TSPropertySignature)
+>   ^^^^^: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]> : Arr   (Conditional) (Identifier)
  expected: Arr extends readonly (infer InnerArr)[] ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]> : Arr
 
     recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
->          ^^^: any   (TyAny) (TSTypeReference)
+>          ^^^: any   (Any) (Identifier)
 
     recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
->                      ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
->                      ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
->                                          ^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                          ^^^^^^^^: any   (Any) (Identifier)
 
     recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
->                                                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                      ^^^^^^^^^: any   (Any) (Identifier)
 
     recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
->                                                                ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                ^^^^^^^^: any   (Any) (Identifier)
 
     recur: Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]>
->                                                                                                                                                         ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                                                                         ^^^^^: any   (Any) (Identifier)
 
         : Arr;
->         ^^^: any   (TyAny) (TSTypeReference)
+>         ^^^: any   (Any) (Identifier)
 
 }[Depth extends -1 ? "done" : "recur"];
-> ^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^: any   (Any) (Identifier)
 
 interface ReadonlyArray<T> {
->         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ReadonlyArray<T> {
->         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ReadonlyArray<T> {
->                       ^: any   (TyAny) (TSTypeParameter)
+>                       ^: any   (Any) (Identifier)
 
     flatMap<U, This = undefined>(
->   ^^^^^^^: { <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; }   (Object) (Identifier)
 
     flatMap<U, This = undefined>(
->           ^: any   (TyAny) (TSTypeParameter)
+>           ^: any   (Any) (Identifier)
 
     flatMap<U, This = undefined>(
->              ^^^^: any   (TyAny) (TSTypeParameter)
+>              ^^^^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->       ^^^^^^^^: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>   (TyFunction) (BindingIdentifier)
+>       ^^^^^^^^: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>   (Function) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                  ^^^^: This   (TyTypeReference) (TSThisParameter)
+>                  ^^^^: This   (TypeReference) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                        ^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                              ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                              ^^^^^: T   (TypeReference) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                     ^: any   (TyAny) (TSTypeReference)
+>                                     ^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                        ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                        ^^^^^: number   (Number) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                       ^^^^^: T[]   (TyArray) (BindingIdentifier)
+>                                                       ^^^^^: T[]   (Array) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                              ^: any   (TyAny) (TSTypeReference)
+>                                                              ^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                                      ^: any   (TyAny) (TSTypeReference)
+>                                                                      ^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                                          ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                          ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                                          ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                          ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                                                        ^: any   (TyAny) (TSTypeReference)
+>                                                                                        ^: any   (Any) (Identifier)
 
         thisArg?: This,
->       ^^^^^^^: This | undefined   (TyUnion) (BindingIdentifier)
+>       ^^^^^^^: This | undefined   (Union) (Identifier)
 
         thisArg?: This,
->                 ^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^: any   (Any) (Identifier)
 
     ): U[];
->      ^: any   (TyAny) (TSTypeReference)
+>      ^: any   (Any) (Identifier)
 
     flat<A, D extends number = 1>(
->   ^^^^: { <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; }   (Object) (Identifier)
 
     flat<A, D extends number = 1>(
->        ^: any   (TyAny) (TSTypeParameter)
+>        ^: any   (Any) (Identifier)
 
     flat<A, D extends number = 1>(
->           ^: any   (TyAny) (TSTypeParameter)
+>           ^: any   (Any) (Identifier)
 
         this: A,
->       ^^^^: A   (TyTypeReference) (TSThisParameter)
+>       ^^^^: A   (TypeReference) (Identifier)
 
         this: A,
->             ^: any   (TyAny) (TSTypeReference)
+>             ^: any   (Any) (Identifier)
 
         depth?: D,
->       ^^^^^: D | undefined   (TyUnion) (BindingIdentifier)
+>       ^^^^^: D | undefined   (Union) (Identifier)
 
         depth?: D,
->               ^: any   (TyAny) (TSTypeReference)
+>               ^: any   (Any) (Identifier)
 
     ): FlatArray<A, D>[];
->      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>      ^^^^^^^^^: any   (Any) (Identifier)
 
     ): FlatArray<A, D>[];
->                ^: any   (TyAny) (TSTypeReference)
+>                ^: any   (Any) (Identifier)
 
     ): FlatArray<A, D>[];
->                   ^: any   (TyAny) (TSTypeReference)
+>                   ^: any   (Any) (Identifier)
 
 interface Array<T> {
->         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^: any   (Any) (Identifier)
        expected: ArrayConstructor
 
 interface Array<T> {
->         ^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^: any   (Any) (Identifier)
        expected: ArrayConstructor
 
 interface Array<T> {
->               ^: any   (TyAny) (TSTypeParameter)
+>               ^: any   (Any) (Identifier)
 
     flatMap<U, This = undefined>(
->   ^^^^^^^: { <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; <U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>, thisArg?: This): U[]; }   (Object) (Identifier)
 
     flatMap<U, This = undefined>(
->           ^: any   (TyAny) (TSTypeParameter)
+>           ^: any   (Any) (Identifier)
 
     flatMap<U, This = undefined>(
->              ^^^^: any   (TyAny) (TSTypeParameter)
+>              ^^^^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->       ^^^^^^^^: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>   (TyFunction) (BindingIdentifier)
+>       ^^^^^^^^: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>   (Function) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                  ^^^^: This   (TyTypeReference) (TSThisParameter)
+>                  ^^^^: This   (TypeReference) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                        ^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                              ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                              ^^^^^: T   (TypeReference) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                     ^: any   (TyAny) (TSTypeReference)
+>                                     ^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                        ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                        ^^^^^: number   (Number) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                       ^^^^^: T[]   (TyArray) (BindingIdentifier)
+>                                                       ^^^^^: T[]   (Array) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                              ^: any   (TyAny) (TSTypeReference)
+>                                                              ^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                                      ^: any   (TyAny) (TSTypeReference)
+>                                                                      ^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                                          ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                          ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                                          ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                                          ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                                                                                        ^: any   (TyAny) (TSTypeReference)
+>                                                                                        ^: any   (Any) (Identifier)
 
         thisArg?: This,
->       ^^^^^^^: This | undefined   (TyUnion) (BindingIdentifier)
+>       ^^^^^^^: This | undefined   (Union) (Identifier)
 
         thisArg?: This,
->                 ^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^: any   (Any) (Identifier)
 
     ): U[];
->      ^: any   (TyAny) (TSTypeReference)
+>      ^: any   (Any) (Identifier)
 
     flat<A, D extends number = 1>(
->   ^^^^: { <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; }   (Object) (Identifier)
 
     flat<A, D extends number = 1>(
->        ^: any   (TyAny) (TSTypeParameter)
+>        ^: any   (Any) (Identifier)
 
     flat<A, D extends number = 1>(
->           ^: any   (TyAny) (TSTypeParameter)
+>           ^: any   (Any) (Identifier)
 
         this: A,
->       ^^^^: A   (TyTypeReference) (TSThisParameter)
+>       ^^^^: A   (TypeReference) (Identifier)
 
         this: A,
->             ^: any   (TyAny) (TSTypeReference)
+>             ^: any   (Any) (Identifier)
 
         depth?: D,
->       ^^^^^: D | undefined   (TyUnion) (BindingIdentifier)
+>       ^^^^^: D | undefined   (Union) (Identifier)
 
         depth?: D,
->               ^: any   (TyAny) (TSTypeReference)
+>               ^: any   (Any) (Identifier)
 
     ): FlatArray<A, D>[];
->      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>      ^^^^^^^^^: any   (Any) (Identifier)
 
     ): FlatArray<A, D>[];
->                ^: any   (TyAny) (TSTypeReference)
+>                ^: any   (Any) (Identifier)
 
     ): FlatArray<A, D>[];
->                   ^: any   (TyAny) (TSTypeReference)
+>                   ^: any   (Any) (Identifier)

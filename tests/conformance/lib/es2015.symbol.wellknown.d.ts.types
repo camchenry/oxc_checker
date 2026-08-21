@@ -1,851 +1,851 @@
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SymbolConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly hasInstance: unique symbol;
->            ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly isConcatSpreadable: unique symbol;
->            ^^^^^^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly match: unique symbol;
->            ^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly replace: unique symbol;
->            ^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly search: unique symbol;
->            ^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly species: unique symbol;
->            ^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly split: unique symbol;
->            ^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly toPrimitive: unique symbol;
->            ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly toStringTag: unique symbol;
->            ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly unscopables: unique symbol;
->            ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (TSPropertySignature)
+>            ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Symbol {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: SymbolConstructor
 
 interface Symbol {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: SymbolConstructor
 
     [Symbol.toPrimitive](hint: string): symbol;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.toPrimitive](hint: string): symbol;
->           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.toPrimitive](hint: string): symbol;
->                        ^^^^: string   (TyString) (BindingIdentifier)
+>                        ^^^^: string   (String) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Array<T> {
->         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^: any   (Any) (Identifier)
        expected: ArrayConstructor
 
 interface Array<T> {
->         ^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^: any   (Any) (Identifier)
        expected: ArrayConstructor
 
 interface Array<T> {
->               ^: any   (TyAny) (TSTypeParameter)
+>               ^: any   (Any) (Identifier)
 
     readonly [Symbol.unscopables]: {
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.unscopables]: {
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
         [K in keyof any[]]?: boolean;
->        ^: any   (TyAny) (TSMappedType)
+>        ^: any   (Any) (Identifier)
 
 interface ReadonlyArray<T> {
->         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ReadonlyArray<T> {
->         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ReadonlyArray<T> {
->                       ^: any   (TyAny) (TSTypeParameter)
+>                       ^: any   (Any) (Identifier)
 
     readonly [Symbol.unscopables]: {
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.unscopables]: {
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
         [K in keyof readonly any[]]?: boolean;
->        ^: any   (TyAny) (TSMappedType)
+>        ^: any   (Any) (Identifier)
 
 interface Date {
->         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^: any   (Any) (Identifier)
       expected: DateConstructor
 
 interface Date {
->         ^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^: any   (Any) (Identifier)
       expected: DateConstructor
 
     [Symbol.toPrimitive](hint: "default"): string;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.toPrimitive](hint: "default"): string;
->           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.toPrimitive](hint: "default"): string;
->                        ^^^^: "default"   (TyStringLiteral) (BindingIdentifier)
+>                        ^^^^: "default"   (StringLiteral) (Identifier)
 
     [Symbol.toPrimitive](hint: "string"): string;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.toPrimitive](hint: "string"): string;
->           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.toPrimitive](hint: "string"): string;
->                        ^^^^: "string"   (TyStringLiteral) (BindingIdentifier)
+>                        ^^^^: "string"   (StringLiteral) (Identifier)
 
     [Symbol.toPrimitive](hint: "number"): number;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.toPrimitive](hint: "number"): number;
->           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.toPrimitive](hint: "number"): number;
->                        ^^^^: "number"   (TyStringLiteral) (BindingIdentifier)
+>                        ^^^^: "number"   (StringLiteral) (Identifier)
 
     [Symbol.toPrimitive](hint: string): string | number;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.toPrimitive](hint: string): string | number;
->           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.toPrimitive](hint: string): string | number;
->                        ^^^^: string   (TyString) (BindingIdentifier)
+>                        ^^^^: string   (String) (Identifier)
 
 interface Map<K, V> {
->         ^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^: any   (Any) (Identifier)
      expected: MapConstructor
 
 interface Map<K, V> {
->         ^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^: any   (Any) (Identifier)
      expected: MapConstructor
 
 interface Map<K, V> {
->             ^: any   (TyAny) (TSTypeParameter)
+>             ^: any   (Any) (Identifier)
 
 interface Map<K, V> {
->                ^: any   (TyAny) (TSTypeParameter)
+>                ^: any   (Any) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface WeakMap<K extends WeakKey, V> {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: WeakMapConstructor
 
 interface WeakMap<K extends WeakKey, V> {
->         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: WeakMapConstructor
 
 interface WeakMap<K extends WeakKey, V> {
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
 interface WeakMap<K extends WeakKey, V> {
->                           ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^: any   (Any) (Identifier)
 
 interface WeakMap<K extends WeakKey, V> {
->                           ^^^^^^^: any   (TyError) (IdentifierReference)
+>                           ^^^^^^^: any   (Error) (Identifier)
 
 interface WeakMap<K extends WeakKey, V> {
->                                    ^: any   (TyAny) (TSTypeParameter)
+>                                    ^: any   (Any) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Set<T> {
->         ^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^: any   (Any) (Identifier)
      expected: SetConstructor
 
 interface Set<T> {
->         ^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^: any   (Any) (Identifier)
      expected: SetConstructor
 
 interface Set<T> {
->             ^: any   (TyAny) (TSTypeParameter)
+>             ^: any   (Any) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface WeakSet<T extends WeakKey> {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: WeakSetConstructor
 
 interface WeakSet<T extends WeakKey> {
->         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: WeakSetConstructor
 
 interface WeakSet<T extends WeakKey> {
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
 interface WeakSet<T extends WeakKey> {
->                           ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^: any   (Any) (Identifier)
 
 interface WeakSet<T extends WeakKey> {
->                           ^^^^^^^: any   (TyError) (IdentifierReference)
+>                           ^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface JSON {
->         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^: any   (Any) (Identifier)
       expected: JSON
 
 interface JSON {
->         ^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^: any   (Any) (Identifier)
       expected: JSON
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Function {
->         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^: any   (Any) (Identifier)
           expected: FunctionConstructor
 
 interface Function {
->         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^: any   (Any) (Identifier)
           expected: FunctionConstructor
 
     [Symbol.hasInstance](value: any): boolean;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.hasInstance](value: any): boolean;
->           ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.hasInstance](value: any): boolean;
->                        ^^^^^: any   (TyAny) (BindingIdentifier)
+>                        ^^^^^: any   (Any) (Identifier)
 
 interface GeneratorFunction {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface GeneratorFunction {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Math {
->         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^: any   (Any) (Identifier)
       expected: Math
 
 interface Math {
->         ^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^: any   (Any) (Identifier)
       expected: Math
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Promise<T> {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: PromiseConstructor
 
 interface Promise<T> {
->         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: PromiseConstructor
 
 interface Promise<T> {
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface PromiseConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface PromiseConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: PromiseConstructor;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.species]: PromiseConstructor;
->                    ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly [Symbol.species]: PromiseConstructor;
->                              ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: PromiseConstructor;
->                              ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface RegExp {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: RegExpConstructor
 
 interface RegExp {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: RegExpConstructor
 
     [Symbol.match](string: string): RegExpMatchArray | null;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.match](string: string): RegExpMatchArray | null;
->           ^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.match](string: string): RegExpMatchArray | null;
->                  ^^^^^^: string   (TyString) (BindingIdentifier)
+>                  ^^^^^^: string   (String) (Identifier)
 
     [Symbol.match](string: string): RegExpMatchArray | null;
->                                   ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     [Symbol.match](string: string): RegExpMatchArray | null;
->                                   ^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                   ^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     [Symbol.replace](string: string, replaceValue: string): string;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.replace](string: string, replaceValue: string): string;
->           ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.replace](string: string, replaceValue: string): string;
->                    ^^^^^^: string   (TyString) (BindingIdentifier)
+>                    ^^^^^^: string   (String) (Identifier)
 
     [Symbol.replace](string: string, replaceValue: string): string;
->                                    ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>                                    ^^^^^^^^^^^^: string   (String) (Identifier)
 
     [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
->           ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
->                    ^^^^^^: string   (TyString) (BindingIdentifier)
+>                    ^^^^^^: string   (String) (Identifier)
 
     [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
->                                    ^^^^^^^^: (substring: string, ...args: any[]) => string   (TyFunction) (BindingIdentifier)
+>                                    ^^^^^^^^: (substring: string, ...args: any[]) => string   (Function) (Identifier)
 
     [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
->                                               ^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>                                               ^^^^^^^^^: string   (String) (Identifier)
 
     [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
->                                                                     ^^^^: any[]   (TyArray) (BindingIdentifier)
+>                                                                     ^^^^: any[]   (Array) (Identifier)
 
     [Symbol.search](string: string): number;
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.search](string: string): number;
->           ^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.search](string: string): number;
->                   ^^^^^^: string   (TyString) (BindingIdentifier)
+>                   ^^^^^^: string   (String) (Identifier)
 
     [Symbol.split](string: string, limit?: number): string[];
->    ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>    ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     [Symbol.split](string: string, limit?: number): string[];
->           ^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>           ^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     [Symbol.split](string: string, limit?: number): string[];
->                  ^^^^^^: string   (TyString) (BindingIdentifier)
+>                  ^^^^^^: string   (String) (Identifier)
 
     [Symbol.split](string: string, limit?: number): string[];
->                                  ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                  ^^^^^: number | undefined   (Union) (Identifier)
 
 interface RegExpConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface RegExpConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: RegExpConstructor;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.species]: RegExpConstructor;
->                    ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly [Symbol.species]: RegExpConstructor;
->                              ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: RegExpConstructor;
->                              ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface String {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: StringConstructor
 
 interface String {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: StringConstructor
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->   ^^^^^: { (regexp: string | RegExp): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (regexp: string | RegExp): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; }   (Object) (Identifier)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->         ^^^^^^^: { [Symbol.match](string: string): RegExpMatchArray | null; }   (TyObject) (BindingIdentifier)
+>         ^^^^^^^: { [Symbol.match](string: string): RegExpMatchArray | null; }   (Object) (Identifier)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->                     ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>                     ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->                            ^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                            ^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->                                   ^^^^^^: string   (TyString) (BindingIdentifier)
+>                                   ^^^^^^: string   (String) (Identifier)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->                                                    ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                    ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->                                                    ^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                    ^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->                                                                                 ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                 ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     match(matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null;
->                                                                                 ^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                 ^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
->   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; }   (Object) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
->           ^^^^^^^^^^^: { [Symbol.replace](string: string, replaceValue: string): string; }   (TyObject) (BindingIdentifier)
+>           ^^^^^^^^^^^: { [Symbol.replace](string: string, replaceValue: string): string; }   (Object) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
->                           ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>                           ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
->                                  ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                                  ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
->                                           ^^^^^^: string   (TyString) (BindingIdentifier)
+>                                           ^^^^^^: string   (String) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
->                                                           ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>                                                           ^^^^^^^^^^^^: string   (String) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string;
->                                                                                             ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>                                                                                             ^^^^^^^^^^^^: string   (String) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { [Symbol.replace](string: string, replaceValue: string): string; }, replaceValue: string): string; (searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string; }   (Object) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->           ^^^^^^^^^^^: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }   (TyObject) (BindingIdentifier)
+>           ^^^^^^^^^^^: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }   (Object) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->                           ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>                           ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->                                  ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                                  ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->                                           ^^^^^^: string   (TyString) (BindingIdentifier)
+>                                           ^^^^^^: string   (String) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->                                                           ^^^^^^^^: (substring: string, ...args: any[]) => string   (TyFunction) (BindingIdentifier)
+>                                                           ^^^^^^^^: (substring: string, ...args: any[]) => string   (Function) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->                                                                      ^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>                                                                      ^^^^^^^^^: string   (String) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->                                                                                            ^^^^: any[]   (TyArray) (BindingIdentifier)
+>                                                                                            ^^^^: any[]   (Array) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->                                                                                                                                ^^^^^^^^: (substring: string, ...args: any[]) => string   (TyFunction) (BindingIdentifier)
+>                                                                                                                                ^^^^^^^^: (substring: string, ...args: any[]) => string   (Function) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->                                                                                                                                           ^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>                                                                                                                                           ^^^^^^^^^: string   (String) (Identifier)
 
     replace(searchValue: { [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string; }, replacer: (substring: string, ...args: any[]) => string): string;
->                                                                                                                                                                 ^^^^: any[]   (TyArray) (BindingIdentifier)
+>                                                                                                                                                                 ^^^^: any[]   (Array) (Identifier)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
->   ^^^^^^: { (regexp: string | RegExp): number; (searcher: { [Symbol.search](string: string): number; }): number; (searcher: { [Symbol.search](string: string): number; }): number; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^: { (regexp: string | RegExp): number; (searcher: { [Symbol.search](string: string): number; }): number; (searcher: { [Symbol.search](string: string): number; }): number; }   (Object) (Identifier)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
->          ^^^^^^^^: { [Symbol.search](string: string): number; }   (TyObject) (BindingIdentifier)
+>          ^^^^^^^^: { [Symbol.search](string: string): number; }   (Object) (Identifier)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
->                       ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
->                              ^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                              ^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     search(searcher: { [Symbol.search](string: string): number; }): number;
->                                      ^^^^^^: string   (TyString) (BindingIdentifier)
+>                                      ^^^^^^: string   (String) (Identifier)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
->   ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; }   (Object) (Identifier)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
->         ^^^^^^^^: { [Symbol.split](string: string, limit?: number): string[]; }   (TyObject) (BindingIdentifier)
+>         ^^^^^^^^: { [Symbol.split](string: string, limit?: number): string[]; }   (Object) (Identifier)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
->                      ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>                      ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
->                             ^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                             ^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
->                                    ^^^^^^: string   (TyString) (BindingIdentifier)
+>                                    ^^^^^^: string   (String) (Identifier)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
->                                                    ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                                    ^^^^^: number | undefined   (Union) (Identifier)
 
     split(splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[];
->                                                                                  ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                                                                  ^^^^^: number | undefined   (Union) (Identifier)
 
 interface ArrayBuffer {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: ArrayBufferConstructor
 
 interface ArrayBuffer {
->         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: ArrayBufferConstructor
 
     readonly [Symbol.toStringTag]: "ArrayBuffer";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "ArrayBuffer";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^: any   (Any) (Identifier)
           expected: DataViewConstructor
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^: any   (Any) (Identifier)
           expected: DataViewConstructor
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
->                  ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                  ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
->                                       ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                       ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface DataView<TArrayBuffer extends ArrayBufferLike> {
->                                       ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                       ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: string;
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^: any   (Any) (Identifier)
            expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^: any   (Any) (Identifier)
            expected: Int8ArrayConstructor
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                   ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int8Array<TArrayBuffer extends ArrayBufferLike> {
->                                        ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                        ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: "Int8Array";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "Int8Array";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Uint8ArrayConstructor
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: "Uint8Array";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "Uint8Array";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
                    expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
                    expected: Uint8ClampedArrayConstructor
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                           ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                           ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8ClampedArray<TArrayBuffer extends ArrayBufferLike> {
->                                                ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: "Uint8ClampedArray";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "Uint8ClampedArray";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int16ArrayConstructor
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int16Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: "Int16Array";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "Int16Array";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint16ArrayConstructor
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                     ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint16Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: "Uint16Array";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "Uint16Array";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^: any   (Any) (Identifier)
             expected: Int32ArrayConstructor
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int32Array<TArrayBuffer extends ArrayBufferLike> {
->                                         ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: "Int32Array";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "Int32Array";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
              expected: Uint32ArrayConstructor
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                     ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint32Array<TArrayBuffer extends ArrayBufferLike> {
->                                          ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: "Uint32Array";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "Uint32Array";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float32ArrayConstructor
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                      ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float32Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: "Float32Array";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "Float32Array";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
               expected: Float64ArrayConstructor
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                      ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float64Array<TArrayBuffer extends ArrayBufferLike> {
->                                           ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                           ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: "Float64Array";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "Float64Array";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
 interface ArrayConstructor {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ArrayConstructor {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: ArrayConstructor;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.species]: ArrayConstructor;
->                    ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly [Symbol.species]: ArrayConstructor;
->                              ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: ArrayConstructor;
->                              ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface MapConstructor {
->         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface MapConstructor {
->         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: MapConstructor;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.species]: MapConstructor;
->                    ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly [Symbol.species]: MapConstructor;
->                              ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: MapConstructor;
->                              ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SetConstructor {
->         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SetConstructor {
->         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: SetConstructor;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.species]: SetConstructor;
->                    ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly [Symbol.species]: SetConstructor;
->                              ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: SetConstructor;
->                              ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ArrayBufferConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ArrayBufferConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: ArrayBufferConstructor;
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.species]: ArrayBufferConstructor;
->                    ^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     readonly [Symbol.species]: ArrayBufferConstructor;
->                              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly [Symbol.species]: ArrayBufferConstructor;
->                              ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)

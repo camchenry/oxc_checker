@@ -1,17 +1,17 @@
 class C<T = number> {}
->     ^: typeof C   (TyTypeQuery) (BindingIdentifier)
+>     ^: typeof C   (TypeQuery) (Identifier)
 
 class C<T = number> {}
->       ^: any   (TyAny) (TSTypeParameter)
+>       ^: any   (Any) (Identifier)
 
 class D extends C {}
->     ^: typeof D   (TyTypeQuery) (BindingIdentifier)
+>     ^: typeof D   (TypeQuery) (Identifier)
 
 class D extends C {}
->               ^: typeof C   (TyTypeQuery) (IdentifierReference)
+>               ^: typeof C   (TypeQuery) (Identifier)
 
 class D extends C<string> {}
->     ^: { new <string>(): {}; }   (TyObject) (BindingIdentifier)
+>     ^: { new <string>(): {}; }   (Object) (Identifier)
 
 class D extends C<string> {}
->               ^: typeof C   (TyTypeQuery) (IdentifierReference)
+>               ^: typeof C   (TypeQuery) (Identifier)

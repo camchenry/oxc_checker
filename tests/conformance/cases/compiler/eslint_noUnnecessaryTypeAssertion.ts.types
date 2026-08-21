@@ -1,50 +1,50 @@
 const foo1 = 3;
->     ^^^^: 3   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^: 3   (NumberLiteral) (Identifier)
 
 const bar = foo!;
->     ^^^: any   (TyError) (BindingIdentifier)
+>     ^^^: any   (Error) (Identifier)
 
 const foo1_1 = <number>3;
->     ^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^: number   (Number) (Identifier)
 
 const foo2 = <number>(3 + 5);
->     ^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^: number   (Number) (Identifier)
 
 const foo2_1 = 3 as number;
->     ^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^: number   (Number) (Identifier)
 
 type Foo = number;
->    ^^^: number   (TyNumber) (TSTypeAliasDeclaration)
+>    ^^^: number   (Number) (Identifier)
 
 const foo3 = <Foo>(3 + 5);
->     ^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^: number   (Number) (Identifier)
 
 const foo3 = <Foo>(3 + 5);
->             ^^^: any   (TyAny) (TSTypeReference)
+>             ^^^: any   (Any) (Identifier)
 
 function foo4(x: number): number {
->        ^^^^: (x: number) => number   (TyFunction) (BindingIdentifier)
+>        ^^^^: (x: number) => number   (Function) (Identifier)
 
 function foo4(x: number): number {
->             ^: number   (TyNumber) (BindingIdentifier)
+>             ^: number   (Number) (Identifier)
 
   return x!; // unnecessary non-null
->        ^: number   (TyNumber) (IdentifierReference)
+>        ^: number   (Number) (Identifier)
 
 let foo5 = 'foo' as const;
->   ^^^^: "foo"   (TyStringLiteral) (BindingIdentifier)
+>   ^^^^: "foo"   (StringLiteral) (Identifier)
 
 let foo5 = 'foo' as const;
->                   ^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^: any   (Any) (Identifier)
 
 let foo5 = 'foo' as const;
->                   ^^^^^: any   (TyError) (IdentifierReference)
+>                   ^^^^^: any   (Error) (Identifier)
 
 function foo6(x: number | undefined): number {
->        ^^^^: (x: number | undefined) => number   (TyFunction) (BindingIdentifier)
+>        ^^^^: (x: number | undefined) => number   (Function) (Identifier)
 
 function foo6(x: number | undefined): number {
->             ^: number | undefined   (TyUnion) (BindingIdentifier)
+>             ^: number | undefined   (Union) (Identifier)
 
   return x!;
->        ^: number | undefined   (TyUnion) (IdentifierReference)
+>        ^: number | undefined   (Union) (Identifier)

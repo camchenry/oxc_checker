@@ -1,0 +1,18 @@
+{"path":"es2024.collection.d.ts","start":10,"end":24,"text":"MapConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.collection.d.ts","start":10,"end":24,"text":"MapConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.collection.d.ts","start":254,"end":261,"text":"groupBy","nodeType":"Identifier","type":{"name":"Object","display":"{ <K, T>(items: Iterable<T>, keySelector: (item: T, index: number) => K): Map<K, T[]>; <K, T>(items: Iterable<T>, keySelector: (item: T, index: number) => K): Map<K, T[]>; }"}}
+{"path":"es2024.collection.d.ts","start":262,"end":263,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.collection.d.ts","start":265,"end":266,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.collection.d.ts","start":277,"end":282,"text":"items","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<T>"}}
+{"path":"es2024.collection.d.ts","start":284,"end":292,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.collection.d.ts","start":284,"end":292,"text":"Iterable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2024.collection.d.ts","start":293,"end":294,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.collection.d.ts","start":305,"end":316,"text":"keySelector","nodeType":"Identifier","type":{"name":"Function","display":"(item: T, index: number) => K"}}
+{"path":"es2024.collection.d.ts","start":319,"end":323,"text":"item","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"es2024.collection.d.ts","start":325,"end":326,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.collection.d.ts","start":328,"end":333,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"es2024.collection.d.ts","start":346,"end":347,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.collection.d.ts","start":356,"end":359,"text":"Map","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
+{"path":"es2024.collection.d.ts","start":356,"end":359,"text":"Map","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
+{"path":"es2024.collection.d.ts","start":360,"end":361,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.collection.d.ts","start":363,"end":364,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

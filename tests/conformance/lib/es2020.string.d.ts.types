@@ -1,86 +1,86 @@
 interface String {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: StringConstructor
 
 interface String {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: StringConstructor
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->   ^^^^^^^^: { (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; (regexp: RegExp): RegExpStringIterator<RegExpExecArray>; }   (Object) (Identifier)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->            ^^^^^^: RegExp   (TyTypeReference) (BindingIdentifier)
+>            ^^^^^^: RegExp   (TypeReference) (Identifier)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->                    ^^^^^^: RegExpConstructor   (TyTypeReference) (TSTypeReference)
+>                    ^^^^^^: RegExpConstructor   (TypeReference) (Identifier)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->                    ^^^^^^: RegExpConstructor   (TyTypeReference) (IdentifierReference)
+>                    ^^^^^^: RegExpConstructor   (TypeReference) (Identifier)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->                             ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->                             ^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                             ^^^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->                                                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                  ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     matchAll(regexp: RegExp): RegExpStringIterator<RegExpExecArray>;
->                                                  ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                  ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
->   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (Object) (Identifier)
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
->                     ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>                     ^^^^^^^: Intl.LocalesArgument | undefined   (Union) (Identifier)
                      expected: Intl.LocalesArgument
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
->                               ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                               ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     toLocaleLowerCase(locales?: Intl.LocalesArgument): string;
->                                    ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
+>                                    ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TypeReference) (Identifier)
                                             expected: any
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
->   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^^^: { (locales?: string | string[]): string; (locales?: Intl.LocalesArgument): string; (locales?: Intl.LocalesArgument): string; }   (Object) (Identifier)
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
->                     ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>                     ^^^^^^^: Intl.LocalesArgument | undefined   (Union) (Identifier)
                      expected: Intl.LocalesArgument
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
->                               ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                               ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     toLocaleUpperCase(locales?: Intl.LocalesArgument): string;
->                                    ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
+>                                    ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TypeReference) (Identifier)
                                             expected: any
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; }   (Object) (Identifier)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                 ^^^^: string   (TyString) (BindingIdentifier)
+>                 ^^^^: string   (String) (Identifier)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                               ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>                               ^^^^^^^: Intl.LocalesArgument | undefined   (Union) (Identifier)
                                expected: Intl.LocalesArgument
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                                         ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                                         ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                                              ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
+>                                              ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TypeReference) (Identifier)
                                                       expected: any
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                                                               ^^^^^^^: Intl.CollatorOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                                               ^^^^^^^: Intl.CollatorOptions | undefined   (Union) (Identifier)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                                                                         ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                                                                         ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     localeCompare(that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number;
->                                                                              ^^^^^^^^^^^^^^^: Intl.CollatorOptions   (TyTypeReference) (TSTypeReference)
+>                                                                              ^^^^^^^^^^^^^^^: Intl.CollatorOptions   (TypeReference) (Identifier)
                                                                                       expected: any

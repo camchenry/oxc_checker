@@ -1,62 +1,62 @@
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction) (BindingIdentifier)
+>                ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (Function) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                    ^: any   (TyAny) (TSTypeParameter)
+>                    ^: any   (Any) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                       ^: any   (TyAny) (TSTypeParameter)
+>                       ^: any   (Any) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                       ^: any   (TyAny) (TSTypeReference)
+>                                       ^: any   (Any) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                          ^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                          ^^^: T   (TypeReference) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                                  ^^^: K   (TyTypeReference) (BindingIdentifier)
+>                                                  ^^^: K   (TypeReference) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                       ^: any   (Any) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                                           ^: any   (TyAny) (TSTypeReference)
+>                                                           ^: any   (Any) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                                             ^: any   (TyAny) (TSTypeReference)
+>                                                             ^: any   (Any) (Identifier)
 
 const value = get({ value: 1, name: "ready" }, "value");
->     ^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^: number   (Number) (Identifier)
 
 const value = get({ value: 1, name: "ready" }, "value");
->             ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction) (IdentifierReference)
+>             ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (Function) (Identifier)
 
 const value = get({ value: 1, name: "ready" }, "value");
->                   ^^^^^: number   (TyNumber) (ObjectProperty)
+>                   ^^^^^: number   (Number) (Identifier)
 
 const value = get({ value: 1, name: "ready" }, "value");
->                             ^^^^: string   (TyString) (ObjectProperty)
+>                             ^^^^: string   (String) (Identifier)
 
 const name = get({ value: 1, name: "ready" }, "name");
->     ^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^: string   (String) (Identifier)
 
 const name = get({ value: 1, name: "ready" }, "name");
->            ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (TyFunction) (IdentifierReference)
+>            ^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (Function) (Identifier)
 
 const name = get({ value: 1, name: "ready" }, "name");
->                  ^^^^^: number   (TyNumber) (ObjectProperty)
+>                  ^^^^^: number   (Number) (Identifier)
 
 const name = get({ value: 1, name: "ready" }, "name");
->                            ^^^^: string   (TyString) (ObjectProperty)
+>                            ^^^^: string   (String) (Identifier)
 
 declare const firstTupleElement: ["yes", "no"][0];
->             ^^^^^^^^^^^^^^^^^: "yes"   (TyStringLiteral) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^: "yes"   (StringLiteral) (Identifier)
 
 declare const secondTupleElement: ["yes", "no"][1];
->             ^^^^^^^^^^^^^^^^^^: "no"   (TyStringLiteral) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^: "no"   (StringLiteral) (Identifier)
 
 declare const eitherTupleElement: ["yes", "no"][0 | 1];
->             ^^^^^^^^^^^^^^^^^^: "yes" | "no"   (TyUnion) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^: "yes" | "no"   (Union) (Identifier)

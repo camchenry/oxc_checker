@@ -1,0 +1,31 @@
+{"path":"decorators.legacy.d.ts","start":13,"end":27,"text":"ClassDecorator","nodeType":"Identifier","type":{"name":"Function","display":"<TFunction extends Function>(target: TFunction) => TFunction | void"}}
+{"path":"decorators.legacy.d.ts","start":31,"end":40,"text":"TFunction","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"decorators.legacy.d.ts","start":49,"end":57,"text":"Function","nodeType":"Identifier","type":{"name":"TypeReference","display":"FunctionConstructor"}}
+{"path":"decorators.legacy.d.ts","start":49,"end":57,"text":"Function","nodeType":"Identifier","type":{"name":"TypeReference","display":"FunctionConstructor"}}
+{"path":"decorators.legacy.d.ts","start":59,"end":65,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"TFunction"}}
+{"path":"decorators.legacy.d.ts","start":67,"end":76,"text":"TFunction","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"decorators.legacy.d.ts","start":81,"end":90,"text":"TFunction","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"decorators.legacy.d.ts","start":112,"end":129,"text":"PropertyDecorator","nodeType":"Identifier","type":{"name":"Function","display":"(target: Object, propertyKey: string | symbol) => void"}}
+{"path":"decorators.legacy.d.ts","start":133,"end":139,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"Object"}}
+{"path":"decorators.legacy.d.ts","start":141,"end":147,"text":"Object","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
+{"path":"decorators.legacy.d.ts","start":141,"end":147,"text":"Object","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
+{"path":"decorators.legacy.d.ts","start":149,"end":160,"text":"propertyKey","nodeType":"Identifier","type":{"name":"Union","display":"string | symbol"}}
+{"path":"decorators.legacy.d.ts","start":201,"end":216,"text":"MethodDecorator","nodeType":"Identifier","type":{"name":"Function","display":"<T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void"}}
+{"path":"decorators.legacy.d.ts","start":220,"end":221,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"decorators.legacy.d.ts","start":223,"end":229,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"Object"}}
+{"path":"decorators.legacy.d.ts","start":231,"end":237,"text":"Object","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
+{"path":"decorators.legacy.d.ts","start":231,"end":237,"text":"Object","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
+{"path":"decorators.legacy.d.ts","start":239,"end":250,"text":"propertyKey","nodeType":"Identifier","type":{"name":"Union","display":"string | symbol"}}
+{"path":"decorators.legacy.d.ts","start":269,"end":279,"text":"descriptor","nodeType":"Identifier","type":{"name":"TypeReference","display":"TypedPropertyDescriptor<T>"}}
+{"path":"decorators.legacy.d.ts","start":281,"end":304,"text":"TypedPropertyDescriptor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"decorators.legacy.d.ts","start":281,"end":304,"text":"TypedPropertyDescriptor","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"decorators.legacy.d.ts","start":305,"end":306,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"decorators.legacy.d.ts","start":312,"end":335,"text":"TypedPropertyDescriptor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"decorators.legacy.d.ts","start":312,"end":335,"text":"TypedPropertyDescriptor","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"decorators.legacy.d.ts","start":336,"end":337,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"decorators.legacy.d.ts","start":360,"end":378,"text":"ParameterDecorator","nodeType":"Identifier","type":{"name":"Function","display":"(target: Object, propertyKey: string | symbol | undefined, parameterIndex: number) => void"}}
+{"path":"decorators.legacy.d.ts","start":382,"end":388,"text":"target","nodeType":"Identifier","type":{"name":"TypeReference","display":"Object"}}
+{"path":"decorators.legacy.d.ts","start":390,"end":396,"text":"Object","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
+{"path":"decorators.legacy.d.ts","start":390,"end":396,"text":"Object","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
+{"path":"decorators.legacy.d.ts","start":398,"end":409,"text":"propertyKey","nodeType":"Identifier","type":{"name":"Union","display":"string | symbol | undefined"}}
+{"path":"decorators.legacy.d.ts","start":440,"end":454,"text":"parameterIndex","nodeType":"Identifier","type":{"name":"Number","display":"number"}}

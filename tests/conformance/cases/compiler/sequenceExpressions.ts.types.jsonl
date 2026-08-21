@@ -1,0 +1,7 @@
+{"path":"compiler/sequenceExpressions.ts","start":7,"end":19,"text":"numberResult","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"42"}}
+{"path":"compiler/sequenceExpressions.ts","start":37,"end":49,"text":"stringResult","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"result\""}}
+{"path":"compiler/sequenceExpressions.ts","start":73,"end":86,"text":"booleanResult","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/sequenceExpressions.ts","start":110,"end":125,"text":"referenceResult","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"result\""}}
+{"path":"compiler/sequenceExpressions.ts","start":129,"end":141,"text":"numberResult","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"42"}}
+{"path":"compiler/sequenceExpressions.ts","start":143,"end":155,"text":"stringResult","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"result\""}}
+{"path":"compiler/sequenceExpressions.ts","start":164,"end":176,"text":"nestedResult","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"nested\""}}

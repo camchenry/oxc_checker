@@ -1,182 +1,182 @@
 class ClassPropertyItem {
->     ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TypeQuery) (Identifier)
 
   name: string = "item";
-> ^^^^: string   (TyString) (PropertyDefinition)
+> ^^^^: string   (String) (Identifier)
 
 class ClassPropertyExample {
->     ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
 
   ready: boolean = false;
-> ^^^^^: boolean   (TyBoolean) (PropertyDefinition)
+> ^^^^^: boolean   (Boolean) (Identifier)
 
   count = 1;
-> ^^^^^: number   (TyNumber) (PropertyDefinition)
+> ^^^^^: number   (Number) (Identifier)
 
   item: ClassPropertyItem = new ClassPropertyItem();
-> ^^^^: ClassPropertyItem   (TyTypeReference) (PropertyDefinition)
+> ^^^^: ClassPropertyItem   (TypeReference) (Identifier)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery) (TSTypeReference)
+>       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TypeQuery) (Identifier)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery) (IdentifierReference)
+>       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TypeQuery) (Identifier)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->                               ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TyTypeQuery) (IdentifierReference)
+>                               ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TypeQuery) (Identifier)
 
   static enabled: boolean = true;
->        ^^^^^^^: boolean   (TyBoolean) (PropertyDefinition)
+>        ^^^^^^^: boolean   (Boolean) (Identifier)
 
   getReady() {
-> ^^^^^^^^: () => boolean   (TyFunction) (MethodDefinition)
+> ^^^^^^^^: () => boolean   (Function) (Identifier)
 
     return this.ready;
->               ^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+>               ^^^^^: boolean   (Boolean) (Identifier)
 
   getCount() {
-> ^^^^^^^^: () => number   (TyFunction) (MethodDefinition)
+> ^^^^^^^^: () => number   (Function) (Identifier)
 
     return this.count;
->               ^^^^^: number   (TyNumber) (StaticMemberExpression)
+>               ^^^^^: number   (Number) (Identifier)
 
   getItemName() {
-> ^^^^^^^^^^^: () => string   (TyFunction) (MethodDefinition)
+> ^^^^^^^^^^^: () => string   (Function) (Identifier)
 
     return this.item.name;
->               ^^^^: ClassPropertyItem   (TyTypeReference) (StaticMemberExpression)
+>               ^^^^: ClassPropertyItem   (TypeReference) (Identifier)
 
     return this.item.name;
->                    ^^^^: string   (TyString) (StaticMemberExpression)
+>                    ^^^^: string   (String) (Identifier)
 
   static getEnabled() {
->        ^^^^^^^^^^: () => boolean   (TyFunction) (MethodDefinition)
+>        ^^^^^^^^^^: () => boolean   (Function) (Identifier)
 
     return ClassPropertyExample.enabled;
->          ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+>          ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
 
     return ClassPropertyExample.enabled;
->                               ^^^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+>                               ^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyInstance = new ClassPropertyExample();
->     ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyInstance = new ClassPropertyExample();
->                                  ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+>                                  ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
 
 const _classPropertyReady = _classPropertyInstance.ready;
->     ^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyReady = _classPropertyInstance.ready;
->                           ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
+>                           ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyReady = _classPropertyInstance.ready;
->                                                  ^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+>                                                  ^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyCount = _classPropertyInstance.count;
->     ^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _classPropertyCount = _classPropertyInstance.count;
->                           ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
+>                           ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyCount = _classPropertyInstance.count;
->                                                  ^^^^^: number   (TyNumber) (StaticMemberExpression)
+>                                                  ^^^^^: number   (Number) (Identifier)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->     ^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->                              ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->                                                     ^^^^: ClassPropertyItem   (TyTypeReference) (StaticMemberExpression)
+>                                                     ^^^^: ClassPropertyItem   (TypeReference) (Identifier)
 
 const _classPropertyItemName = _classPropertyInstance.item.name;
->                                                          ^^^^: string   (TyString) (StaticMemberExpression)
+>                                                          ^^^^: string   (String) (Identifier)
 
 const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
->                                   ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
+>                                   ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyReadyFromThis = _classPropertyInstance.getReady();
->                                                          ^^^^^^^^: () => boolean   (TyFunction) (StaticMemberExpression)
+>                                                          ^^^^^^^^: () => boolean   (Function) (Identifier)
 
 const _classPropertyCountFromThis = _classPropertyInstance.getCount();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _classPropertyCountFromThis = _classPropertyInstance.getCount();
->                                   ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
+>                                   ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyCountFromThis = _classPropertyInstance.getCount();
->                                                          ^^^^^^^^: () => number   (TyFunction) (StaticMemberExpression)
+>                                                          ^^^^^^^^: () => number   (Function) (Identifier)
 
 const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
->                                  ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (IdentifierReference)
+>                                  ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyNameFromThis = _classPropertyInstance.getItemName();
->                                                         ^^^^^^^^^^^: () => string   (TyFunction) (StaticMemberExpression)
+>                                                         ^^^^^^^^^^^: () => string   (Function) (Identifier)
 
 const _classPropertyEnabled = ClassPropertyExample.enabled;
->     ^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyEnabled = ClassPropertyExample.enabled;
->                             ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+>                             ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
 
 const _classPropertyEnabled = ClassPropertyExample.enabled;
->                                                  ^^^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+>                                                  ^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
->                                       ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+>                                       ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
->                                                            ^^^^^^^^^^: () => boolean   (TyFunction) (StaticMemberExpression)
+>                                                            ^^^^^^^^^^: () => boolean   (Function) (Identifier)
 
 const _classPropertyPrototype = ClassPropertyExample.prototype;
->     ^^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyPrototype = ClassPropertyExample.prototype;
->                               ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+>                               ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
 
 const _classPropertyPrototype = ClassPropertyExample.prototype;
->                                                    ^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (StaticMemberExpression)
+>                                                    ^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
->                                    ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+>                                    ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
 
 const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
->                                                         ^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (StaticMemberExpression)
+>                                                         ^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
->                                                                   ^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+>                                                                   ^^^^^: boolean   (Boolean) (Identifier)
 
 const _ClassPropertyConstructor = ClassPropertyExample;
->     ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
 
 const _ClassPropertyConstructor = ClassPropertyExample;
->                                 ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+>                                 ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
 
 const _classPropertyAliasedEnabled = _ClassPropertyConstructor.enabled;
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyAliasedEnabled = _ClassPropertyConstructor.enabled;
->                                    ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+>                                    ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
 
 const _classPropertyAliasedEnabled = _ClassPropertyConstructor.enabled;
->                                                              ^^^^^^^: boolean   (TyBoolean) (StaticMemberExpression)
+>                                                              ^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyAliasedInstance = new _ClassPropertyConstructor();
->     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyAliasedInstance = new _ClassPropertyConstructor();
->                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TyTypeQuery) (IdentifierReference)
+>                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)

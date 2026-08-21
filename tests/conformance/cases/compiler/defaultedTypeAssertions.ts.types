@@ -1,251 +1,251 @@
 declare const assertionSource: any;
->             ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AssertionBox<T = number> { value: T }
->         ^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AssertionBox<T = number> { value: T }
->         ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AssertionBox<T = number> { value: T }
->                      ^: any   (TyAny) (TSTypeParameter)
+>                      ^: any   (Any) (Identifier)
 
 interface AssertionBox<T = number> { value: T }
->                                    ^^^^^: T   (TyTypeReference) (TSPropertySignature)
+>                                    ^^^^^: T   (TypeReference) (Identifier)
 
 interface AssertionBox<T = number> { value: T }
->                                           ^: any   (TyAny) (TSTypeReference)
+>                                           ^: any   (Any) (Identifier)
 
 interface SelfDefault<T = T> { value: T }
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SelfDefault<T = T> { value: T }
->         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface SelfDefault<T = T> { value: T }
->                     ^: any   (TyAny) (TSTypeParameter)
+>                     ^: any   (Any) (Identifier)
 
 interface SelfDefault<T = T> { value: T }
->                         ^: any   (TyAny) (TSTypeReference)
+>                         ^: any   (Any) (Identifier)
 
 interface SelfDefault<T = T> { value: T }
->                              ^^^^^: T   (TyTypeReference) (TSPropertySignature)
+>                              ^^^^^: T   (TypeReference) (Identifier)
 
 interface SelfDefault<T = T> { value: T }
->                                     ^: any   (TyAny) (TSTypeReference)
+>                                     ^: any   (Any) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
->         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
->         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
->                        ^: any   (TyAny) (TSTypeParameter)
+>                        ^: any   (Any) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
->                            ^: any   (TyAny) (TSTypeReference)
+>                            ^: any   (Any) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
->                               ^: any   (TyAny) (TSTypeParameter)
+>                               ^: any   (Any) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
->                                             ^: T   (TyTypeReference) (TSPropertySignature)
+>                                             ^: T   (TypeReference) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
->                                                ^: any   (TyAny) (TSTypeReference)
+>                                                ^: any   (Any) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
->                                                   ^: U   (TyTypeReference) (TSPropertySignature)
+>                                                   ^: U   (TypeReference) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
->                                                      ^: any   (TyAny) (TSTypeReference)
+>                                                      ^: any   (Any) (Identifier)
 
 type Identity<T> = T;
->    ^^^^^^^^: T   (TyTypeReference) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: T   (TypeReference) (Identifier)
 
 type Identity<T> = T;
->             ^: any   (TyAny) (TSTypeParameter)
+>             ^: any   (Any) (Identifier)
 
 type Identity<T> = T;
->                  ^: any   (TyAny) (TSTypeReference)
+>                  ^: any   (Any) (Identifier)
 
 type DefaultIdentity<T = string> = T;
->    ^^^^^^^^^^^^^^^: T   (TyTypeReference) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^: T   (TypeReference) (Identifier)
 
 type DefaultIdentity<T = string> = T;
->                    ^: any   (TyAny) (TSTypeParameter)
+>                    ^: any   (Any) (Identifier)
 
 type DefaultIdentity<T = string> = T;
->                                  ^: any   (TyAny) (TSTypeReference)
+>                                  ^: any   (Any) (Identifier)
 
 type AliasBox<T> = { value: T };
->    ^^^^^^^^: { value: T; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: { value: T; }   (Object) (Identifier)
 
 type AliasBox<T> = { value: T };
->             ^: any   (TyAny) (TSTypeParameter)
+>             ^: any   (Any) (Identifier)
 
 type AliasBox<T> = { value: T };
->                    ^^^^^: T   (TyTypeReference) (TSPropertySignature)
+>                    ^^^^^: T   (TypeReference) (Identifier)
 
 type AliasBox<T> = { value: T };
->                           ^: any   (TyAny) (TSTypeReference)
+>                           ^: any   (Any) (Identifier)
 
 const assertedString = <string>assertionSource;
->     ^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const assertedString = <string>assertionSource;
->                              ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const assertedUnknown = <unknown>assertionSource;
->     ^^^^^^^^^^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: unknown   (Unknown) (Identifier)
 
 const assertedUnknown = <unknown>assertionSource;
->                                ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const assertedNumber = <number>assertionSource;
->     ^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const assertedNumber = <number>assertionSource;
->                              ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const assertedAny = <any>assertionSource;
->     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^^: any   (Any) (Identifier)
 
 const assertedAny = <any>assertionSource;
->                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const identityString = assertionSource as Identity<string>;
->     ^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const identityString = assertionSource as Identity<string>;
->                      ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const identityString = assertionSource as Identity<string>;
->                                         ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                         ^^^^^^^^: any   (Any) (Identifier)
 
 const identityAny = <Identity<any>>assertionSource;
->     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^^: any   (Any) (Identifier)
 
 const identityAny = <Identity<any>>assertionSource;
->                    ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^: any   (Any) (Identifier)
 
 const identityAny = <Identity<any>>assertionSource;
->                                  ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                  ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const defaultIdentity = assertionSource as DefaultIdentity;
->     ^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const defaultIdentity = assertionSource as DefaultIdentity;
->                       ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const defaultIdentity = assertionSource as DefaultIdentity;
->                                          ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const aliasBox = assertionSource as AliasBox<string>;
->     ^^^^^^^^: AliasBox<string>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^: AliasBox<string>   (TypeReference) (Identifier)
 
 const aliasBox = assertionSource as AliasBox<string>;
->                ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const aliasBox = assertionSource as AliasBox<string>;
->                                   ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^: any   (Any) (Identifier)
 
 const boxed = (<AssertionBox>assertionSource);
->     ^^^^^: AssertionBox<number>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^: AssertionBox<number>   (TypeReference) (Identifier)
 
 const boxed = (<AssertionBox>assertionSource);
->               ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const boxed = (<AssertionBox>assertionSource);
->               ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>               ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const boxed = (<AssertionBox>assertionSource);
->                            ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const explicitDefaultBox = (<AssertionBox<number>>assertionSource);
->     ^^^^^^^^^^^^^^^^^^: AssertionBox<number>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^: AssertionBox<number>   (TypeReference) (Identifier)
 
 const explicitDefaultBox = (<AssertionBox<number>>assertionSource);
->                            ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const explicitDefaultBox = (<AssertionBox<number>>assertionSource);
->                            ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const explicitDefaultBox = (<AssertionBox<number>>assertionSource);
->                                                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                 ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const boxedValue = (<AssertionBox>assertionSource).value;
->     ^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^: number   (Number) (Identifier)
 
 const boxedValue = (<AssertionBox>assertionSource).value;
->                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const boxedValue = (<AssertionBox>assertionSource).value;
->                    ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const boxedValue = (<AssertionBox>assertionSource).value;
->                                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                 ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const boxedValue = (<AssertionBox>assertionSource).value;
->                                                  ^^^^^: number   (TyNumber) (StaticMemberExpression)
+>                                                  ^^^^^: number   (Number) (Identifier)
 
 const explicitBoxedValue = (<AssertionBox<string>>assertionSource).value;
->     ^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const explicitBoxedValue = (<AssertionBox<string>>assertionSource).value;
->                            ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const explicitBoxedValue = (<AssertionBox<string>>assertionSource).value;
->                            ^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                            ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const explicitBoxedValue = (<AssertionBox<string>>assertionSource).value;
->                                                 ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                 ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const explicitBoxedValue = (<AssertionBox<string>>assertionSource).value;
->                                                                  ^^^^^: string   (TyString) (StaticMemberExpression)
+>                                                                  ^^^^^: string   (String) (Identifier)
 
 const selfDefaultValue = (<SelfDefault>assertionSource).value;
->     ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const selfDefaultValue = (<SelfDefault>assertionSource).value;
->                          ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^: any   (Any) (Identifier)
 
 const selfDefaultValue = (<SelfDefault>assertionSource).value;
->                          ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                          ^^^^^^^^^^^: any   (Any) (Identifier)
 
 const selfDefaultValue = (<SelfDefault>assertionSource).value;
->                                      ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                      ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const selfDefaultValue = (<SelfDefault>assertionSource).value;
->                                                       ^^^^^: any   (TyAny) (StaticMemberExpression)
+>                                                       ^^^^^: any   (Any) (Identifier)
 
 const forwardDefaultT = (<ForwardDefault>assertionSource).t;
->     ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const forwardDefaultT = (<ForwardDefault>assertionSource).t;
->                         ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const forwardDefaultT = (<ForwardDefault>assertionSource).t;
->                         ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const forwardDefaultT = (<ForwardDefault>assertionSource).t;
->                                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const forwardDefaultT = (<ForwardDefault>assertionSource).t;
->                                                         ^: any   (TyAny) (StaticMemberExpression)
+>                                                         ^: any   (Any) (Identifier)
 
 const forwardDefaultU = (<ForwardDefault>assertionSource).u;
->     ^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const forwardDefaultU = (<ForwardDefault>assertionSource).u;
->                         ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const forwardDefaultU = (<ForwardDefault>assertionSource).u;
->                         ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const forwardDefaultU = (<ForwardDefault>assertionSource).u;
->                                        ^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const forwardDefaultU = (<ForwardDefault>assertionSource).u;
->                                                         ^: string   (TyString) (StaticMemberExpression)
+>                                                         ^: string   (String) (Identifier)

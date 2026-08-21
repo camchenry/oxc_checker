@@ -1,0 +1,7 @@
+{"path":"compiler/eslint_noArrayDelete.ts::a.ts","start":14,"end":17,"text":"arr","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_noArrayDelete.ts::a.ts","start":30,"end":44,"text":"delete arr[0];","nodeType":"ExpressionStatement","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/eslint_noArrayDelete.ts::a.ts","start":37,"end":40,"text":"arr","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_noArrayDelete.ts::b.ts","start":14,"end":17,"text":"arr","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_noArrayDelete.ts::b.ts","start":30,"end":33,"text":"arr","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_noArrayDelete.ts::b.ts","start":30,"end":47,"text":"arr.splice(0, 1);","nodeType":"ExpressionStatement","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_noArrayDelete.ts::b.ts","start":34,"end":40,"text":"splice","nodeType":"Identifier","type":{"name":"Object","display":"{ (start: number, deleteCount?: number): number[]; (start: number, deleteCount: number, ...items: number[]): number[]; }"}}

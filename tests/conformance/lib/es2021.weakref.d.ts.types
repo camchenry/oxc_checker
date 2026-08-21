@@ -1,173 +1,173 @@
 interface WeakRef<T extends WeakKey> {
->         ^^^^^^^: WeakRefConstructor   (TyTypeReference) (TSInterfaceDeclaration)
+>         ^^^^^^^: WeakRefConstructor   (TypeReference) (Identifier)
 
 interface WeakRef<T extends WeakKey> {
->         ^^^^^^^: WeakRefConstructor   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^^: WeakRefConstructor   (TypeReference) (Identifier)
 
 interface WeakRef<T extends WeakKey> {
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
 interface WeakRef<T extends WeakKey> {
->                           ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^: any   (Any) (Identifier)
 
 interface WeakRef<T extends WeakKey> {
->                           ^^^^^^^: any   (TyError) (IdentifierReference)
+>                           ^^^^^^^: any   (Error) (Identifier)
 
     readonly [Symbol.toStringTag]: "WeakRef";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "WeakRef";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     deref(): T | undefined;
->   ^^^^^: { (): T | undefined; (): T | undefined; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (): T | undefined; (): T | undefined; }   (Object) (Identifier)
 
     deref(): T | undefined;
->            ^: any   (TyAny) (TSTypeReference)
+>            ^: any   (Any) (Identifier)
 
 interface WeakRefConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface WeakRefConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly prototype: WeakRef<any>;
->            ^^^^^^^^^: WeakRef<any>   (TyTypeReference) (TSPropertySignature)
+>            ^^^^^^^^^: WeakRef<any>   (TypeReference) (Identifier)
 
     readonly prototype: WeakRef<any>;
->                       ^^^^^^^: WeakRefConstructor   (TyTypeReference) (TSTypeReference)
+>                       ^^^^^^^: WeakRefConstructor   (TypeReference) (Identifier)
 
     readonly prototype: WeakRef<any>;
->                       ^^^^^^^: WeakRefConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^^: WeakRefConstructor   (TypeReference) (Identifier)
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
->        ^: any   (TyAny) (TSTypeParameter)
+>        ^: any   (Any) (Identifier)
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
->                  ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^: any   (Any) (Identifier)
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
->                  ^^^^^^^: any   (TyError) (IdentifierReference)
+>                  ^^^^^^^: any   (Error) (Identifier)
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
->                           ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                           ^^^^^^: T   (TypeReference) (Identifier)
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
->                                       ^^^^^^^: WeakRefConstructor   (TyTypeReference) (TSTypeReference)
+>                                       ^^^^^^^: WeakRefConstructor   (TypeReference) (Identifier)
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
->                                       ^^^^^^^: WeakRefConstructor   (TyTypeReference) (IdentifierReference)
+>                                       ^^^^^^^: WeakRefConstructor   (TypeReference) (Identifier)
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
 declare var WeakRef: WeakRefConstructor;
->           ^^^^^^^: WeakRefConstructor   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^^: WeakRefConstructor   (TypeReference) (Identifier)
 
 declare var WeakRef: WeakRefConstructor;
->                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare var WeakRef: WeakRefConstructor;
->                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                    ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface FinalizationRegistry<T> {
->         ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TypeReference) (Identifier)
 
 interface FinalizationRegistry<T> {
->         ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TypeReference) (Identifier)
 
 interface FinalizationRegistry<T> {
->                              ^: any   (TyAny) (TSTypeParameter)
+>                              ^: any   (Any) (Identifier)
 
     readonly [Symbol.toStringTag]: "FinalizationRegistry";
->             ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
     readonly [Symbol.toStringTag]: "FinalizationRegistry";
->                    ^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+>                    ^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
->   ^^^^^^^^: { (target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void; (target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void; (target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void; }   (Object) (Identifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
->            ^^^^^^: WeakKey   (TyTypeReference) (BindingIdentifier)
+>            ^^^^^^: WeakKey   (TypeReference) (Identifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
->                    ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^: any   (Any) (Identifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
->                    ^^^^^^^: any   (TyError) (IdentifierReference)
+>                    ^^^^^^^: any   (Error) (Identifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
->                             ^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                             ^^^^^^^^^: T   (TypeReference) (Identifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
->                                        ^: any   (TyAny) (TSTypeReference)
+>                                        ^: any   (Any) (Identifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
->                                           ^^^^^^^^^^^^^^^: WeakKey | undefined   (TyUnion) (BindingIdentifier)
+>                                           ^^^^^^^^^^^^^^^: WeakKey | undefined   (Union) (Identifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
->                                                             ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^^^^^^: any   (Any) (Identifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
->                                                             ^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                             ^^^^^^^: any   (Error) (Identifier)
 
     unregister(unregisterToken: WeakKey): boolean;
->   ^^^^^^^^^^: { (unregisterToken: WeakKey): boolean; (unregisterToken: WeakKey): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^: { (unregisterToken: WeakKey): boolean; (unregisterToken: WeakKey): boolean; }   (Object) (Identifier)
 
     unregister(unregisterToken: WeakKey): boolean;
->              ^^^^^^^^^^^^^^^: WeakKey   (TyTypeReference) (BindingIdentifier)
+>              ^^^^^^^^^^^^^^^: WeakKey   (TypeReference) (Identifier)
 
     unregister(unregisterToken: WeakKey): boolean;
->                               ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^: any   (Any) (Identifier)
 
     unregister(unregisterToken: WeakKey): boolean;
->                               ^^^^^^^: any   (TyError) (IdentifierReference)
+>                               ^^^^^^^: any   (Error) (Identifier)
 
 interface FinalizationRegistryConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface FinalizationRegistryConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly prototype: FinalizationRegistry<any>;
->            ^^^^^^^^^: FinalizationRegistry<any>   (TyTypeReference) (TSPropertySignature)
+>            ^^^^^^^^^: FinalizationRegistry<any>   (TypeReference) (Identifier)
 
     readonly prototype: FinalizationRegistry<any>;
->                       ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TypeReference) (Identifier)
 
     readonly prototype: FinalizationRegistry<any>;
->                       ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TypeReference) (Identifier)
 
     new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
->        ^: any   (TyAny) (TSTypeParameter)
+>        ^: any   (Any) (Identifier)
 
     new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
->           ^^^^^^^^^^^^^^^: (heldValue: T) => void   (TyFunction) (BindingIdentifier)
+>           ^^^^^^^^^^^^^^^: (heldValue: T) => void   (Function) (Identifier)
 
     new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
->                             ^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                             ^^^^^^^^^: T   (TypeReference) (Identifier)
 
     new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
->                                        ^: any   (TyAny) (TSTypeReference)
+>                                        ^: any   (Any) (Identifier)
 
     new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
->                                                     ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference) (TSTypeReference)
+>                                                     ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TypeReference) (Identifier)
 
     new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
->                                                     ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference) (IdentifierReference)
+>                                                     ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TypeReference) (Identifier)
 
     new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
->                                                                          ^: any   (TyAny) (TSTypeReference)
+>                                                                          ^: any   (Any) (Identifier)
 
 declare var FinalizationRegistry: FinalizationRegistryConstructor;
->           ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^^^^^^^^^^^^^^^: FinalizationRegistryConstructor   (TypeReference) (Identifier)
 
 declare var FinalizationRegistry: FinalizationRegistryConstructor;
->                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare var FinalizationRegistry: FinalizationRegistryConstructor;
->                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)

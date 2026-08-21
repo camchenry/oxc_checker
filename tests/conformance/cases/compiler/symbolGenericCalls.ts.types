@@ -1,353 +1,353 @@
 function explicitIdentity<T>(value: T) { return value; }
->        ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (Function) (Identifier)
 
 function explicitIdentity<T>(value: T) { return value; }
->                         ^: any   (TyAny) (TSTypeParameter)
+>                         ^: any   (Any) (Identifier)
 
 function explicitIdentity<T>(value: T) { return value; }
->                            ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                            ^^^^^: T   (TypeReference) (Identifier)
 
 function explicitIdentity<T>(value: T) { return value; }
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
 function explicitIdentity<T>(value: T) { return value; }
->                                               ^^^^^: T   (TyTypeReference) (IdentifierReference)
+>                                               ^^^^^: T   (TypeReference) (Identifier)
 
 const explicitResult = explicitIdentity<string>("test");
->     ^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const explicitResult = explicitIdentity<string>("test");
->                      ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (TyFunction) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (Function) (Identifier)
 
 function objectBox<T>(value: T) { return { value }; }
->        ^^^^^^^^^: <T>(value: T) => { value: T; }   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^^^: <T>(value: T) => { value: T; }   (Function) (Identifier)
 
 function objectBox<T>(value: T) { return { value }; }
->                  ^: any   (TyAny) (TSTypeParameter)
+>                  ^: any   (Any) (Identifier)
 
 function objectBox<T>(value: T) { return { value }; }
->                     ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                     ^^^^^: T   (TypeReference) (Identifier)
 
 function objectBox<T>(value: T) { return { value }; }
->                            ^: any   (TyAny) (TSTypeReference)
+>                            ^: any   (Any) (Identifier)
 
 function objectBox<T>(value: T) { return { value }; }
->                                          ^^^^^: T   (TyTypeReference) (ObjectProperty)
+>                                          ^^^^^: T   (TypeReference) (Identifier)
 
 function objectBox<T>(value: T) { return { value }; }
->                                          ^^^^^: T   (TyTypeReference) (IdentifierReference)
+>                                          ^^^^^: T   (TypeReference) (Identifier)
 
 const objectResult = objectBox(123);
->     ^^^^^^^^^^^^: { value: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^: { value: number; }   (Object) (Identifier)
 
 const objectResult = objectBox(123);
->                    ^^^^^^^^^: <T>(value: T) => { value: T; }   (TyFunction) (IdentifierReference)
+>                    ^^^^^^^^^: <T>(value: T) => { value: T; }   (Function) (Identifier)
 
 type ResultBox<T> = { value: T };
->    ^^^^^^^^^: { value: T; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: { value: T; }   (Object) (Identifier)
 
 type ResultBox<T> = { value: T };
->              ^: any   (TyAny) (TSTypeParameter)
+>              ^: any   (Any) (Identifier)
 
 type ResultBox<T> = { value: T };
->                     ^^^^^: T   (TyTypeReference) (TSPropertySignature)
+>                     ^^^^^: T   (TypeReference) (Identifier)
 
 type ResultBox<T> = { value: T };
->                            ^: any   (TyAny) (TSTypeReference)
+>                            ^: any   (Any) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
->        ^^^^^^^^^^^^: <T>(value: T) => ResultBox<T>   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^^^^^^: <T>(value: T) => ResultBox<T>   (Function) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
->                     ^: any   (TyAny) (TSTypeParameter)
+>                     ^: any   (Any) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
->                        ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                        ^^^^^: T   (TypeReference) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
->                                   ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^: any   (Any) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
->                                             ^: any   (TyAny) (TSTypeReference)
+>                                             ^: any   (Any) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
->                                                           ^^^^^: T   (TyTypeReference) (ObjectProperty)
+>                                                           ^^^^^: T   (TypeReference) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
->                                                           ^^^^^: T   (TyTypeReference) (IdentifierReference)
+>                                                           ^^^^^: T   (TypeReference) (Identifier)
 
 const explicitBox: ResultBox<string> = { value: "test" };
->     ^^^^^^^^^^^: ResultBox<string>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^: ResultBox<string>   (TypeReference) (Identifier)
 
 const explicitBox: ResultBox<string> = { value: "test" };
->                  ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^: any   (Any) (Identifier)
 
 const explicitBox: ResultBox<string> = { value: "test" };
->                                        ^^^^^: string   (TyString) (ObjectProperty)
+>                                        ^^^^^: string   (String) (Identifier)
 
 const inferredBox = referenceBox(123);
->     ^^^^^^^^^^^: ResultBox<number>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^: ResultBox<number>   (TypeReference) (Identifier)
 
 const inferredBox = referenceBox(123);
->                   ^^^^^^^^^^^^: <T>(value: T) => ResultBox<T>   (TyFunction) (IdentifierReference)
+>                   ^^^^^^^^^^^^: <T>(value: T) => ResultBox<T>   (Function) (Identifier)
 
 const calledBox = referenceBox<string>("test");
->     ^^^^^^^^^: ResultBox<string>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^: ResultBox<string>   (TypeReference) (Identifier)
 
 const calledBox = referenceBox<string>("test");
->                 ^^^^^^^^^^^^: <T>(value: T) => ResultBox<T>   (TyFunction) (IdentifierReference)
+>                 ^^^^^^^^^^^^: <T>(value: T) => ResultBox<T>   (Function) (Identifier)
 
 interface ConstraintA { a: number }
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ConstraintA { a: number }
->         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ConstraintA { a: number }
->                       ^: number   (TyNumber) (TSPropertySignature)
+>                       ^: number   (Number) (Identifier)
 
 declare const constraintA: ConstraintA;
->             ^^^^^^^^^^^: ConstraintA   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^^: ConstraintA   (TypeReference) (Identifier)
 
 declare const constraintA: ConstraintA;
->                          ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const constraintA: ConstraintA;
->                          ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                          ^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const constrainedFunctionValue: <T extends ConstraintA>(value: T) => T;
->             ^^^^^^^^^^^^^^^^^^^^^^^^: <T extends ConstraintA>(value: T) => T   (TyFunction) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^^^: <T extends ConstraintA>(value: T) => T   (Function) (Identifier)
 
 declare const constrainedFunctionValue: <T extends ConstraintA>(value: T) => T;
->                                        ^: any   (TyAny) (TSTypeParameter)
+>                                        ^: any   (Any) (Identifier)
 
 declare const constrainedFunctionValue: <T extends ConstraintA>(value: T) => T;
->                                                  ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                  ^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const constrainedFunctionValue: <T extends ConstraintA>(value: T) => T;
->                                                  ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                  ^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const constrainedFunctionValue: <T extends ConstraintA>(value: T) => T;
->                                                               ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                                               ^^^^^: T   (TypeReference) (Identifier)
 
 declare const constrainedFunctionValue: <T extends ConstraintA>(value: T) => T;
->                                                                      ^: any   (TyAny) (TSTypeReference)
+>                                                                      ^: any   (Any) (Identifier)
 
 declare const constrainedFunctionValue: <T extends ConstraintA>(value: T) => T;
->                                                                            ^: any   (TyAny) (TSTypeReference)
+>                                                                            ^: any   (Any) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                ^^^^^^^^^^^^^^^^^^^: <T extends ConstraintA, U extends T = T>(value?: T, other?: U) => [T, U]   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^^^^^: <T extends ConstraintA, U extends T = T>(value?: T, other?: U) => [T, U]   (Function) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                    ^: any   (TyAny) (TSTypeParameter)
+>                                    ^: any   (Any) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                              ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                              ^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                              ^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                              ^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                                           ^: any   (TyAny) (TSTypeParameter)
+>                                                           ^: any   (Any) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                                     ^: any   (Any) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                                                         ^: any   (TyAny) (TSTypeReference)
+>                                                                         ^: any   (Any) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                                                            ^^^^^: T | undefined   (TyUnion) (BindingIdentifier)
+>                                                                            ^^^^^: T | undefined   (Union) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                                                    ^: any   (Any) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                                                                       ^^^^^: U | undefined   (TyUnion) (BindingIdentifier)
+>                                                                                       ^^^^^: U | undefined   (Union) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                                                                               ^: any   (TyAny) (TSTypeReference)
+>                                                                                               ^: any   (Any) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                                                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                                                                    ^: any   (Any) (Identifier)
 
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
->                                                                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                                                                       ^: any   (Any) (Identifier)
 
 declare function fallbackToConstraint<T extends string>(): T;
->                ^^^^^^^^^^^^^^^^^^^^: <T extends string>() => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^^^^^^: <T extends string>() => T   (Function) (Identifier)
 
 declare function fallbackToConstraint<T extends string>(): T;
->                                     ^: any   (TyAny) (TSTypeParameter)
+>                                     ^: any   (Any) (Identifier)
 
 declare function fallbackToConstraint<T extends string>(): T;
->                                                          ^: any   (TyAny) (TSTypeReference)
+>                                                          ^: any   (Any) (Identifier)
 
 const fromConstraint = constrainedFunction();
->     ^^^^^^^^^^^^^^: [ConstraintA, ConstraintA]   (TyTuple) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: [ConstraintA, ConstraintA]   (Tuple) (Identifier)
 
 const fromConstraint = constrainedFunction();
->                      ^^^^^^^^^^^^^^^^^^^: <T extends ConstraintA, U extends T = T>(value?: T, other?: U) => [T, U]   (TyFunction) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^^^^^: <T extends ConstraintA, U extends T = T>(value?: T, other?: U) => [T, U]   (Function) (Identifier)
 
 const fromConstraintInference = constrainedFunction(constraintA);
->     ^^^^^^^^^^^^^^^^^^^^^^^: [ConstraintA, ConstraintA]   (TyTuple) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^: [ConstraintA, ConstraintA]   (Tuple) (Identifier)
 
 const fromConstraintInference = constrainedFunction(constraintA);
->                               ^^^^^^^^^^^^^^^^^^^: <T extends ConstraintA, U extends T = T>(value?: T, other?: U) => [T, U]   (TyFunction) (IdentifierReference)
+>                               ^^^^^^^^^^^^^^^^^^^: <T extends ConstraintA, U extends T = T>(value?: T, other?: U) => [T, U]   (Function) (Identifier)
 
 const fromConstraintInference = constrainedFunction(constraintA);
->                                                   ^^^^^^^^^^^: ConstraintA   (TyTypeReference) (IdentifierReference)
+>                                                   ^^^^^^^^^^^: ConstraintA   (TypeReference) (Identifier)
 
 const stringConstraint = fallbackToConstraint();
->     ^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const stringConstraint = fallbackToConstraint();
->                        ^^^^^^^^^^^^^^^^^^^^: <T extends string>() => T   (TyFunction) (IdentifierReference)
+>                        ^^^^^^^^^^^^^^^^^^^^: <T extends string>() => T   (Function) (Identifier)
 
 class GenericCallFoo {
->     ^^^^^^^^^^^^^^: typeof GenericCallFoo   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: typeof GenericCallFoo   (TypeQuery) (Identifier)
 
   doThing(value: { a: number }) { return { b: value.a }; }
-> ^^^^^^^: (value: { a: number; }) => { b: number; }   (TyFunction) (MethodDefinition)
+> ^^^^^^^: (value: { a: number; }) => { b: number; }   (Function) (Identifier)
 
   doThing(value: { a: number }) { return { b: value.a }; }
->         ^^^^^: { a: number; }   (TyObject) (BindingIdentifier)
+>         ^^^^^: { a: number; }   (Object) (Identifier)
 
   doThing(value: { a: number }) { return { b: value.a }; }
->                  ^: number   (TyNumber) (TSPropertySignature)
+>                  ^: number   (Number) (Identifier)
 
   doThing(value: { a: number }) { return { b: value.a }; }
->                                          ^: number   (TyNumber) (ObjectProperty)
+>                                          ^: number   (Number) (Identifier)
 
   doThing(value: { a: number }) { return { b: value.a }; }
->                                             ^^^^^: { a: number; }   (TyObject) (IdentifierReference)
+>                                             ^^^^^: { a: number; }   (Object) (Identifier)
 
   doThing(value: { a: number }) { return { b: value.a }; }
->                                                   ^: number   (TyNumber) (StaticMemberExpression)
+>                                                   ^: number   (Number) (Identifier)
 
 const classInstance = new GenericCallFoo();
->     ^^^^^^^^^^^^^: GenericCallFoo   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: GenericCallFoo   (TypeReference) (Identifier)
 
 const classInstance = new GenericCallFoo();
->                         ^^^^^^^^^^^^^^: typeof GenericCallFoo   (TyTypeQuery) (IdentifierReference)
+>                         ^^^^^^^^^^^^^^: typeof GenericCallFoo   (TypeQuery) (Identifier)
 
 const classMethodResult = classInstance.doThing({ a: 12 });
->     ^^^^^^^^^^^^^^^^^: { b: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^: { b: number; }   (Object) (Identifier)
 
 const classMethodResult = classInstance.doThing({ a: 12 });
->                         ^^^^^^^^^^^^^: GenericCallFoo   (TyTypeReference) (IdentifierReference)
+>                         ^^^^^^^^^^^^^: GenericCallFoo   (TypeReference) (Identifier)
 
 const classMethodResult = classInstance.doThing({ a: 12 });
->                                       ^^^^^^^: (value: { a: number; }) => { b: number; }   (TyFunction) (StaticMemberExpression)
+>                                       ^^^^^^^: (value: { a: number; }) => { b: number; }   (Function) (Identifier)
 
 const classMethodResult = classInstance.doThing({ a: 12 });
->                                                 ^: number   (TyNumber) (ObjectProperty)
+>                                                 ^: number   (Number) (Identifier)
 
 function inferredIdentity<T>(value: T) { return value; }
->        ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (Function) (Identifier)
 
 function inferredIdentity<T>(value: T) { return value; }
->                         ^: any   (TyAny) (TSTypeParameter)
+>                         ^: any   (Any) (Identifier)
 
 function inferredIdentity<T>(value: T) { return value; }
->                            ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                            ^^^^^: T   (TypeReference) (Identifier)
 
 function inferredIdentity<T>(value: T) { return value; }
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
 function inferredIdentity<T>(value: T) { return value; }
->                                               ^^^^^: T   (TyTypeReference) (IdentifierReference)
+>                                               ^^^^^: T   (TypeReference) (Identifier)
 
 const inferredNumber = inferredIdentity(123);
->     ^^^^^^^^^^^^^^: 123   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: 123   (NumberLiteral) (Identifier)
 
 const inferredNumber = inferredIdentity(123);
->                      ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (TyFunction) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (Function) (Identifier)
 
 const inferredString = inferredIdentity("test");
->     ^^^^^^^^^^^^^^: "test"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: "test"   (StringLiteral) (Identifier)
 
 const inferredString = inferredIdentity("test");
->                      ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (TyFunction) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (Function) (Identifier)
 
 const inferredBoolean = inferredIdentity(true);
->     ^^^^^^^^^^^^^^^: true   (TyBooleanLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: true   (BooleanLiteral) (Identifier)
 
 const inferredBoolean = inferredIdentity(true);
->                       ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (TyFunction) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^^^: <T>(value: T) => T   (Function) (Identifier)
 
 function nonNull<T>(value: T | undefined | null) { return value!; }
->        ^^^^^^^: <T>(value: T | null | undefined) => NonNullable<T>   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^: <T>(value: T | null | undefined) => NonNullable<T>   (Function) (Identifier)
 
 function nonNull<T>(value: T | undefined | null) { return value!; }
->                ^: any   (TyAny) (TSTypeParameter)
+>                ^: any   (Any) (Identifier)
 
 function nonNull<T>(value: T | undefined | null) { return value!; }
->                   ^^^^^: T | null | undefined   (TyUnion) (BindingIdentifier)
+>                   ^^^^^: T | null | undefined   (Union) (Identifier)
 
 function nonNull<T>(value: T | undefined | null) { return value!; }
->                          ^: any   (TyAny) (TSTypeReference)
+>                          ^: any   (Any) (Identifier)
 
 function nonNull<T>(value: T | undefined | null) { return value!; }
->                                                         ^^^^^: T | null | undefined   (TyUnion) (IdentifierReference)
+>                                                         ^^^^^: T | null | undefined   (Union) (Identifier)
 
 const nonNullString = nonNull("hello");
->     ^^^^^^^^^^^^^: "hello"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: "hello"   (StringLiteral) (Identifier)
 
 const nonNullString = nonNull("hello");
->                     ^^^^^^^: <T>(value: T | null | undefined) => NonNullable<T>   (TyFunction) (IdentifierReference)
+>                     ^^^^^^^: <T>(value: T | null | undefined) => NonNullable<T>   (Function) (Identifier)
 
 const nonNullUndefined = nonNull(undefined);
->     ^^^^^^^^^^^^^^^^: never   (TyNever) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^: never   (Never) (Identifier)
 
 const nonNullUndefined = nonNull(undefined);
->                        ^^^^^^^: <T>(value: T | null | undefined) => NonNullable<T>   (TyFunction) (IdentifierReference)
+>                        ^^^^^^^: <T>(value: T | null | undefined) => NonNullable<T>   (Function) (Identifier)
 
 const nonNullUndefined = nonNull(undefined);
->                                ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>                                ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 const nonNullNumber = nonNull(123 as number);
->     ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const nonNullNumber = nonNull(123 as number);
->                     ^^^^^^^: <T>(value: T | null | undefined) => NonNullable<T>   (TyFunction) (IdentifierReference)
+>                     ^^^^^^^: <T>(value: T | null | undefined) => NonNullable<T>   (Function) (Identifier)
 
 declare function genericPick<T>(value: T[]): T;
->                ^^^^^^^^^^^: { <T>(value: T[]): T; <T>(value: T): T; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^: { <T>(value: T[]): T; <T>(value: T): T; }   (Object) (Identifier)
 
 declare function genericPick<T>(value: T[]): T;
->                            ^: any   (TyAny) (TSTypeParameter)
+>                            ^: any   (Any) (Identifier)
 
 declare function genericPick<T>(value: T[]): T;
->                               ^^^^^: T[]   (TyArray) (BindingIdentifier)
+>                               ^^^^^: T[]   (Array) (Identifier)
 
 declare function genericPick<T>(value: T[]): T;
->                                      ^: any   (TyAny) (TSTypeReference)
+>                                      ^: any   (Any) (Identifier)
 
 declare function genericPick<T>(value: T[]): T;
->                                            ^: any   (TyAny) (TSTypeReference)
+>                                            ^: any   (Any) (Identifier)
 
 declare function genericPick<T>(value: T): T;
->                ^^^^^^^^^^^: { <T>(value: T[]): T; <T>(value: T): T; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^: { <T>(value: T[]): T; <T>(value: T): T; }   (Object) (Identifier)
 
 declare function genericPick<T>(value: T): T;
->                            ^: any   (TyAny) (TSTypeParameter)
+>                            ^: any   (Any) (Identifier)
 
 declare function genericPick<T>(value: T): T;
->                               ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                               ^^^^^: T   (TypeReference) (Identifier)
 
 declare function genericPick<T>(value: T): T;
->                                      ^: any   (TyAny) (TSTypeReference)
+>                                      ^: any   (Any) (Identifier)
 
 declare function genericPick<T>(value: T): T;
->                                          ^: any   (TyAny) (TSTypeReference)
+>                                          ^: any   (Any) (Identifier)
 
 const genericOverloadResult = genericPick("ready");
->     ^^^^^^^^^^^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const genericOverloadResult = genericPick("ready");
->                             ^^^^^^^^^^^: { <T>(value: T[]): T; <T>(value: T): T; }   (TyObject) (IdentifierReference)
+>                             ^^^^^^^^^^^: { <T>(value: T[]): T; <T>(value: T): T; }   (Object) (Identifier)

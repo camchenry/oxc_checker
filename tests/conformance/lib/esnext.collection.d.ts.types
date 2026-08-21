@@ -1,117 +1,117 @@
 interface Map<K, V> {
->         ^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^: any   (Any) (Identifier)
      expected: MapConstructor
 
 interface Map<K, V> {
->         ^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^: any   (Any) (Identifier)
      expected: MapConstructor
 
 interface Map<K, V> {
->             ^: any   (TyAny) (TSTypeParameter)
+>             ^: any   (Any) (Identifier)
 
 interface Map<K, V> {
->                ^: any   (TyAny) (TSTypeParameter)
+>                ^: any   (Any) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->   ^^^^^^^^^^^: { (key: K, defaultValue: V): V; (key: K, defaultValue: V): V; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^: { (key: K, defaultValue: V): V; (key: K, defaultValue: V): V; }   (Object) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->               ^^^: K   (TyTypeReference) (BindingIdentifier)
+>               ^^^: K   (TypeReference) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->                       ^^^^^^^^^^^^: V   (TyTypeReference) (BindingIdentifier)
+>                       ^^^^^^^^^^^^: V   (TypeReference) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->                                     ^: any   (TyAny) (TSTypeReference)
+>                                     ^: any   (Any) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->                                         ^: any   (TyAny) (TSTypeReference)
+>                                         ^: any   (Any) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->   ^^^^^^^^^^^^^^^^^^^: { (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^^^^^: { (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }   (Object) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                       ^^^: K   (TyTypeReference) (BindingIdentifier)
+>                       ^^^: K   (TypeReference) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                            ^: any   (TyAny) (TSTypeReference)
+>                            ^: any   (Any) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                               ^^^^^^^^: (key: K) => V   (TyFunction) (BindingIdentifier)
+>                               ^^^^^^^^: (key: K) => V   (Function) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                                          ^^^: K   (TyTypeReference) (BindingIdentifier)
+>                                          ^^^: K   (TypeReference) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                                                         ^: any   (TyAny) (TSTypeReference)
+>                                                         ^: any   (Any) (Identifier)
 
 interface WeakMap<K extends WeakKey, V> {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: WeakMapConstructor
 
 interface WeakMap<K extends WeakKey, V> {
->         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: WeakMapConstructor
 
 interface WeakMap<K extends WeakKey, V> {
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
 interface WeakMap<K extends WeakKey, V> {
->                           ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^: any   (Any) (Identifier)
 
 interface WeakMap<K extends WeakKey, V> {
->                           ^^^^^^^: any   (TyError) (IdentifierReference)
+>                           ^^^^^^^: any   (Error) (Identifier)
 
 interface WeakMap<K extends WeakKey, V> {
->                                    ^: any   (TyAny) (TSTypeParameter)
+>                                    ^: any   (Any) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->   ^^^^^^^^^^^: { (key: K, defaultValue: V): V; (key: K, defaultValue: V): V; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^: { (key: K, defaultValue: V): V; (key: K, defaultValue: V): V; }   (Object) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->               ^^^: K   (TyTypeReference) (BindingIdentifier)
+>               ^^^: K   (TypeReference) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->                       ^^^^^^^^^^^^: V   (TyTypeReference) (BindingIdentifier)
+>                       ^^^^^^^^^^^^: V   (TypeReference) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->                                     ^: any   (TyAny) (TSTypeReference)
+>                                     ^: any   (Any) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->                                         ^: any   (TyAny) (TSTypeReference)
+>                                         ^: any   (Any) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->   ^^^^^^^^^^^^^^^^^^^: { (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^^^^^: { (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }   (Object) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                       ^^^: K   (TyTypeReference) (BindingIdentifier)
+>                       ^^^: K   (TypeReference) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                            ^: any   (TyAny) (TSTypeReference)
+>                            ^: any   (Any) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                               ^^^^^^^^: (key: K) => V   (TyFunction) (BindingIdentifier)
+>                               ^^^^^^^^: (key: K) => V   (Function) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                                          ^^^: K   (TyTypeReference) (BindingIdentifier)
+>                                          ^^^: K   (TypeReference) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                                                         ^: any   (TyAny) (TSTypeReference)
+>                                                         ^: any   (Any) (Identifier)

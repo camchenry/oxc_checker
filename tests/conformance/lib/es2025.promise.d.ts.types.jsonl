@@ -1,0 +1,19 @@
+{"path":"es2025.promise.d.ts","start":10,"end":28,"text":"PromiseConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.promise.d.ts","start":10,"end":28,"text":"PromiseConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.promise.d.ts","start":693,"end":696,"text":"try","nodeType":"Identifier","type":{"name":"Object","display":"{ <T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>; <T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>; }"}}
+{"path":"es2025.promise.d.ts","start":697,"end":698,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.promise.d.ts","start":700,"end":701,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.promise.d.ts","start":721,"end":731,"text":"callbackFn","nodeType":"Identifier","type":{"name":"Function","display":"(...args: U) => T | PromiseLike<T>"}}
+{"path":"es2025.promise.d.ts","start":737,"end":741,"text":"args","nodeType":"Identifier","type":{"name":"TypeReference","display":"U"}}
+{"path":"es2025.promise.d.ts","start":743,"end":744,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.promise.d.ts","start":749,"end":750,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.promise.d.ts","start":753,"end":764,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.promise.d.ts","start":753,"end":764,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.promise.d.ts","start":765,"end":766,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.promise.d.ts","start":772,"end":776,"text":"args","nodeType":"Identifier","type":{"name":"TypeReference","display":"U"}}
+{"path":"es2025.promise.d.ts","start":778,"end":779,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.promise.d.ts","start":782,"end":789,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2025.promise.d.ts","start":782,"end":789,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2025.promise.d.ts","start":790,"end":797,"text":"Awaited","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2025.promise.d.ts","start":790,"end":797,"text":"Awaited","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2025.promise.d.ts","start":798,"end":799,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

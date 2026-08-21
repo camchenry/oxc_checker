@@ -1,0 +1,53 @@
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::a.ts","start":6,"end":10,"text":"arg1","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::a.ts","start":27,"end":31,"text":"msg1","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::a.ts","start":44,"end":48,"text":"arg1","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::a.ts","start":59,"end":63,"text":"arg2","nodeType":"Identifier","type":{"name":"Object","display":"{ name: string; }"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::a.ts","start":68,"end":72,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::a.ts","start":89,"end":93,"text":"msg2","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::a.ts","start":106,"end":110,"text":"arg2","nodeType":"Identifier","type":{"name":"Object","display":"{ name: string; }"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::b.ts","start":6,"end":9,"text":"arg","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"foo\""}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::b.ts","start":25,"end":29,"text":"msg1","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"arg = foo\""}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::b.ts","start":41,"end":44,"text":"arg","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"foo\""}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::b.ts","start":54,"end":58,"text":"msg2","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::b.ts","start":70,"end":73,"text":"arg","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"foo\""}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::b.ts","start":97,"end":115,"text":"stringWithKindProp","nodeType":"Identifier","type":{"name":"Intersection","display":"string & { _kind?: 'MyString'; }"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::b.ts","start":128,"end":133,"text":"_kind","nodeType":"Identifier","type":{"name":"Union","display":"\"MyString\" | undefined"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::b.ts","start":164,"end":168,"text":"msg3","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::b.ts","start":195,"end":213,"text":"stringWithKindProp","nodeType":"Identifier","type":{"name":"Intersection","display":"string & { _kind?: 'MyString'; }"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::c.ts","start":6,"end":9,"text":"arg","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"123"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::c.ts","start":23,"end":27,"text":"msg1","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"arg = 123\""}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::c.ts","start":39,"end":42,"text":"arg","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"123"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::c.ts","start":52,"end":56,"text":"msg2","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::c.ts","start":68,"end":71,"text":"arg","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"123"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::d.ts","start":6,"end":9,"text":"arg","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::d.ts","start":24,"end":28,"text":"msg1","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"arg = true\""}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::d.ts","start":40,"end":43,"text":"arg","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::d.ts","start":53,"end":57,"text":"msg2","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::d.ts","start":69,"end":72,"text":"arg","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::e.ts","start":6,"end":10,"text":"user","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::e.ts","start":13,"end":17,"text":"JSON","nodeType":"Identifier","type":{"name":"TypeReference","display":"JSON"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::e.ts","start":18,"end":23,"text":"parse","nodeType":"Identifier","type":{"name":"Function","display":"(text: string, reviver?: (this: any, key: string, value: any) => any) => any"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::e.ts","start":52,"end":56,"text":"msg1","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::e.ts","start":68,"end":72,"text":"user","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::e.ts","start":73,"end":77,"text":"name","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::e.ts","start":87,"end":91,"text":"msg2","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::e.ts","start":103,"end":107,"text":"user","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::e.ts","start":108,"end":112,"text":"name","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::f.ts","start":6,"end":9,"text":"arg","nodeType":"Identifier","type":{"name":"Union","display":"\"ok\" | null"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::f.ts","start":43,"end":47,"text":"msg1","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::f.ts","start":59,"end":62,"text":"arg","nodeType":"Identifier","type":{"name":"Union","display":"\"ok\" | null"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::g.ts","start":6,"end":9,"text":"arg","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExp"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::g.ts","start":16,"end":22,"text":"RegExp","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExpConstructor"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::g.ts","start":37,"end":41,"text":"msg1","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::g.ts","start":53,"end":56,"text":"arg","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExp"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::h.ts","start":6,"end":9,"text":"arg","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExp"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::h.ts","start":25,"end":29,"text":"msg1","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::h.ts","start":41,"end":44,"text":"arg","nodeType":"Identifier","type":{"name":"TypeReference","display":"RegExp"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::i.ts","start":6,"end":9,"text":"arg","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"something\""}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::i.ts","start":31,"end":35,"text":"msg1","nodeType":"Identifier","type":{"name":"Union","display":"\"something\" | \"arg = something\""}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::i.ts","start":45,"end":48,"text":"arg","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"something\""}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::i.ts","start":64,"end":67,"text":"arg","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"something\""}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::i.ts","start":79,"end":82,"text":"arg","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::j.ts","start":6,"end":9,"text":"arg","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::j.ts","start":34,"end":38,"text":"msg1","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_restrictTemplateExpressions.ts::j.ts","start":50,"end":53,"text":"arg","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}

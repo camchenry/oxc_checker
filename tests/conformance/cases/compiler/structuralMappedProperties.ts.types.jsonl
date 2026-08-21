@@ -1,0 +1,30 @@
+{"path":"compiler/structuralMappedProperties.ts","start":5,"end":11,"text":"Source","nodeType":"Identifier","type":{"name":"Object","display":"{ name: string; count: number; }"}}
+{"path":"compiler/structuralMappedProperties.ts","start":18,"end":22,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/structuralMappedProperties.ts","start":34,"end":39,"text":"count","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/structuralMappedProperties.ts","start":67,"end":79,"text":"optionalCopy","nodeType":"Identifier","type":{"name":"TypeReference","display":"Partial<Source>"}}
+{"path":"compiler/structuralMappedProperties.ts","start":81,"end":88,"text":"Partial","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/structuralMappedProperties.ts","start":81,"end":88,"text":"Partial","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/structuralMappedProperties.ts","start":89,"end":95,"text":"Source","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/structuralMappedProperties.ts","start":104,"end":116,"text":"optionalName","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/structuralMappedProperties.ts","start":119,"end":131,"text":"optionalCopy","nodeType":"Identifier","type":{"name":"TypeReference","display":"Partial<Source>"}}
+{"path":"compiler/structuralMappedProperties.ts","start":132,"end":136,"text":"name","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/structuralMappedProperties.ts","start":144,"end":157,"text":"optionalCount","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"compiler/structuralMappedProperties.ts","start":160,"end":172,"text":"optionalCopy","nodeType":"Identifier","type":{"name":"TypeReference","display":"Partial<Source>"}}
+{"path":"compiler/structuralMappedProperties.ts","start":173,"end":178,"text":"count","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"compiler/structuralMappedProperties.ts","start":195,"end":203,"text":"recorded","nodeType":"Identifier","type":{"name":"TypeReference","display":"Record<\"value\", string>"}}
+{"path":"compiler/structuralMappedProperties.ts","start":205,"end":211,"text":"Record","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/structuralMappedProperties.ts","start":205,"end":211,"text":"Record","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/structuralMappedProperties.ts","start":236,"end":249,"text":"recordedValue","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/structuralMappedProperties.ts","start":252,"end":260,"text":"recorded","nodeType":"Identifier","type":{"name":"TypeReference","display":"Record<\"value\", string>"}}
+{"path":"compiler/structuralMappedProperties.ts","start":261,"end":266,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/structuralMappedProperties.ts","start":274,"end":279,"text":"Boxed","nodeType":"Identifier","type":{"name":"Conditional","display":"Value extends string ? { value: Value; } : { value: number; }"}}
+{"path":"compiler/structuralMappedProperties.ts","start":280,"end":285,"text":"Value","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/structuralMappedProperties.ts","start":289,"end":294,"text":"Value","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/structuralMappedProperties.ts","start":314,"end":319,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"Value"}}
+{"path":"compiler/structuralMappedProperties.ts","start":321,"end":326,"text":"Value","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/structuralMappedProperties.ts","start":333,"end":338,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/structuralMappedProperties.ts","start":364,"end":369,"text":"boxed","nodeType":"Identifier","type":{"name":"Object","display":"{ value: \"ready\"; }"}}
+{"path":"compiler/structuralMappedProperties.ts","start":371,"end":376,"text":"Boxed","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/structuralMappedProperties.ts","start":393,"end":409,"text":"conditionalValue","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/structuralMappedProperties.ts","start":412,"end":417,"text":"boxed","nodeType":"Identifier","type":{"name":"Object","display":"{ value: \"ready\"; }"}}
+{"path":"compiler/structuralMappedProperties.ts","start":418,"end":423,"text":"value","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}

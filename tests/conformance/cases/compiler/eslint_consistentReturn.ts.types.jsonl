@@ -1,0 +1,21 @@
+{"path":"compiler/eslint_consistentReturn.ts::a.ts","start":9,"end":12,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"() => undefined"}}
+{"path":"compiler/eslint_consistentReturn.ts::a.ts","start":38,"end":41,"text":"bar","nodeType":"Identifier","type":{"name":"Function","display":"(flag: boolean) => undefined"}}
+{"path":"compiler/eslint_consistentReturn.ts::a.ts","start":42,"end":46,"text":"flag","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/eslint_consistentReturn.ts::a.ts","start":76,"end":80,"text":"flag","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/eslint_consistentReturn.ts::a.ts","start":89,"end":92,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"() => undefined"}}
+{"path":"compiler/eslint_consistentReturn.ts::a.ts","start":124,"end":127,"text":"baz","nodeType":"Identifier","type":{"name":"Function","display":"(flag: boolean) => Promise<undefined>"}}
+{"path":"compiler/eslint_consistentReturn.ts::a.ts","start":128,"end":132,"text":"flag","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/eslint_consistentReturn.ts::a.ts","start":144,"end":151,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_consistentReturn.ts::a.ts","start":144,"end":151,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_consistentReturn.ts::a.ts","start":171,"end":175,"text":"flag","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/eslint_consistentReturn.ts::a.ts","start":194,"end":197,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"() => undefined"}}
+{"path":"compiler/eslint_consistentReturn.ts::b.ts","start":9,"end":12,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/eslint_consistentReturn.ts::b.ts","start":33,"end":36,"text":"bar","nodeType":"Identifier","type":{"name":"Function","display":"(flag: boolean) => void"}}
+{"path":"compiler/eslint_consistentReturn.ts::b.ts","start":37,"end":41,"text":"flag","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/eslint_consistentReturn.ts::b.ts","start":66,"end":70,"text":"flag","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/eslint_consistentReturn.ts::b.ts","start":79,"end":82,"text":"foo","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/eslint_consistentReturn.ts::b.ts","start":114,"end":117,"text":"baz","nodeType":"Identifier","type":{"name":"Function","display":"(flag: boolean) => Promise<void | number>"}}
+{"path":"compiler/eslint_consistentReturn.ts::b.ts","start":118,"end":122,"text":"flag","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/eslint_consistentReturn.ts::b.ts","start":134,"end":141,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_consistentReturn.ts::b.ts","start":134,"end":141,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/eslint_consistentReturn.ts::b.ts","start":165,"end":169,"text":"flag","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}

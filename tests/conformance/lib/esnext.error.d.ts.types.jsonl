@@ -1,0 +1,7 @@
+{"path":"esnext.error.d.ts","start":10,"end":26,"text":"ErrorConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.error.d.ts","start":10,"end":26,"text":"ErrorConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.error.d.ts","start":133,"end":140,"text":"isError","nodeType":"Identifier","type":{"name":"Object","display":"{ (error: unknown): error is Error; (error: unknown): error is Error; }"}}
+{"path":"esnext.error.d.ts","start":141,"end":146,"text":"error","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"esnext.error.d.ts","start":158,"end":163,"text":"error","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"esnext.error.d.ts","start":167,"end":172,"text":"Error","nodeType":"Identifier","type":{"name":"TypeReference","display":"ErrorConstructor"}}
+{"path":"esnext.error.d.ts","start":167,"end":172,"text":"Error","nodeType":"Identifier","type":{"name":"TypeReference","display":"ErrorConstructor"}}

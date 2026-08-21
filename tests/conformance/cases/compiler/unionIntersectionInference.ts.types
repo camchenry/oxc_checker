@@ -1,140 +1,140 @@
 declare function maybe<T>(value: T | undefined): T;
->                ^^^^^: <T>(value: T | undefined) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^: <T>(value: T | undefined) => T   (Function) (Identifier)
 
 declare function maybe<T>(value: T | undefined): T;
->                      ^: any   (TyAny) (TSTypeParameter)
+>                      ^: any   (Any) (Identifier)
 
 declare function maybe<T>(value: T | undefined): T;
->                         ^^^^^: T | undefined   (TyUnion) (BindingIdentifier)
+>                         ^^^^^: T | undefined   (Union) (Identifier)
 
 declare function maybe<T>(value: T | undefined): T;
->                                ^: any   (TyAny) (TSTypeReference)
+>                                ^: any   (Any) (Identifier)
 
 declare function maybe<T>(value: T | undefined): T;
->                                                ^: any   (TyAny) (TSTypeReference)
+>                                                ^: any   (Any) (Identifier)
 
 declare function nullable<T>(value: T | null): T;
->                ^^^^^^^^: <T>(value: T | null) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^: <T>(value: T | null) => T   (Function) (Identifier)
 
 declare function nullable<T>(value: T | null): T;
->                         ^: any   (TyAny) (TSTypeParameter)
+>                         ^: any   (Any) (Identifier)
 
 declare function nullable<T>(value: T | null): T;
->                            ^^^^^: T | null   (TyUnion) (BindingIdentifier)
+>                            ^^^^^: T | null   (Union) (Identifier)
 
 declare function nullable<T>(value: T | null): T;
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
 declare function nullable<T>(value: T | null): T;
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
 declare function falsy<T>(value: T | false): T;
->                ^^^^^: <T>(value: T | false) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^: <T>(value: T | false) => T   (Function) (Identifier)
 
 declare function falsy<T>(value: T | false): T;
->                      ^: any   (TyAny) (TSTypeParameter)
+>                      ^: any   (Any) (Identifier)
 
 declare function falsy<T>(value: T | false): T;
->                         ^^^^^: T | false   (TyUnion) (BindingIdentifier)
+>                         ^^^^^: T | false   (Union) (Identifier)
 
 declare function falsy<T>(value: T | false): T;
->                                ^: any   (TyAny) (TSTypeReference)
+>                                ^: any   (Any) (Identifier)
 
 declare function falsy<T>(value: T | false): T;
->                                            ^: any   (TyAny) (TSTypeReference)
+>                                            ^: any   (Any) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (Function) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                              ^: any   (TyAny) (TSTypeParameter)
+>                              ^: any   (Any) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                 ^^^^^: Promise<T> | T   (TyUnion) (BindingIdentifier)
+>                                 ^^^^^: Promise<T> | T   (Union) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                        ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                        ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                        ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                        ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                                ^: any   (TyAny) (TSTypeReference)
+>                                                ^: any   (Any) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                                         ^: any   (TyAny) (TSTypeReference)
+>                                                         ^: any   (Any) (Identifier)
 
 declare const promiseString: Promise<string>;
->             ^^^^^^^^^^^^^: Promise<string>   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^^^^: Promise<string>   (TypeReference) (Identifier)
 
 declare const promiseString: Promise<string>;
->                            ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 declare const promiseString: Promise<string>;
->                            ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 declare const intersectionSource: string[] & { extra: number };
->             ^^^^^^^^^^^^^^^^^^: string[] & { extra: number; }   (TyIntersection) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^: string[] & { extra: number; }   (Intersection) (Identifier)
 
 declare const intersectionSource: string[] & { extra: number };
->                                              ^^^^^: number   (TyNumber) (TSPropertySignature)
+>                                              ^^^^^: number   (Number) (Identifier)
 
 declare function extra<T>(value: string[] & T): T;
->                ^^^^^: <T>(value: string[] & T) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^: <T>(value: string[] & T) => T   (Function) (Identifier)
 
 declare function extra<T>(value: string[] & T): T;
->                      ^: any   (TyAny) (TSTypeParameter)
+>                      ^: any   (Any) (Identifier)
 
 declare function extra<T>(value: string[] & T): T;
->                         ^^^^^: string[] & T   (TyIntersection) (BindingIdentifier)
+>                         ^^^^^: string[] & T   (Intersection) (Identifier)
 
 declare function extra<T>(value: string[] & T): T;
->                                           ^: any   (TyAny) (TSTypeReference)
+>                                           ^: any   (Any) (Identifier)
 
 declare function extra<T>(value: string[] & T): T;
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
 const maybeValue = maybe("ready");
->     ^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const maybeValue = maybe("ready");
->                  ^^^^^: <T>(value: T | undefined) => T   (TyFunction) (IdentifierReference)
+>                  ^^^^^: <T>(value: T | undefined) => T   (Function) (Identifier)
 
 const nullableValue = nullable("ready");
->     ^^^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const nullableValue = nullable("ready");
->                     ^^^^^^^^: <T>(value: T | null) => T   (TyFunction) (IdentifierReference)
+>                     ^^^^^^^^: <T>(value: T | null) => T   (Function) (Identifier)
 
 const falsyValue = falsy("ready");
->     ^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const falsyValue = falsy("ready");
->                  ^^^^^: <T>(value: T | false) => T   (TyFunction) (IdentifierReference)
+>                  ^^^^^: <T>(value: T | false) => T   (Function) (Identifier)
 
 const promiseValue = unwrapPromise(promiseString);
->     ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^: string   (String) (Identifier)
 
 const promiseValue = unwrapPromise(promiseString);
->                    ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (TyFunction) (IdentifierReference)
+>                    ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (Function) (Identifier)
 
 const promiseValue = unwrapPromise(promiseString);
->                                  ^^^^^^^^^^^^^: Promise<string>   (TyTypeReference) (IdentifierReference)
+>                                  ^^^^^^^^^^^^^: Promise<string>   (TypeReference) (Identifier)
 
 const directValue = unwrapPromise("ready");
->     ^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const directValue = unwrapPromise("ready");
->                   ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (TyFunction) (IdentifierReference)
+>                   ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (Function) (Identifier)
 
 const extraValue = extra(intersectionSource);
->     ^^^^^^^^^^: { extra: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^: { extra: number; }   (Object) (Identifier)
 
 const extraValue = extra(intersectionSource);
->                  ^^^^^: <T>(value: string[] & T) => T   (TyFunction) (IdentifierReference)
+>                  ^^^^^: <T>(value: string[] & T) => T   (Function) (Identifier)
 
 const extraValue = extra(intersectionSource);
->                        ^^^^^^^^^^^^^^^^^^: string[] & { extra: number; }   (TyIntersection) (IdentifierReference)
+>                        ^^^^^^^^^^^^^^^^^^: string[] & { extra: number; }   (Intersection) (Identifier)

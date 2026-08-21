@@ -1,257 +1,257 @@
 function declaredParameters(a: number, b: string, c: boolean) {}
->        ^^^^^^^^^^^^^^^^^^: (a: number, b: string, c: boolean) => void   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^^^^^^^^^^^^: (a: number, b: string, c: boolean) => void   (Function) (Identifier)
 
 function declaredParameters(a: number, b: string, c: boolean) {}
->                           ^: number   (TyNumber) (BindingIdentifier)
+>                           ^: number   (Number) (Identifier)
 
 function declaredParameters(a: number, b: string, c: boolean) {}
->                                      ^: string   (TyString) (BindingIdentifier)
+>                                      ^: string   (String) (Identifier)
 
 function declaredParameters(a: number, b: string, c: boolean) {}
->                                                 ^: boolean   (TyBoolean) (BindingIdentifier)
+>                                                 ^: boolean   (Boolean) (Identifier)
 
 declare function optionalParameter(value?: number): number;
->                ^^^^^^^^^^^^^^^^^: (value?: number) => number   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^^^: (value?: number) => number   (Function) (Identifier)
 
 declare function optionalParameter(value?: number): number;
->                                  ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                  ^^^^^: number | undefined   (Union) (Identifier)
 
 declare function pipe<A extends any[], B>(callback: (...args: A) => B): B;
->                ^^^^: <A extends any[], B>(callback: (...args: A) => B) => B   (TyFunction) (BindingIdentifier)
+>                ^^^^: <A extends any[], B>(callback: (...args: A) => B) => B   (Function) (Identifier)
 
 declare function pipe<A extends any[], B>(callback: (...args: A) => B): B;
->                     ^: any   (TyAny) (TSTypeParameter)
+>                     ^: any   (Any) (Identifier)
 
 declare function pipe<A extends any[], B>(callback: (...args: A) => B): B;
->                                      ^: any   (TyAny) (TSTypeParameter)
+>                                      ^: any   (Any) (Identifier)
 
 declare function pipe<A extends any[], B>(callback: (...args: A) => B): B;
->                                         ^^^^^^^^: (...args: A) => B   (TyFunction) (BindingIdentifier)
+>                                         ^^^^^^^^: (...args: A) => B   (Function) (Identifier)
 
 declare function pipe<A extends any[], B>(callback: (...args: A) => B): B;
->                                                       ^^^^: A   (TyTypeReference) (BindingIdentifier)
+>                                                       ^^^^: A   (TypeReference) (Identifier)
 
 declare function pipe<A extends any[], B>(callback: (...args: A) => B): B;
->                                                             ^: any   (TyAny) (TSTypeReference)
+>                                                             ^: any   (Any) (Identifier)
 
 declare function pipe<A extends any[], B>(callback: (...args: A) => B): B;
->                                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                                   ^: any   (Any) (Identifier)
 
 declare function pipe<A extends any[], B>(callback: (...args: A) => B): B;
->                                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                                       ^: any   (Any) (Identifier)
 
 declare function acceptsPredicate<T, S extends T>(
->                ^^^^^^^^^^^^^^^^: <T, S extends T>(predicate: (value: T) => value is S, assertion: (value: unknown) => asserts value is string, thisPredicate: (this: unknown) => this is { ready: true; }, thisAssertion: (this: unknown) => asserts this is { ready: true; }, bareAssertion: (value: unknown) => asserts value, bareThisAssertion: (this: unknown) => asserts this) => void   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^^: <T, S extends T>(predicate: (value: T) => value is S, assertion: (value: unknown) => asserts value is string, thisPredicate: (this: unknown) => this is { ready: true; }, thisAssertion: (this: unknown) => asserts this is { ready: true; }, bareAssertion: (value: unknown) => asserts value, bareThisAssertion: (this: unknown) => asserts this) => void   (Function) (Identifier)
 
 declare function acceptsPredicate<T, S extends T>(
->                                 ^: any   (TyAny) (TSTypeParameter)
+>                                 ^: any   (Any) (Identifier)
 
 declare function acceptsPredicate<T, S extends T>(
->                                    ^: any   (TyAny) (TSTypeParameter)
+>                                    ^: any   (Any) (Identifier)
 
 declare function acceptsPredicate<T, S extends T>(
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
   predicate: (value: T) => value is S,
-> ^^^^^^^^^: (value: T) => value is S   (TyFunction) (BindingIdentifier)
+> ^^^^^^^^^: (value: T) => value is S   (Function) (Identifier)
 
   predicate: (value: T) => value is S,
->             ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^: T   (TypeReference) (Identifier)
 
   predicate: (value: T) => value is S,
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
   predicate: (value: T) => value is S,
->                          ^^^^^: T   (TyTypeReference) (IdentifierName)
+>                          ^^^^^: T   (TypeReference) (Identifier)
 
   predicate: (value: T) => value is S,
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
   assertion: (value: unknown) => asserts value is string,
-> ^^^^^^^^^: (value: unknown) => asserts value is string   (TyFunction) (BindingIdentifier)
+> ^^^^^^^^^: (value: unknown) => asserts value is string   (Function) (Identifier)
 
   assertion: (value: unknown) => asserts value is string,
->             ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>             ^^^^^: unknown   (Unknown) (Identifier)
 
   assertion: (value: unknown) => asserts value is string,
->                                        ^^^^^: unknown   (TyUnknown) (IdentifierName)
+>                                        ^^^^^: unknown   (Unknown) (Identifier)
 
   thisPredicate: (this: unknown) => this is { ready: true },
-> ^^^^^^^^^^^^^: (this: unknown) => this is { ready: true; }   (TyFunction) (BindingIdentifier)
+> ^^^^^^^^^^^^^: (this: unknown) => this is { ready: true; }   (Function) (Identifier)
 
   thisPredicate: (this: unknown) => this is { ready: true },
->                 ^^^^: unknown   (TyUnknown) (TSThisParameter)
+>                 ^^^^: unknown   (Unknown) (Identifier)
 
   thisPredicate: (this: unknown) => this is { ready: true },
->                                             ^^^^^: true   (TyBooleanLiteral) (TSPropertySignature)
+>                                             ^^^^^: true   (BooleanLiteral) (Identifier)
 
   thisAssertion: (this: unknown) => asserts this is { ready: true },
-> ^^^^^^^^^^^^^: (this: unknown) => asserts this is { ready: true; }   (TyFunction) (BindingIdentifier)
+> ^^^^^^^^^^^^^: (this: unknown) => asserts this is { ready: true; }   (Function) (Identifier)
 
   thisAssertion: (this: unknown) => asserts this is { ready: true },
->                 ^^^^: unknown   (TyUnknown) (TSThisParameter)
+>                 ^^^^: unknown   (Unknown) (Identifier)
 
   thisAssertion: (this: unknown) => asserts this is { ready: true },
->                                                     ^^^^^: true   (TyBooleanLiteral) (TSPropertySignature)
+>                                                     ^^^^^: true   (BooleanLiteral) (Identifier)
 
   bareAssertion: (value: unknown) => asserts value,
-> ^^^^^^^^^^^^^: (value: unknown) => asserts value   (TyFunction) (BindingIdentifier)
+> ^^^^^^^^^^^^^: (value: unknown) => asserts value   (Function) (Identifier)
 
   bareAssertion: (value: unknown) => asserts value,
->                 ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>                 ^^^^^: unknown   (Unknown) (Identifier)
 
   bareAssertion: (value: unknown) => asserts value,
->                                            ^^^^^: unknown   (TyUnknown) (IdentifierName)
+>                                            ^^^^^: unknown   (Unknown) (Identifier)
 
   bareThisAssertion: (this: unknown) => asserts this,
-> ^^^^^^^^^^^^^^^^^: (this: unknown) => asserts this   (TyFunction) (BindingIdentifier)
+> ^^^^^^^^^^^^^^^^^: (this: unknown) => asserts this   (Function) (Identifier)
 
   bareThisAssertion: (this: unknown) => asserts this,
->                     ^^^^: unknown   (TyUnknown) (TSThisParameter)
+>                     ^^^^: unknown   (Unknown) (Identifier)
 
 declare function useCallback<T>(callback: () => T): T;
->                ^^^^^^^^^^^: <T>(callback: () => T) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^: <T>(callback: () => T) => T   (Function) (Identifier)
 
 declare function useCallback<T>(callback: () => T): T;
->                            ^: any   (TyAny) (TSTypeParameter)
+>                            ^: any   (Any) (Identifier)
 
 declare function useCallback<T>(callback: () => T): T;
->                               ^^^^^^^^: () => T   (TyFunction) (BindingIdentifier)
+>                               ^^^^^^^^: () => T   (Function) (Identifier)
 
 declare function useCallback<T>(callback: () => T): T;
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
 declare function useCallback<T>(callback: () => T): T;
->                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                   ^: any   (Any) (Identifier)
 
 declare function configureReturn<T>(options: { create: () => T }): T;
->                ^^^^^^^^^^^^^^^: <T>(options: { create: () => T; }) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^: <T>(options: { create: () => T; }) => T   (Function) (Identifier)
 
 declare function configureReturn<T>(options: { create: () => T }): T;
->                                ^: any   (TyAny) (TSTypeParameter)
+>                                ^: any   (Any) (Identifier)
 
 declare function configureReturn<T>(options: { create: () => T }): T;
->                                   ^^^^^^^: { create: () => T; }   (TyObject) (BindingIdentifier)
+>                                   ^^^^^^^: { create: () => T; }   (Object) (Identifier)
 
 declare function configureReturn<T>(options: { create: () => T }): T;
->                                              ^^^^^^: () => T   (TyFunction) (TSPropertySignature)
+>                                              ^^^^^^: () => T   (Function) (Identifier)
 
 declare function configureReturn<T>(options: { create: () => T }): T;
->                                                            ^: any   (TyAny) (TSTypeReference)
+>                                                            ^: any   (Any) (Identifier)
 
 declare function configureReturn<T>(options: { create: () => T }): T;
->                                                                  ^: any   (TyAny) (TSTypeReference)
+>                                                                  ^: any   (Any) (Identifier)
 
 const callbackValue = useCallback(() => 1);
->     ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const callbackValue = useCallback(() => 1);
->                     ^^^^^^^^^^^: <T>(callback: () => T) => T   (TyFunction) (IdentifierReference)
+>                     ^^^^^^^^^^^: <T>(callback: () => T) => T   (Function) (Identifier)
 
 const objectCallbackValue = configureReturn({ create: () => ({ value: 1 }) });
->     ^^^^^^^^^^^^^^^^^^^: { value: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^: { value: number; }   (Object) (Identifier)
 
 const objectCallbackValue = configureReturn({ create: () => ({ value: 1 }) });
->                           ^^^^^^^^^^^^^^^: <T>(options: { create: () => T; }) => T   (TyFunction) (IdentifierReference)
+>                           ^^^^^^^^^^^^^^^: <T>(options: { create: () => T; }) => T   (Function) (Identifier)
 
 const objectCallbackValue = configureReturn({ create: () => ({ value: 1 }) });
->                                             ^^^^^^: () => { value: number; }   (TyFunction) (ObjectProperty)
+>                                             ^^^^^^: () => { value: number; }   (Function) (Identifier)
 
 const objectCallbackValue = configureReturn({ create: () => ({ value: 1 }) });
->                                                              ^^^^^: number   (TyNumber) (ObjectProperty)
+>                                                              ^^^^^: number   (Number) (Identifier)
 
 declare function configureObject<T>(options: {
->                ^^^^^^^^^^^^^^^: <T>(options: { create: () => T; consume: (value: T) => void; }) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^: <T>(options: { create: () => T; consume: (value: T) => void; }) => T   (Function) (Identifier)
 
 declare function configureObject<T>(options: {
->                                ^: any   (TyAny) (TSTypeParameter)
+>                                ^: any   (Any) (Identifier)
 
 declare function configureObject<T>(options: {
->                                   ^^^^^^^: { create: () => T; consume: (value: T) => void; }   (TyObject) (BindingIdentifier)
+>                                   ^^^^^^^: { create: () => T; consume: (value: T) => void; }   (Object) (Identifier)
 
   create: () => T;
-> ^^^^^^: () => T   (TyFunction) (TSPropertySignature)
+> ^^^^^^: () => T   (Function) (Identifier)
 
   create: () => T;
->               ^: any   (TyAny) (TSTypeReference)
+>               ^: any   (Any) (Identifier)
 
   consume: (value: T) => void;
-> ^^^^^^^: (value: T) => void   (TyFunction) (TSPropertySignature)
+> ^^^^^^^: (value: T) => void   (Function) (Identifier)
 
   consume: (value: T) => void;
->           ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^: T   (TypeReference) (Identifier)
 
   consume: (value: T) => void;
->                  ^: any   (TyAny) (TSTypeReference)
+>                  ^: any   (Any) (Identifier)
 
 }): T;
->   ^: any   (TyAny) (TSTypeReference)
+>   ^: any   (Any) (Identifier)
 
 const objectResult = configureObject({
->     ^^^^^^^^^^^^: { value: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^: { value: number; }   (Object) (Identifier)
 
 const objectResult = configureObject({
->                    ^^^^^^^^^^^^^^^: <T>(options: { create: () => T; consume: (value: T) => void; }) => T   (TyFunction) (IdentifierReference)
+>                    ^^^^^^^^^^^^^^^: <T>(options: { create: () => T; consume: (value: T) => void; }) => T   (Function) (Identifier)
 
   create: () => ({ value: 1 }),
-> ^^^^^^: () => { value: number; }   (TyFunction) (ObjectProperty)
+> ^^^^^^: () => { value: number; }   (Function) (Identifier)
 
   create: () => ({ value: 1 }),
->                  ^^^^^: number   (TyNumber) (ObjectProperty)
+>                  ^^^^^: number   (Number) (Identifier)
 
   consume: item => {
-> ^^^^^^^: (item: { value: number; }) => void   (TyFunction) (ObjectProperty)
+> ^^^^^^^: (item: { value: number; }) => void   (Function) (Identifier)
 
   consume: item => {
->          ^^^^: { value: number; }   (TyObject) (BindingIdentifier)
+>          ^^^^: { value: number; }   (Object) (Identifier)
 
     const objectDerivedValue = item.value;
->         ^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     const objectDerivedValue = item.value;
->                              ^^^^: { value: number; }   (TyObject) (IdentifierReference)
+>                              ^^^^: { value: number; }   (Object) (Identifier)
 
     const objectDerivedValue = item.value;
->                                   ^^^^^: number   (TyNumber) (StaticMemberExpression)
+>                                   ^^^^^: number   (Number) (Identifier)
 
 declare function configureTuple<T>(callbacks: [() => T, (value: T) => void]): T;
->                ^^^^^^^^^^^^^^: <T>(callbacks: [() => T, (value: T) => void]) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^: <T>(callbacks: [() => T, (value: T) => void]) => T   (Function) (Identifier)
 
 declare function configureTuple<T>(callbacks: [() => T, (value: T) => void]): T;
->                               ^: any   (TyAny) (TSTypeParameter)
+>                               ^: any   (Any) (Identifier)
 
 declare function configureTuple<T>(callbacks: [() => T, (value: T) => void]): T;
->                                  ^^^^^^^^^: [() => T, (value: T) => void]   (TyTuple) (BindingIdentifier)
+>                                  ^^^^^^^^^: [() => T, (value: T) => void]   (Tuple) (Identifier)
 
 declare function configureTuple<T>(callbacks: [() => T, (value: T) => void]): T;
->                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                    ^: any   (Any) (Identifier)
 
 declare function configureTuple<T>(callbacks: [() => T, (value: T) => void]): T;
->                                                        ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                                        ^^^^^: T   (TypeReference) (Identifier)
 
 declare function configureTuple<T>(callbacks: [() => T, (value: T) => void]): T;
->                                                               ^: any   (TyAny) (TSTypeReference)
+>                                                               ^: any   (Any) (Identifier)
 
 declare function configureTuple<T>(callbacks: [() => T, (value: T) => void]): T;
->                                                                             ^: any   (TyAny) (TSTypeReference)
+>                                                                             ^: any   (Any) (Identifier)
 
 const tupleResult = configureTuple([
->     ^^^^^^^^^^^: { value: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^: { value: number; }   (Object) (Identifier)
 
 const tupleResult = configureTuple([
->                   ^^^^^^^^^^^^^^: <T>(callbacks: [() => T, (value: T) => void]) => T   (TyFunction) (IdentifierReference)
+>                   ^^^^^^^^^^^^^^: <T>(callbacks: [() => T, (value: T) => void]) => T   (Function) (Identifier)
 
   () => ({ value: 1 }),
->          ^^^^^: number   (TyNumber) (ObjectProperty)
+>          ^^^^^: number   (Number) (Identifier)
 
   item => {
-> ^^^^: { value: number; }   (TyObject) (BindingIdentifier)
+> ^^^^: { value: number; }   (Object) (Identifier)
 
     const tupleDerivedValue = item.value;
->         ^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     const tupleDerivedValue = item.value;
->                             ^^^^: { value: number; }   (TyObject) (IdentifierReference)
+>                             ^^^^: { value: number; }   (Object) (Identifier)
 
     const tupleDerivedValue = item.value;
->                                  ^^^^^: number   (TyNumber) (StaticMemberExpression)
+>                                  ^^^^^: number   (Number) (Identifier)

@@ -1,0 +1,18 @@
+{"path":"compiler/privateInExpressions.ts","start":7,"end":19,"text":"BrandedValue","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof BrandedValue"}}
+{"path":"compiler/privateInExpressions.ts","start":64,"end":72,"text":"hasBrand","nodeType":"Identifier","type":{"name":"Function","display":"(value: object) => boolean"}}
+{"path":"compiler/privateInExpressions.ts","start":73,"end":78,"text":"value","nodeType":"Identifier","type":{"name":"PrimitiveObject","display":"object"}}
+{"path":"compiler/privateInExpressions.ts","start":109,"end":115,"text":"result","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/privateInExpressions.ts","start":128,"end":133,"text":"value","nodeType":"Identifier","type":{"name":"PrimitiveObject","display":"object"}}
+{"path":"compiler/privateInExpressions.ts","start":146,"end":152,"text":"result","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/privateInExpressions.ts","start":160,"end":172,"text":"BrandedValue","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof BrandedValue"}}
+{"path":"compiler/privateInExpressions.ts","start":190,"end":199,"text":"hasSecret","nodeType":"Identifier","type":{"name":"Function","display":"(value: object) => boolean"}}
+{"path":"compiler/privateInExpressions.ts","start":200,"end":205,"text":"value","nodeType":"Identifier","type":{"name":"PrimitiveObject","display":"object"}}
+{"path":"compiler/privateInExpressions.ts","start":236,"end":242,"text":"result","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/privateInExpressions.ts","start":256,"end":261,"text":"value","nodeType":"Identifier","type":{"name":"PrimitiveObject","display":"object"}}
+{"path":"compiler/privateInExpressions.ts","start":274,"end":280,"text":"result","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/privateInExpressions.ts","start":315,"end":328,"text":"_staticResult","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/privateInExpressions.ts","start":331,"end":343,"text":"BrandedValue","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof BrandedValue"}}
+{"path":"compiler/privateInExpressions.ts","start":344,"end":352,"text":"hasBrand","nodeType":"Identifier","type":{"name":"Function","display":"(value: object) => boolean"}}
+{"path":"compiler/privateInExpressions.ts","start":364,"end":379,"text":"_instanceResult","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/privateInExpressions.ts","start":386,"end":398,"text":"BrandedValue","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof BrandedValue"}}
+{"path":"compiler/privateInExpressions.ts","start":401,"end":410,"text":"hasSecret","nodeType":"Identifier","type":{"name":"Function","display":"(value: object) => boolean"}}

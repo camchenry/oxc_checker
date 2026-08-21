@@ -1,467 +1,467 @@
 type ReturnedQueryFunctionContext<TQueryKey, TPageParam = never> =
->    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { queryKey: TQueryKey; pageParam?: unknown; } : { queryKey: TQueryKey; pageParam: TPageParam; }   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: [TPageParam] extends [never] ? { queryKey: TQueryKey; pageParam?: unknown; } : { queryKey: TQueryKey; pageParam: TPageParam; }   (Conditional) (Identifier)
 
 type ReturnedQueryFunctionContext<TQueryKey, TPageParam = never> =
->                                 ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                 ^^^^^^^^^: any   (Any) (Identifier)
 
 type ReturnedQueryFunctionContext<TQueryKey, TPageParam = never> =
->                                            ^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                            ^^^^^^^^^^: any   (Any) (Identifier)
 
   [TPageParam] extends [never]
->  ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>  ^^^^^^^^^^: any   (Any) (Identifier)
 
     ? { queryKey: TQueryKey; pageParam?: unknown }
->       ^^^^^^^^: TQueryKey   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
 
     ? { queryKey: TQueryKey; pageParam?: unknown }
->                 ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^: any   (Any) (Identifier)
 
     ? { queryKey: TQueryKey; pageParam?: unknown }
->                            ^^^^^^^^^: unknown   (TyUnknown) (TSPropertySignature)
+>                            ^^^^^^^^^: unknown   (Unknown) (Identifier)
 
     : { queryKey: TQueryKey; pageParam: TPageParam };
->       ^^^^^^^^: TQueryKey   (TyTypeReference) (TSPropertySignature)
+>       ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
 
     : { queryKey: TQueryKey; pageParam: TPageParam };
->                 ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^: any   (Any) (Identifier)
 
     : { queryKey: TQueryKey; pageParam: TPageParam };
->                            ^^^^^^^^^: TPageParam   (TyTypeReference) (TSPropertySignature)
+>                            ^^^^^^^^^: TPageParam   (TypeReference) (Identifier)
 
     : { queryKey: TQueryKey; pageParam: TPageParam };
->                                       ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                       ^^^^^^^^^^: any   (Any) (Identifier)
 
 type ReturnedQueryFunction<T, TQueryKey, TPageParam = never> =
->    ^^^^^^^^^^^^^^^^^^^^^: (queryContext: ReturnedQueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (TyFunction) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^^^: (queryContext: ReturnedQueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>   (Function) (Identifier)
 
 type ReturnedQueryFunction<T, TQueryKey, TPageParam = never> =
->                          ^: any   (TyAny) (TSTypeParameter)
+>                          ^: any   (Any) (Identifier)
 
 type ReturnedQueryFunction<T, TQueryKey, TPageParam = never> =
->                             ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                             ^^^^^^^^^: any   (Any) (Identifier)
 
 type ReturnedQueryFunction<T, TQueryKey, TPageParam = never> =
->                                        ^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                        ^^^^^^^^^^: any   (Any) (Identifier)
 
   (queryContext: ReturnedQueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>;
->  ^^^^^^^^^^^^: ReturnedQueryFunctionContext<TQueryKey, TPageParam>   (TyTypeReference) (BindingIdentifier)
+>  ^^^^^^^^^^^^: ReturnedQueryFunctionContext<TQueryKey, TPageParam>   (TypeReference) (Identifier)
 
   (queryContext: ReturnedQueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>;
->                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   (queryContext: ReturnedQueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>;
->                                             ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                             ^^^^^^^^^: any   (Any) (Identifier)
 
   (queryContext: ReturnedQueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>;
->                                                        ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                        ^^^^^^^^^^: any   (Any) (Identifier)
 
   (queryContext: ReturnedQueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>;
->                                                                        ^: any   (TyAny) (TSTypeReference)
+>                                                                        ^: any   (Any) (Identifier)
 
   (queryContext: ReturnedQueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>;
->                                                                            ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                                                            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
   (queryContext: ReturnedQueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>;
->                                                                            ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                                                            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
   (queryContext: ReturnedQueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>;
->                                                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                                                    ^: any   (Any) (Identifier)
 
 function makeReturnedQuery<TData, TQueryKey>(): ReturnedQueryFunction<TData, TQueryKey> {
->        ^^^^^^^^^^^^^^^^^: <TData, TQueryKey>() => ReturnedQueryFunction<TData, TQueryKey>   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^^^^^^^^^^^: <TData, TQueryKey>() => ReturnedQueryFunction<TData, TQueryKey>   (Function) (Identifier)
 
 function makeReturnedQuery<TData, TQueryKey>(): ReturnedQueryFunction<TData, TQueryKey> {
->                          ^^^^^: any   (TyAny) (TSTypeParameter)
+>                          ^^^^^: any   (Any) (Identifier)
 
 function makeReturnedQuery<TData, TQueryKey>(): ReturnedQueryFunction<TData, TQueryKey> {
->                                 ^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                 ^^^^^^^^^: any   (Any) (Identifier)
 
 function makeReturnedQuery<TData, TQueryKey>(): ReturnedQueryFunction<TData, TQueryKey> {
->                                               ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                               ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 function makeReturnedQuery<TData, TQueryKey>(): ReturnedQueryFunction<TData, TQueryKey> {
->                                                                     ^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                     ^^^^^: any   (Any) (Identifier)
 
 function makeReturnedQuery<TData, TQueryKey>(): ReturnedQueryFunction<TData, TQueryKey> {
->                                                                            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                            ^^^^^^^^^: any   (Any) (Identifier)
 
   return async (context) => undefined as TData;
->               ^^^^^^^: { queryKey: TQueryKey; pageParam?: unknown; }   (TyObject) (BindingIdentifier)
+>               ^^^^^^^: { queryKey: TQueryKey; pageParam?: unknown; }   (Object) (Identifier)
 
   return async (context) => undefined as TData;
->                           ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>                           ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
   return async (context) => undefined as TData;
->                                        ^^^^^: any   (TyAny) (TSTypeReference)
+>                                        ^^^^^: any   (Any) (Identifier)
 
 declare function acceptEvent<T extends { kind: "event"; value: string }>(value: T): T;
->                ^^^^^^^^^^^: <T extends { kind: "event"; value: string; }>(value: T) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^: <T extends { kind: "event"; value: string; }>(value: T) => T   (Function) (Identifier)
 
 declare function acceptEvent<T extends { kind: "event"; value: string }>(value: T): T;
->                            ^: any   (TyAny) (TSTypeParameter)
+>                            ^: any   (Any) (Identifier)
 
 declare function acceptEvent<T extends { kind: "event"; value: string }>(value: T): T;
->                                        ^^^^: "event"   (TyStringLiteral) (TSPropertySignature)
+>                                        ^^^^: "event"   (StringLiteral) (Identifier)
 
 declare function acceptEvent<T extends { kind: "event"; value: string }>(value: T): T;
->                                                       ^^^^^: string   (TyString) (TSPropertySignature)
+>                                                       ^^^^^: string   (String) (Identifier)
 
 declare function acceptEvent<T extends { kind: "event"; value: string }>(value: T): T;
->                                                                        ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                                                        ^^^^^: T   (TypeReference) (Identifier)
 
 declare function acceptEvent<T extends { kind: "event"; value: string }>(value: T): T;
->                                                                               ^: any   (TyAny) (TSTypeReference)
+>                                                                               ^: any   (Any) (Identifier)
 
 declare function acceptEvent<T extends { kind: "event"; value: string }>(value: T): T;
->                                                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                                                   ^: any   (Any) (Identifier)
 
 const contextualObjectResult = acceptEvent({ kind: "event", value: "payload" });
->     ^^^^^^^^^^^^^^^^^^^^^^: { kind: "event"; value: string; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^: { kind: "event"; value: string; }   (Object) (Identifier)
 
 const contextualObjectResult = acceptEvent({ kind: "event", value: "payload" });
->                              ^^^^^^^^^^^: <T extends { kind: "event"; value: string; }>(value: T) => T   (TyFunction) (IdentifierReference)
+>                              ^^^^^^^^^^^: <T extends { kind: "event"; value: string; }>(value: T) => T   (Function) (Identifier)
 
 const contextualObjectResult = acceptEvent({ kind: "event", value: "payload" });
->                                            ^^^^: "event"   (TyStringLiteral) (ObjectProperty)
+>                                            ^^^^: "event"   (StringLiteral) (Identifier)
 
 const contextualObjectResult = acceptEvent({ kind: "event", value: "payload" });
->                                                           ^^^^^: string   (TyString) (ObjectProperty)
+>                                                           ^^^^^: string   (String) (Identifier)
 
 declare function firstElement<T>(values: T[]): T;
->                ^^^^^^^^^^^^: <T>(values: T[]) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^^: <T>(values: T[]) => T   (Function) (Identifier)
 
 declare function firstElement<T>(values: T[]): T;
->                             ^: any   (TyAny) (TSTypeParameter)
+>                             ^: any   (Any) (Identifier)
 
 declare function firstElement<T>(values: T[]): T;
->                                ^^^^^^: T[]   (TyArray) (BindingIdentifier)
+>                                ^^^^^^: T[]   (Array) (Identifier)
 
 declare function firstElement<T>(values: T[]): T;
->                                        ^: any   (TyAny) (TSTypeReference)
+>                                        ^: any   (Any) (Identifier)
 
 declare function firstElement<T>(values: T[]): T;
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
 declare function inferPair<T, U>(value: [T, U]): [T, U];
->                ^^^^^^^^^: <T, U>(value: [T, U]) => [T, U]   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^: <T, U>(value: [T, U]) => [T, U]   (Function) (Identifier)
 
 declare function inferPair<T, U>(value: [T, U]): [T, U];
->                          ^: any   (TyAny) (TSTypeParameter)
+>                          ^: any   (Any) (Identifier)
 
 declare function inferPair<T, U>(value: [T, U]): [T, U];
->                             ^: any   (TyAny) (TSTypeParameter)
+>                             ^: any   (Any) (Identifier)
 
 declare function inferPair<T, U>(value: [T, U]): [T, U];
->                                ^^^^^: [T, U]   (TyTuple) (BindingIdentifier)
+>                                ^^^^^: [T, U]   (Tuple) (Identifier)
 
 declare function inferPair<T, U>(value: [T, U]): [T, U];
->                                        ^: any   (TyAny) (TSTypeReference)
+>                                        ^: any   (Any) (Identifier)
 
 declare function inferPair<T, U>(value: [T, U]): [T, U];
->                                           ^: any   (TyAny) (TSTypeReference)
+>                                           ^: any   (Any) (Identifier)
 
 declare function inferPair<T, U>(value: [T, U]): [T, U];
->                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                 ^: any   (Any) (Identifier)
 
 declare function inferPair<T, U>(value: [T, U]): [T, U];
->                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                    ^: any   (Any) (Identifier)
 
 declare function inferTail<T extends unknown[]>(value: [string, ...T]): T;
->                ^^^^^^^^^: <T extends unknown[]>(value: [string, ...T]) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^: <T extends unknown[]>(value: [string, ...T]) => T   (Function) (Identifier)
 
 declare function inferTail<T extends unknown[]>(value: [string, ...T]): T;
->                          ^: any   (TyAny) (TSTypeParameter)
+>                          ^: any   (Any) (Identifier)
 
 declare function inferTail<T extends unknown[]>(value: [string, ...T]): T;
->                                               ^^^^^: [string, ...T]   (TyTuple) (BindingIdentifier)
+>                                               ^^^^^: [string, ...T]   (Tuple) (Identifier)
 
 declare function inferTail<T extends unknown[]>(value: [string, ...T]): T;
->                                                                  ^: any   (TyAny) (TSTypeReference)
+>                                                                  ^: any   (Any) (Identifier)
 
 declare function inferTail<T extends unknown[]>(value: [string, ...T]): T;
->                                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                                       ^: any   (Any) (Identifier)
 
 const firstValue = firstElement([1, 2]);
->     ^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^: number   (Number) (Identifier)
 
 const firstValue = firstElement([1, 2]);
->                  ^^^^^^^^^^^^: <T>(values: T[]) => T   (TyFunction) (IdentifierReference)
+>                  ^^^^^^^^^^^^: <T>(values: T[]) => T   (Function) (Identifier)
 
 const pairValue = inferPair([1, "ready"] as [number, string]);
->     ^^^^^^^^^: [number, string]   (TyTuple) (BindingIdentifier)
+>     ^^^^^^^^^: [number, string]   (Tuple) (Identifier)
 
 const pairValue = inferPair([1, "ready"] as [number, string]);
->                 ^^^^^^^^^: <T, U>(value: [T, U]) => [T, U]   (TyFunction) (IdentifierReference)
+>                 ^^^^^^^^^: <T, U>(value: [T, U]) => [T, U]   (Function) (Identifier)
 
 const tailValue = inferTail(["start", 1, true] as [string, number, boolean]);
->     ^^^^^^^^^: [number, boolean]   (TyTuple) (BindingIdentifier)
+>     ^^^^^^^^^: [number, boolean]   (Tuple) (Identifier)
 
 const tailValue = inferTail(["start", 1, true] as [string, number, boolean]);
->                 ^^^^^^^^^: <T extends unknown[]>(value: [string, ...T]) => T   (TyFunction) (IdentifierReference)
+>                 ^^^^^^^^^: <T extends unknown[]>(value: [string, ...T]) => T   (Function) (Identifier)
 
 declare function maybe<T>(value: T | undefined): T;
->                ^^^^^: <T>(value: T | undefined) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^: <T>(value: T | undefined) => T   (Function) (Identifier)
 
 declare function maybe<T>(value: T | undefined): T;
->                      ^: any   (TyAny) (TSTypeParameter)
+>                      ^: any   (Any) (Identifier)
 
 declare function maybe<T>(value: T | undefined): T;
->                         ^^^^^: T | undefined   (TyUnion) (BindingIdentifier)
+>                         ^^^^^: T | undefined   (Union) (Identifier)
 
 declare function maybe<T>(value: T | undefined): T;
->                                ^: any   (TyAny) (TSTypeReference)
+>                                ^: any   (Any) (Identifier)
 
 declare function maybe<T>(value: T | undefined): T;
->                                                ^: any   (TyAny) (TSTypeReference)
+>                                                ^: any   (Any) (Identifier)
 
 declare function nullable<T>(value: T | null): T;
->                ^^^^^^^^: <T>(value: T | null) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^: <T>(value: T | null) => T   (Function) (Identifier)
 
 declare function nullable<T>(value: T | null): T;
->                         ^: any   (TyAny) (TSTypeParameter)
+>                         ^: any   (Any) (Identifier)
 
 declare function nullable<T>(value: T | null): T;
->                            ^^^^^: T | null   (TyUnion) (BindingIdentifier)
+>                            ^^^^^: T | null   (Union) (Identifier)
 
 declare function nullable<T>(value: T | null): T;
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
 declare function nullable<T>(value: T | null): T;
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
 declare function falsy<T>(value: T | false): T;
->                ^^^^^: <T>(value: T | false) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^: <T>(value: T | false) => T   (Function) (Identifier)
 
 declare function falsy<T>(value: T | false): T;
->                      ^: any   (TyAny) (TSTypeParameter)
+>                      ^: any   (Any) (Identifier)
 
 declare function falsy<T>(value: T | false): T;
->                         ^^^^^: T | false   (TyUnion) (BindingIdentifier)
+>                         ^^^^^: T | false   (Union) (Identifier)
 
 declare function falsy<T>(value: T | false): T;
->                                ^: any   (TyAny) (TSTypeReference)
+>                                ^: any   (Any) (Identifier)
 
 declare function falsy<T>(value: T | false): T;
->                                            ^: any   (TyAny) (TSTypeReference)
+>                                            ^: any   (Any) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                ^^^^^^^^^^^^^: <T>(value: T | Promise<T>) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^^^^: <T>(value: T | Promise<T>) => T   (Function) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                              ^: any   (TyAny) (TSTypeParameter)
+>                              ^: any   (Any) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                 ^^^^^: T | Promise<T>   (TyUnion) (BindingIdentifier)
+>                                 ^^^^^: T | Promise<T>   (Union) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                        ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                        ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                        ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                        ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                                ^: any   (TyAny) (TSTypeReference)
+>                                                ^: any   (Any) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                                         ^: any   (TyAny) (TSTypeReference)
+>                                                         ^: any   (Any) (Identifier)
 
 declare const promiseString: Promise<string>;
->             ^^^^^^^^^^^^^: Promise<string>   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^^^^: Promise<string>   (TypeReference) (Identifier)
 
 declare const promiseString: Promise<string>;
->                            ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 declare const promiseString: Promise<string>;
->                            ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 const maybeValue = maybe("ready");
->     ^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const maybeValue = maybe("ready");
->                  ^^^^^: <T>(value: T | undefined) => T   (TyFunction) (IdentifierReference)
+>                  ^^^^^: <T>(value: T | undefined) => T   (Function) (Identifier)
 
 const nullableValue = nullable("ready");
->     ^^^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const nullableValue = nullable("ready");
->                     ^^^^^^^^: <T>(value: T | null) => T   (TyFunction) (IdentifierReference)
+>                     ^^^^^^^^: <T>(value: T | null) => T   (Function) (Identifier)
 
 const falsyValue = falsy("ready");
->     ^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const falsyValue = falsy("ready");
->                  ^^^^^: <T>(value: T | false) => T   (TyFunction) (IdentifierReference)
+>                  ^^^^^: <T>(value: T | false) => T   (Function) (Identifier)
 
 const promiseValue = unwrapPromise(promiseString);
->     ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^: string   (String) (Identifier)
 
 const promiseValue = unwrapPromise(promiseString);
->                    ^^^^^^^^^^^^^: <T>(value: T | Promise<T>) => T   (TyFunction) (IdentifierReference)
+>                    ^^^^^^^^^^^^^: <T>(value: T | Promise<T>) => T   (Function) (Identifier)
 
 const promiseValue = unwrapPromise(promiseString);
->                                  ^^^^^^^^^^^^^: Promise<string>   (TyTypeReference) (IdentifierReference)
+>                                  ^^^^^^^^^^^^^: Promise<string>   (TypeReference) (Identifier)
 
 const directValue = unwrapPromise("ready");
->     ^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const directValue = unwrapPromise("ready");
->                   ^^^^^^^^^^^^^: <T>(value: T | Promise<T>) => T   (TyFunction) (IdentifierReference)
+>                   ^^^^^^^^^^^^^: <T>(value: T | Promise<T>) => T   (Function) (Identifier)
 
 declare const intersectionSource: string[] & { extra: number };
->             ^^^^^^^^^^^^^^^^^^: string[] & { extra: number; }   (TyIntersection) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^^^: string[] & { extra: number; }   (Intersection) (Identifier)
 
 declare const intersectionSource: string[] & { extra: number };
->                                              ^^^^^: number   (TyNumber) (TSPropertySignature)
+>                                              ^^^^^: number   (Number) (Identifier)
 
 declare function inferExtra<T>(value: string[] & T): T;
->                ^^^^^^^^^^: <T>(value: string[] & T) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^: <T>(value: string[] & T) => T   (Function) (Identifier)
 
 declare function inferExtra<T>(value: string[] & T): T;
->                           ^: any   (TyAny) (TSTypeParameter)
+>                           ^: any   (Any) (Identifier)
 
 declare function inferExtra<T>(value: string[] & T): T;
->                              ^^^^^: string[] & T   (TyIntersection) (BindingIdentifier)
+>                              ^^^^^: string[] & T   (Intersection) (Identifier)
 
 declare function inferExtra<T>(value: string[] & T): T;
->                                                ^: any   (TyAny) (TSTypeReference)
+>                                                ^: any   (Any) (Identifier)
 
 declare function inferExtra<T>(value: string[] & T): T;
->                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                    ^: any   (Any) (Identifier)
 
 const extraValue = inferExtra(intersectionSource);
->     ^^^^^^^^^^: { extra: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^: { extra: number; }   (Object) (Identifier)
 
 const extraValue = inferExtra(intersectionSource);
->                  ^^^^^^^^^^: <T>(value: string[] & T) => T   (TyFunction) (IdentifierReference)
+>                  ^^^^^^^^^^: <T>(value: string[] & T) => T   (Function) (Identifier)
 
 const extraValue = inferExtra(intersectionSource);
->                             ^^^^^^^^^^^^^^^^^^: string[] & { extra: number; }   (TyIntersection) (IdentifierReference)
+>                             ^^^^^^^^^^^^^^^^^^: string[] & { extra: number; }   (Intersection) (Identifier)
 
 function selectOverload(x: string): string;
->        ^^^^^^^^^^^^^^: { (x: string): string; (x: number): number; }   (TyObject) (BindingIdentifier)
+>        ^^^^^^^^^^^^^^: { (x: string): string; (x: number): number; }   (Object) (Identifier)
 
 function selectOverload(x: string): string;
->                       ^: string   (TyString) (BindingIdentifier)
+>                       ^: string   (String) (Identifier)
 
 function selectOverload(x: number): number;
->        ^^^^^^^^^^^^^^: { (x: string): string; (x: number): number; }   (TyObject) (BindingIdentifier)
+>        ^^^^^^^^^^^^^^: { (x: string): string; (x: number): number; }   (Object) (Identifier)
 
 function selectOverload(x: number): number;
->                       ^: number   (TyNumber) (BindingIdentifier)
+>                       ^: number   (Number) (Identifier)
 
 function selectOverload(x: string | number): string | number { return x; }
->        ^^^^^^^^^^^^^^: { (x: string): string; (x: number): number; }   (TyObject) (BindingIdentifier)
+>        ^^^^^^^^^^^^^^: { (x: string): string; (x: number): number; }   (Object) (Identifier)
 
 function selectOverload(x: string | number): string | number { return x; }
->                       ^: string | number   (TyUnion) (BindingIdentifier)
+>                       ^: string | number   (Union) (Identifier)
 
 function selectOverload(x: string | number): string | number { return x; }
->                                                                     ^: string | number   (TyUnion) (IdentifierReference)
+>                                                                     ^: string | number   (Union) (Identifier)
 
 const selectedString = selectOverload("ready");
->     ^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const selectedString = selectOverload("ready");
->                      ^^^^^^^^^^^^^^: { (x: string): string; (x: number): number; }   (TyObject) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^: { (x: string): string; (x: number): number; }   (Object) (Identifier)
 
 const selectedNumber = selectOverload(123);
->     ^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const selectedNumber = selectOverload(123);
->                      ^^^^^^^^^^^^^^: { (x: string): string; (x: number): number; }   (TyObject) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^: { (x: string): string; (x: number): number; }   (Object) (Identifier)
 
 function explicitOverload<T>(x: T): T;
->        ^^^^^^^^^^^^^^^^: { <T>(x: T): T; <T, U>(x: T): U; }   (TyObject) (BindingIdentifier)
+>        ^^^^^^^^^^^^^^^^: { <T>(x: T): T; <T, U>(x: T): U; }   (Object) (Identifier)
 
 function explicitOverload<T>(x: T): T;
->                         ^: any   (TyAny) (TSTypeParameter)
+>                         ^: any   (Any) (Identifier)
 
 function explicitOverload<T>(x: T): T;
->                            ^: T   (TyTypeReference) (BindingIdentifier)
+>                            ^: T   (TypeReference) (Identifier)
 
 function explicitOverload<T>(x: T): T;
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
 function explicitOverload<T>(x: T): T;
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
 function explicitOverload<T, U>(x: T): U;
->        ^^^^^^^^^^^^^^^^: { <T>(x: T): T; <T, U>(x: T): U; }   (TyObject) (BindingIdentifier)
+>        ^^^^^^^^^^^^^^^^: { <T>(x: T): T; <T, U>(x: T): U; }   (Object) (Identifier)
 
 function explicitOverload<T, U>(x: T): U;
->                         ^: any   (TyAny) (TSTypeParameter)
+>                         ^: any   (Any) (Identifier)
 
 function explicitOverload<T, U>(x: T): U;
->                            ^: any   (TyAny) (TSTypeParameter)
+>                            ^: any   (Any) (Identifier)
 
 function explicitOverload<T, U>(x: T): U;
->                               ^: T   (TyTypeReference) (BindingIdentifier)
+>                               ^: T   (TypeReference) (Identifier)
 
 function explicitOverload<T, U>(x: T): U;
->                                  ^: any   (TyAny) (TSTypeReference)
+>                                  ^: any   (Any) (Identifier)
 
 function explicitOverload<T, U>(x: T): U;
->                                      ^: any   (TyAny) (TSTypeReference)
+>                                      ^: any   (Any) (Identifier)
 
 function explicitOverload(x: unknown): unknown { return x; }
->        ^^^^^^^^^^^^^^^^: { <T>(x: T): T; <T, U>(x: T): U; }   (TyObject) (BindingIdentifier)
+>        ^^^^^^^^^^^^^^^^: { <T>(x: T): T; <T, U>(x: T): U; }   (Object) (Identifier)
 
 function explicitOverload(x: unknown): unknown { return x; }
->                         ^: unknown   (TyUnknown) (BindingIdentifier)
+>                         ^: unknown   (Unknown) (Identifier)
 
 function explicitOverload(x: unknown): unknown { return x; }
->                                                       ^: unknown   (TyUnknown) (IdentifierReference)
+>                                                       ^: unknown   (Unknown) (Identifier)
 
 const explicitOverloadValue = explicitOverload<number, string>(123);
->     ^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const explicitOverloadValue = explicitOverload<number, string>(123);
->                             ^^^^^^^^^^^^^^^^: { <T>(x: T): T; <T, U>(x: T): U; }   (TyObject) (IdentifierReference)
+>                             ^^^^^^^^^^^^^^^^: { <T>(x: T): T; <T, U>(x: T): U; }   (Object) (Identifier)
 
 interface Picker {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
 
 interface Picker {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
 
   pick(x: string): string;
-> ^^^^: { (x: string): string; (x: number): number; }   (TyObject) (TSMethodSignature)
+> ^^^^: { (x: string): string; (x: number): number; }   (Object) (Identifier)
 
   pick(x: string): string;
->      ^: string   (TyString) (BindingIdentifier)
+>      ^: string   (String) (Identifier)
 
   pick(x: number): number;
-> ^^^^: { (x: string): string; (x: number): number; }   (TyObject) (TSMethodSignature)
+> ^^^^: { (x: string): string; (x: number): number; }   (Object) (Identifier)
 
   pick(x: number): number;
->      ^: number   (TyNumber) (BindingIdentifier)
+>      ^: number   (Number) (Identifier)
 
 declare const picker: Picker;
->             ^^^^^^: Picker   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^: Picker   (TypeReference) (Identifier)
 
 declare const picker: Picker;
->                     ^^^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^^^: any   (Any) (Identifier)
 
 declare const picker: Picker;
->                     ^^^^^^: any   (TyAny) (IdentifierReference)
+>                     ^^^^^^: any   (Any) (Identifier)
 
 const pickedString = picker.pick("ready");
->     ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^: string   (String) (Identifier)
 
 const pickedString = picker.pick("ready");
->                    ^^^^^^: Picker   (TyTypeReference) (IdentifierReference)
+>                    ^^^^^^: Picker   (TypeReference) (Identifier)
 
 const pickedString = picker.pick("ready");
->                           ^^^^: { (x: string): string; (x: number): number; }   (TyObject) (StaticMemberExpression)
+>                           ^^^^: { (x: string): string; (x: number): number; }   (Object) (Identifier)
 
 const pickedNumber = picker.pick(123);
->     ^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const pickedNumber = picker.pick(123);
->                    ^^^^^^: Picker   (TyTypeReference) (IdentifierReference)
+>                    ^^^^^^: Picker   (TypeReference) (Identifier)
 
 const pickedNumber = picker.pick(123);
->                           ^^^^: { (x: string): string; (x: number): number; }   (TyObject) (StaticMemberExpression)
+>                           ^^^^: { (x: string): string; (x: number): number; }   (Object) (Identifier)

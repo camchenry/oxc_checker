@@ -1,119 +1,119 @@
 declare function literalOverload(x: string): "wide";
->                ^^^^^^^^^^^^^^^: { (x: string): "wide"; (x: "ready"): "literal"; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^: { (x: string): "wide"; (x: "ready"): "literal"; }   (Object) (Identifier)
 
 declare function literalOverload(x: string): "wide";
->                                ^: string   (TyString) (BindingIdentifier)
+>                                ^: string   (String) (Identifier)
 
 declare function literalOverload(x: "ready"): "literal";
->                ^^^^^^^^^^^^^^^: { (x: string): "wide"; (x: "ready"): "literal"; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^: { (x: string): "wide"; (x: "ready"): "literal"; }   (Object) (Identifier)
 
 declare function literalOverload(x: "ready"): "literal";
->                                ^: "ready"   (TyStringLiteral) (BindingIdentifier)
+>                                ^: "ready"   (StringLiteral) (Identifier)
 
 declare function genericOverload<T>(x: T): T[];
->                ^^^^^^^^^^^^^^^: { <T>(x: T): T[]; (x: string): string; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^: { <T>(x: T): T[]; (x: string): string; }   (Object) (Identifier)
 
 declare function genericOverload<T>(x: T): T[];
->                                ^: any   (TyAny) (TSTypeParameter)
+>                                ^: any   (Any) (Identifier)
 
 declare function genericOverload<T>(x: T): T[];
->                                   ^: T   (TyTypeReference) (BindingIdentifier)
+>                                   ^: T   (TypeReference) (Identifier)
 
 declare function genericOverload<T>(x: T): T[];
->                                      ^: any   (TyAny) (TSTypeReference)
+>                                      ^: any   (Any) (Identifier)
 
 declare function genericOverload<T>(x: T): T[];
->                                          ^: any   (TyAny) (TSTypeReference)
+>                                          ^: any   (Any) (Identifier)
 
 declare function genericOverload(x: string): string;
->                ^^^^^^^^^^^^^^^: { <T>(x: T): T[]; (x: string): string; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^: { <T>(x: T): T[]; (x: string): string; }   (Object) (Identifier)
 
 declare function genericOverload(x: string): string;
->                                ^: string   (TyString) (BindingIdentifier)
+>                                ^: string   (String) (Identifier)
 
 declare function tiedOverload(x: string, y?: number): "first";
->                ^^^^^^^^^^^^: { (x: string, y?: number): "first"; (x: string): "second"; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^^: { (x: string, y?: number): "first"; (x: string): "second"; }   (Object) (Identifier)
 
 declare function tiedOverload(x: string, y?: number): "first";
->                             ^: string   (TyString) (BindingIdentifier)
+>                             ^: string   (String) (Identifier)
 
 declare function tiedOverload(x: string, y?: number): "first";
->                                        ^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                        ^: number | undefined   (Union) (Identifier)
 
 declare function tiedOverload(x: string): "second";
->                ^^^^^^^^^^^^: { (x: string, y?: number): "first"; (x: string): "second"; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^^: { (x: string, y?: number): "first"; (x: string): "second"; }   (Object) (Identifier)
 
 declare function tiedOverload(x: string): "second";
->                             ^: string   (TyString) (BindingIdentifier)
+>                             ^: string   (String) (Identifier)
 
 declare function tupleRestOverload(...args: [string]): "one";
->                ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (Object) (Identifier)
 
 declare function tupleRestOverload(...args: [string]): "one";
->                                     ^^^^: [string]   (TyTuple) (BindingIdentifier)
+>                                     ^^^^: [string]   (Tuple) (Identifier)
 
 declare function tupleRestOverload(...args: [string, number]): "two";
->                ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (Object) (Identifier)
 
 declare function tupleRestOverload(...args: [string, number]): "two";
->                                     ^^^^: [string, number]   (TyTuple) (BindingIdentifier)
+>                                     ^^^^: [string, number]   (Tuple) (Identifier)
 
 declare function optionalTupleRestOverload(...args: [string, number?]): "optional";
->                ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (Object) (Identifier)
 
 declare function optionalTupleRestOverload(...args: [string, number?]): "optional";
->                                             ^^^^: [string, (number | undefined)?]   (TyTuple) (BindingIdentifier)
+>                                             ^^^^: [string, (number | undefined)?]   (Tuple) (Identifier)
 
 declare function optionalTupleRestOverload(...args: [string, number, boolean]): "three";
->                ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (TyObject) (BindingIdentifier)
+>                ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (Object) (Identifier)
 
 declare function optionalTupleRestOverload(...args: [string, number, boolean]): "three";
->                                             ^^^^: [string, number, boolean]   (TyTuple) (BindingIdentifier)
+>                                             ^^^^: [string, number, boolean]   (Tuple) (Identifier)
 
 const literalResult = literalOverload("ready");
->     ^^^^^^^^^^^^^: "literal"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: "literal"   (StringLiteral) (Identifier)
 
 const literalResult = literalOverload("ready");
->                     ^^^^^^^^^^^^^^^: { (x: string): "wide"; (x: "ready"): "literal"; }   (TyObject) (IdentifierReference)
+>                     ^^^^^^^^^^^^^^^: { (x: string): "wide"; (x: "ready"): "literal"; }   (Object) (Identifier)
 
 const genericResult = genericOverload("ready");
->     ^^^^^^^^^^^^^: string[]   (TyArray) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: string[]   (Array) (Identifier)
 
 const genericResult = genericOverload("ready");
->                     ^^^^^^^^^^^^^^^: { <T>(x: T): T[]; (x: string): string; }   (TyObject) (IdentifierReference)
+>                     ^^^^^^^^^^^^^^^: { <T>(x: T): T[]; (x: string): string; }   (Object) (Identifier)
 
 const tiedResult = tiedOverload("ready");
->     ^^^^^^^^^^: "first"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^: "first"   (StringLiteral) (Identifier)
 
 const tiedResult = tiedOverload("ready");
->                  ^^^^^^^^^^^^: { (x: string, y?: number): "first"; (x: string): "second"; }   (TyObject) (IdentifierReference)
+>                  ^^^^^^^^^^^^: { (x: string, y?: number): "first"; (x: string): "second"; }   (Object) (Identifier)
 
 const tupleRestOne = tupleRestOverload("ready");
->     ^^^^^^^^^^^^: "one"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^: "one"   (StringLiteral) (Identifier)
 
 const tupleRestOne = tupleRestOverload("ready");
->                    ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (TyObject) (IdentifierReference)
+>                    ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (Object) (Identifier)
 
 const tupleRestTwo = tupleRestOverload("ready", 1);
->     ^^^^^^^^^^^^: "two"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^: "two"   (StringLiteral) (Identifier)
 
 const tupleRestTwo = tupleRestOverload("ready", 1);
->                    ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (TyObject) (IdentifierReference)
+>                    ^^^^^^^^^^^^^^^^^: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }   (Object) (Identifier)
 
 const optionalTupleRestOne = optionalTupleRestOverload("ready");
->     ^^^^^^^^^^^^^^^^^^^^: "optional"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^: "optional"   (StringLiteral) (Identifier)
 
 const optionalTupleRestOne = optionalTupleRestOverload("ready");
->                            ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (TyObject) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (Object) (Identifier)
 
 const optionalTupleRestTwo = optionalTupleRestOverload("ready", 1);
->     ^^^^^^^^^^^^^^^^^^^^: "optional"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^: "optional"   (StringLiteral) (Identifier)
 
 const optionalTupleRestTwo = optionalTupleRestOverload("ready", 1);
->                            ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (TyObject) (IdentifierReference)
+>                            ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (Object) (Identifier)
 
 const optionalTupleRestThree = optionalTupleRestOverload("ready", 1, true);
->     ^^^^^^^^^^^^^^^^^^^^^^: "three"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^: "three"   (StringLiteral) (Identifier)
 
 const optionalTupleRestThree = optionalTupleRestOverload("ready", 1, true);
->                              ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (TyObject) (IdentifierReference)
+>                              ^^^^^^^^^^^^^^^^^^^^^^^^^: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }   (Object) (Identifier)

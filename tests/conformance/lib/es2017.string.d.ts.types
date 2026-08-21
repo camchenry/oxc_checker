@@ -1,27 +1,27 @@
 interface String {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: StringConstructor
 
 interface String {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: StringConstructor
 
     padStart(maxLength: number, fillString?: string): string;
->   ^^^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (Object) (Identifier)
     expected: { (targetLength: number, padString?: string): string; (maxLength: number, fillString?: string): string; }
 
     padStart(maxLength: number, fillString?: string): string;
->            ^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^^^^^: number   (Number) (Identifier)
 
     padStart(maxLength: number, fillString?: string): string;
->                               ^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>                               ^^^^^^^^^^: string | undefined   (Union) (Identifier)
 
     padEnd(maxLength: number, fillString?: string): string;
->   ^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^: { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }   (Object) (Identifier)
   expected: { (targetLength: number, padString?: string): string; (maxLength: number, fillString?: string): string; }
 
     padEnd(maxLength: number, fillString?: string): string;
->          ^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>          ^^^^^^^^^: number   (Number) (Identifier)
 
     padEnd(maxLength: number, fillString?: string): string;
->                             ^^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>                             ^^^^^^^^^^: string | undefined   (Union) (Identifier)

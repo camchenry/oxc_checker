@@ -1,0 +1,138 @@
+{"path":"esnext.disposable.d.ts","start":134,"end":151,"text":"SymbolConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":134,"end":151,"text":"SymbolConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":302,"end":309,"text":"dispose","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"esnext.disposable.d.ts","start":496,"end":508,"text":"asyncDispose","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"esnext.disposable.d.ts","start":538,"end":548,"text":"Disposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":538,"end":548,"text":"Disposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":556,"end":562,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"esnext.disposable.d.ts","start":563,"end":570,"text":"dispose","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"esnext.disposable.d.ts","start":594,"end":609,"text":"AsyncDisposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":594,"end":609,"text":"AsyncDisposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":617,"end":623,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"esnext.disposable.d.ts","start":624,"end":636,"text":"asyncDispose","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"esnext.disposable.d.ts","start":641,"end":652,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":641,"end":652,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":673,"end":688,"text":"SuppressedError","nodeType":"Identifier","type":{"name":"TypeReference","display":"SuppressedErrorConstructor"}}
+{"path":"esnext.disposable.d.ts","start":673,"end":688,"text":"SuppressedError","nodeType":"Identifier","type":{"name":"TypeReference","display":"SuppressedErrorConstructor"}}
+{"path":"esnext.disposable.d.ts","start":697,"end":702,"text":"Error","nodeType":"Identifier","type":{"name":"TypeReference","display":"ErrorConstructor"}}
+{"path":"esnext.disposable.d.ts","start":697,"end":702,"text":"Error","nodeType":"Identifier","type":{"name":"TypeReference","display":"ErrorConstructor"}}
+{"path":"esnext.disposable.d.ts","start":709,"end":714,"text":"error","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":725,"end":735,"text":"suppressed","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":755,"end":781,"text":"SuppressedErrorConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":755,"end":781,"text":"SuppressedErrorConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":793,"end":798,"text":"error","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":805,"end":815,"text":"suppressed","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":822,"end":829,"text":"message","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"esnext.disposable.d.ts","start":841,"end":856,"text":"SuppressedError","nodeType":"Identifier","type":{"name":"TypeReference","display":"SuppressedErrorConstructor"}}
+{"path":"esnext.disposable.d.ts","start":841,"end":856,"text":"SuppressedError","nodeType":"Identifier","type":{"name":"TypeReference","display":"SuppressedErrorConstructor"}}
+{"path":"esnext.disposable.d.ts","start":863,"end":868,"text":"error","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":875,"end":885,"text":"suppressed","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":892,"end":899,"text":"message","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"esnext.disposable.d.ts","start":911,"end":926,"text":"SuppressedError","nodeType":"Identifier","type":{"name":"TypeReference","display":"SuppressedErrorConstructor"}}
+{"path":"esnext.disposable.d.ts","start":911,"end":926,"text":"SuppressedError","nodeType":"Identifier","type":{"name":"TypeReference","display":"SuppressedErrorConstructor"}}
+{"path":"esnext.disposable.d.ts","start":941,"end":950,"text":"prototype","nodeType":"Identifier","type":{"name":"TypeReference","display":"SuppressedError"}}
+{"path":"esnext.disposable.d.ts","start":952,"end":967,"text":"SuppressedError","nodeType":"Identifier","type":{"name":"TypeReference","display":"SuppressedErrorConstructor"}}
+{"path":"esnext.disposable.d.ts","start":952,"end":967,"text":"SuppressedError","nodeType":"Identifier","type":{"name":"TypeReference","display":"SuppressedErrorConstructor"}}
+{"path":"esnext.disposable.d.ts","start":983,"end":998,"text":"SuppressedError","nodeType":"Identifier","type":{"name":"TypeReference","display":"SuppressedErrorConstructor"}}
+{"path":"esnext.disposable.d.ts","start":1000,"end":1026,"text":"SuppressedErrorConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":1000,"end":1026,"text":"SuppressedErrorConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":1039,"end":1054,"text":"DisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"DisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":1039,"end":1054,"text":"DisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"DisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":1158,"end":1166,"text":"disposed","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"esnext.disposable.d.ts","start":1283,"end":1290,"text":"dispose","nodeType":"Identifier","type":{"name":"Object","display":"{ (): void; (): void; }"}}
+{"path":"esnext.disposable.d.ts","start":1541,"end":1544,"text":"use","nodeType":"Identifier","type":{"name":"Object","display":"{ <T extends Disposable | null | undefined>(value: T): T; <T extends Disposable | null | undefined>(value: T): T; }"}}
+{"path":"esnext.disposable.d.ts","start":1545,"end":1546,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":1555,"end":1565,"text":"Disposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":1555,"end":1565,"text":"Disposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":1586,"end":1591,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"esnext.disposable.d.ts","start":1593,"end":1594,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":1597,"end":1598,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":1917,"end":1922,"text":"adopt","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(value: T, onDispose: (value: T) => void): T; <T>(value: T, onDispose: (value: T) => void): T; }"}}
+{"path":"esnext.disposable.d.ts","start":1923,"end":1924,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":1926,"end":1931,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"esnext.disposable.d.ts","start":1933,"end":1934,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":1936,"end":1945,"text":"onDispose","nodeType":"Identifier","type":{"name":"Function","display":"(value: T) => void"}}
+{"path":"esnext.disposable.d.ts","start":1948,"end":1953,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"esnext.disposable.d.ts","start":1955,"end":1956,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":1968,"end":1969,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":2056,"end":2061,"text":"defer","nodeType":"Identifier","type":{"name":"Object","display":"{ (onDispose: () => void): void; (onDispose: () => void): void; }"}}
+{"path":"esnext.disposable.d.ts","start":2062,"end":2071,"text":"onDispose","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"esnext.disposable.d.ts","start":3065,"end":3069,"text":"move","nodeType":"Identifier","type":{"name":"Object","display":"{ (): DisposableStack; (): DisposableStack; }"}}
+{"path":"esnext.disposable.d.ts","start":3073,"end":3088,"text":"DisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"DisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3073,"end":3088,"text":"DisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"DisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3095,"end":3101,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3102,"end":3109,"text":"dispose","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"esnext.disposable.d.ts","start":3134,"end":3140,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3141,"end":3152,"text":"toStringTag","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"esnext.disposable.d.ts","start":3176,"end":3202,"text":"DisposableStackConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":3176,"end":3202,"text":"DisposableStackConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":3217,"end":3232,"text":"DisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"DisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3217,"end":3232,"text":"DisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"DisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3247,"end":3256,"text":"prototype","nodeType":"Identifier","type":{"name":"TypeReference","display":"DisposableStack"}}
+{"path":"esnext.disposable.d.ts","start":3258,"end":3273,"text":"DisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"DisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3258,"end":3273,"text":"DisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"DisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3289,"end":3304,"text":"DisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"DisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3306,"end":3332,"text":"DisposableStackConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":3306,"end":3332,"text":"DisposableStackConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":3345,"end":3365,"text":"AsyncDisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncDisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3345,"end":3365,"text":"AsyncDisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncDisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3469,"end":3477,"text":"disposed","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"esnext.disposable.d.ts","start":3594,"end":3606,"text":"disposeAsync","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Promise<void>; (): Promise<void>; }"}}
+{"path":"esnext.disposable.d.ts","start":3610,"end":3617,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3610,"end":3617,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"esnext.disposable.d.ts","start":3866,"end":3869,"text":"use","nodeType":"Identifier","type":{"name":"Object","display":"{ <T extends AsyncDisposable | Disposable | null | undefined>(value: T): T; <T extends AsyncDisposable | Disposable | null | undefined>(value: T): T; }"}}
+{"path":"esnext.disposable.d.ts","start":3870,"end":3871,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":3880,"end":3895,"text":"AsyncDisposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":3880,"end":3895,"text":"AsyncDisposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":3898,"end":3908,"text":"Disposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":3898,"end":3908,"text":"Disposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":3929,"end":3934,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"esnext.disposable.d.ts","start":3936,"end":3937,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":3940,"end":3941,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":4270,"end":4275,"text":"adopt","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T; <T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T; }"}}
+{"path":"esnext.disposable.d.ts","start":4276,"end":4277,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":4279,"end":4284,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"esnext.disposable.d.ts","start":4286,"end":4287,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":4289,"end":4303,"text":"onDisposeAsync","nodeType":"Identifier","type":{"name":"Function","display":"(value: T) => PromiseLike<void> | void"}}
+{"path":"esnext.disposable.d.ts","start":4306,"end":4311,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"esnext.disposable.d.ts","start":4313,"end":4314,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":4319,"end":4330,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":4319,"end":4330,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":4346,"end":4347,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":4434,"end":4439,"text":"defer","nodeType":"Identifier","type":{"name":"Object","display":"{ (onDisposeAsync: () => PromiseLike<void> | void): void; (onDisposeAsync: () => PromiseLike<void> | void): void; }"}}
+{"path":"esnext.disposable.d.ts","start":4440,"end":4454,"text":"onDisposeAsync","nodeType":"Identifier","type":{"name":"Function","display":"() => PromiseLike<void> | void"}}
+{"path":"esnext.disposable.d.ts","start":4462,"end":4473,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":4462,"end":4473,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5468,"end":5472,"text":"move","nodeType":"Identifier","type":{"name":"Object","display":"{ (): AsyncDisposableStack; (): AsyncDisposableStack; }"}}
+{"path":"esnext.disposable.d.ts","start":5476,"end":5496,"text":"AsyncDisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncDisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":5476,"end":5496,"text":"AsyncDisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncDisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":5503,"end":5509,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"esnext.disposable.d.ts","start":5510,"end":5522,"text":"asyncDispose","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"esnext.disposable.d.ts","start":5527,"end":5534,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"esnext.disposable.d.ts","start":5527,"end":5534,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"esnext.disposable.d.ts","start":5556,"end":5562,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"esnext.disposable.d.ts","start":5563,"end":5574,"text":"toStringTag","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"esnext.disposable.d.ts","start":5598,"end":5629,"text":"AsyncDisposableStackConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5598,"end":5629,"text":"AsyncDisposableStackConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5644,"end":5664,"text":"AsyncDisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncDisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":5644,"end":5664,"text":"AsyncDisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncDisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":5679,"end":5688,"text":"prototype","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncDisposableStack"}}
+{"path":"esnext.disposable.d.ts","start":5690,"end":5710,"text":"AsyncDisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncDisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":5690,"end":5710,"text":"AsyncDisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncDisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":5726,"end":5746,"text":"AsyncDisposableStack","nodeType":"Identifier","type":{"name":"TypeReference","display":"AsyncDisposableStackConstructor"}}
+{"path":"esnext.disposable.d.ts","start":5748,"end":5779,"text":"AsyncDisposableStackConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5748,"end":5779,"text":"AsyncDisposableStackConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5792,"end":5806,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5792,"end":5806,"text":"IteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5807,"end":5808,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5810,"end":5817,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5819,"end":5824,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5834,"end":5844,"text":"Disposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5834,"end":5844,"text":"Disposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5860,"end":5879,"text":"AsyncIteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5860,"end":5879,"text":"AsyncIteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5880,"end":5881,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5883,"end":5890,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5892,"end":5897,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5907,"end":5922,"text":"AsyncDisposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.disposable.d.ts","start":5907,"end":5922,"text":"AsyncDisposable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

@@ -1,0 +1,53 @@
+{"path":"compiler/stringInference.ts","start":5,"end":9,"text":"User","nodeType":"Identifier","type":{"name":"Object","display":"{ name: string; address: { city: string; }; }"}}
+{"path":"compiler/stringInference.ts","start":16,"end":20,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/stringInference.ts","start":31,"end":38,"text":"address","nodeType":"Identifier","type":{"name":"Object","display":"{ city: string; }"}}
+{"path":"compiler/stringInference.ts","start":46,"end":50,"text":"city","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/stringInference.ts","start":70,"end":78,"text":"UserKeys","nodeType":"Identifier","type":{"name":"Keyof","display":"keyof User"}}
+{"path":"compiler/stringInference.ts","start":87,"end":91,"text":"User","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":98,"end":106,"text":"Tupleify","nodeType":"Identifier","type":{"name":"Conditional","display":"T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]"}}
+{"path":"compiler/stringInference.ts","start":107,"end":108,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":127,"end":128,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":146,"end":147,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":157,"end":158,"text":"R","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":164,"end":165,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":170,"end":178,"text":"Tupleify","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":179,"end":180,"text":"R","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":186,"end":187,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":195,"end":201,"text":"Tuple1","nodeType":"Identifier","type":{"name":"Tuple","display":"[\"test\"]"}}
+{"path":"compiler/stringInference.ts","start":204,"end":212,"text":"Tupleify","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":226,"end":232,"text":"Tuple2","nodeType":"Identifier","type":{"name":"Tuple","display":"[\"test\", \"property\"]"}}
+{"path":"compiler/stringInference.ts","start":235,"end":243,"text":"Tupleify","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":266,"end":272,"text":"Tuple3","nodeType":"Identifier","type":{"name":"Tuple","display":"[\"test\", \"property\", \"another\"]"}}
+{"path":"compiler/stringInference.ts","start":275,"end":283,"text":"Tupleify","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":314,"end":320,"text":"Tuple4","nodeType":"Identifier","type":{"name":"Tuple","display":"[\"\", \"property\", \"another\"]"}}
+{"path":"compiler/stringInference.ts","start":323,"end":331,"text":"Tupleify","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":359,"end":361,"text":"T0","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"user\""}}
+{"path":"compiler/stringInference.ts","start":388,"end":389,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":394,"end":395,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":409,"end":411,"text":"T1","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/stringInference.ts","start":443,"end":444,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":454,"end":455,"text":"R","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":478,"end":480,"text":"T2","nodeType":"Identifier","type":{"name":"Object","display":"{ name: string; }"}}
+{"path":"compiler/stringInference.ts","start":512,"end":513,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":523,"end":524,"text":"R","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":529,"end":530,"text":"R","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":539,"end":547,"text":"UserKeys","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":550,"end":554,"text":"Pick","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":550,"end":554,"text":"Pick","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/stringInference.ts","start":555,"end":559,"text":"User","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":561,"end":562,"text":"R","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":585,"end":587,"text":"T3","nodeType":"Identifier","type":{"name":"Object","display":"{ city: string; }"}}
+{"path":"compiler/stringInference.ts","start":590,"end":598,"text":"Tupleify","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":635,"end":637,"text":"P1","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":645,"end":647,"text":"P2","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":655,"end":657,"text":"P3","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":663,"end":665,"text":"P2","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":674,"end":682,"text":"UserKeys","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":689,"end":691,"text":"P3","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":706,"end":710,"text":"User","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":711,"end":713,"text":"P2","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":723,"end":727,"text":"Pick","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":723,"end":727,"text":"Pick","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/stringInference.ts","start":728,"end":732,"text":"User","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":733,"end":735,"text":"P2","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/stringInference.ts","start":738,"end":740,"text":"P3","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

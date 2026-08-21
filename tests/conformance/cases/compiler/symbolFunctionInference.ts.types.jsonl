@@ -1,0 +1,26 @@
+{"path":"compiler/symbolFunctionInference.ts::arrow.ts","start":17,"end":26,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"() => boolean"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":26,"end":39,"text":"returnsString","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<string>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":77,"end":82,"text":"empty","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":103,"end":116,"text":"unwrapPromise","nodeType":"Identifier","type":{"name":"Function","display":"(value: Promise<number>) => Promise<number>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":117,"end":122,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<number>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":124,"end":131,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":124,"end":131,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":150,"end":155,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<number>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":174,"end":189,"text":"preserveGeneric","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => Promise<T>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":190,"end":191,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":193,"end":198,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":200,"end":201,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":212,"end":217,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":227,"end":240,"text":"returnsNumber","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<number>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":264,"end":276,"text":"stringResult","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":279,"end":292,"text":"returnsString","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<string>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":302,"end":313,"text":"emptyResult","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<void>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":316,"end":321,"text":"empty","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<void>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":331,"end":346,"text":"unwrappedResult","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<number>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":349,"end":362,"text":"unwrapPromise","nodeType":"Identifier","type":{"name":"Function","display":"(value: Promise<number>) => Promise<number>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":363,"end":370,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":371,"end":378,"text":"resolve","nodeType":"Identifier","type":{"name":"Object","display":"{ (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":390,"end":403,"text":"genericResult","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<string>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":406,"end":421,"text":"preserveGeneric","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => Promise<T>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":438,"end":450,"text":"numberResult","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<number>"}}
+{"path":"compiler/symbolFunctionInference.ts::async.ts","start":453,"end":466,"text":"returnsNumber","nodeType":"Identifier","type":{"name":"Function","display":"() => Promise<number>"}}

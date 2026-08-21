@@ -1,65 +1,65 @@
 interface PromiseWithResolvers<T> {
->         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface PromiseWithResolvers<T> {
->         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface PromiseWithResolvers<T> {
->                              ^: any   (TyAny) (TSTypeParameter)
+>                              ^: any   (Any) (Identifier)
 
     promise: Promise<T>;
->   ^^^^^^^: Promise<T>   (TyTypeReference) (TSPropertySignature)
+>   ^^^^^^^: Promise<T>   (TypeReference) (Identifier)
 
     promise: Promise<T>;
->            ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     promise: Promise<T>;
->            ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     promise: Promise<T>;
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
     resolve: (value: T | PromiseLike<T>) => void;
->   ^^^^^^^: (value: T | PromiseLike<T>) => void   (TyFunction) (TSPropertySignature)
+>   ^^^^^^^: (value: T | PromiseLike<T>) => void   (Function) (Identifier)
 
     resolve: (value: T | PromiseLike<T>) => void;
->             ^^^^^: T | PromiseLike<T>   (TyUnion) (BindingIdentifier)
+>             ^^^^^: T | PromiseLike<T>   (Union) (Identifier)
 
     resolve: (value: T | PromiseLike<T>) => void;
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
     resolve: (value: T | PromiseLike<T>) => void;
->                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^^^^^^^^: any   (Any) (Identifier)
 
     resolve: (value: T | PromiseLike<T>) => void;
->                        ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                        ^^^^^^^^^^^: any   (Error) (Identifier)
 
     resolve: (value: T | PromiseLike<T>) => void;
->                                    ^: any   (TyAny) (TSTypeReference)
+>                                    ^: any   (Any) (Identifier)
 
     reject: (reason?: any) => void;
->   ^^^^^^: (reason?: any) => void   (TyFunction) (TSPropertySignature)
+>   ^^^^^^: (reason?: any) => void   (Function) (Identifier)
 
     reject: (reason?: any) => void;
->            ^^^^^^: any   (TyAny) (BindingIdentifier)
+>            ^^^^^^: any   (Any) (Identifier)
 
 interface PromiseConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface PromiseConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     withResolvers<T>(): PromiseWithResolvers<T>;
->   ^^^^^^^^^^^^^: { <T>(): PromiseWithResolvers<T>; <T>(): PromiseWithResolvers<T>; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^: { <T>(): PromiseWithResolvers<T>; <T>(): PromiseWithResolvers<T>; }   (Object) (Identifier)
 
     withResolvers<T>(): PromiseWithResolvers<T>;
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
     withResolvers<T>(): PromiseWithResolvers<T>;
->                       ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     withResolvers<T>(): PromiseWithResolvers<T>;
->                       ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     withResolvers<T>(): PromiseWithResolvers<T>;
->                                            ^: any   (TyAny) (TSTypeReference)
+>                                            ^: any   (Any) (Identifier)

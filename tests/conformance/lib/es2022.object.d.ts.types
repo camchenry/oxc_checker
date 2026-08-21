@@ -1,20 +1,20 @@
 interface ObjectConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ObjectConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     hasOwn(o: object, v: PropertyKey): boolean;
->   ^^^^^^: { (o: object, v: PropertyKey): boolean; (o: object, v: PropertyKey): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^: { (o: object, v: PropertyKey): boolean; (o: object, v: PropertyKey): boolean; }   (Object) (Identifier)
 
     hasOwn(o: object, v: PropertyKey): boolean;
->          ^: object   (TyPrimitiveObject) (BindingIdentifier)
+>          ^: object   (PrimitiveObject) (Identifier)
 
     hasOwn(o: object, v: PropertyKey): boolean;
->                     ^: PropertyKey   (TyTypeReference) (BindingIdentifier)
+>                     ^: PropertyKey   (TypeReference) (Identifier)
 
     hasOwn(o: object, v: PropertyKey): boolean;
->                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^^^^^^^^: any   (Any) (Identifier)
 
     hasOwn(o: object, v: PropertyKey): boolean;
->                        ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                        ^^^^^^^^^^^: any   (Error) (Identifier)

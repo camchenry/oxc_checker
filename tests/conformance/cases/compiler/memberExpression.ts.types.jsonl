@@ -1,0 +1,276 @@
+{"path":"compiler/memberExpression.ts","start":5,"end":9,"text":"User","nodeType":"Identifier","type":{"name":"Object","display":"{ name: string; age: number; id: `user_${string}`; active?: boolean; address: { city: string; zip: number; }; greet(message: string): string; preferences: { theme: \"light\" | \"dark\"; notifications?: boolean; }; }"}}
+{"path":"compiler/memberExpression.ts","start":16,"end":20,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":32,"end":35,"text":"age","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":47,"end":49,"text":"id","nodeType":"Identifier","type":{"name":"TemplateLiteral","display":"`user_${string}`"}}
+{"path":"compiler/memberExpression.ts","start":70,"end":76,"text":"active","nodeType":"Identifier","type":{"name":"Union","display":"boolean | undefined"}}
+{"path":"compiler/memberExpression.ts","start":90,"end":97,"text":"address","nodeType":"Identifier","type":{"name":"Object","display":"{ city: string; zip: number; }"}}
+{"path":"compiler/memberExpression.ts","start":105,"end":109,"text":"city","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":123,"end":126,"text":"zip","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":143,"end":148,"text":"greet","nodeType":"Identifier","type":{"name":"Function","display":"(message: string) => string"}}
+{"path":"compiler/memberExpression.ts","start":149,"end":156,"text":"message","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":177,"end":188,"text":"preferences","nodeType":"Identifier","type":{"name":"Object","display":"{ theme: \"light\" | \"dark\"; notifications?: boolean; }"}}
+{"path":"compiler/memberExpression.ts","start":196,"end":201,"text":"theme","nodeType":"Identifier","type":{"name":"Union","display":"\"light\" | \"dark\""}}
+{"path":"compiler/memberExpression.ts","start":225,"end":238,"text":"notifications","nodeType":"Identifier","type":{"name":"Union","display":"boolean | undefined"}}
+{"path":"compiler/memberExpression.ts","start":264,"end":268,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":270,"end":274,"text":"User","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":281,"end":285,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":298,"end":301,"text":"age","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":309,"end":311,"text":"id","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"user_Alice\""}}
+{"path":"compiler/memberExpression.ts","start":329,"end":336,"text":"address","nodeType":"Identifier","type":{"name":"Object","display":"{ city: string; zip: number; }"}}
+{"path":"compiler/memberExpression.ts","start":344,"end":348,"text":"city","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":363,"end":366,"text":"zip","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":382,"end":387,"text":"greet","nodeType":"Identifier","type":{"name":"Function","display":"(message: string) => string"}}
+{"path":"compiler/memberExpression.ts","start":388,"end":395,"text":"message","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":421,"end":428,"text":"message","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":438,"end":442,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":453,"end":464,"text":"preferences","nodeType":"Identifier","type":{"name":"Object","display":"{ theme: \"dark\"; }"}}
+{"path":"compiler/memberExpression.ts","start":472,"end":477,"text":"theme","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"dark\""}}
+{"path":"compiler/memberExpression.ts","start":502,"end":510,"text":"userName","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":513,"end":517,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":518,"end":522,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":530,"end":537,"text":"userAge","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":540,"end":544,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":545,"end":548,"text":"age","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":556,"end":562,"text":"userId","nodeType":"Identifier","type":{"name":"TemplateLiteral","display":"`user_${string}`"}}
+{"path":"compiler/memberExpression.ts","start":565,"end":569,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":570,"end":572,"text":"id","nodeType":"Identifier","type":{"name":"TemplateLiteral","display":"`user_${string}`"}}
+{"path":"compiler/memberExpression.ts","start":580,"end":590,"text":"userActive","nodeType":"Identifier","type":{"name":"Union","display":"boolean | undefined"}}
+{"path":"compiler/memberExpression.ts","start":593,"end":597,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":598,"end":604,"text":"active","nodeType":"Identifier","type":{"name":"Union","display":"boolean | undefined"}}
+{"path":"compiler/memberExpression.ts","start":612,"end":620,"text":"userCity","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":623,"end":627,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":628,"end":635,"text":"address","nodeType":"Identifier","type":{"name":"Object","display":"{ city: string; zip: number; }"}}
+{"path":"compiler/memberExpression.ts","start":636,"end":640,"text":"city","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":648,"end":655,"text":"userZip","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":658,"end":662,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":674,"end":677,"text":"zip","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":685,"end":697,"text":"userGreeting","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":700,"end":704,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":705,"end":710,"text":"greet","nodeType":"Identifier","type":{"name":"Function","display":"(message: string) => string"}}
+{"path":"compiler/memberExpression.ts","start":727,"end":742,"text":"userGreetMethod","nodeType":"Identifier","type":{"name":"Function","display":"(message: string) => string"}}
+{"path":"compiler/memberExpression.ts","start":745,"end":749,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":750,"end":755,"text":"greet","nodeType":"Identifier","type":{"name":"Function","display":"(message: string) => string"}}
+{"path":"compiler/memberExpression.ts","start":763,"end":772,"text":"userTheme","nodeType":"Identifier","type":{"name":"Union","display":"\"light\" | \"dark\""}}
+{"path":"compiler/memberExpression.ts","start":775,"end":779,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":780,"end":791,"text":"preferences","nodeType":"Identifier","type":{"name":"Object","display":"{ theme: \"light\" | \"dark\"; notifications?: boolean; }"}}
+{"path":"compiler/memberExpression.ts","start":792,"end":797,"text":"theme","nodeType":"Identifier","type":{"name":"Union","display":"\"light\" | \"dark\""}}
+{"path":"compiler/memberExpression.ts","start":805,"end":822,"text":"userNotifications","nodeType":"Identifier","type":{"name":"Union","display":"boolean | undefined"}}
+{"path":"compiler/memberExpression.ts","start":825,"end":829,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":830,"end":841,"text":"preferences","nodeType":"Identifier","type":{"name":"Object","display":"{ theme: \"light\" | \"dark\"; notifications?: boolean; }"}}
+{"path":"compiler/memberExpression.ts","start":842,"end":855,"text":"notifications","nodeType":"Identifier","type":{"name":"Union","display":"boolean | undefined"}}
+{"path":"compiler/memberExpression.ts","start":864,"end":874,"text":"literalKey","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"name\""}}
+{"path":"compiler/memberExpression.ts","start":887,"end":892,"text":"const","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":887,"end":892,"text":"const","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":900,"end":908,"text":"unionKey","nodeType":"Identifier","type":{"name":"Union","display":"\"name\" | \"id\""}}
+{"path":"compiler/memberExpression.ts","start":926,"end":930,"text":"Math","nodeType":"Identifier","type":{"name":"TypeReference","display":"Math"}}
+{"path":"compiler/memberExpression.ts","start":931,"end":937,"text":"random","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/memberExpression.ts","start":969,"end":985,"text":"dynamicStringKey","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":1015,"end":1030,"text":"literalKeyValue","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":1033,"end":1037,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":1038,"end":1048,"text":"literalKey","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"name\""}}
+{"path":"compiler/memberExpression.ts","start":1057,"end":1070,"text":"unionKeyValue","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":1073,"end":1077,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":1078,"end":1086,"text":"unionKey","nodeType":"Identifier","type":{"name":"Union","display":"\"name\" | \"id\""}}
+{"path":"compiler/memberExpression.ts","start":1095,"end":1116,"text":"dynamicStringKeyValue","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":1119,"end":1123,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":1124,"end":1140,"text":"dynamicStringKey","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":1149,"end":1165,"text":"StringDictionary","nodeType":"Identifier","type":{"name":"Object","display":"{ [key: string]: number; known: number; }"}}
+{"path":"compiler/memberExpression.ts","start":1172,"end":1177,"text":"known","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":1190,"end":1193,"text":"key","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":1221,"end":1231,"text":"dictionary","nodeType":"Identifier","type":{"name":"TypeReference","display":"StringDictionary"}}
+{"path":"compiler/memberExpression.ts","start":1233,"end":1249,"text":"StringDictionary","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":1256,"end":1261,"text":"known","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":1268,"end":1273,"text":"extra","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":1288,"end":1306,"text":"dictionaryKnownDot","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":1309,"end":1319,"text":"dictionary","nodeType":"Identifier","type":{"name":"TypeReference","display":"StringDictionary"}}
+{"path":"compiler/memberExpression.ts","start":1320,"end":1325,"text":"known","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":1333,"end":1355,"text":"dictionaryKnownBracket","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":1358,"end":1368,"text":"dictionary","nodeType":"Identifier","type":{"name":"TypeReference","display":"StringDictionary"}}
+{"path":"compiler/memberExpression.ts","start":1385,"end":1403,"text":"dictionaryExtraDot","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":1406,"end":1416,"text":"dictionary","nodeType":"Identifier","type":{"name":"TypeReference","display":"StringDictionary"}}
+{"path":"compiler/memberExpression.ts","start":1417,"end":1422,"text":"extra","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":1430,"end":1447,"text":"dictionaryDynamic","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":1450,"end":1460,"text":"dictionary","nodeType":"Identifier","type":{"name":"TypeReference","display":"StringDictionary"}}
+{"path":"compiler/memberExpression.ts","start":1461,"end":1477,"text":"dynamicStringKey","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":1486,"end":1503,"text":"NumericDictionary","nodeType":"Identifier","type":{"name":"Object","display":"{ [index: number]: \"zero\" | \"one\" | \"many\" | undefined; 0: \"zero\"; 1?: \"one\"; }"}}
+{"path":"compiler/memberExpression.ts","start":1537,"end":1542,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":1599,"end":1616,"text":"numericDictionary","nodeType":"Identifier","type":{"name":"TypeReference","display":"NumericDictionary"}}
+{"path":"compiler/memberExpression.ts","start":1618,"end":1635,"text":"NumericDictionary","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":1676,"end":1690,"text":"numericZeroDot","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"zero\""}}
+{"path":"compiler/memberExpression.ts","start":1693,"end":1710,"text":"numericDictionary","nodeType":"Identifier","type":{"name":"TypeReference","display":"NumericDictionary"}}
+{"path":"compiler/memberExpression.ts","start":1721,"end":1738,"text":"numericOneBracket","nodeType":"Identifier","type":{"name":"Union","display":"\"one\" | undefined"}}
+{"path":"compiler/memberExpression.ts","start":1741,"end":1758,"text":"numericDictionary","nodeType":"Identifier","type":{"name":"TypeReference","display":"NumericDictionary"}}
+{"path":"compiler/memberExpression.ts","start":1769,"end":1783,"text":"numericDynamic","nodeType":"Identifier","type":{"name":"Union","display":"\"zero\" | \"one\" | \"many\" | undefined"}}
+{"path":"compiler/memberExpression.ts","start":1786,"end":1803,"text":"numericDictionary","nodeType":"Identifier","type":{"name":"TypeReference","display":"NumericDictionary"}}
+{"path":"compiler/memberExpression.ts","start":1816,"end":1821,"text":"users","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [User, { readonly name: \"Bob\"; readonly id: \"user_Bob\"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: \"light\" | \"dark\"; notifications?: boolean; }; }]"}}
+{"path":"compiler/memberExpression.ts","start":1825,"end":1829,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":1836,"end":1840,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":1842,"end":1846,"text":"name","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"Bob\""}}
+{"path":"compiler/memberExpression.ts","start":1855,"end":1857,"text":"id","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"user_Bob\""}}
+{"path":"compiler/memberExpression.ts","start":1876,"end":1881,"text":"const","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":1876,"end":1881,"text":"const","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":1889,"end":1898,"text":"firstUser","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":1901,"end":1906,"text":"users","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [User, { readonly name: \"Bob\"; readonly id: \"user_Bob\"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: \"light\" | \"dark\"; notifications?: boolean; }; }]"}}
+{"path":"compiler/memberExpression.ts","start":1917,"end":1930,"text":"firstUserName","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":1933,"end":1938,"text":"users","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [User, { readonly name: \"Bob\"; readonly id: \"user_Bob\"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: \"light\" | \"dark\"; notifications?: boolean; }; }]"}}
+{"path":"compiler/memberExpression.ts","start":1942,"end":1946,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":1954,"end":1965,"text":"usersLength","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"2"}}
+{"path":"compiler/memberExpression.ts","start":1968,"end":1973,"text":"users","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [User, { readonly name: \"Bob\"; readonly id: \"user_Bob\"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: \"light\" | \"dark\"; notifications?: boolean; }; }]"}}
+{"path":"compiler/memberExpression.ts","start":1974,"end":1980,"text":"length","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"2"}}
+{"path":"compiler/memberExpression.ts","start":1988,"end":2002,"text":"arrayMapMethod","nodeType":"Identifier","type":{"name":"Function","display":"<U>(callbackfn: (value: User | { readonly name: \"Bob\"; readonly id: \"user_Bob\"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: \"light\" | \"dark\"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: \"Bob\"; readonly id: \"user_Bob\"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: \"light\" | \"dark\"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]"}}
+{"path":"compiler/memberExpression.ts","start":2005,"end":2010,"text":"users","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [User, { readonly name: \"Bob\"; readonly id: \"user_Bob\"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: \"light\" | \"dark\"; notifications?: boolean; }; }]"}}
+{"path":"compiler/memberExpression.ts","start":2011,"end":2014,"text":"map","nodeType":"Identifier","type":{"name":"Function","display":"<U>(callbackfn: (value: User | { readonly name: \"Bob\"; readonly id: \"user_Bob\"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: \"light\" | \"dark\"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: \"Bob\"; readonly id: \"user_Bob\"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: \"light\" | \"dark\"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]"}}
+{"path":"compiler/memberExpression.ts","start":2023,"end":2028,"text":"tuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [\"ready\", 200, { readonly ok: true; }]"}}
+{"path":"compiler/memberExpression.ts","start":2048,"end":2050,"text":"ok","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/memberExpression.ts","start":2063,"end":2068,"text":"const","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":2063,"end":2068,"text":"const","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":2076,"end":2087,"text":"tupleStatus","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/memberExpression.ts","start":2090,"end":2095,"text":"tuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [\"ready\", 200, { readonly ok: true; }]"}}
+{"path":"compiler/memberExpression.ts","start":2106,"end":2115,"text":"tupleCode","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"200"}}
+{"path":"compiler/memberExpression.ts","start":2118,"end":2123,"text":"tuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [\"ready\", 200, { readonly ok: true; }]"}}
+{"path":"compiler/memberExpression.ts","start":2134,"end":2147,"text":"tupleObjectOk","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/memberExpression.ts","start":2150,"end":2155,"text":"tuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [\"ready\", 200, { readonly ok: true; }]"}}
+{"path":"compiler/memberExpression.ts","start":2159,"end":2161,"text":"ok","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/memberExpression.ts","start":2169,"end":2180,"text":"tupleLength","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"3"}}
+{"path":"compiler/memberExpression.ts","start":2183,"end":2188,"text":"tuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [\"ready\", 200, { readonly ok: true; }]"}}
+{"path":"compiler/memberExpression.ts","start":2189,"end":2195,"text":"length","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"3"}}
+{"path":"compiler/memberExpression.ts","start":2203,"end":2221,"text":"tupleBracketLength","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"3"}}
+{"path":"compiler/memberExpression.ts","start":2224,"end":2229,"text":"tuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [\"ready\", 200, { readonly ok: true; }]"}}
+{"path":"compiler/memberExpression.ts","start":2256,"end":2269,"text":"optionalTuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [string, (number | undefined)?]"}}
+{"path":"compiler/memberExpression.ts","start":2305,"end":2324,"text":"optionalTupleLength","nodeType":"Identifier","type":{"name":"Union","display":"1 | 2"}}
+{"path":"compiler/memberExpression.ts","start":2327,"end":2340,"text":"optionalTuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [string, (number | undefined)?]"}}
+{"path":"compiler/memberExpression.ts","start":2341,"end":2347,"text":"length","nodeType":"Identifier","type":{"name":"Union","display":"1 | 2"}}
+{"path":"compiler/memberExpression.ts","start":2355,"end":2381,"text":"optionalTupleBracketLength","nodeType":"Identifier","type":{"name":"Union","display":"1 | 2"}}
+{"path":"compiler/memberExpression.ts","start":2384,"end":2397,"text":"optionalTuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [string, (number | undefined)?]"}}
+{"path":"compiler/memberExpression.ts","start":2424,"end":2433,"text":"restTuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [string, ...number[]]"}}
+{"path":"compiler/memberExpression.ts","start":2473,"end":2488,"text":"restTupleLength","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":2491,"end":2500,"text":"restTuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [string, ...number[]]"}}
+{"path":"compiler/memberExpression.ts","start":2501,"end":2507,"text":"length","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":2515,"end":2537,"text":"restTupleBracketLength","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":2540,"end":2549,"text":"restTuple","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [string, ...number[]]"}}
+{"path":"compiler/memberExpression.ts","start":2568,"end":2574,"text":"matrix","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [readonly [1, 2], readonly [3, 4]]"}}
+{"path":"compiler/memberExpression.ts","start":2597,"end":2602,"text":"const","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":2597,"end":2602,"text":"const","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":2610,"end":2624,"text":"matrixFirstRow","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [1, 2]"}}
+{"path":"compiler/memberExpression.ts","start":2627,"end":2633,"text":"matrix","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [readonly [1, 2], readonly [3, 4]]"}}
+{"path":"compiler/memberExpression.ts","start":2644,"end":2660,"text":"matrixFirstValue","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
+{"path":"compiler/memberExpression.ts","start":2663,"end":2669,"text":"matrix","nodeType":"Identifier","type":{"name":"Tuple","display":"readonly [readonly [1, 2], readonly [3, 4]]"}}
+{"path":"compiler/memberExpression.ts","start":2683,"end":2703,"text":"CallableWithProperty","nodeType":"Identifier","type":{"name":"Object","display":"{ (value: number): string; description: string; }"}}
+{"path":"compiler/memberExpression.ts","start":2711,"end":2716,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":2737,"end":2748,"text":"description","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":2775,"end":2795,"text":"callableWithProperty","nodeType":"Identifier","type":{"name":"TypeReference","display":"CallableWithProperty"}}
+{"path":"compiler/memberExpression.ts","start":2797,"end":2817,"text":"CallableWithProperty","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":2825,"end":2839,"text":"callableResult","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":2842,"end":2862,"text":"callableWithProperty","nodeType":"Identifier","type":{"name":"TypeReference","display":"CallableWithProperty"}}
+{"path":"compiler/memberExpression.ts","start":2875,"end":2894,"text":"callableDescription","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":2897,"end":2917,"text":"callableWithProperty","nodeType":"Identifier","type":{"name":"TypeReference","display":"CallableWithProperty"}}
+{"path":"compiler/memberExpression.ts","start":2918,"end":2929,"text":"description","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":2937,"end":2950,"text":"callableApply","nodeType":"Identifier","type":{"name":"Object","display":"{ <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }"}}
+{"path":"compiler/memberExpression.ts","start":2953,"end":2973,"text":"callableWithProperty","nodeType":"Identifier","type":{"name":"TypeReference","display":"CallableWithProperty"}}
+{"path":"compiler/memberExpression.ts","start":2974,"end":2979,"text":"apply","nodeType":"Identifier","type":{"name":"Object","display":"{ <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }"}}
+{"path":"compiler/memberExpression.ts","start":2988,"end":2995,"text":"Counter","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Counter"}}
+{"path":"compiler/memberExpression.ts","start":3007,"end":3012,"text":"label","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":3035,"end":3041,"text":"create","nodeType":"Identifier","type":{"name":"Function","display":"() => Counter"}}
+{"path":"compiler/memberExpression.ts","start":3061,"end":3068,"text":"Counter","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Counter"}}
+{"path":"compiler/memberExpression.ts","start":3116,"end":3121,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":3137,"end":3146,"text":"increment","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/memberExpression.ts","start":3155,"end":3171,"text":"this.value += 1;","nodeType":"ExpressionStatement","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":3160,"end":3165,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":3188,"end":3193,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":3202,"end":3212,"text":"readSecret","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/memberExpression.ts","start":3255,"end":3262,"text":"counter","nodeType":"Identifier","type":{"name":"TypeReference","display":"Counter"}}
+{"path":"compiler/memberExpression.ts","start":3269,"end":3276,"text":"Counter","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Counter"}}
+{"path":"compiler/memberExpression.ts","start":3287,"end":3299,"text":"counterValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":3302,"end":3309,"text":"counter","nodeType":"Identifier","type":{"name":"TypeReference","display":"Counter"}}
+{"path":"compiler/memberExpression.ts","start":3310,"end":3315,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":3323,"end":3339,"text":"counterIncrement","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/memberExpression.ts","start":3342,"end":3349,"text":"counter","nodeType":"Identifier","type":{"name":"TypeReference","display":"Counter"}}
+{"path":"compiler/memberExpression.ts","start":3350,"end":3359,"text":"increment","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/memberExpression.ts","start":3367,"end":3389,"text":"counterIncrementResult","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":3392,"end":3399,"text":"counter","nodeType":"Identifier","type":{"name":"TypeReference","display":"Counter"}}
+{"path":"compiler/memberExpression.ts","start":3400,"end":3409,"text":"increment","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/memberExpression.ts","start":3419,"end":3432,"text":"counterSecret","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":3435,"end":3442,"text":"counter","nodeType":"Identifier","type":{"name":"TypeReference","display":"Counter"}}
+{"path":"compiler/memberExpression.ts","start":3443,"end":3453,"text":"readSecret","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/memberExpression.ts","start":3463,"end":3481,"text":"counterStaticLabel","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":3484,"end":3491,"text":"Counter","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Counter"}}
+{"path":"compiler/memberExpression.ts","start":3492,"end":3497,"text":"label","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":3505,"end":3525,"text":"counterStaticFactory","nodeType":"Identifier","type":{"name":"Function","display":"() => Counter"}}
+{"path":"compiler/memberExpression.ts","start":3528,"end":3535,"text":"Counter","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Counter"}}
+{"path":"compiler/memberExpression.ts","start":3536,"end":3542,"text":"create","nodeType":"Identifier","type":{"name":"Function","display":"() => Counter"}}
+{"path":"compiler/memberExpression.ts","start":3550,"end":3569,"text":"counterStaticResult","nodeType":"Identifier","type":{"name":"TypeReference","display":"Counter"}}
+{"path":"compiler/memberExpression.ts","start":3572,"end":3579,"text":"Counter","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Counter"}}
+{"path":"compiler/memberExpression.ts","start":3580,"end":3586,"text":"create","nodeType":"Identifier","type":{"name":"Function","display":"() => Counter"}}
+{"path":"compiler/memberExpression.ts","start":3597,"end":3611,"text":"DerivedCounter","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof DerivedCounter"}}
+{"path":"compiler/memberExpression.ts","start":3620,"end":3627,"text":"Counter","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Counter"}}
+{"path":"compiler/memberExpression.ts","start":3632,"end":3650,"text":"readSuperIncrement","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/memberExpression.ts","start":3672,"end":3681,"text":"increment","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/memberExpression.ts","start":3698,"end":3705,"text":"derived","nodeType":"Identifier","type":{"name":"TypeReference","display":"DerivedCounter"}}
+{"path":"compiler/memberExpression.ts","start":3712,"end":3726,"text":"DerivedCounter","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof DerivedCounter"}}
+{"path":"compiler/memberExpression.ts","start":3737,"end":3755,"text":"derivedSuperResult","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":3758,"end":3765,"text":"derived","nodeType":"Identifier","type":{"name":"TypeReference","display":"DerivedCounter"}}
+{"path":"compiler/memberExpression.ts","start":3766,"end":3784,"text":"readSuperIncrement","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/memberExpression.ts","start":3795,"end":3804,"text":"uniqueKey","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/memberExpression.ts","start":3822,"end":3828,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"compiler/memberExpression.ts","start":3848,"end":3860,"text":"SymbolObject","nodeType":"Identifier","type":{"name":"Object","display":"{ regular: string; [uniqueKey]: number; }"}}
+{"path":"compiler/memberExpression.ts","start":3868,"end":3877,"text":"uniqueKey","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":3868,"end":3877,"text":"uniqueKey","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/memberExpression.ts","start":3890,"end":3897,"text":"regular","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":3916,"end":3928,"text":"symbolObject","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolObject"}}
+{"path":"compiler/memberExpression.ts","start":3930,"end":3942,"text":"SymbolObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":3950,"end":3959,"text":"uniqueKey","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":3950,"end":3959,"text":"uniqueKey","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/memberExpression.ts","start":3968,"end":3975,"text":"regular","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":3993,"end":4004,"text":"symbolValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":4007,"end":4019,"text":"symbolObject","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolObject"}}
+{"path":"compiler/memberExpression.ts","start":4020,"end":4029,"text":"uniqueKey","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"compiler/memberExpression.ts","start":4038,"end":4051,"text":"symbolRegular","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":4054,"end":4066,"text":"symbolObject","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolObject"}}
+{"path":"compiler/memberExpression.ts","start":4067,"end":4074,"text":"regular","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":4082,"end":4092,"text":"Hyphenated","nodeType":"Identifier","type":{"name":"Object","display":"{ \"data-id\": string; \"aria-label\"?: string; }"}}
+{"path":"compiler/memberExpression.ts","start":4152,"end":4162,"text":"hyphenated","nodeType":"Identifier","type":{"name":"TypeReference","display":"Hyphenated"}}
+{"path":"compiler/memberExpression.ts","start":4164,"end":4174,"text":"Hyphenated","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":4212,"end":4228,"text":"hyphenatedDataId","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":4231,"end":4241,"text":"hyphenated","nodeType":"Identifier","type":{"name":"TypeReference","display":"Hyphenated"}}
+{"path":"compiler/memberExpression.ts","start":4260,"end":4279,"text":"hyphenatedAriaLabel","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/memberExpression.ts","start":4282,"end":4292,"text":"hyphenated","nodeType":"Identifier","type":{"name":"TypeReference","display":"Hyphenated"}}
+{"path":"compiler/memberExpression.ts","start":4314,"end":4325,"text":"UnionMember","nodeType":"Identifier","type":{"name":"Union","display":"{ kind: \"text\"; value: string; common: boolean; } | { kind: \"count\"; value: number; common: boolean; }"}}
+{"path":"compiler/memberExpression.ts","start":4334,"end":4338,"text":"kind","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"text\""}}
+{"path":"compiler/memberExpression.ts","start":4348,"end":4353,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":4363,"end":4369,"text":"common","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/memberExpression.ts","start":4387,"end":4391,"text":"kind","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"count\""}}
+{"path":"compiler/memberExpression.ts","start":4402,"end":4407,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":4417,"end":4423,"text":"common","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/memberExpression.ts","start":4450,"end":4461,"text":"unionMember","nodeType":"Identifier","type":{"name":"TypeReference","display":"UnionMember"}}
+{"path":"compiler/memberExpression.ts","start":4463,"end":4474,"text":"UnionMember","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":4482,"end":4491,"text":"unionKind","nodeType":"Identifier","type":{"name":"Union","display":"\"text\" | \"count\""}}
+{"path":"compiler/memberExpression.ts","start":4494,"end":4505,"text":"unionMember","nodeType":"Identifier","type":{"name":"TypeReference","display":"UnionMember"}}
+{"path":"compiler/memberExpression.ts","start":4506,"end":4510,"text":"kind","nodeType":"Identifier","type":{"name":"Union","display":"\"text\" | \"count\""}}
+{"path":"compiler/memberExpression.ts","start":4518,"end":4528,"text":"unionValue","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/memberExpression.ts","start":4531,"end":4542,"text":"unionMember","nodeType":"Identifier","type":{"name":"TypeReference","display":"UnionMember"}}
+{"path":"compiler/memberExpression.ts","start":4543,"end":4548,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"string | number"}}
+{"path":"compiler/memberExpression.ts","start":4556,"end":4567,"text":"unionCommon","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/memberExpression.ts","start":4570,"end":4581,"text":"unionMember","nodeType":"Identifier","type":{"name":"TypeReference","display":"UnionMember"}}
+{"path":"compiler/memberExpression.ts","start":4582,"end":4588,"text":"common","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/memberExpression.ts","start":4596,"end":4614,"text":"IntersectionMember","nodeType":"Identifier","type":{"name":"Intersection","display":"{ left: string; } & { right: number; }"}}
+{"path":"compiler/memberExpression.ts","start":4619,"end":4623,"text":"left","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":4638,"end":4643,"text":"right","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":4669,"end":4687,"text":"intersectionMember","nodeType":"Identifier","type":{"name":"TypeReference","display":"IntersectionMember"}}
+{"path":"compiler/memberExpression.ts","start":4689,"end":4707,"text":"IntersectionMember","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":4715,"end":4731,"text":"intersectionLeft","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":4734,"end":4752,"text":"intersectionMember","nodeType":"Identifier","type":{"name":"TypeReference","display":"IntersectionMember"}}
+{"path":"compiler/memberExpression.ts","start":4753,"end":4757,"text":"left","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":4765,"end":4782,"text":"intersectionRight","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":4785,"end":4803,"text":"intersectionMember","nodeType":"Identifier","type":{"name":"TypeReference","display":"IntersectionMember"}}
+{"path":"compiler/memberExpression.ts","start":4804,"end":4809,"text":"right","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":4818,"end":4837,"text":"parenthesizedMember","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":4841,"end":4845,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":4847,"end":4851,"text":"name","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/memberExpression.ts","start":4859,"end":4873,"text":"assertedMember","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":4877,"end":4881,"text":"user","nodeType":"Identifier","type":{"name":"TypeReference","display":"User"}}
+{"path":"compiler/memberExpression.ts","start":4885,"end":4889,"text":"User","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/memberExpression.ts","start":4891,"end":4894,"text":"age","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":4902,"end":4917,"text":"satisfiesMember","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":4923,"end":4928,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":4946,"end":4951,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/memberExpression.ts","start":4963,"end":4968,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}

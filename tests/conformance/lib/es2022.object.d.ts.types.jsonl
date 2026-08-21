@@ -1,0 +1,7 @@
+{"path":"es2022.object.d.ts","start":10,"end":27,"text":"ObjectConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2022.object.d.ts","start":10,"end":27,"text":"ObjectConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2022.object.d.ts","start":186,"end":192,"text":"hasOwn","nodeType":"Identifier","type":{"name":"Object","display":"{ (o: object, v: PropertyKey): boolean; (o: object, v: PropertyKey): boolean; }"}}
+{"path":"es2022.object.d.ts","start":193,"end":194,"text":"o","nodeType":"Identifier","type":{"name":"PrimitiveObject","display":"object"}}
+{"path":"es2022.object.d.ts","start":204,"end":205,"text":"v","nodeType":"Identifier","type":{"name":"TypeReference","display":"PropertyKey"}}
+{"path":"es2022.object.d.ts","start":207,"end":218,"text":"PropertyKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2022.object.d.ts","start":207,"end":218,"text":"PropertyKey","nodeType":"Identifier","type":{"name":"Error","display":"any"}}

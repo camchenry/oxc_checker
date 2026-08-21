@@ -1,62 +1,62 @@
 function foo(): undefined {}
->        ^^^: () => undefined   (TyFunction) (BindingIdentifier)
+>        ^^^: () => undefined   (Function) (Identifier)
 
 function bar(flag: boolean): undefined {
->        ^^^: (flag: boolean) => undefined   (TyFunction) (BindingIdentifier)
+>        ^^^: (flag: boolean) => undefined   (Function) (Identifier)
 
 function bar(flag: boolean): undefined {
->            ^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>            ^^^^: boolean   (Boolean) (Identifier)
 
   if (flag) return foo();
->     ^^^^: boolean   (TyBoolean) (IdentifierReference)
+>     ^^^^: boolean   (Boolean) (Identifier)
 
   if (flag) return foo();
->                  ^^^: () => undefined   (TyFunction) (IdentifierReference)
+>                  ^^^: () => undefined   (Function) (Identifier)
 
 async function baz(flag: boolean): Promise<undefined> {
->              ^^^: (flag: boolean) => Promise<undefined>   (TyFunction) (BindingIdentifier)
+>              ^^^: (flag: boolean) => Promise<undefined>   (Function) (Identifier)
 
 async function baz(flag: boolean): Promise<undefined> {
->                  ^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>                  ^^^^: boolean   (Boolean) (Identifier)
 
 async function baz(flag: boolean): Promise<undefined> {
->                                  ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                  ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 async function baz(flag: boolean): Promise<undefined> {
->                                  ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                  ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
   if (flag) return;
->     ^^^^: boolean   (TyBoolean) (IdentifierReference)
+>     ^^^^: boolean   (Boolean) (Identifier)
 
   return foo();
->        ^^^: () => undefined   (TyFunction) (IdentifierReference)
+>        ^^^: () => undefined   (Function) (Identifier)
 
 function foo(): void {}
->        ^^^: () => void   (TyFunction) (BindingIdentifier)
+>        ^^^: () => void   (Function) (Identifier)
 
 function bar(flag: boolean): void {
->        ^^^: (flag: boolean) => void   (TyFunction) (BindingIdentifier)
+>        ^^^: (flag: boolean) => void   (Function) (Identifier)
 
 function bar(flag: boolean): void {
->            ^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>            ^^^^: boolean   (Boolean) (Identifier)
 
   if (flag) return foo();
->     ^^^^: boolean   (TyBoolean) (IdentifierReference)
+>     ^^^^: boolean   (Boolean) (Identifier)
 
   if (flag) return foo();
->                  ^^^: () => void   (TyFunction) (IdentifierReference)
+>                  ^^^: () => void   (Function) (Identifier)
 
 async function baz(flag: boolean): Promise<void | number> {
->              ^^^: (flag: boolean) => Promise<void | number>   (TyFunction) (BindingIdentifier)
+>              ^^^: (flag: boolean) => Promise<void | number>   (Function) (Identifier)
 
 async function baz(flag: boolean): Promise<void | number> {
->                  ^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>                  ^^^^: boolean   (Boolean) (Identifier)
 
 async function baz(flag: boolean): Promise<void | number> {
->                                  ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                  ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 async function baz(flag: boolean): Promise<void | number> {
->                                  ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                  ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
   if (flag) return 42;
->     ^^^^: boolean   (TyBoolean) (IdentifierReference)
+>     ^^^^: boolean   (Boolean) (Identifier)

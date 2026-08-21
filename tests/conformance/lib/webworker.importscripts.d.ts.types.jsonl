@@ -1,0 +1,2 @@
+{"path":"webworker.importscripts.d.ts","start":148,"end":161,"text":"importScripts","nodeType":"Identifier","type":{"name":"Function","display":"(...urls: string[]) => void"}}
+{"path":"webworker.importscripts.d.ts","start":165,"end":169,"text":"urls","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}

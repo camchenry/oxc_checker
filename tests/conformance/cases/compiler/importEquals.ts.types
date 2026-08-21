@@ -1,89 +1,89 @@
 export const answer: 42 = 42;
->            ^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+>            ^^^^^^: 42   (NumberLiteral) (Identifier)
 
 const assigned: { value: "assigned" } = { value: "assigned" };
->     ^^^^^^^^: { value: "assigned"; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^: { value: "assigned"; }   (Object) (Identifier)
 
 const assigned: { value: "assigned" } = { value: "assigned" };
->                 ^^^^^: "assigned"   (TyStringLiteral) (TSPropertySignature)
+>                 ^^^^^: "assigned"   (StringLiteral) (Identifier)
 
 const assigned: { value: "assigned" } = { value: "assigned" };
->                                         ^^^^^: "assigned"   (TyStringLiteral) (ObjectProperty)
+>                                         ^^^^^: "assigned"   (StringLiteral) (Identifier)
 
 export = assigned;
->        ^^^^^^^^: { value: "assigned"; }   (TyObject) (IdentifierReference)
+>        ^^^^^^^^: { value: "assigned"; }   (Object) (Identifier)
 
 namespace Local {
->         ^^^^^: typeof Local   (TyTypeQuery) (TSModuleDeclaration)
+>         ^^^^^: typeof Local   (TypeQuery) (Identifier)
 
 namespace Local {
->         ^^^^^: typeof Local   (TyTypeQuery) (BindingIdentifier)
+>         ^^^^^: typeof Local   (TypeQuery) (Identifier)
 
   export const value: "local" = "local";
->              ^^^^^: "local"   (TyStringLiteral) (BindingIdentifier)
+>              ^^^^^: "local"   (StringLiteral) (Identifier)
 
 import LocalAlias = Local;
->      ^^^^^^^^^^: typeof Local   (TyTypeQuery) (TSImportEqualsDeclaration)
+>      ^^^^^^^^^^: typeof Local   (TypeQuery) (Identifier)
 
 import LocalAlias = Local;
->      ^^^^^^^^^^: typeof Local   (TyTypeQuery) (BindingIdentifier)
+>      ^^^^^^^^^^: typeof Local   (TypeQuery) (Identifier)
 
 import LocalAlias = Local;
->                   ^^^^^: typeof Local   (TyTypeQuery) (IdentifierReference)
+>                   ^^^^^: typeof Local   (TypeQuery) (Identifier)
 
 import ValueAlias = Local.value;
->      ^^^^^^^^^^: "local"   (TyStringLiteral) (TSImportEqualsDeclaration)
+>      ^^^^^^^^^^: "local"   (StringLiteral) (Identifier)
 
 import ValueAlias = Local.value;
->      ^^^^^^^^^^: "local"   (TyStringLiteral) (BindingIdentifier)
+>      ^^^^^^^^^^: "local"   (StringLiteral) (Identifier)
 
 import ValueAlias = Local.value;
->                   ^^^^^: typeof Local   (TyTypeQuery) (IdentifierReference)
+>                   ^^^^^: typeof Local   (TypeQuery) (Identifier)
 
 import ValueAlias = Local.value;
->                         ^^^^^: "local"   (TyStringLiteral) (IdentifierName)
+>                         ^^^^^: "local"   (StringLiteral) (Identifier)
 
 import named = require("./named.ts");
->      ^^^^^: typeof named   (TyModuleNamespace) (TSImportEqualsDeclaration)
+>      ^^^^^: typeof named   (ModuleNamespace) (Identifier)
 
 import named = require("./named.ts");
->      ^^^^^: typeof named   (TyModuleNamespace) (BindingIdentifier)
+>      ^^^^^: typeof named   (ModuleNamespace) (Identifier)
 
 import assigned = require("./assigned.ts");
->      ^^^^^^^^: { value: "assigned"; }   (TyObject) (TSImportEqualsDeclaration)
+>      ^^^^^^^^: { value: "assigned"; }   (Object) (Identifier)
 
 import assigned = require("./assigned.ts");
->      ^^^^^^^^: { value: "assigned"; }   (TyObject) (BindingIdentifier)
+>      ^^^^^^^^: { value: "assigned"; }   (Object) (Identifier)
 
 const local = LocalAlias.value;
->     ^^^^^: "local"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^: "local"   (StringLiteral) (Identifier)
 
 const local = LocalAlias.value;
->             ^^^^^^^^^^: typeof Local   (TyTypeQuery) (IdentifierReference)
+>             ^^^^^^^^^^: typeof Local   (TypeQuery) (Identifier)
 
 const local = LocalAlias.value;
->                        ^^^^^: "local"   (TyStringLiteral) (StaticMemberExpression)
+>                        ^^^^^: "local"   (StringLiteral) (Identifier)
 
 const value = ValueAlias;
->     ^^^^^: "local"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^: "local"   (StringLiteral) (Identifier)
 
 const value = ValueAlias;
->             ^^^^^^^^^^: "local"   (TyStringLiteral) (IdentifierReference)
+>             ^^^^^^^^^^: "local"   (StringLiteral) (Identifier)
 
 const answer = named.answer;
->     ^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^^: 42   (NumberLiteral) (Identifier)
 
 const answer = named.answer;
->              ^^^^^: typeof named   (TyModuleNamespace) (IdentifierReference)
+>              ^^^^^: typeof named   (ModuleNamespace) (Identifier)
 
 const answer = named.answer;
->                    ^^^^^^: 42   (TyNumberLiteral) (StaticMemberExpression)
+>                    ^^^^^^: 42   (NumberLiteral) (Identifier)
 
 const assignedValue = assigned.value;
->     ^^^^^^^^^^^^^: "assigned"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: "assigned"   (StringLiteral) (Identifier)
 
 const assignedValue = assigned.value;
->                     ^^^^^^^^: { value: "assigned"; }   (TyObject) (IdentifierReference)
+>                     ^^^^^^^^: { value: "assigned"; }   (Object) (Identifier)
 
 const assignedValue = assigned.value;
->                              ^^^^^: "assigned"   (TyStringLiteral) (StaticMemberExpression)
+>                              ^^^^^: "assigned"   (StringLiteral) (Identifier)

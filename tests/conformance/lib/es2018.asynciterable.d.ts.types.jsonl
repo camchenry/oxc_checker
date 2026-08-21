@@ -1,0 +1,83 @@
+{"path":"es2018.asynciterable.d.ts","start":89,"end":106,"text":"SymbolConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":89,"end":106,"text":"SymbolConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":271,"end":284,"text":"asyncIterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2018.asynciterable.d.ts","start":314,"end":327,"text":"AsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":314,"end":327,"text":"AsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":328,"end":329,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":331,"end":338,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":346,"end":351,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":478,"end":482,"text":"next","nodeType":"Identifier","type":{"name":"Object","display":"{ (...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>; (...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>; }"}}
+{"path":"es2018.asynciterable.d.ts","start":487,"end":492,"text":"value","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":501,"end":506,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":510,"end":517,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2018.asynciterable.d.ts","start":510,"end":517,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2018.asynciterable.d.ts","start":518,"end":532,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":518,"end":532,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":533,"end":534,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":536,"end":543,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":551,"end":557,"text":"return","nodeType":"Identifier","type":{"name":"Union","display":"{ (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; (value?: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; } | undefined"}}
+{"path":"es2018.asynciterable.d.ts","start":559,"end":564,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"TReturn | PromiseLike<TReturn> | undefined"}}
+{"path":"es2018.asynciterable.d.ts","start":567,"end":574,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":577,"end":588,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":577,"end":588,"text":"PromiseLike","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":589,"end":596,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":600,"end":607,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2018.asynciterable.d.ts","start":600,"end":607,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2018.asynciterable.d.ts","start":608,"end":622,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":608,"end":622,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":623,"end":624,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":626,"end":633,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":641,"end":646,"text":"throw","nodeType":"Identifier","type":{"name":"Union","display":"{ (e?: any): Promise<IteratorResult<T, TReturn>>; (e?: any): Promise<IteratorResult<T, TReturn>>; } | undefined"}}
+{"path":"es2018.asynciterable.d.ts","start":648,"end":649,"text":"e","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":658,"end":665,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2018.asynciterable.d.ts","start":658,"end":665,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
+{"path":"es2018.asynciterable.d.ts","start":666,"end":680,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":666,"end":680,"text":"IteratorResult","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":681,"end":682,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":684,"end":691,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":708,"end":721,"text":"AsyncIterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":708,"end":721,"text":"AsyncIterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":722,"end":723,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":725,"end":732,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":740,"end":745,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":760,"end":766,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2018.asynciterable.d.ts","start":767,"end":780,"text":"asyncIterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2018.asynciterable.d.ts","start":785,"end":798,"text":"AsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":785,"end":798,"text":"AsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":799,"end":800,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":802,"end":809,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":811,"end":816,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":919,"end":940,"text":"AsyncIterableIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":919,"end":940,"text":"AsyncIterableIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":941,"end":942,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":944,"end":951,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":959,"end":964,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":980,"end":993,"text":"AsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":980,"end":993,"text":"AsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":994,"end":995,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":997,"end":1004,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1006,"end":1011,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1020,"end":1026,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2018.asynciterable.d.ts","start":1027,"end":1040,"text":"asyncIterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2018.asynciterable.d.ts","start":1045,"end":1066,"text":"AsyncIterableIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1045,"end":1066,"text":"AsyncIterableIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1067,"end":1068,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1070,"end":1077,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1079,"end":1084,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1230,"end":1249,"text":"AsyncIteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1230,"end":1249,"text":"AsyncIteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1250,"end":1251,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1253,"end":1260,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1272,"end":1277,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1297,"end":1310,"text":"AsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1297,"end":1310,"text":"AsyncIterator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1311,"end":1312,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1314,"end":1321,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1323,"end":1328,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1337,"end":1343,"text":"Symbol","nodeType":"Identifier","type":{"name":"TypeReference","display":"SymbolConstructor"}}
+{"path":"es2018.asynciterable.d.ts","start":1344,"end":1357,"text":"asyncIterator","nodeType":"Identifier","type":{"name":"UniqueSymbol","display":"unique symbol"}}
+{"path":"es2018.asynciterable.d.ts","start":1362,"end":1381,"text":"AsyncIteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1362,"end":1381,"text":"AsyncIteratorObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1382,"end":1383,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1385,"end":1392,"text":"TReturn","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2018.asynciterable.d.ts","start":1394,"end":1399,"text":"TNext","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

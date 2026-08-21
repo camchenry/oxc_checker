@@ -1,0 +1,34 @@
+{"path":"compiler/namespaceValueSide.ts","start":10,"end":16,"text":"Values","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values"}}
+{"path":"compiler/namespaceValueSide.ts","start":10,"end":16,"text":"Values","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values"}}
+{"path":"compiler/namespaceValueSide.ts","start":34,"end":41,"text":"literal","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"value\""}}
+{"path":"compiler/namespaceValueSide.ts","start":70,"end":76,"text":"hidden","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
+{"path":"compiler/namespaceValueSide.ts","start":96,"end":104,"text":"TypeOnly","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/namespaceValueSide.ts","start":134,"end":138,"text":"make","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/namespaceValueSide.ts","start":162,"end":168,"text":"hidden","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
+{"path":"compiler/namespaceValueSide.ts","start":194,"end":200,"text":"Nested","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Nested"}}
+{"path":"compiler/namespaceValueSide.ts","start":194,"end":200,"text":"Nested","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Nested"}}
+{"path":"compiler/namespaceValueSide.ts","start":220,"end":224,"text":"flag","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/namespaceValueSide.ts","start":261,"end":265,"text":"Deep","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Deep"}}
+{"path":"compiler/namespaceValueSide.ts","start":261,"end":265,"text":"Deep","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Deep"}}
+{"path":"compiler/namespaceValueSide.ts","start":287,"end":292,"text":"count","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"2"}}
+{"path":"compiler/namespaceValueSide.ts","start":324,"end":330,"text":"Values","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values"}}
+{"path":"compiler/namespaceValueSide.ts","start":324,"end":330,"text":"Values","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values"}}
+{"path":"compiler/namespaceValueSide.ts","start":348,"end":354,"text":"merged","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"42"}}
+{"path":"compiler/namespaceValueSide.ts","start":374,"end":381,"text":"literal","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"value\""}}
+{"path":"compiler/namespaceValueSide.ts","start":384,"end":390,"text":"Values","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values"}}
+{"path":"compiler/namespaceValueSide.ts","start":391,"end":398,"text":"literal","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"value\""}}
+{"path":"compiler/namespaceValueSide.ts","start":406,"end":410,"text":"made","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/namespaceValueSide.ts","start":413,"end":419,"text":"Values","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values"}}
+{"path":"compiler/namespaceValueSide.ts","start":420,"end":424,"text":"make","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
+{"path":"compiler/namespaceValueSide.ts","start":434,"end":438,"text":"flag","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/namespaceValueSide.ts","start":441,"end":447,"text":"Values","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values"}}
+{"path":"compiler/namespaceValueSide.ts","start":448,"end":454,"text":"Nested","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values.Nested"}}
+{"path":"compiler/namespaceValueSide.ts","start":455,"end":459,"text":"flag","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/namespaceValueSide.ts","start":467,"end":472,"text":"count","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"2"}}
+{"path":"compiler/namespaceValueSide.ts","start":475,"end":481,"text":"Values","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values"}}
+{"path":"compiler/namespaceValueSide.ts","start":482,"end":488,"text":"Nested","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values.Nested"}}
+{"path":"compiler/namespaceValueSide.ts","start":489,"end":493,"text":"Deep","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values.Nested.Deep"}}
+{"path":"compiler/namespaceValueSide.ts","start":494,"end":499,"text":"count","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"2"}}
+{"path":"compiler/namespaceValueSide.ts","start":507,"end":513,"text":"merged","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"42"}}
+{"path":"compiler/namespaceValueSide.ts","start":516,"end":522,"text":"Values","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Values"}}
+{"path":"compiler/namespaceValueSide.ts","start":523,"end":529,"text":"merged","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"42"}}

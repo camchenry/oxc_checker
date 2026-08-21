@@ -1,20 +1,20 @@
 const numberResult = (0, 42);
->     ^^^^^^^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^: 42   (NumberLiteral) (Identifier)
 
 const stringResult = (0, "result");
->     ^^^^^^^^^^^^: "result"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^: "result"   (StringLiteral) (Identifier)
 
 const booleanResult = (false, true);
->     ^^^^^^^^^^^^^: true   (TyBooleanLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: true   (BooleanLiteral) (Identifier)
 
 const referenceResult = (numberResult, stringResult);
->     ^^^^^^^^^^^^^^^: "result"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: "result"   (StringLiteral) (Identifier)
 
 const referenceResult = (numberResult, stringResult);
->                        ^^^^^^^^^^^^: 42   (TyNumberLiteral) (IdentifierReference)
+>                        ^^^^^^^^^^^^: 42   (NumberLiteral) (Identifier)
 
 const referenceResult = (numberResult, stringResult);
->                                      ^^^^^^^^^^^^: "result"   (TyStringLiteral) (IdentifierReference)
+>                                      ^^^^^^^^^^^^: "result"   (StringLiteral) (Identifier)
 
 const nestedResult = (0, (1, "nested"));
->     ^^^^^^^^^^^^: "nested"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^: "nested"   (StringLiteral) (Identifier)

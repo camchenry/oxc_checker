@@ -1,0 +1,37 @@
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":5,"end":11,"text":"Status","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":5,"end":11,"text":"Status","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":16,"end":23,"text":"Unknown","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status.Unknown"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":27,"end":33,"text":"Closed","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status.Closed"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":41,"end":45,"text":"Open","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status.Open"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":64,"end":71,"text":"Status2","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status2"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":64,"end":71,"text":"Status2","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status2"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":76,"end":83,"text":"Unknown","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status2.Unknown"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":91,"end":97,"text":"Closed","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status2.Closed"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":105,"end":109,"text":"Open","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status2.Open"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":123,"end":130,"text":"Status3","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status3"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":123,"end":130,"text":"Status3","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status3"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":135,"end":142,"text":"Unknown","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status3.Unknown"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":146,"end":152,"text":"Closed","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status3.Closed"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":156,"end":160,"text":"Open","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status3.Open"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":170,"end":177,"text":"Status4","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status4"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":170,"end":177,"text":"Status4","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status4"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":182,"end":189,"text":"Unknown","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status4.Unknown"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":205,"end":211,"text":"Closed","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status4.Closed"}}
+{"path":"compiler/eslint_noMixedEnums.ts::a.ts","start":226,"end":230,"text":"Open","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status4.Open"}}
+{"path":"compiler/eslint_noMixedEnums.ts::b.ts","start":5,"end":11,"text":"Status","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status"}}
+{"path":"compiler/eslint_noMixedEnums.ts::b.ts","start":5,"end":11,"text":"Status","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status"}}
+{"path":"compiler/eslint_noMixedEnums.ts::b.ts","start":16,"end":22,"text":"Closed","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status.Closed"}}
+{"path":"compiler/eslint_noMixedEnums.ts::b.ts","start":37,"end":41,"text":"Open","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status.Open"}}
+{"path":"compiler/eslint_noMixedEnums.ts::b.ts","start":77,"end":83,"text":"Object","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
+{"path":"compiler/eslint_noMixedEnums.ts::b.ts","start":77,"end":99,"text":"Object.values(Status);","nodeType":"ExpressionStatement","type":{"name":"Array","display":"Status[]"}}
+{"path":"compiler/eslint_noMixedEnums.ts::b.ts","start":84,"end":90,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }"}}
+{"path":"compiler/eslint_noMixedEnums.ts::b.ts","start":91,"end":97,"text":"Status","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status"}}
+{"path":"compiler/eslint_noMixedEnums.ts::c.ts","start":5,"end":11,"text":"Status","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status"}}
+{"path":"compiler/eslint_noMixedEnums.ts::c.ts","start":5,"end":11,"text":"Status","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status"}}
+{"path":"compiler/eslint_noMixedEnums.ts::c.ts","start":16,"end":23,"text":"Unknown","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status.Unknown"}}
+{"path":"compiler/eslint_noMixedEnums.ts::c.ts","start":27,"end":33,"text":"Closed","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status.Closed"}}
+{"path":"compiler/eslint_noMixedEnums.ts::c.ts","start":41,"end":45,"text":"Open","nodeType":"Identifier","type":{"name":"TypeReference","display":"Status.Open"}}
+{"path":"compiler/eslint_noMixedEnums.ts::c.ts","start":98,"end":104,"text":"Object","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
+{"path":"compiler/eslint_noMixedEnums.ts::c.ts","start":98,"end":120,"text":"Object.values(Status);","nodeType":"ExpressionStatement","type":{"name":"Array","display":"(string | Status.Unknown | Status.Closed)[]"}}
+{"path":"compiler/eslint_noMixedEnums.ts::c.ts","start":105,"end":111,"text":"values","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }"}}
+{"path":"compiler/eslint_noMixedEnums.ts::c.ts","start":112,"end":118,"text":"Status","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Status"}}

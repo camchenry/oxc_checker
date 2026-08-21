@@ -1,0 +1,53 @@
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":75,"end":78,"text":"ab1","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ab\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":103,"end":106,"text":"ab2","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ab\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":125,"end":128,"text":"AB1","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"AB\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":152,"end":155,"text":"AB2","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"AB\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":176,"end":192,"text":"stringWithNumber","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"1 + 1 = 2\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":223,"end":240,"text":"stringWithBoolean","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"true is true\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":374,"end":378,"text":"text","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"a\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":392,"end":403,"text":"wrappedText","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"a\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":409,"end":413,"text":"text","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"a\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":422,"end":426,"text":"Text","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"A\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":439,"end":450,"text":"WrappedText","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"A\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":456,"end":460,"text":"Text","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":479,"end":501,"text":"intersectionWithString","nodeType":"Identifier","type":{"name":"Intersection","display":"string & { _brand: 'test-brand'; }"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":514,"end":520,"text":"_brand","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"test-brand\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":544,"end":563,"text":"wrappedIntersection","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":569,"end":591,"text":"intersectionWithString","nodeType":"Identifier","type":{"name":"Intersection","display":"string & { _brand: 'test-brand'; }"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":600,"end":622,"text":"IntersectionWithString","nodeType":"Identifier","type":{"name":"Intersection","display":"string & { _brand: 'test-brand'; }"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":636,"end":642,"text":"_brand","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"test-brand\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":665,"end":684,"text":"WrappedIntersection","nodeType":"Identifier","type":{"name":"TemplateLiteral","display":"`${IntersectionWithString}`"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts","start":690,"end":712,"text":"IntersectionWithString","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":75,"end":78,"text":"ab1","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ab\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":93,"end":96,"text":"ab2","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ab\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":110,"end":112,"text":"AB","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"AB\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":211,"end":214,"text":"ABC","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ABC"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":211,"end":214,"text":"ABC","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ABC"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":219,"end":220,"text":"A","nodeType":"Identifier","type":{"name":"TypeReference","display":"ABC.A"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":230,"end":231,"text":"B","nodeType":"Identifier","type":{"name":"TypeReference","display":"ABC.B"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":241,"end":242,"text":"C","nodeType":"Identifier","type":{"name":"TypeReference","display":"ABC.C"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":257,"end":265,"text":"ABCUnion","nodeType":"Identifier","type":{"name":"TemplateLiteral","display":"`${ABC}`"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":271,"end":274,"text":"ABC","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ABC"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":271,"end":274,"text":"ABC","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ABC"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":283,"end":284,"text":"A","nodeType":"Identifier","type":{"name":"TemplateLiteral","display":"`${ABC.A}`"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":290,"end":293,"text":"ABC","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof ABC"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":294,"end":295,"text":"A","nodeType":"Identifier","type":{"name":"TypeReference","display":"ABC.A"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":350,"end":358,"text":"TextUtil","nodeType":"Identifier","type":{"name":"TemplateLiteral","display":"`${T}`"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":359,"end":360,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":382,"end":383,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":394,"end":410,"text":"stringWithNumber","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"1 + 1 = 2\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":433,"end":450,"text":"stringWithBoolean","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"true is true\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":576,"end":580,"text":"text","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"a\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":594,"end":605,"text":"wrappedText","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"a\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":608,"end":612,"text":"text","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"a\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":619,"end":623,"text":"Text","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"A\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":636,"end":647,"text":"WrappedText","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"A\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":650,"end":654,"text":"Text","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":671,"end":693,"text":"intersectionWithString","nodeType":"Identifier","type":{"name":"Intersection","display":"string & { _brand: 'test-brand'; }"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":706,"end":712,"text":"_brand","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"test-brand\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":736,"end":755,"text":"wrappedIntersection","nodeType":"Identifier","type":{"name":"Intersection","display":"string & { _brand: 'test-brand'; }"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":758,"end":780,"text":"intersectionWithString","nodeType":"Identifier","type":{"name":"Intersection","display":"string & { _brand: 'test-brand'; }"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":787,"end":809,"text":"IntersectionWithString","nodeType":"Identifier","type":{"name":"Intersection","display":"string & { _brand: 'test-brand'; }"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":823,"end":829,"text":"_brand","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"test-brand\""}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":852,"end":871,"text":"WrappedIntersection","nodeType":"Identifier","type":{"name":"Intersection","display":"string & { _brand: 'test-brand'; }"}}
+{"path":"compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts","start":874,"end":896,"text":"IntersectionWithString","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

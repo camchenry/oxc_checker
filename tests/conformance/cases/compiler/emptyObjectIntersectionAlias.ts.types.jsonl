@@ -1,0 +1,11 @@
+{"path":"compiler/emptyObjectIntersectionAlias.ts","start":6,"end":19,"text":"DefinedString","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/emptyObjectIntersectionAlias.ts","start":67,"end":76,"text":"Container","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/emptyObjectIntersectionAlias.ts","start":67,"end":76,"text":"Container","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/emptyObjectIntersectionAlias.ts","start":81,"end":86,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/emptyObjectIntersectionAlias.ts","start":88,"end":101,"text":"DefinedString","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/emptyObjectIntersectionAlias.ts","start":120,"end":129,"text":"container","nodeType":"Identifier","type":{"name":"TypeReference","display":"Container"}}
+{"path":"compiler/emptyObjectIntersectionAlias.ts","start":131,"end":140,"text":"Container","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/emptyObjectIntersectionAlias.ts","start":131,"end":140,"text":"Container","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/emptyObjectIntersectionAlias.ts","start":148,"end":154,"text":"_value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/emptyObjectIntersectionAlias.ts","start":157,"end":166,"text":"container","nodeType":"Identifier","type":{"name":"TypeReference","display":"Container"}}
+{"path":"compiler/emptyObjectIntersectionAlias.ts","start":167,"end":172,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}

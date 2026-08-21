@@ -1,0 +1,14 @@
+{"path":"compiler/tsIndexSignatures.ts","start":6,"end":7,"text":"A","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof A"}}
+{"path":"compiler/tsIndexSignatures.ts","start":13,"end":16,"text":"key","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/tsIndexSignatures.ts","start":48,"end":49,"text":"B","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/tsIndexSignatures.ts","start":48,"end":49,"text":"B","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/tsIndexSignatures.ts","start":55,"end":58,"text":"key","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/tsIndexSignatures.ts","start":85,"end":86,"text":"C","nodeType":"Identifier","type":{"name":"Object","display":"{ [key: string]: string; }"}}
+{"path":"compiler/tsIndexSignatures.ts","start":94,"end":97,"text":"key","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/tsIndexSignatures.ts","start":125,"end":130,"text":"Multi","nodeType":"Identifier","type":{"name":"Object","display":"{}"}}
+{"path":"compiler/tsIndexSignatures.ts","start":138,"end":141,"text":"key","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/tsIndexSignatures.ts","start":151,"end":155,"text":"key2","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/tsIndexSignatures.ts","start":182,"end":188,"text":"Multi2","nodeType":"Identifier","type":{"name":"Object","display":"{ [key: string]: string; [key2: number]: string; [key3: symbol]: string; }"}}
+{"path":"compiler/tsIndexSignatures.ts","start":196,"end":199,"text":"key","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/tsIndexSignatures.ts","start":221,"end":225,"text":"key2","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/tsIndexSignatures.ts","start":247,"end":251,"text":"key3","nodeType":"Identifier","type":{"name":"Symbol","display":"symbol"}}

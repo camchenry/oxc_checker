@@ -1,0 +1,17 @@
+{"path":"compiler/metaProperty.ts","start":14,"end":24,"text":"moduleMeta","nodeType":"Identifier","type":{"name":"TypeReference","display":"ImportMeta"}}
+{"path":"compiler/metaProperty.ts","start":34,"end":38,"text":"meta","nodeType":"Identifier","type":{"name":"TypeReference","display":"ImportMeta"}}
+{"path":"compiler/metaProperty.ts","start":53,"end":66,"text":"moduleMetaUrl","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/metaProperty.ts","start":76,"end":80,"text":"meta","nodeType":"Identifier","type":{"name":"TypeReference","display":"ImportMeta"}}
+{"path":"compiler/metaProperty.ts","start":81,"end":84,"text":"url","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/metaProperty.ts","start":93,"end":97,"text":"Base","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Base"}}
+{"path":"compiler/metaProperty.ts","start":128,"end":138,"text":"baseTarget","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Base"}}
+{"path":"compiler/metaProperty.ts","start":145,"end":151,"text":"target","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Base"}}
+{"path":"compiler/metaProperty.ts","start":163,"end":178,"text":"baseArrowTarget","nodeType":"Identifier","type":{"name":"Function","display":"() => typeof Base"}}
+{"path":"compiler/metaProperty.ts","start":191,"end":197,"text":"target","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Base"}}
+{"path":"compiler/metaProperty.ts","start":206,"end":212,"text":"method","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/metaProperty.ts","start":227,"end":239,"text":"methodTarget","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/metaProperty.ts","start":271,"end":285,"text":"functionTarget","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/metaProperty.ts","start":298,"end":304,"text":"target","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/metaProperty.ts","start":311,"end":317,"text":"target","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/metaProperty.ts","start":327,"end":338,"text":"arrowTarget","nodeType":"Identifier","type":{"name":"Function","display":"() => () => void"}}
+{"path":"compiler/metaProperty.ts","start":351,"end":357,"text":"target","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}

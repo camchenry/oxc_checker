@@ -1,0 +1,4 @@
+{"path":"es2024.string.d.ts","start":10,"end":16,"text":"String","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.string.d.ts","start":10,"end":16,"text":"String","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2024.string.d.ts","start":137,"end":149,"text":"isWellFormed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): boolean; (): boolean; }"}}
+{"path":"es2024.string.d.ts","start":315,"end":327,"text":"toWellFormed","nodeType":"Identifier","type":{"name":"Object","display":"{ (): string; (): string; }"}}

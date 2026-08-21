@@ -1,398 +1,398 @@
 declare namespace Reflect {
->                 ^^^^^^^: typeof Reflect   (TyTypeQuery) (TSModuleDeclaration)
+>                 ^^^^^^^: typeof Reflect   (TypeQuery) (Identifier)
 
 declare namespace Reflect {
->                 ^^^^^^^: typeof Reflect   (TyTypeQuery) (BindingIdentifier)
+>                 ^^^^^^^: typeof Reflect   (TypeQuery) (Identifier)
 
     function apply<T, A extends readonly any[], R>(
->            ^^^^^: { <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; }   (TyObject) (BindingIdentifier)
+>            ^^^^^: { <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; }   (Object) (Identifier)
 
     function apply<T, A extends readonly any[], R>(
->                  ^: any   (TyAny) (TSTypeParameter)
+>                  ^: any   (Any) (Identifier)
 
     function apply<T, A extends readonly any[], R>(
->                     ^: any   (TyAny) (TSTypeParameter)
+>                     ^: any   (Any) (Identifier)
 
     function apply<T, A extends readonly any[], R>(
->                                               ^: any   (TyAny) (TSTypeParameter)
+>                                               ^: any   (Any) (Identifier)
 
         target: (this: T, ...args: A) => R,
->       ^^^^^^: (this: T, ...args: A) => R   (TyFunction) (BindingIdentifier)
+>       ^^^^^^: (this: T, ...args: A) => R   (Function) (Identifier)
 
         target: (this: T, ...args: A) => R,
->                ^^^^: T   (TyTypeReference) (TSThisParameter)
+>                ^^^^: T   (TypeReference) (Identifier)
 
         target: (this: T, ...args: A) => R,
->                      ^: any   (TyAny) (TSTypeReference)
+>                      ^: any   (Any) (Identifier)
 
         target: (this: T, ...args: A) => R,
->                            ^^^^: A   (TyTypeReference) (BindingIdentifier)
+>                            ^^^^: A   (TypeReference) (Identifier)
 
         target: (this: T, ...args: A) => R,
->                                  ^: any   (TyAny) (TSTypeReference)
+>                                  ^: any   (Any) (Identifier)
 
         target: (this: T, ...args: A) => R,
->                                        ^: any   (TyAny) (TSTypeReference)
+>                                        ^: any   (Any) (Identifier)
 
         thisArgument: T,
->       ^^^^^^^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^^^^^^^: T   (TypeReference) (Identifier)
 
         thisArgument: T,
->                     ^: any   (TyAny) (TSTypeReference)
+>                     ^: any   (Any) (Identifier)
 
         argumentsList: Readonly<A>,
->       ^^^^^^^^^^^^^: Readonly<A>   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^^^^^^^^: Readonly<A>   (TypeReference) (Identifier)
 
         argumentsList: Readonly<A>,
->                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
         argumentsList: Readonly<A>,
->                      ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                      ^^^^^^^^: any   (Error) (Identifier)
 
         argumentsList: Readonly<A>,
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
     ): R;
->      ^: any   (TyAny) (TSTypeReference)
+>      ^: any   (Any) (Identifier)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
->            ^^^^^: { <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; }   (TyObject) (BindingIdentifier)
+>            ^^^^^: { <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; }   (Object) (Identifier)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
->                  ^^^^^^: Function   (TyTypeReference) (BindingIdentifier)
+>                  ^^^^^^: Function   (TypeReference) (Identifier)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
->                          ^^^^^^^^: FunctionConstructor   (TyTypeReference) (TSTypeReference)
+>                          ^^^^^^^^: FunctionConstructor   (TypeReference) (Identifier)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
->                          ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
+>                          ^^^^^^^^: FunctionConstructor   (TypeReference) (Identifier)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
->                                    ^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
->                                                       ^^^^^^^^^^^^^: ArrayLike<any>   (TyTypeReference) (BindingIdentifier)
+>                                                       ^^^^^^^^^^^^^: ArrayLike<any>   (TypeReference) (Identifier)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
->                                                                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                      ^^^^^^^^^: any   (Any) (Identifier)
 
     function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
->                                                                      ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                      ^^^^^^^^^: any   (Error) (Identifier)
 
     function construct<A extends readonly any[], R>(
->            ^^^^^^^^^: { <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^: { <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }   (Object) (Identifier)
 
     function construct<A extends readonly any[], R>(
->                      ^: any   (TyAny) (TSTypeParameter)
+>                      ^: any   (Any) (Identifier)
 
     function construct<A extends readonly any[], R>(
->                                                ^: any   (TyAny) (TSTypeParameter)
+>                                                ^: any   (Any) (Identifier)
 
         target: new (...args: A) => R,
->       ^^^^^^: new (...args: A) => R   (TyObject) (BindingIdentifier)
+>       ^^^^^^: new (...args: A) => R   (Object) (Identifier)
 
         target: new (...args: A) => R,
->                       ^^^^: A   (TyTypeReference) (BindingIdentifier)
+>                       ^^^^: A   (TypeReference) (Identifier)
 
         target: new (...args: A) => R,
->                             ^: any   (TyAny) (TSTypeReference)
+>                             ^: any   (Any) (Identifier)
 
         target: new (...args: A) => R,
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
         argumentsList: Readonly<A>,
->       ^^^^^^^^^^^^^: Readonly<A>   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^^^^^^^^: Readonly<A>   (TypeReference) (Identifier)
 
         argumentsList: Readonly<A>,
->                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^: any   (Any) (Identifier)
 
         argumentsList: Readonly<A>,
->                      ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                      ^^^^^^^^: any   (Error) (Identifier)
 
         argumentsList: Readonly<A>,
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
         newTarget?: new (...args: any) => any,
->       ^^^^^^^^^: (new (...args: any) => any) | undefined   (TyUnion) (BindingIdentifier)
+>       ^^^^^^^^^: (new (...args: any) => any) | undefined   (Union) (Identifier)
 
         newTarget?: new (...args: any) => any,
->                           ^^^^: any   (TyAny) (BindingIdentifier)
+>                           ^^^^: any   (Any) (Identifier)
 
     ): R;
->      ^: any   (TyAny) (TSTypeReference)
+>      ^: any   (Any) (Identifier)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->            ^^^^^^^^^: { <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^: { <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; <A extends readonly any[], R>(target: new (...args: A) => R, argumentsList: Readonly<A>, newTarget?: new (...args: any) => any): R; (target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any; }   (Object) (Identifier)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                      ^^^^^^: Function   (TyTypeReference) (BindingIdentifier)
+>                      ^^^^^^: Function   (TypeReference) (Identifier)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                              ^^^^^^^^: FunctionConstructor   (TyTypeReference) (TSTypeReference)
+>                              ^^^^^^^^: FunctionConstructor   (TypeReference) (Identifier)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                              ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
+>                              ^^^^^^^^: FunctionConstructor   (TypeReference) (Identifier)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                                        ^^^^^^^^^^^^^: ArrayLike<any>   (TyTypeReference) (BindingIdentifier)
+>                                        ^^^^^^^^^^^^^: ArrayLike<any>   (TypeReference) (Identifier)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                                                       ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                       ^^^^^^^^^: any   (Any) (Identifier)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                                                       ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                       ^^^^^^^^^: any   (Error) (Identifier)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                                                                       ^^^^^^^^^: Function | undefined   (TyUnion) (BindingIdentifier)
+>                                                                       ^^^^^^^^^: Function | undefined   (Union) (Identifier)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                                                                                   ^^^^^^^^: FunctionConstructor   (TyTypeReference) (TSTypeReference)
+>                                                                                   ^^^^^^^^: FunctionConstructor   (TypeReference) (Identifier)
 
     function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
->                                                                                   ^^^^^^^^: FunctionConstructor   (TyTypeReference) (IdentifierReference)
+>                                                                                   ^^^^^^^^: FunctionConstructor   (TypeReference) (Identifier)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->            ^^^^^^^^^^^^^^: { (target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean; (target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^: { (target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean; (target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean; }   (Object) (Identifier)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                           ^^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
+>                           ^^^^^^: object   (PrimitiveObject) (Identifier)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                                           ^^^^^^^^^^^: PropertyKey   (TyTypeReference) (BindingIdentifier)
+>                                           ^^^^^^^^^^^: PropertyKey   (TypeReference) (Identifier)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                                                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                        ^^^^^^^^^^^: any   (Any) (Identifier)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                                                        ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                        ^^^^^^^^^^^: any   (Error) (Identifier)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                                                                     ^^^^^^^^^^: PropertyDescriptor & ThisType<any>   (TyIntersection) (BindingIdentifier)
+>                                                                     ^^^^^^^^^^: PropertyDescriptor & ThisType<any>   (Intersection) (Identifier)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                                                                                 ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                 ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                                                                                 ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                 ^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                                                                                                      ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                      ^^^^^^^^: any   (Any) (Identifier)
 
     function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
->                                                                                                      ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                                      ^^^^^^^^: any   (Error) (Identifier)
 
     function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
->            ^^^^^^^^^^^^^^: { (target: object, propertyKey: PropertyKey): boolean; (target: object, propertyKey: PropertyKey): boolean; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^: { (target: object, propertyKey: PropertyKey): boolean; (target: object, propertyKey: PropertyKey): boolean; }   (Object) (Identifier)
 
     function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
->                           ^^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
+>                           ^^^^^^: object   (PrimitiveObject) (Identifier)
 
     function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
->                                           ^^^^^^^^^^^: PropertyKey   (TyTypeReference) (BindingIdentifier)
+>                                           ^^^^^^^^^^^: PropertyKey   (TypeReference) (Identifier)
 
     function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
->                                                        ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                        ^^^^^^^^^^^: any   (Any) (Identifier)
 
     function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
->                                                        ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                        ^^^^^^^^^^^: any   (Error) (Identifier)
 
     function get<T extends object, P extends PropertyKey>(
->            ^^^: { <T extends object, P extends PropertyKey>(target: T, propertyKey: P, receiver?: unknown): P extends keyof T ? T[P] : any; <T extends object, P extends PropertyKey>(target: T, propertyKey: P, receiver?: unknown): P extends keyof T ? T[P] : any; }   (TyObject) (BindingIdentifier)
+>            ^^^: { <T extends object, P extends PropertyKey>(target: T, propertyKey: P, receiver?: unknown): P extends keyof T ? T[P] : any; <T extends object, P extends PropertyKey>(target: T, propertyKey: P, receiver?: unknown): P extends keyof T ? T[P] : any; }   (Object) (Identifier)
 
     function get<T extends object, P extends PropertyKey>(
->                ^: any   (TyAny) (TSTypeParameter)
+>                ^: any   (Any) (Identifier)
 
     function get<T extends object, P extends PropertyKey>(
->                                  ^: any   (TyAny) (TSTypeParameter)
+>                                  ^: any   (Any) (Identifier)
 
     function get<T extends object, P extends PropertyKey>(
->                                            ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                            ^^^^^^^^^^^: any   (Any) (Identifier)
 
     function get<T extends object, P extends PropertyKey>(
->                                            ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                            ^^^^^^^^^^^: any   (Error) (Identifier)
 
         target: T,
->       ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^: T   (TypeReference) (Identifier)
 
         target: T,
->               ^: any   (TyAny) (TSTypeReference)
+>               ^: any   (Any) (Identifier)
 
         propertyKey: P,
->       ^^^^^^^^^^^: P   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^^^^^^: P   (TypeReference) (Identifier)
 
         propertyKey: P,
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
         receiver?: unknown,
->       ^^^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>       ^^^^^^^^: unknown   (Unknown) (Identifier)
 
     ): P extends keyof T ? T[P] : any;
->      ^: any   (TyAny) (TSTypeReference)
+>      ^: any   (Any) (Identifier)
 
     ): P extends keyof T ? T[P] : any;
->                      ^: any   (TyAny) (TSTypeReference)
+>                      ^: any   (Any) (Identifier)
 
     ): P extends keyof T ? T[P] : any;
->                          ^: any   (TyAny) (TSTypeReference)
+>                          ^: any   (Any) (Identifier)
 
     ): P extends keyof T ? T[P] : any;
->                            ^: any   (TyAny) (TSTypeReference)
+>                            ^: any   (Any) (Identifier)
 
     function getOwnPropertyDescriptor<T extends object, P extends PropertyKey>(
->            ^^^^^^^^^^^^^^^^^^^^^^^^: { <T extends object, P extends PropertyKey>(target: T, propertyKey: P): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined; <T extends object, P extends PropertyKey>(target: T, propertyKey: P): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^^^^^^^^^^^: { <T extends object, P extends PropertyKey>(target: T, propertyKey: P): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined; <T extends object, P extends PropertyKey>(target: T, propertyKey: P): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined; }   (Object) (Identifier)
 
     function getOwnPropertyDescriptor<T extends object, P extends PropertyKey>(
->                                     ^: any   (TyAny) (TSTypeParameter)
+>                                     ^: any   (Any) (Identifier)
 
     function getOwnPropertyDescriptor<T extends object, P extends PropertyKey>(
->                                                       ^: any   (TyAny) (TSTypeParameter)
+>                                                       ^: any   (Any) (Identifier)
 
     function getOwnPropertyDescriptor<T extends object, P extends PropertyKey>(
->                                                                 ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                 ^^^^^^^^^^^: any   (Any) (Identifier)
 
     function getOwnPropertyDescriptor<T extends object, P extends PropertyKey>(
->                                                                 ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                 ^^^^^^^^^^^: any   (Error) (Identifier)
 
         target: T,
->       ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^: T   (TypeReference) (Identifier)
 
         target: T,
->               ^: any   (TyAny) (TSTypeReference)
+>               ^: any   (Any) (Identifier)
 
         propertyKey: P,
->       ^^^^^^^^^^^: P   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^^^^^^: P   (TypeReference) (Identifier)
 
         propertyKey: P,
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
     ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
->      ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>      ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
->      ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>      ^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
->                              ^: any   (TyAny) (TSTypeReference)
+>                              ^: any   (Any) (Identifier)
 
     ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
     ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
->                                                  ^: any   (TyAny) (TSTypeReference)
+>                                                  ^: any   (Any) (Identifier)
 
     ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
->                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                    ^: any   (Any) (Identifier)
 
     function getPrototypeOf(target: object): object | null;
->            ^^^^^^^^^^^^^^: { (target: object): object | null; (target: object): object | null; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^: { (target: object): object | null; (target: object): object | null; }   (Object) (Identifier)
 
     function getPrototypeOf(target: object): object | null;
->                           ^^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
+>                           ^^^^^^: object   (PrimitiveObject) (Identifier)
 
     function has(target: object, propertyKey: PropertyKey): boolean;
->            ^^^: { (target: object, propertyKey: PropertyKey): boolean; (target: object, propertyKey: PropertyKey): boolean; }   (TyObject) (BindingIdentifier)
+>            ^^^: { (target: object, propertyKey: PropertyKey): boolean; (target: object, propertyKey: PropertyKey): boolean; }   (Object) (Identifier)
 
     function has(target: object, propertyKey: PropertyKey): boolean;
->                ^^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
+>                ^^^^^^: object   (PrimitiveObject) (Identifier)
 
     function has(target: object, propertyKey: PropertyKey): boolean;
->                                ^^^^^^^^^^^: PropertyKey   (TyTypeReference) (BindingIdentifier)
+>                                ^^^^^^^^^^^: PropertyKey   (TypeReference) (Identifier)
 
     function has(target: object, propertyKey: PropertyKey): boolean;
->                                             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                             ^^^^^^^^^^^: any   (Any) (Identifier)
 
     function has(target: object, propertyKey: PropertyKey): boolean;
->                                             ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                             ^^^^^^^^^^^: any   (Error) (Identifier)
 
     function isExtensible(target: object): boolean;
->            ^^^^^^^^^^^^: { (target: object): boolean; (target: object): boolean; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^^^^: { (target: object): boolean; (target: object): boolean; }   (Object) (Identifier)
 
     function isExtensible(target: object): boolean;
->                         ^^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
+>                         ^^^^^^: object   (PrimitiveObject) (Identifier)
 
     function ownKeys(target: object): (string | symbol)[];
->            ^^^^^^^: { (target: object): (string | symbol)[]; (target: object): (string | symbol)[]; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^: { (target: object): (string | symbol)[]; (target: object): (string | symbol)[]; }   (Object) (Identifier)
 
     function ownKeys(target: object): (string | symbol)[];
->                    ^^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
+>                    ^^^^^^: object   (PrimitiveObject) (Identifier)
 
     function preventExtensions(target: object): boolean;
->            ^^^^^^^^^^^^^^^^^: { (target: object): boolean; (target: object): boolean; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^^^^: { (target: object): boolean; (target: object): boolean; }   (Object) (Identifier)
 
     function preventExtensions(target: object): boolean;
->                              ^^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
+>                              ^^^^^^: object   (PrimitiveObject) (Identifier)
 
     function set<T extends object, P extends PropertyKey>(
->            ^^^: { <T extends object, P extends PropertyKey>(target: T, propertyKey: P, value: P extends keyof T ? T[P] : any, receiver?: any): boolean; (target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean; <T extends object, P extends PropertyKey>(target: T, propertyKey: P, value: P extends keyof T ? T[P] : any, receiver?: any): boolean; (target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean; }   (TyObject) (BindingIdentifier)
+>            ^^^: { <T extends object, P extends PropertyKey>(target: T, propertyKey: P, value: P extends keyof T ? T[P] : any, receiver?: any): boolean; (target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean; <T extends object, P extends PropertyKey>(target: T, propertyKey: P, value: P extends keyof T ? T[P] : any, receiver?: any): boolean; (target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean; }   (Object) (Identifier)
 
     function set<T extends object, P extends PropertyKey>(
->                ^: any   (TyAny) (TSTypeParameter)
+>                ^: any   (Any) (Identifier)
 
     function set<T extends object, P extends PropertyKey>(
->                                  ^: any   (TyAny) (TSTypeParameter)
+>                                  ^: any   (Any) (Identifier)
 
     function set<T extends object, P extends PropertyKey>(
->                                            ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                            ^^^^^^^^^^^: any   (Any) (Identifier)
 
     function set<T extends object, P extends PropertyKey>(
->                                            ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                            ^^^^^^^^^^^: any   (Error) (Identifier)
 
         target: T,
->       ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^: T   (TypeReference) (Identifier)
 
         target: T,
->               ^: any   (TyAny) (TSTypeReference)
+>               ^: any   (Any) (Identifier)
 
         propertyKey: P,
->       ^^^^^^^^^^^: P   (TyTypeReference) (BindingIdentifier)
+>       ^^^^^^^^^^^: P   (TypeReference) (Identifier)
 
         propertyKey: P,
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
         value: P extends keyof T ? T[P] : any,
->       ^^^^^: P extends keyof T ? T[P] : any   (TyConditional) (BindingIdentifier)
+>       ^^^^^: P extends keyof T ? T[P] : any   (Conditional) (Identifier)
 
         value: P extends keyof T ? T[P] : any,
->              ^: any   (TyAny) (TSTypeReference)
+>              ^: any   (Any) (Identifier)
 
         value: P extends keyof T ? T[P] : any,
->                              ^: any   (TyAny) (TSTypeReference)
+>                              ^: any   (Any) (Identifier)
 
         value: P extends keyof T ? T[P] : any,
->                                  ^: any   (TyAny) (TSTypeReference)
+>                                  ^: any   (Any) (Identifier)
 
         value: P extends keyof T ? T[P] : any,
->                                    ^: any   (TyAny) (TSTypeReference)
+>                                    ^: any   (Any) (Identifier)
 
         receiver?: any,
->       ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>       ^^^^^^^^: any   (Any) (Identifier)
 
     function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
->            ^^^: { <T extends object, P extends PropertyKey>(target: T, propertyKey: P, value: P extends keyof T ? T[P] : any, receiver?: any): boolean; (target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean; <T extends object, P extends PropertyKey>(target: T, propertyKey: P, value: P extends keyof T ? T[P] : any, receiver?: any): boolean; (target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean; }   (TyObject) (BindingIdentifier)
+>            ^^^: { <T extends object, P extends PropertyKey>(target: T, propertyKey: P, value: P extends keyof T ? T[P] : any, receiver?: any): boolean; (target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean; <T extends object, P extends PropertyKey>(target: T, propertyKey: P, value: P extends keyof T ? T[P] : any, receiver?: any): boolean; (target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean; }   (Object) (Identifier)
 
     function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
->                ^^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
+>                ^^^^^^: object   (PrimitiveObject) (Identifier)
 
     function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
->                                ^^^^^^^^^^^: PropertyKey   (TyTypeReference) (BindingIdentifier)
+>                                ^^^^^^^^^^^: PropertyKey   (TypeReference) (Identifier)
 
     function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
->                                             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                             ^^^^^^^^^^^: any   (Any) (Identifier)
 
     function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
->                                             ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                             ^^^^^^^^^^^: any   (Error) (Identifier)
 
     function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
->                                                          ^^^^^: any   (TyAny) (BindingIdentifier)
+>                                                          ^^^^^: any   (Any) (Identifier)
 
     function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
->                                                                      ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                                                                      ^^^^^^^^: any   (Any) (Identifier)
 
     function setPrototypeOf(target: object, proto: object | null): boolean;
->            ^^^^^^^^^^^^^^: { (target: object, proto: object | null): boolean; (target: object, proto: object | null): boolean; }   (TyObject) (BindingIdentifier)
+>            ^^^^^^^^^^^^^^: { (target: object, proto: object | null): boolean; (target: object, proto: object | null): boolean; }   (Object) (Identifier)
 
     function setPrototypeOf(target: object, proto: object | null): boolean;
->                           ^^^^^^: object   (TyPrimitiveObject) (BindingIdentifier)
+>                           ^^^^^^: object   (PrimitiveObject) (Identifier)
 
     function setPrototypeOf(target: object, proto: object | null): boolean;
->                                           ^^^^^: object | null   (TyUnion) (BindingIdentifier)
+>                                           ^^^^^: object | null   (Union) (Identifier)

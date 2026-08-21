@@ -1,38 +1,38 @@
 type Lazy<T, R> = () => R;
->    ^^^^: () => R   (TyFunction) (TSTypeAliasDeclaration)
+>    ^^^^: () => R   (Function) (Identifier)
 
 type Lazy<T, R> = () => R;
->         ^: any   (TyAny) (TSTypeParameter)
+>         ^: any   (Any) (Identifier)
 
 type Lazy<T, R> = () => R;
->            ^: any   (TyAny) (TSTypeParameter)
+>            ^: any   (Any) (Identifier)
 
 type Lazy<T, R> = () => R;
->                       ^: any   (TyAny) (TSTypeReference)
+>                       ^: any   (Any) (Identifier)
 
 type Pred<T> = Lazy<T, boolean>;
->    ^^^^: () => boolean   (TyFunction) (TSTypeAliasDeclaration)
+>    ^^^^: () => boolean   (Function) (Identifier)
 
 type Pred<T> = Lazy<T, boolean>;
->         ^: any   (TyAny) (TSTypeParameter)
+>         ^: any   (Any) (Identifier)
 
 type Pred<T> = Lazy<T, boolean>;
->              ^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^: any   (Any) (Identifier)
 
 type Pred<T> = Lazy<T, boolean>;
->                   ^: any   (TyAny) (TSTypeReference)
+>                   ^: any   (Any) (Identifier)
 
 declare function filter<T>(predicate: Pred<T>): void;
->                ^^^^^^: <T>(predicate: Pred<T>) => void   (TyFunction) (BindingIdentifier)
+>                ^^^^^^: <T>(predicate: Pred<T>) => void   (Function) (Identifier)
 
 declare function filter<T>(predicate: Pred<T>): void;
->                       ^: any   (TyAny) (TSTypeParameter)
+>                       ^: any   (Any) (Identifier)
 
 declare function filter<T>(predicate: Pred<T>): void;
->                          ^^^^^^^^^: Pred<T>   (TyTypeReference) (BindingIdentifier)
+>                          ^^^^^^^^^: Pred<T>   (TypeReference) (Identifier)
 
 declare function filter<T>(predicate: Pred<T>): void;
->                                     ^^^^: any   (TyAny) (TSTypeReference)
+>                                     ^^^^: any   (Any) (Identifier)
 
 declare function filter<T>(predicate: Pred<T>): void;
->                                          ^: any   (TyAny) (TSTypeReference)
+>                                          ^: any   (Any) (Identifier)

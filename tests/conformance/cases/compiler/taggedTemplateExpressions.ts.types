@@ -1,68 +1,68 @@
 declare function stringTag(template: any, ...values: any[]): string;
->                ^^^^^^^^^: (template: any, ...values: any[]) => string   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^: (template: any, ...values: any[]) => string   (Function) (Identifier)
 
 declare function stringTag(template: any, ...values: any[]): string;
->                          ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                          ^^^^^^^^: any   (Any) (Identifier)
 
 declare function stringTag(template: any, ...values: any[]): string;
->                                            ^^^^^^: any[]   (TyArray) (BindingIdentifier)
+>                                            ^^^^^^: any[]   (Array) (Identifier)
 
 declare function literalTag(template: any, ...values: any[]): "literal";
->                ^^^^^^^^^^: (template: any, ...values: any[]) => "literal"   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^: (template: any, ...values: any[]) => "literal"   (Function) (Identifier)
 
 declare function literalTag(template: any, ...values: any[]): "literal";
->                           ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                           ^^^^^^^^: any   (Any) (Identifier)
 
 declare function literalTag(template: any, ...values: any[]): "literal";
->                                             ^^^^^^: any[]   (TyArray) (BindingIdentifier)
+>                                             ^^^^^^: any[]   (Array) (Identifier)
 
 declare function genericTag<T>(template: any, value: T): T;
->                ^^^^^^^^^^: <T>(template: any, value: T) => T   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^: <T>(template: any, value: T) => T   (Function) (Identifier)
 
 declare function genericTag<T>(template: any, value: T): T;
->                           ^: any   (TyAny) (TSTypeParameter)
+>                           ^: any   (Any) (Identifier)
 
 declare function genericTag<T>(template: any, value: T): T;
->                              ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                              ^^^^^^^^: any   (Any) (Identifier)
 
 declare function genericTag<T>(template: any, value: T): T;
->                                             ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                             ^^^^^: T   (TypeReference) (Identifier)
 
 declare function genericTag<T>(template: any, value: T): T;
->                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                    ^: any   (Any) (Identifier)
 
 declare function genericTag<T>(template: any, value: T): T;
->                                                        ^: any   (TyAny) (TSTypeReference)
+>                                                        ^: any   (Any) (Identifier)
 
 declare function curriedTag(template: any): (value: string) => number;
->                ^^^^^^^^^^: (template: any) => (value: string) => number   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^^^: (template: any) => (value: string) => number   (Function) (Identifier)
 
 declare function curriedTag(template: any): (value: string) => number;
->                           ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                           ^^^^^^^^: any   (Any) (Identifier)
 
 declare function curriedTag(template: any): (value: string) => number;
->                                            ^^^^^: string   (TyString) (BindingIdentifier)
+>                                            ^^^^^: string   (String) (Identifier)
 
 const stringResult = stringTag`hello`;
->     ^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^: string   (String) (Identifier)
 
 const stringResult = stringTag`hello`;
->                    ^^^^^^^^^: (template: any, ...values: any[]) => string   (TyFunction) (IdentifierReference)
+>                    ^^^^^^^^^: (template: any, ...values: any[]) => string   (Function) (Identifier)
 
 const literalResult = literalTag`literal`;
->     ^^^^^^^^^^^^^: "literal"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: "literal"   (StringLiteral) (Identifier)
 
 const literalResult = literalTag`literal`;
->                     ^^^^^^^^^^: (template: any, ...values: any[]) => "literal"   (TyFunction) (IdentifierReference)
+>                     ^^^^^^^^^^: (template: any, ...values: any[]) => "literal"   (Function) (Identifier)
 
 const genericResult = genericTag`value: ${42}`;
->     ^^^^^^^^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: 42   (NumberLiteral) (Identifier)
 
 const genericResult = genericTag`value: ${42}`;
->                     ^^^^^^^^^^: <T>(template: any, value: T) => T   (TyFunction) (IdentifierReference)
+>                     ^^^^^^^^^^: <T>(template: any, value: T) => T   (Function) (Identifier)
 
 const curriedResult = curriedTag`value`("input");
->     ^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const curriedResult = curriedTag`value`("input");
->                     ^^^^^^^^^^: (template: any) => (value: string) => number   (TyFunction) (IdentifierReference)
+>                     ^^^^^^^^^^: (template: any) => (value: string) => number   (Function) (Identifier)

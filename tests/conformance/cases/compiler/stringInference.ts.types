@@ -1,158 +1,158 @@
 type User = {
->    ^^^^: { name: string; address: { city: string; }; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^: { name: string; address: { city: string; }; }   (Object) (Identifier)
 
   name: string
-> ^^^^: string   (TyString) (TSPropertySignature)
+> ^^^^: string   (String) (Identifier)
 
   address: {
-> ^^^^^^^: { city: string; }   (TyObject) (TSPropertySignature)
+> ^^^^^^^: { city: string; }   (Object) (Identifier)
 
     city: string
->   ^^^^: string   (TyString) (TSPropertySignature)
+>   ^^^^: string   (String) (Identifier)
 
 type UserKeys = keyof User
->    ^^^^^^^^: keyof User   (TyKeyof) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: keyof User   (Keyof) (Identifier)
 
 type UserKeys = keyof User
->                     ^^^^: any   (TyAny) (TSTypeReference)
+>                     ^^^^: any   (Any) (Identifier)
 
 type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
->    ^^^^^^^^: T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]   (Conditional) (Identifier)
 
 type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
->             ^: any   (TyAny) (TSTypeParameter)
+>             ^: any   (Any) (Identifier)
 
 type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
->                                 ^: any   (TyAny) (TSTypeReference)
+>                                 ^: any   (Any) (Identifier)
 
 type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
->                                                    ^: any   (TyAny) (TSTypeParameter)
+>                                                    ^: any   (Any) (Identifier)
 
 type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
->                                                               ^: any   (TyAny) (TSTypeParameter)
+>                                                               ^: any   (Any) (Identifier)
 
 type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
->                                                                      ^: any   (TyAny) (TSTypeReference)
+>                                                                      ^: any   (Any) (Identifier)
 
 type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
->                                                                            ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                            ^^^^^^^^: any   (Any) (Identifier)
 
 type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
->                                                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                                                     ^: any   (Any) (Identifier)
 
 type Tupleify<T extends string> = T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]
->                                                                                            ^: any   (TyAny) (TSTypeReference)
+>                                                                                            ^: any   (Any) (Identifier)
 
 type Tuple1 = Tupleify<"test">
->    ^^^^^^: ["test"]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^^: ["test"]   (Tuple) (Identifier)
 
 type Tuple1 = Tupleify<"test">
->             ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
 type Tuple2 = Tupleify<"test.property">
->    ^^^^^^: ["test", "property"]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^^: ["test", "property"]   (Tuple) (Identifier)
 
 type Tuple2 = Tupleify<"test.property">
->             ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
 type Tuple3 = Tupleify<"test.property.another">
->    ^^^^^^: ["test", "property", "another"]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^^: ["test", "property", "another"]   (Tuple) (Identifier)
 
 type Tuple3 = Tupleify<"test.property.another">
->             ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
 type Tuple4 = Tupleify<".property.another">
->    ^^^^^^: ["", "property", "another"]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^^: ["", "property", "another"]   (Tuple) (Identifier)
 
 type Tuple4 = Tupleify<".property.another">
->             ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^: any   (Any) (Identifier)
 
 type T0 = "user" extends `${infer K}` ? K : never
->    ^^: "user"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^: "user"   (StringLiteral) (Identifier)
 
 type T0 = "user" extends `${infer K}` ? K : never
->                                 ^: any   (TyAny) (TSTypeParameter)
+>                                 ^: any   (Any) (Identifier)
 
 type T0 = "user" extends `${infer K}` ? K : never
->                                       ^: any   (TyAny) (TSTypeReference)
+>                                       ^: any   (Any) (Identifier)
 
 type T1 = "user.name" extends `${infer K}.${infer R}` ? true : false
->    ^^: true   (TyBooleanLiteral) (TSTypeAliasDeclaration)
+>    ^^: true   (BooleanLiteral) (Identifier)
 
 type T1 = "user.name" extends `${infer K}.${infer R}` ? true : false
->                                      ^: any   (TyAny) (TSTypeParameter)
+>                                      ^: any   (Any) (Identifier)
 
 type T1 = "user.name" extends `${infer K}.${infer R}` ? true : false
->                                                 ^: any   (TyAny) (TSTypeParameter)
+>                                                 ^: any   (Any) (Identifier)
 
 type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never
->    ^^: { name: string; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^: { name: string; }   (Object) (Identifier)
 
 type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never
->                                      ^: any   (TyAny) (TSTypeParameter)
+>                                      ^: any   (Any) (Identifier)
 
 type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never
->                                                 ^: any   (TyAny) (TSTypeParameter)
+>                                                 ^: any   (Any) (Identifier)
 
 type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never
->                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                       ^: any   (Any) (Identifier)
 
 type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never
->                                                                 ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                 ^^^^^^^^: any   (Any) (Identifier)
 
 type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never
->                                                                            ^^^^: any   (TyAny) (TSTypeReference)
+>                                                                            ^^^^: any   (Any) (Identifier)
 
 type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never
->                                                                            ^^^^: any   (TyError) (IdentifierReference)
+>                                                                            ^^^^: any   (Error) (Identifier)
 
 type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never
->                                                                                 ^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                 ^^^^: any   (Any) (Identifier)
 
 type T2 = "user.name" extends `${infer K}.${infer R}` ? R extends UserKeys ? Pick<User, R> : never : never
->                                                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                                                       ^: any   (Any) (Identifier)
 
 type T3 = Tupleify<"user.address.city"> extends [infer P1, infer P2, infer P3]
->    ^^: { city: string; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^: { city: string; }   (Object) (Identifier)
 
 type T3 = Tupleify<"user.address.city"> extends [infer P1, infer P2, infer P3]
->         ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^^^^^: any   (Any) (Identifier)
 
 type T3 = Tupleify<"user.address.city"> extends [infer P1, infer P2, infer P3]
->                                                      ^^: any   (TyAny) (TSTypeParameter)
+>                                                      ^^: any   (Any) (Identifier)
 
 type T3 = Tupleify<"user.address.city"> extends [infer P1, infer P2, infer P3]
->                                                                ^^: any   (TyAny) (TSTypeParameter)
+>                                                                ^^: any   (Any) (Identifier)
 
 type T3 = Tupleify<"user.address.city"> extends [infer P1, infer P2, infer P3]
->                                                                          ^^: any   (TyAny) (TSTypeParameter)
+>                                                                          ^^: any   (Any) (Identifier)
 
   ? P2 extends UserKeys
->   ^^: any   (TyAny) (TSTypeReference)
+>   ^^: any   (Any) (Identifier)
 
   ? P2 extends UserKeys
->              ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^: any   (Any) (Identifier)
 
     ? P3 extends keyof User[P2]
->     ^^: any   (TyAny) (TSTypeReference)
+>     ^^: any   (Any) (Identifier)
 
     ? P3 extends keyof User[P2]
->                      ^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^: any   (Any) (Identifier)
 
     ? P3 extends keyof User[P2]
->                           ^^: any   (TyAny) (TSTypeReference)
+>                           ^^: any   (Any) (Identifier)
 
       ? Pick<User[P2], P3>
->       ^^^^: any   (TyAny) (TSTypeReference)
+>       ^^^^: any   (Any) (Identifier)
 
       ? Pick<User[P2], P3>
->       ^^^^: any   (TyError) (IdentifierReference)
+>       ^^^^: any   (Error) (Identifier)
 
       ? Pick<User[P2], P3>
->            ^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^: any   (Any) (Identifier)
 
       ? Pick<User[P2], P3>
->                 ^^: any   (TyAny) (TSTypeReference)
+>                 ^^: any   (Any) (Identifier)
 
       ? Pick<User[P2], P3>
->                      ^^: any   (TyAny) (TSTypeReference)
+>                      ^^: any   (Any) (Identifier)

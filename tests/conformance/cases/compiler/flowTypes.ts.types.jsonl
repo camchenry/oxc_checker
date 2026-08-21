@@ -1,0 +1,75 @@
+{"path":"compiler/flowTypes.ts","start":14,"end":15,"text":"x","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/flowTypes.ts","start":42,"end":43,"text":"x","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/flowTypes.ts","start":61,"end":68,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/flowTypes.ts","start":61,"end":76,"text":"console.log(x);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/flowTypes.ts","start":69,"end":72,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/flowTypes.ts","start":73,"end":74,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/flowTypes.ts","start":112,"end":119,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/flowTypes.ts","start":112,"end":127,"text":"console.log(x);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/flowTypes.ts","start":120,"end":123,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/flowTypes.ts","start":124,"end":125,"text":"x","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/flowTypes.ts","start":145,"end":146,"text":"y","nodeType":"Identifier","type":{"name":"Union","display":"string | number | boolean"}}
+{"path":"compiler/flowTypes.ts","start":207,"end":208,"text":"z","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/flowTypes.ts","start":218,"end":219,"text":"y","nodeType":"Identifier","type":{"name":"Union","display":"string | number | boolean"}}
+{"path":"compiler/flowTypes.ts","start":235,"end":236,"text":"y","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/flowTypes.ts","start":239,"end":248,"text":"undefined","nodeType":"Identifier","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/flowTypes.ts","start":262,"end":263,"text":"y","nodeType":"Identifier","type":{"name":"Union","display":"string | number | boolean"}}
+{"path":"compiler/flowTypes.ts","start":294,"end":301,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/flowTypes.ts","start":294,"end":309,"text":"console.log(y);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/flowTypes.ts","start":302,"end":305,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/flowTypes.ts","start":306,"end":307,"text":"y","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/flowTypes.ts","start":343,"end":350,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/flowTypes.ts","start":343,"end":357,"text":"console.log(y)","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/flowTypes.ts","start":351,"end":354,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/flowTypes.ts","start":355,"end":356,"text":"y","nodeType":"Identifier","type":{"name":"Union","display":"number | boolean"}}
+{"path":"compiler/flowTypes.ts","start":400,"end":409,"text":"andResult","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/flowTypes.ts","start":412,"end":413,"text":"x","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/flowTypes.ts","start":417,"end":418,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/flowTypes.ts","start":447,"end":455,"text":"orResult","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/flowTypes.ts","start":458,"end":459,"text":"x","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/flowTypes.ts","start":508,"end":522,"text":"coalesceResult","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/flowTypes.ts","start":525,"end":526,"text":"x","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/flowTypes.ts","start":547,"end":548,"text":"x","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"}}
+{"path":"compiler/flowTypes.ts","start":559,"end":560,"text":"y","nodeType":"Identifier","type":{"name":"Union","display":"string | number | boolean"}}
+{"path":"compiler/flowTypes.ts","start":591,"end":598,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/flowTypes.ts","start":591,"end":606,"text":"console.log(x);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/flowTypes.ts","start":599,"end":602,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/flowTypes.ts","start":603,"end":604,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/flowTypes.ts","start":621,"end":628,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/flowTypes.ts","start":621,"end":636,"text":"console.log(y);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/flowTypes.ts","start":629,"end":632,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/flowTypes.ts","start":633,"end":634,"text":"y","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/flowTypes.ts","start":650,"end":656,"text":"Action","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/flowTypes.ts","start":650,"end":656,"text":"Action","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/flowTypes.ts","start":661,"end":665,"text":"type","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/flowTypes.ts","start":695,"end":703,"text":"isAction","nodeType":"Identifier","type":{"name":"Function","display":"(action: unknown) => action is Action"}}
+{"path":"compiler/flowTypes.ts","start":704,"end":710,"text":"action","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/flowTypes.ts","start":722,"end":728,"text":"action","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/flowTypes.ts","start":732,"end":738,"text":"Action","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/flowTypes.ts","start":732,"end":738,"text":"Action","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/flowTypes.ts","start":754,"end":765,"text":"maybeAction","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/flowTypes.ts","start":781,"end":789,"text":"isAction","nodeType":"Identifier","type":{"name":"Function","display":"(action: unknown) => action is Action"}}
+{"path":"compiler/flowTypes.ts","start":790,"end":801,"text":"maybeAction","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/flowTypes.ts","start":806,"end":817,"text":"maybeAction","nodeType":"Identifier","type":{"name":"TypeReference","display":"Action"}}
+{"path":"compiler/flowTypes.ts","start":818,"end":822,"text":"type","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/flowTypes.ts","start":840,"end":847,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/flowTypes.ts","start":840,"end":865,"text":"console.log(maybeAction);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/flowTypes.ts","start":848,"end":851,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/flowTypes.ts","start":852,"end":863,"text":"maybeAction","nodeType":"Identifier","type":{"name":"TypeReference","display":"Action"}}
+{"path":"compiler/flowTypes.ts","start":880,"end":887,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/flowTypes.ts","start":880,"end":910,"text":"console.log(maybeAction.type);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/flowTypes.ts","start":888,"end":891,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/flowTypes.ts","start":892,"end":903,"text":"maybeAction","nodeType":"Identifier","type":{"name":"TypeReference","display":"Action"}}
+{"path":"compiler/flowTypes.ts","start":904,"end":908,"text":"type","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/flowTypes.ts","start":925,"end":936,"text":"maybeAction","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/flowTypes.ts","start":953,"end":964,"text":"maybeAction","nodeType":"Identifier","type":{"name":"Union","display":"object | null"}}
+{"path":"compiler/flowTypes.ts","start":987,"end":998,"text":"maybeAction","nodeType":"Identifier","type":{"name":"PrimitiveObject","display":"object"}}
+{"path":"compiler/flowTypes.ts","start":1042,"end":1049,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/flowTypes.ts","start":1042,"end":1067,"text":"console.log(maybeAction);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/flowTypes.ts","start":1050,"end":1053,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/flowTypes.ts","start":1054,"end":1065,"text":"maybeAction","nodeType":"Identifier","type":{"name":"Intersection","display":"object & Record<\"type\", unknown>"}}
+{"path":"compiler/flowTypes.ts","start":1083,"end":1090,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/flowTypes.ts","start":1083,"end":1113,"text":"console.log(maybeAction.type);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/flowTypes.ts","start":1091,"end":1094,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/flowTypes.ts","start":1095,"end":1106,"text":"maybeAction","nodeType":"Identifier","type":{"name":"Intersection","display":"object & Record<\"type\", unknown>"}}
+{"path":"compiler/flowTypes.ts","start":1107,"end":1111,"text":"type","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}

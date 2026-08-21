@@ -1,35 +1,35 @@
 const Array = 1;
->     ^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^: 1   (NumberLiteral) (Identifier)
 
 const arrayValue = Array;
->     ^^^^^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^: 1   (NumberLiteral) (Identifier)
 
 const arrayValue = Array;
->                  ^^^^^: 1   (TyNumberLiteral) (IdentifierReference)
+>                  ^^^^^: 1   (NumberLiteral) (Identifier)
 
 const undefined = 1;
->     ^^^^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^^^^^: 1   (NumberLiteral) (Identifier)
 
 const undefinedValue = undefined;
->     ^^^^^^^^^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: 1   (NumberLiteral) (Identifier)
 
 const undefinedValue = undefined;
->                      ^^^^^^^^^: 1   (TyNumberLiteral) (IdentifierReference)
+>                      ^^^^^^^^^: 1   (NumberLiteral) (Identifier)
 
 function shadow(undefined: number) {
->        ^^^^^^: (undefined: number) => void   (TyFunction) (BindingIdentifier)
+>        ^^^^^^: (undefined: number) => void   (Function) (Identifier)
 
 function shadow(undefined: number) {
->               ^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>               ^^^^^^^^^: number   (Number) (Identifier)
 
   const inside = undefined;
->       ^^^^^^: number   (TyNumber) (BindingIdentifier)
+>       ^^^^^^: number   (Number) (Identifier)
 
   const inside = undefined;
->                ^^^^^^^^^: number   (TyNumber) (IdentifierReference)
+>                ^^^^^^^^^: number   (Number) (Identifier)
 
 const outside = undefined;
->     ^^^^^^^: undefined   (TyUndefined) (BindingIdentifier)
+>     ^^^^^^^: undefined   (Undefined) (Identifier)
 
 const outside = undefined;
->               ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>               ^^^^^^^^^: undefined   (Undefined) (Identifier)

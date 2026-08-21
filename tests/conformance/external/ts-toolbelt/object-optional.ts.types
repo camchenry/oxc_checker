@@ -1,448 +1,448 @@
 export type Key = string | number | symbol
->           ^^^: string | number | symbol   (TyUnion) (TSTypeAliasDeclaration)
+>           ^^^: string | number | symbol   (Union) (Identifier)
 
 export type Depth = 'flat' | 'deep'
->           ^^^^^: "flat" | "deep"   (TyUnion) (TSTypeAliasDeclaration)
+>           ^^^^^: "flat" | "deep"   (Union) (Identifier)
 
 export type Equals<A1 extends any, A2 extends any> =
->           ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (Conditional) (Identifier)
 
 export type Equals<A1 extends any, A2 extends any> =
->                  ^^: any   (TyAny) (TSTypeParameter)
+>                  ^^: any   (Any) (Identifier)
 
 export type Equals<A1 extends any, A2 extends any> =
->                                  ^^: any   (TyAny) (TSTypeParameter)
+>                                  ^^: any   (Any) (Identifier)
 
   (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
->   ^: any   (TyAny) (TSTypeParameter)
+>   ^: any   (Any) (Identifier)
 
   (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
->           ^: any   (TyAny) (TSTypeReference)
+>           ^: any   (Any) (Identifier)
 
   (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
->                     ^^: any   (TyAny) (TSTypeReference)
+>                     ^^: any   (Any) (Identifier)
 
   (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
->                                           ^: any   (TyAny) (TSTypeParameter)
+>                                           ^: any   (Any) (Identifier)
 
   (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
->                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                   ^: any   (Any) (Identifier)
 
   (<A>() => A extends A2 ? 1 : 0) extends (<A>() => A extends A1 ? 1 : 0)
->                                                             ^^: any   (TyAny) (TSTypeReference)
+>                                                             ^^: any   (Any) (Identifier)
 
 import type { Key } from '../Any/Key'
->             ^^^: string | number | symbol   (TyUnion) (BindingIdentifier)
+>             ^^^: string | number | symbol   (Union) (Identifier)
 
 export type Pick<O extends object, K extends Key> = {
->           ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; }   (TyMapped) (TSTypeAliasDeclaration)
+>           ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; }   (Mapped) (Identifier)
 
 export type Pick<O extends object, K extends Key> = {
->                ^: any   (TyAny) (TSTypeParameter)
+>                ^: any   (Any) (Identifier)
 
 export type Pick<O extends object, K extends Key> = {
->                                  ^: any   (TyAny) (TSTypeParameter)
+>                                  ^: any   (Any) (Identifier)
 
 export type Pick<O extends object, K extends Key> = {
->                                            ^^^: string | number | symbol   (TyUnion) (TSTypeReference)
+>                                            ^^^: string | number | symbol   (Union) (Identifier)
 
 export type Pick<O extends object, K extends Key> = {
->                                            ^^^: string | number | symbol   (TyUnion) (IdentifierReference)
+>                                            ^^^: string | number | symbol   (Union) (Identifier)
 
   [P in keyof O as P extends K ? P : never]: O[P]
->  ^: any   (TyAny) (TSMappedType)
+>  ^: any   (Any) (Identifier)
 
   [P in keyof O as P extends K ? P : never]: O[P]
->             ^: any   (TyAny) (TSTypeReference)
+>             ^: any   (Any) (Identifier)
 
   [P in keyof O as P extends K ? P : never]: O[P]
->                  ^: any   (TyAny) (TSTypeReference)
+>                  ^: any   (Any) (Identifier)
 
   [P in keyof O as P extends K ? P : never]: O[P]
->                            ^: any   (TyAny) (TSTypeReference)
+>                            ^: any   (Any) (Identifier)
 
   [P in keyof O as P extends K ? P : never]: O[P]
->                                ^: any   (TyAny) (TSTypeReference)
+>                                ^: any   (Any) (Identifier)
 
   [P in keyof O as P extends K ? P : never]: O[P]
->                                            ^: any   (TyAny) (TSTypeReference)
+>                                            ^: any   (Any) (Identifier)
 
   [P in keyof O as P extends K ? P : never]: O[P]
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
 export type PatchFlat<O extends object, O1 extends object> = {
->           ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }   (TyMapped) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }   (Mapped) (Identifier)
 
 export type PatchFlat<O extends object, O1 extends object> = {
->                     ^: any   (TyAny) (TSTypeParameter)
+>                     ^: any   (Any) (Identifier)
 
 export type PatchFlat<O extends object, O1 extends object> = {
->                                       ^^: any   (TyAny) (TSTypeParameter)
+>                                       ^^: any   (Any) (Identifier)
 
   [K in keyof (O & O1)]: K extends keyof O
->  ^: any   (TyAny) (TSMappedType)
+>  ^: any   (Any) (Identifier)
 
   [K in keyof (O & O1)]: K extends keyof O
->              ^: any   (TyAny) (TSTypeReference)
+>              ^: any   (Any) (Identifier)
 
   [K in keyof (O & O1)]: K extends keyof O
->                  ^^: any   (TyAny) (TSTypeReference)
+>                  ^^: any   (Any) (Identifier)
 
   [K in keyof (O & O1)]: K extends keyof O
->                        ^: any   (TyAny) (TSTypeReference)
+>                        ^: any   (Any) (Identifier)
 
   [K in keyof (O & O1)]: K extends keyof O
->                                        ^: any   (TyAny) (TSTypeReference)
+>                                        ^: any   (Any) (Identifier)
 
     ? O[K]
->     ^: any   (TyAny) (TSTypeReference)
+>     ^: any   (Any) (Identifier)
 
     ? O[K]
->       ^: any   (TyAny) (TSTypeReference)
+>       ^: any   (Any) (Identifier)
 
     : K extends keyof O1
->     ^: any   (TyAny) (TSTypeReference)
+>     ^: any   (Any) (Identifier)
 
     : K extends keyof O1
->                     ^^: any   (TyAny) (TSTypeReference)
+>                     ^^: any   (Any) (Identifier)
 
       ? O1[K]
->       ^^: any   (TyAny) (TSTypeReference)
+>       ^^: any   (Any) (Identifier)
 
       ? O1[K]
->          ^: any   (TyAny) (TSTypeReference)
+>          ^: any   (Any) (Identifier)
 
 import type { Pick } from './Pick'
->             ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; }   (TyMapped) (BindingIdentifier)
+>             ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; }   (Mapped) (Identifier)
 
 import type { Depth } from './_Internal'
->             ^^^^^: "flat" | "deep"   (TyUnion) (BindingIdentifier)
+>             ^^^^^: "flat" | "deep"   (Union) (Identifier)
 
 import type { Key } from '../Any/Key'
->             ^^^: string | number | symbol   (TyUnion) (BindingIdentifier)
+>             ^^^: string | number | symbol   (Union) (Identifier)
 
 import type { PatchFlat } from './Patch'
->             ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }   (TyMapped) (BindingIdentifier)
+>             ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }   (Mapped) (Identifier)
 
 import type { Equals } from '../Any/Equals'
->             ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional) (BindingIdentifier)
+>             ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (Conditional) (Identifier)
 
 export type OptionalFlat<O> = {
->           ^^^^^^^^^^^^: { [K in keyof O]?: O[K] | undefined; }   (TyMapped) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^: { [K in keyof O]?: O[K] | undefined; }   (Mapped) (Identifier)
 
 export type OptionalFlat<O> = {
->                        ^: any   (TyAny) (TSTypeParameter)
+>                        ^: any   (Any) (Identifier)
 
   [K in keyof O]?: O[K]
->  ^: any   (TyAny) (TSMappedType)
+>  ^: any   (Any) (Identifier)
 
   [K in keyof O]?: O[K]
->             ^: any   (TyAny) (TSTypeReference)
+>             ^: any   (Any) (Identifier)
 
   [K in keyof O]?: O[K]
->                  ^: any   (TyAny) (TSTypeReference)
+>                  ^: any   (Any) (Identifier)
 
   [K in keyof O]?: O[K]
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
 export type OptionalDeep<O> = {
->           ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }   (TyMapped) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }   (Mapped) (Identifier)
 
 export type OptionalDeep<O> = {
->                        ^: any   (TyAny) (TSTypeParameter)
+>                        ^: any   (Any) (Identifier)
 
   [K in keyof O]?: OptionalDeep<O[K]>
->  ^: any   (TyAny) (TSMappedType)
+>  ^: any   (Any) (Identifier)
 
   [K in keyof O]?: OptionalDeep<O[K]>
->             ^: any   (TyAny) (TSTypeReference)
+>             ^: any   (Any) (Identifier)
 
   [K in keyof O]?: OptionalDeep<O[K]>
->                  ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   [K in keyof O]?: OptionalDeep<O[K]>
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
   [K in keyof O]?: OptionalDeep<O[K]>
->                                 ^: any   (TyAny) (TSTypeReference)
+>                                 ^: any   (Any) (Identifier)
 
 export type OptionalPart<O extends object, depth extends Depth> = {
->           ^^^^^^^^^^^^: { flat: OptionalFlat<O>; deep: OptionalDeep<O>; }[depth]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^: { flat: OptionalFlat<O>; deep: OptionalDeep<O>; }[depth]   (IndexedAccess) (Identifier)
 
 export type OptionalPart<O extends object, depth extends Depth> = {
->                        ^: any   (TyAny) (TSTypeParameter)
+>                        ^: any   (Any) (Identifier)
 
 export type OptionalPart<O extends object, depth extends Depth> = {
->                                          ^^^^^: any   (TyAny) (TSTypeParameter)
+>                                          ^^^^^: any   (Any) (Identifier)
 
 export type OptionalPart<O extends object, depth extends Depth> = {
->                                                        ^^^^^: "flat" | "deep"   (TyUnion) (TSTypeReference)
+>                                                        ^^^^^: "flat" | "deep"   (Union) (Identifier)
 
 export type OptionalPart<O extends object, depth extends Depth> = {
->                                                        ^^^^^: "flat" | "deep"   (TyUnion) (IdentifierReference)
+>                                                        ^^^^^: "flat" | "deep"   (Union) (Identifier)
 
   flat: OptionalFlat<O>
-> ^^^^: { [K in keyof O]?: O[K] | undefined; }   (TyMapped) (TSPropertySignature)
+> ^^^^: { [K in keyof O]?: O[K] | undefined; }   (Mapped) (Identifier)
 
   flat: OptionalFlat<O>
->       ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>       ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   flat: OptionalFlat<O>
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
   deep: OptionalDeep<O>
-> ^^^^: OptionalDeep<O>   (TyTypeReference) (TSPropertySignature)
+> ^^^^: OptionalDeep<O>   (TypeReference) (Identifier)
 
   deep: OptionalDeep<O>
->       ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>       ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   deep: OptionalDeep<O>
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
 }[depth]
-> ^^^^^: any   (TyAny) (TSTypeReference)
+> ^^^^^: any   (Any) (Identifier)
 
 export type Optional<
->           ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>           ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (IndexedAccess) (Identifier)
 
   O extends object,
-> ^: any   (TyAny) (TSTypeParameter)
+> ^: any   (Any) (Identifier)
 
   K extends Key = Key,
-> ^: any   (TyAny) (TSTypeParameter)
+> ^: any   (Any) (Identifier)
 
   K extends Key = Key,
->           ^^^: string | number | symbol   (TyUnion) (TSTypeReference)
+>           ^^^: string | number | symbol   (Union) (Identifier)
 
   K extends Key = Key,
->           ^^^: string | number | symbol   (TyUnion) (IdentifierReference)
+>           ^^^: string | number | symbol   (Union) (Identifier)
 
   K extends Key = Key,
->                 ^^^: string | number | symbol   (TyUnion) (TSTypeReference)
+>                 ^^^: string | number | symbol   (Union) (Identifier)
 
   K extends Key = Key,
->                 ^^^: string | number | symbol   (TyUnion) (IdentifierReference)
+>                 ^^^: string | number | symbol   (Union) (Identifier)
 
   depth extends Depth = 'flat',
-> ^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^: any   (Any) (Identifier)
 
   depth extends Depth = 'flat',
->               ^^^^^: "flat" | "deep"   (TyUnion) (TSTypeReference)
+>               ^^^^^: "flat" | "deep"   (Union) (Identifier)
 
   depth extends Depth = 'flat',
->               ^^^^^: "flat" | "deep"   (TyUnion) (IdentifierReference)
+>               ^^^^^: "flat" | "deep"   (Union) (Identifier)
 
   1: OptionalPart<O, depth>
->    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   1: OptionalPart<O, depth>
->                 ^: any   (TyAny) (TSTypeReference)
+>                 ^: any   (Any) (Identifier)
 
   1: OptionalPart<O, depth>
->                    ^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^: any   (Any) (Identifier)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
->    ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }   (TyMapped) (TSTypeReference)
+>    ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }   (Mapped) (Identifier)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
->    ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }   (TyMapped) (IdentifierReference)
+>    ^^^^^^^^^: { [K in keyof (O & O1)]: K extends keyof O ? O[K] : K extends keyof O1 ? O1[K] : never; }   (Mapped) (Identifier)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
->              ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
->                           ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; }   (TyMapped) (TSTypeReference)
+>                           ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; }   (Mapped) (Identifier)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
->                           ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; }   (TyMapped) (IdentifierReference)
+>                           ^^^^: { [P in keyof O as P extends K ? P : never]: O[P]; }   (Mapped) (Identifier)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
->                                ^: any   (TyAny) (TSTypeReference)
+>                                ^: any   (Any) (Identifier)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
->                                       ^^^^^: any   (TyAny) (TSTypeReference)
+>                                       ^^^^^: any   (Any) (Identifier)
 
   0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
 }[Equals<Key, K>]
-> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional) (TSTypeReference)
+> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (Conditional) (Identifier)
 
 }[Equals<Key, K>]
-> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (TyConditional) (IdentifierReference)
+> ^^^^^^: (<A>() => A extends A2 ? 1 : 0) extends <A>() => (A extends A1 ? 1 : 0) ? 1 : 0   (Conditional) (Identifier)
 
 }[Equals<Key, K>]
->        ^^^: string | number | symbol   (TyUnion) (TSTypeReference)
+>        ^^^: string | number | symbol   (Union) (Identifier)
 
 }[Equals<Key, K>]
->        ^^^: string | number | symbol   (TyUnion) (IdentifierReference)
+>        ^^^: string | number | symbol   (Union) (Identifier)
 
 }[Equals<Key, K>]
->             ^: any   (TyAny) (TSTypeReference)
+>             ^: any   (Any) (Identifier)
 
   Optional,
-> ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess) (BindingIdentifier)
+> ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (IndexedAccess) (Identifier)
 
   OptionalDeep,
-> ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }   (TyMapped) (BindingIdentifier)
+> ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }   (Mapped) (Identifier)
 
   OptionalFlat,
-> ^^^^^^^^^^^^: { [K in keyof O]?: O[K] | undefined; }   (TyMapped) (BindingIdentifier)
+> ^^^^^^^^^^^^: { [K in keyof O]?: O[K] | undefined; }   (Mapped) (Identifier)
 
 type User = {
->    ^^^^: { id: string; name: string; profile: { email: string; address: { city: string; }; }; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^: { id: string; name: string; profile: { email: string; address: { city: string; }; }; }   (Object) (Identifier)
 
   id: string
-> ^^: string   (TyString) (TSPropertySignature)
+> ^^: string   (String) (Identifier)
 
   name: string
-> ^^^^: string   (TyString) (TSPropertySignature)
+> ^^^^: string   (String) (Identifier)
 
   profile: {
-> ^^^^^^^: { email: string; address: { city: string; }; }   (TyObject) (TSPropertySignature)
+> ^^^^^^^: { email: string; address: { city: string; }; }   (Object) (Identifier)
 
     email: string
->   ^^^^^: string   (TyString) (TSPropertySignature)
+>   ^^^^^: string   (String) (Identifier)
 
     address: {
->   ^^^^^^^: { city: string; }   (TyObject) (TSPropertySignature)
+>   ^^^^^^^: { city: string; }   (Object) (Identifier)
 
       city: string
->     ^^^^: string   (TyString) (TSPropertySignature)
+>     ^^^^: string   (String) (Identifier)
 
 type OptionalName = Optional<User, 'name'>
->    ^^^^^^^^^^^^: { name: string | undefined; id: string; profile: { email: string; address: { city: string; }; }; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: { name: string | undefined; id: string; profile: { email: string; address: { city: string; }; }; }   (Object) (Identifier)
          expected: { id: string; name: string | undefined; profile: { email: string; address: { city: string; }; }; }
 
 type OptionalName = Optional<User, 'name'>
->                   ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess) (TSTypeReference)
+>                   ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (IndexedAccess) (Identifier)
 
 type OptionalName = Optional<User, 'name'>
->                   ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess) (IdentifierReference)
+>                   ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (IndexedAccess) (Identifier)
 
 type OptionalName = Optional<User, 'name'>
->                            ^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^: any   (Any) (Identifier)
 
 type OptionalEverything = Optional<User>
->    ^^^^^^^^^^^^^^^^^^: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }   (Object) (Identifier)
 
 type OptionalEverything = Optional<User>
->                         ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess) (TSTypeReference)
+>                         ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (IndexedAccess) (Identifier)
 
 type OptionalEverything = Optional<User>
->                         ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess) (IdentifierReference)
+>                         ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (IndexedAccess) (Identifier)
 
 type OptionalEverything = Optional<User>
->                                  ^^^^: any   (TyAny) (TSTypeReference)
+>                                  ^^^^: any   (Any) (Identifier)
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
->    ^^^^^^^^^^^^^^^^^^^: { profile: "profile" extends keyof { profile?: { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; } ? { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined : { email: string; address: { city: string; }; }; id: "id" extends keyof { profile?: { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; } ? { profile?: { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; }["id"] : string; name: "name" extends keyof { profile?: { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; } ? { profile?: { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; }["name"] : string; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^^^: { profile: "profile" extends keyof { profile?: { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; } ? { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined : { email: string; address: { city: string; }; }; id: "id" extends keyof { profile?: { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; } ? { profile?: { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; }["id"] : string; name: "name" extends keyof { profile?: { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; } ? { profile?: { email?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["email"][K]> | undefined; } | undefined; address?: { city?: { [K in keyof Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"]]?: OptionalDeep<Pick<{ id: string; name: string; profile: { email: string; address: { city: string; }; }; }, "profile">["profile"]["address"]["city"][K]> | undefined; } | undefined; } | undefined; } | undefined; }["name"] : string; }   (Object) (Identifier)
                 expected: { id: string; name: string; profile: OptionalDeep<{ email: string; address: { city: string; }; }> | undefined; }
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
->                          ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess) (TSTypeReference)
+>                          ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (IndexedAccess) (Identifier)
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
->                          ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (TyIndexedAccess) (IdentifierReference)
+>                          ^^^^^^^^: { 1: OptionalPart<O, depth>; 0: PatchFlat<OptionalPart<Pick<O, K>, depth>, O>; }[Equals<Key, K>]   (IndexedAccess) (Identifier)
 
 type OptionalProfileDeep = Optional<User, 'profile', 'deep'>
->                                   ^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^: any   (Any) (Identifier)
 
 type DirectFlat = OptionalFlat<User>
->    ^^^^^^^^^^: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }   (Object) (Identifier)
 
 type DirectFlat = OptionalFlat<User>
->                 ^^^^^^^^^^^^: { [K in keyof O]?: O[K] | undefined; }   (TyMapped) (TSTypeReference)
+>                 ^^^^^^^^^^^^: { [K in keyof O]?: O[K] | undefined; }   (Mapped) (Identifier)
 
 type DirectFlat = OptionalFlat<User>
->                 ^^^^^^^^^^^^: { [K in keyof O]?: O[K] | undefined; }   (TyMapped) (IdentifierReference)
+>                 ^^^^^^^^^^^^: { [K in keyof O]?: O[K] | undefined; }   (Mapped) (Identifier)
 
 type DirectFlat = OptionalFlat<User>
->                              ^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^: any   (Any) (Identifier)
 
 type DirectDeep = OptionalDeep<User>
->    ^^^^^^^^^^: { id?: { [K in keyof string]?: OptionalDeep<string[K]> | undefined; } | undefined; name?: { [K in keyof string]?: OptionalDeep<string[K]> | undefined; } | undefined; profile?: { email?: { [K in keyof string]?: OptionalDeep<string[K]> | undefined; } | undefined; address?: { city?: { [K in keyof string]?: OptionalDeep<string[K]> | undefined; } | undefined; } | undefined; } | undefined; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: { id?: { [K in keyof string]?: OptionalDeep<string[K]> | undefined; } | undefined; name?: { [K in keyof string]?: OptionalDeep<string[K]> | undefined; } | undefined; profile?: { email?: { [K in keyof string]?: OptionalDeep<string[K]> | undefined; } | undefined; address?: { city?: { [K in keyof string]?: OptionalDeep<string[K]> | undefined; } | undefined; } | undefined; } | undefined; }   (Object) (Identifier)
        expected: { id?: string | undefined; name?: string | undefined; profile?: OptionalDeep<{ email: string; address: { city: string; }; }> | undefined; }
 
 type DirectDeep = OptionalDeep<User>
->                 ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }   (TyMapped) (TSTypeReference)
+>                 ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }   (Mapped) (Identifier)
 
 type DirectDeep = OptionalDeep<User>
->                 ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }   (TyMapped) (IdentifierReference)
+>                 ^^^^^^^^^^^^: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }   (Mapped) (Identifier)
 
 type DirectDeep = OptionalDeep<User>
->                              ^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^: any   (Any) (Identifier)
 
 const optionalName: OptionalName = {
->     ^^^^^^^^^^^^: OptionalName   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^: OptionalName   (TypeReference) (Identifier)
           expected: PatchFlat<{ name?: string | undefined; }, User>
 
 const optionalName: OptionalName = {
->                   ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   id: 'user-1',
-> ^^: string   (TyString) (ObjectProperty)
+> ^^: string   (String) (Identifier)
 
   profile: {
-> ^^^^^^^: { email: string; address: { city: string; }; }   (TyObject) (ObjectProperty)
+> ^^^^^^^: { email: string; address: { city: string; }; }   (Object) (Identifier)
 
     email: 'user@example.com',
->   ^^^^^: string   (TyString) (ObjectProperty)
+>   ^^^^^: string   (String) (Identifier)
 
     address: {
->   ^^^^^^^: { city: string; }   (TyObject) (ObjectProperty)
+>   ^^^^^^^: { city: string; }   (Object) (Identifier)
 
       city: 'Berlin',
->     ^^^^: string   (TyString) (ObjectProperty)
+>     ^^^^: string   (String) (Identifier)
 
 const optionalEverything: OptionalEverything = {}
->     ^^^^^^^^^^^^^^^^^^: OptionalEverything   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^: OptionalEverything   (TypeReference) (Identifier)
                 expected: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }
 
 const optionalEverything: OptionalEverything = {}
->                         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const optionalProfileDeep: OptionalProfileDeep = {
->     ^^^^^^^^^^^^^^^^^^^: OptionalProfileDeep   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^: OptionalProfileDeep   (TypeReference) (Identifier)
                  expected: PatchFlat<OptionalDeep<{ profile: { email: string; address: { city: string; }; }; }>, User>
 
 const optionalProfileDeep: OptionalProfileDeep = {
->                          ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   id: 'user-2',
-> ^^: string   (TyString) (ObjectProperty)
+> ^^: string   (String) (Identifier)
 
   name: 'Ada',
-> ^^^^: string   (TyString) (ObjectProperty)
+> ^^^^: string   (String) (Identifier)
 
   profile: {
-> ^^^^^^^: { address: {}; }   (TyObject) (ObjectProperty)
+> ^^^^^^^: { address: {}; }   (Object) (Identifier)
 
     address: {},
->   ^^^^^^^: {}   (TyObject) (ObjectProperty)
+>   ^^^^^^^: {}   (Object) (Identifier)
 
 const directFlat: DirectFlat = {
->     ^^^^^^^^^^: DirectFlat   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^: DirectFlat   (TypeReference) (Identifier)
         expected: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }
 
 const directFlat: DirectFlat = {
->                 ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^: any   (Any) (Identifier)
 
   id: 'user-3',
-> ^^: string   (TyString) (ObjectProperty)
+> ^^: string   (String) (Identifier)
 
 const directDeep: DirectDeep = {
->     ^^^^^^^^^^: DirectDeep   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^: DirectDeep   (TypeReference) (Identifier)
         expected: OptionalDeep<User>
 
 const directDeep: DirectDeep = {
->                 ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^: any   (Any) (Identifier)
 
   profile: {
-> ^^^^^^^: { address: {}; }   (TyObject) (ObjectProperty)
+> ^^^^^^^: { address: {}; }   (Object) (Identifier)
 
     address: {},
->   ^^^^^^^: {}   (TyObject) (ObjectProperty)
+>   ^^^^^^^: {}   (Object) (Identifier)

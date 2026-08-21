@@ -1,79 +1,79 @@
 interface Date {
->         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^: any   (Any) (Identifier)
       expected: DateConstructor
 
 interface Date {
->         ^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^: any   (Any) (Identifier)
       expected: DateConstructor
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->   ^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (Object) (Identifier)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                  ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>                  ^^^^^^^: Intl.LocalesArgument | undefined   (Union) (Identifier)
                   expected: Intl.LocalesArgument
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                            ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                            ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                 ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
+>                                 ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TypeReference) (Identifier)
                                          expected: any
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                                  ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                                  ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (Union) (Identifier)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                                            ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                                                            ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     toLocaleString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                                                 ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TyTypeReference) (TSTypeReference)
+>                                                                 ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TypeReference) (Identifier)
                                                                                expected: any
 
     toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (Object) (Identifier)
 
     toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>                      ^^^^^^^: Intl.LocalesArgument | undefined   (Union) (Identifier)
                       expected: Intl.LocalesArgument
 
     toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                                ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                     ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
+>                                     ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TypeReference) (Identifier)
                                              expected: any
 
     toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                                      ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                                      ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (Union) (Identifier)
 
     toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                                                ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                                                                ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     toLocaleDateString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                                                     ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TyTypeReference) (TSTypeReference)
+>                                                                     ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TypeReference) (Identifier)
                                                                                    expected: any
 
     toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^^^^: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }   (Object) (Identifier)
 
     toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                      ^^^^^^^: Intl.LocalesArgument | undefined   (TyUnion) (BindingIdentifier)
+>                      ^^^^^^^: Intl.LocalesArgument | undefined   (Union) (Identifier)
                       expected: Intl.LocalesArgument
 
     toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                                ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                     ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TyTypeReference) (TSTypeReference)
+>                                     ^^^^^^^^^^^^^^^: Intl.LocalesArgument   (TypeReference) (Identifier)
                                              expected: any
 
     toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                                      ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (TyUnion) (BindingIdentifier)
+>                                                      ^^^^^^^: Intl.DateTimeFormatOptions | undefined   (Union) (Identifier)
 
     toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                                                ^^^^: typeof Intl   (TyTypeQuery) (IdentifierReference)
+>                                                                ^^^^: typeof Intl   (TypeQuery) (Identifier)
 
     toLocaleTimeString(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string;
->                                                                     ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TyTypeReference) (TSTypeReference)
+>                                                                     ^^^^^^^^^^^^^^^^^^^^^: Intl.DateTimeFormatOptions   (TypeReference) (Identifier)
                                                                                    expected: any

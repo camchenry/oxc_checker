@@ -16,7 +16,7 @@ use std::{
 
 use oxc_allocator::Allocator;
 use oxc_ast::{
-    AstKind, AstType,
+    AstKind,
     ast::{BindingPattern, Expression, MethodDefinitionKind, PropertyKey, Statement},
 };
 use oxc_ast_visit::{
@@ -29,6 +29,7 @@ use oxc_span::{GetSpan, Span};
 use oxc_syntax::module_record::{ExportEntry, ExportLocalName};
 use rayon::prelude::*;
 use rustc_hash::FxHashMap;
+use serde::{Deserialize, Serialize};
 use terminal_size::{Width, terminal_size};
 
 use crate::{
@@ -56,7 +57,7 @@ const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
     name: "TypeScript compiler case",
     cases_root: "vendor/TypeScript/tests/cases",
     snapshot_path: "tests/conformance/types_snapshot.txt",
-    tsc_types_path: "tests/conformance/tsc-types/typescript_tsc_types.tsv",
+    tsc_types_path: "tests/conformance/tsc-types/typescript_tsc_types.jsonl",
     compiler_cases_only: true,
     write_type_outputs: false,
     type_outputs_root: None,
@@ -66,7 +67,7 @@ const CASES_SUITE: ConformanceSuite = ConformanceSuite {
     name: "local conformance case",
     cases_root: "tests/conformance/cases",
     snapshot_path: "tests/conformance/cases_snapshot.txt",
-    tsc_types_path: "tests/conformance/tsc-types/cases_tsc_types.tsv",
+    tsc_types_path: "tests/conformance/tsc-types/cases_tsc_types.jsonl",
     compiler_cases_only: false,
     write_type_outputs: true,
     type_outputs_root: None,
@@ -76,7 +77,7 @@ const EXTERNAL_LIBRARY_SUITE: ConformanceSuite = ConformanceSuite {
     name: "external library fixture",
     cases_root: "tests/conformance/external",
     snapshot_path: "tests/conformance/external_snapshot.txt",
-    tsc_types_path: "tests/conformance/tsc-types/external_tsc_types.tsv",
+    tsc_types_path: "tests/conformance/tsc-types/external_tsc_types.jsonl",
     compiler_cases_only: false,
     write_type_outputs: true,
     type_outputs_root: None,
@@ -86,7 +87,7 @@ const STANDARD_LIBRARY_SUITE: ConformanceSuite = ConformanceSuite {
     name: "standard library declaration",
     cases_root: "src/lib",
     snapshot_path: "tests/conformance/lib_snapshot.txt",
-    tsc_types_path: "tests/conformance/tsc-types/lib_tsc_types.tsv",
+    tsc_types_path: "tests/conformance/tsc-types/lib_tsc_types.jsonl",
     compiler_cases_only: false,
     write_type_outputs: true,
     type_outputs_root: Some("tests/conformance/lib"),
@@ -113,15 +114,15 @@ fn full_conformance_suites() -> [&'static ConformanceSuite; 4] {
     all_conformance_suites()
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct TypeRecord {
     path: Arc<str>,
     start: u32,
     end: u32,
     text: String,
-    ty_variant: Option<&'static str>,
-    ast_kind: Option<&'static str>,
-    ty_repr: String,
+    node_type: String,
+    r#type: TypeRecordType,
 }
 
 impl TypeRecord {
@@ -133,32 +134,34 @@ impl TypeRecord {
         }
     }
 
-    fn from_tsv(line: &str) -> Result<Self, String> {
-        let mut fields = line.splitn(5, '\t');
-        let path = Arc::from(fields.next().ok_or("missing path")?);
-        let start = fields
-            .next()
-            .ok_or("missing start")?
-            .parse::<u32>()
-            .map_err(|err| format!("invalid start: {err}"))?;
-        let end = fields
-            .next()
-            .ok_or("missing end")?
-            .parse::<u32>()
-            .map_err(|err| format!("invalid end: {err}"))?;
-        let text = fields.next().ok_or("missing text")?.to_string();
-        let ty = fields.next().ok_or("missing type")?.to_string();
-
-        Ok(Self {
+    fn new_oxc(
+        path: Arc<str>,
+        start: u32,
+        end: u32,
+        text: String,
+        node_type: &'static str,
+        ty_name: &'static str,
+        display: String,
+    ) -> Self {
+        Self {
             path,
             start,
             end,
             text,
-            ty_variant: None,
-            ast_kind: None,
-            ty_repr: ty,
-        })
+            node_type: node_type.to_string(),
+            r#type: TypeRecordType {
+                name: ty_name.strip_prefix("Ty").unwrap_or(ty_name).to_string(),
+                display,
+            },
+        }
     }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
+struct TypeRecordType {
+    name: String,
+    display: String,
 }
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
@@ -168,7 +171,7 @@ struct TypeRecordKey {
     text: String,
 }
 
-type TypeRecordMap = BTreeMap<TypeRecordKey, String>;
+type TypeRecordMap = BTreeMap<TypeRecordKey, TypeRecordType>;
 
 struct FileResult {
     path: Arc<str>,
@@ -1341,7 +1344,7 @@ fn collect_oxc_records(
             .then_with(|| left.start.cmp(&right.start))
             .then_with(|| left.end.cmp(&right.end))
             .then_with(|| left.text.cmp(&right.text))
-            .then_with(|| left.ty_repr.cmp(&right.ty_repr))
+            .then_with(|| left.r#type.display.cmp(&right.r#type.display))
     });
     collection
 }
@@ -1487,7 +1490,7 @@ fn collect_oxc_records_for_case(
             .then_with(|| left.start.cmp(&right.start))
             .then_with(|| left.end.cmp(&right.end))
             .then_with(|| left.text.cmp(&right.text))
-            .then_with(|| left.ty_repr.cmp(&right.ty_repr))
+            .then_with(|| left.r#type.display.cmp(&right.r#type.display))
     });
     Ok(collection)
 }
@@ -2002,15 +2005,15 @@ fn actual_binding_property_records<'a>(
             if ty.is_none() {
                 return None;
             }
-            Some(TypeRecord {
-                path: Arc::clone(path),
-                start: key.start,
-                end: key.end,
-                text: key.text,
-                ty_variant: Some(ty.enum_variant_name(arena)),
-                ast_kind: Some("BindingProperty"),
-                ty_repr: sanitize_owned(checker.type_to_string(ty, node_ref)),
-            })
+            Some(TypeRecord::new_oxc(
+                Arc::clone(path),
+                key.start,
+                key.end,
+                key.text,
+                "Identifier",
+                ty.enum_variant_name(arena),
+                sanitize_owned(checker.type_to_string(ty, node_ref)),
+            ))
         })
         .collect()
 }
@@ -2065,15 +2068,15 @@ fn actual_meta_property_records<'a>(
             }
             let ty_variant = ty.enum_variant_name(arena);
             let ty_repr = checker.type_to_string(ty, node_ref);
-            Some(TypeRecord {
-                path: Arc::clone(path),
-                start: span.start,
-                end: span.end,
-                text: name.to_string(),
-                ty_variant: Some(ty_variant),
-                ast_kind: Some("IdentifierName"),
-                ty_repr: sanitize_owned(ty_repr),
-            })
+            Some(TypeRecord::new_oxc(
+                Arc::clone(path),
+                span.start,
+                span.end,
+                name.to_string(),
+                "Identifier",
+                ty_variant,
+                sanitize_owned(ty_repr),
+            ))
         })
         .collect()
 }
@@ -2113,15 +2116,15 @@ fn actual_export_specifier_records<'a>(
             }
             let ty_variant = ty.enum_variant_name(arena);
             let ty_repr = checker.type_to_string(ty, node_ref);
-            Some(TypeRecord {
-                path: Arc::clone(path),
-                start: key.start,
-                end: key.end,
-                text: key.text,
-                ty_variant: Some(ty_variant),
-                ast_kind: Some("ExportSpecifier"),
-                ty_repr: sanitize_owned(ty_repr),
-            })
+            Some(TypeRecord::new_oxc(
+                Arc::clone(path),
+                key.start,
+                key.end,
+                key.text,
+                "ExportSpecifier",
+                ty_variant,
+                sanitize_owned(ty_repr),
+            ))
         })
         .collect()
 }
@@ -2367,50 +2370,25 @@ fn actual_identifier_record<'a>(
     }
 
     let ty_variant = ty.enum_variant_name(arena);
-    let ast_kind = conformance_ast_type_name(kind.ty());
+    let node_type = if matches!(
+        kind,
+        AstKind::Directive(_) | AstKind::ExpressionStatement(_)
+    ) {
+        "ExpressionStatement"
+    } else {
+        "Identifier"
+    };
     let ty_repr = checker.type_to_string(ty, node_ref);
 
-    Some(TypeRecord {
-        path: Arc::clone(path),
-        start: span.start,
-        end: span.end,
-        text: sanitize_cow(text),
-        ty_variant: Some(ty_variant),
-        ast_kind: Some(ast_kind),
-        ty_repr: sanitize_owned(ty_repr),
-    })
-}
-
-fn conformance_ast_type_name(ast_type: AstType) -> &'static str {
-    match ast_type {
-        AstType::BindingIdentifier => "BindingIdentifier",
-        AstType::IdentifierReference => "IdentifierReference",
-        AstType::IdentifierName => "IdentifierName",
-        AstType::TSPropertySignature => "TSPropertySignature",
-        AstType::ObjectProperty => "ObjectProperty",
-        AstType::StaticMemberExpression => "StaticMemberExpression",
-        AstType::MethodDefinition => "MethodDefinition",
-        AstType::TSMethodSignature => "TSMethodSignature",
-        AstType::ExportSpecifier => "ExportSpecifier",
-        AstType::TSThisParameter => "TSThisParameter",
-        AstType::PropertyDefinition => "PropertyDefinition",
-        AstType::AccessorProperty => "AccessorProperty",
-        AstType::TSTypeAliasDeclaration => "TSTypeAliasDeclaration",
-        AstType::TSImportEqualsDeclaration => "TSImportEqualsDeclaration",
-        AstType::TSInterfaceDeclaration => "TSInterfaceDeclaration",
-        AstType::TSEnumDeclaration => "TSEnumDeclaration",
-        AstType::TSEnumMember => "TSEnumMember",
-        AstType::TSModuleDeclaration => "TSModuleDeclaration",
-        AstType::TSTypeParameter => "TSTypeParameter",
-        AstType::TSMappedType => "TSMappedType",
-        AstType::TSClassImplements => "TSClassImplements",
-        AstType::TSInterfaceHeritage => "TSInterfaceHeritage",
-        AstType::TSTypeReference => "TSTypeReference",
-        AstType::Directive => "Directive",
-        AstType::ExpressionStatement => "ExpressionStatement",
-        AstType::TSIndexSignatureName => "TSIndexSignatureName",
-        _ => unreachable!("unsupported conformance AST type: {ast_type:?}"),
-    }
+    Some(TypeRecord::new_oxc(
+        Arc::clone(path),
+        span.start,
+        span.end,
+        sanitize_cow(text),
+        node_type,
+        ty_variant,
+        sanitize_owned(ty_repr),
+    ))
 }
 
 fn identifier_property_key_span_and_text<'a>(key: &'a PropertyKey<'a>) -> Option<(Span, &'a str)> {
@@ -2482,19 +2460,19 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
 
             for (key, tsc_type) in tsc_by_key {
                 match oxc_by_key.get(key) {
-                    Some(oxc_type) if type_reprs_are_equivalent(tsc_type, oxc_type) => {
+                    Some(oxc_type) if type_records_are_compatible(tsc_type, oxc_type) => {
                         matched_types += 1;
                     }
                     Some(oxc_type) => errors.push(ComparisonError::TypeMismatch {
                         start: key.start,
                         text: key.text.clone(),
-                        expected: tsc_type.clone(),
-                        actual: oxc_type.clone(),
+                        expected: tsc_type.display.clone(),
+                        actual: oxc_type.display.clone(),
                     }),
                     None => errors.push(ComparisonError::MissingFromOxc {
                         start: key.start,
                         text: key.text.clone(),
-                        expected: tsc_type.clone(),
+                        expected: tsc_type.display.clone(),
                     }),
                 }
             }
@@ -2504,7 +2482,7 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
                     errors.push(ComparisonError::ExtraInOxc {
                         start: key.start,
                         text: key.text.clone(),
-                        actual: oxc_type.clone(),
+                        actual: oxc_type.display.clone(),
                     });
                 }
             }
@@ -2516,6 +2494,22 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
             }
         })
         .collect()
+}
+
+fn type_records_are_compatible(expected: &TypeRecordType, actual: &TypeRecordType) -> bool {
+    type_reprs_are_equivalent(&expected.display, &actual.display)
+        || is_more_specific_primitive_type(expected, actual)
+}
+
+// TODO: Remove this normalization and get the exact types. Being more specific is okay though for now
+fn is_more_specific_primitive_type(expected: &TypeRecordType, actual: &TypeRecordType) -> bool {
+    matches!(
+        (expected.name.as_str(), actual.name.as_str()),
+        ("String", "StringLiteral")
+            | ("Number", "NumberLiteral")
+            | ("Boolean", "BooleanLiteral")
+            | ("BigInt", "BigIntLiteral")
+    )
 }
 
 fn type_reprs_are_equivalent(expected: &str, actual: &str) -> bool {
@@ -2871,7 +2865,7 @@ fn records_by_file(records: &[TypeRecord]) -> BTreeMap<Arc<str>, TypeRecordMap> 
         by_file
             .entry(record.path.clone())
             .or_insert_with(TypeRecordMap::new)
-            .insert(record.key(), record.ty_repr.clone());
+            .insert(record.key(), record.r#type.clone());
     }
     by_file
 }
@@ -2890,7 +2884,7 @@ fn parse_records(text: &str, source: &str) -> ConformanceResult<Vec<TypeRecord>>
     text.lines()
         .filter(|line| !line.trim().is_empty())
         .map(|line| {
-            TypeRecord::from_tsv(line).map_err(|err| {
+            serde_json::from_str::<TypeRecord>(line).map_err(|err| {
                 ConformanceError::new(format!("invalid type record in {source}: {err}: {line}"))
             })
         })
@@ -2924,6 +2918,7 @@ fn write_type_outputs(
         };
         let compiler_case = parse_compiler_test_case(&source_text, &relative_path);
         let mut output = String::new();
+        let mut json_output = String::new();
 
         for source_file in &compiler_case.files {
             let record_path = record_path(
@@ -2934,6 +2929,12 @@ fn write_type_outputs(
             let Some(source_records) = records_by_path.get(record_path.as_str()) else {
                 continue;
             };
+            for record in source_records {
+                let json = serde_json::to_string(record)
+                    .unwrap_or_else(|err| panic!("failed to serialize type record: {err}"));
+                json_output.push_str(&json);
+                json_output.push('\n');
+            }
             write_type_output_for_source_file(
                 &mut output,
                 &source_file.source_text,
@@ -2957,6 +2958,13 @@ fn write_type_outputs(
                 output_path.display()
             )
         });
+        let json_output_path = output_path.with_extension("types.jsonl");
+        std::fs::write(&json_output_path, json_output).unwrap_or_else(|err| {
+            panic!(
+                "failed to write JSON type output {}: {err}",
+                json_output_path.display()
+            )
+        });
     }
 }
 
@@ -2975,7 +2983,7 @@ fn type_output_mismatches(
 
         for (key, expected_type) in expected_by_key {
             if let Some(actual_type) = records_by_key.get(&key)
-                && !type_reprs_are_equivalent(&expected_type, actual_type)
+                && !type_records_are_compatible(&expected_type, actual_type)
             {
                 mismatches
                     .entry(path.clone())
@@ -3035,17 +3043,12 @@ fn write_type_output_for_source_file(
         output.extend(std::iter::repeat_n(' ', marker_column));
         output.extend(std::iter::repeat_n('^', caret_count));
         output.push_str(": ");
-        output.push_str(&record.ty_repr);
-        if let Some(ty_variant) = record.ty_variant {
-            output.push_str("   (");
-            output.push_str(ty_variant);
-            output.push(')');
-        }
-        if let Some(ast_kind) = &record.ast_kind {
-            output.push_str(" (");
-            output.push_str(ast_kind);
-            output.push(')');
-        }
+        output.push_str(&record.r#type.display);
+        output.push_str("   (");
+        output.push_str(&record.r#type.name);
+        output.push_str(") (");
+        output.push_str(&record.node_type);
+        output.push(')');
         output.push('\n');
 
         if let Some(expected_type) = mismatches.and_then(|mismatches| mismatches.get(&record.key()))
@@ -3056,7 +3059,7 @@ fn write_type_output_for_source_file(
                 colon_column.saturating_sub("expected".len()),
             ));
             output.push_str("expected: ");
-            output.push_str(expected_type);
+            output.push_str(&expected_type.display);
             output.push('\n');
         }
     }

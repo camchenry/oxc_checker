@@ -1,71 +1,71 @@
 let numberValue = 1;
->   ^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>   ^^^^^^^^^^^: number   (Number) (Identifier)
 
 let bigintValue: bigint = 1n;
->   ^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>   ^^^^^^^^^^^: bigint   (Bigint) (Identifier)
 
 let anyValue: any = 1;
->   ^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>   ^^^^^^^^: any   (Any) (Identifier)
 
 const numberObject = { value: 1 };
->     ^^^^^^^^^^^^: { value: number; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^: { value: number; }   (Object) (Identifier)
 
 const numberObject = { value: 1 };
->                      ^^^^^: number   (TyNumber) (ObjectProperty)
+>                      ^^^^^: number   (Number) (Identifier)
 
 const _prefixIncrement = ++numberValue;
->     ^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _prefixIncrement = ++numberValue;
->                          ^^^^^^^^^^^: number   (TyNumber) (IdentifierReference)
+>                          ^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _postfixIncrement = numberValue++;
->     ^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _postfixIncrement = numberValue++;
->                         ^^^^^^^^^^^: number   (TyNumber) (IdentifierReference)
+>                         ^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _prefixDecrement = --numberValue;
->     ^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _prefixDecrement = --numberValue;
->                          ^^^^^^^^^^^: number   (TyNumber) (IdentifierReference)
+>                          ^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _postfixDecrement = numberValue--;
->     ^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _postfixDecrement = numberValue--;
->                         ^^^^^^^^^^^: number   (TyNumber) (IdentifierReference)
+>                         ^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _prefixBigInt = ++bigintValue;
->     ^^^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: bigint   (Bigint) (Identifier)
 
 const _prefixBigInt = ++bigintValue;
->                       ^^^^^^^^^^^: bigint   (TyBigint) (IdentifierReference)
+>                       ^^^^^^^^^^^: bigint   (Bigint) (Identifier)
 
 const _postfixBigInt = bigintValue--;
->     ^^^^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: bigint   (Bigint) (Identifier)
 
 const _postfixBigInt = bigintValue--;
->                      ^^^^^^^^^^^: bigint   (TyBigint) (IdentifierReference)
+>                      ^^^^^^^^^^^: bigint   (Bigint) (Identifier)
 
 const _prefixAny = ++anyValue;
->     ^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^: number   (Number) (Identifier)
 
 const _prefixAny = ++anyValue;
->                    ^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                    ^^^^^^^^: any   (Any) (Identifier)
 
 const _memberIncrement = ++numberObject.value;
->     ^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _memberIncrement = ++numberObject.value;
->                          ^^^^^^^^^^^^: { value: number; }   (TyObject) (IdentifierReference)
+>                          ^^^^^^^^^^^^: { value: number; }   (Object) (Identifier)
 
 const _memberIncrement = ++numberObject.value;
->                                       ^^^^^: number   (TyNumber) (StaticMemberExpression)
+>                                       ^^^^^: number   (Number) (Identifier)
 
 const _computedMemberDecrement = numberObject["value"]--;
->     ^^^^^^^^^^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _computedMemberDecrement = numberObject["value"]--;
->                                ^^^^^^^^^^^^: { value: number; }   (TyObject) (IdentifierReference)
+>                                ^^^^^^^^^^^^: { value: number; }   (Object) (Identifier)

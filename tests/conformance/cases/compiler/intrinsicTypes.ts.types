@@ -1,95 +1,95 @@
 type Upper = Uppercase<"hello world">;
->    ^^^^^: "HELLO WORLD"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^: "HELLO WORLD"   (StringLiteral) (Identifier)
 
 type Upper = Uppercase<"hello world">;
->            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^^^^^: any   (Any) (Identifier)
 
 type Upper = Uppercase<"hello world">;
->            ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>            ^^^^^^^^^: any   (Error) (Identifier)
 
 type Lower = Lowercase<"HELLO WORLD">;
->    ^^^^^: "hello world"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^: "hello world"   (StringLiteral) (Identifier)
 
 type Lower = Lowercase<"HELLO WORLD">;
->            ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^^^^^: any   (Any) (Identifier)
 
 type Lower = Lowercase<"HELLO WORLD">;
->            ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>            ^^^^^^^^^: any   (Error) (Identifier)
 
 type Capital = Capitalize<"hello world">;
->    ^^^^^^^: "Hello world"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^: "Hello world"   (StringLiteral) (Identifier)
 
 type Capital = Capitalize<"hello world">;
->              ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^^^^: any   (Any) (Identifier)
 
 type Capital = Capitalize<"hello world">;
->              ^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>              ^^^^^^^^^^: any   (Error) (Identifier)
 
 type Uncapital = Uncapitalize<"Hello world">;
->    ^^^^^^^^^: "hello world"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: "hello world"   (StringLiteral) (Identifier)
 
 type Uncapital = Uncapitalize<"Hello world">;
->                ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type Uncapital = Uncapitalize<"Hello world">;
->                ^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                ^^^^^^^^^^^^: any   (Error) (Identifier)
 
 type UpperUnion = Uppercase<"hello" | "World">;
->    ^^^^^^^^^^: "HELLO" | "WORLD"   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: "HELLO" | "WORLD"   (Union) (Identifier)
 
 type UpperUnion = Uppercase<"hello" | "World">;
->                 ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^: any   (Any) (Identifier)
 
 type UpperUnion = Uppercase<"hello" | "World">;
->                 ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                 ^^^^^^^^^: any   (Error) (Identifier)
 
 type LowerTemplate = Lowercase<`HTTP/${"GET" | "POST"}`>;
->    ^^^^^^^^^^^^^: "http/get" | "http/post"   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^: "http/get" | "http/post"   (Union) (Identifier)
 
 type LowerTemplate = Lowercase<`HTTP/${"GET" | "POST"}`>;
->                    ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^^: any   (Any) (Identifier)
 
 type LowerTemplate = Lowercase<`HTTP/${"GET" | "POST"}`>;
->                    ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                    ^^^^^^^^^: any   (Error) (Identifier)
 
 type CapitalTemplate = Capitalize<`hello-${string}`>;
->    ^^^^^^^^^^^^^^^: `Hello-${string}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^: `Hello-${string}`   (TemplateLiteral) (Identifier)
 
 type CapitalTemplate = Capitalize<`hello-${string}`>;
->                      ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^: any   (Any) (Identifier)
 
 type CapitalTemplate = Capitalize<`hello-${string}`>;
->                      ^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                      ^^^^^^^^^^: any   (Error) (Identifier)
 
 type UncapitalTemplate = Uncapitalize<`Hello-${string}`>;
->    ^^^^^^^^^^^^^^^^^: `hello-${string}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^: `hello-${string}`   (TemplateLiteral) (Identifier)
 
 type UncapitalTemplate = Uncapitalize<`Hello-${string}`>;
->                        ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type UncapitalTemplate = Uncapitalize<`Hello-${string}`>;
->                        ^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                        ^^^^^^^^^^^^: any   (Error) (Identifier)
 
 type DeferredUpper<T extends string> = Uppercase<T>;
->    ^^^^^^^^^^^^^: Uppercase<T>   (TyTypeReference) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^: Uppercase<T>   (TypeReference) (Identifier)
 
 type DeferredUpper<T extends string> = Uppercase<T>;
->                  ^: any   (TyAny) (TSTypeParameter)
+>                  ^: any   (Any) (Identifier)
 
 type DeferredUpper<T extends string> = Uppercase<T>;
->                                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^^^^^: any   (Any) (Identifier)
 
 type DeferredUpper<T extends string> = Uppercase<T>;
->                                      ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                      ^^^^^^^^^: any   (Error) (Identifier)
 
 type DeferredUpper<T extends string> = Uppercase<T>;
->                                                ^: any   (TyAny) (TSTypeReference)
+>                                                ^: any   (Any) (Identifier)
 
 type NoInferValue = NoInfer<"value">;
->    ^^^^^^^^^^^^: "value"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: "value"   (StringLiteral) (Identifier)
 
 type NoInferValue = NoInfer<"value">;
->                   ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^: any   (Any) (Identifier)
 
 type NoInferValue = NoInfer<"value">;
->                   ^^^^^^^: any   (TyError) (IdentifierReference)
+>                   ^^^^^^^: any   (Error) (Identifier)

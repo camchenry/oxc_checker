@@ -1,161 +1,161 @@
 interface Int8ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int8ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): Int8Array<ArrayBuffer>;
->           ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^: Int8ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Int8Array<ArrayBuffer>;
->           ^^^^^^^^^: Int8ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^: Int8ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Int8Array<ArrayBuffer>;
->                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+>                     ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     new (): Int8Array<ArrayBuffer>;
->                     ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+>                     ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
 interface Uint8ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): Uint8Array<ArrayBuffer>;
->           ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^: Uint8ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Uint8Array<ArrayBuffer>;
->           ^^^^^^^^^^: Uint8ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^: Uint8ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Uint8Array<ArrayBuffer>;
->                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     new (): Uint8Array<ArrayBuffer>;
->                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
 interface Uint8ClampedArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint8ClampedArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): Uint8ClampedArray<ArrayBuffer>;
->           ^^^^^^^^^^^^^^^^^: Uint8ClampedArrayConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^^^^^^^^: Uint8ClampedArrayConstructor   (TypeReference) (Identifier)
 
     new (): Uint8ClampedArray<ArrayBuffer>;
->           ^^^^^^^^^^^^^^^^^: Uint8ClampedArrayConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^^^^^^^^: Uint8ClampedArrayConstructor   (TypeReference) (Identifier)
 
     new (): Uint8ClampedArray<ArrayBuffer>;
->                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+>                             ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     new (): Uint8ClampedArray<ArrayBuffer>;
->                             ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+>                             ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
 interface Int16ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int16ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): Int16Array<ArrayBuffer>;
->           ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^: Int16ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Int16Array<ArrayBuffer>;
->           ^^^^^^^^^^: Int16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^: Int16ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Int16Array<ArrayBuffer>;
->                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     new (): Int16Array<ArrayBuffer>;
->                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
 interface Uint16ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint16ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): Uint16Array<ArrayBuffer>;
->           ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^^: Uint16ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Uint16Array<ArrayBuffer>;
->           ^^^^^^^^^^^: Uint16ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^^: Uint16ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Uint16Array<ArrayBuffer>;
->                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+>                       ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     new (): Uint16Array<ArrayBuffer>;
->                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
 interface Int32ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Int32ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): Int32Array<ArrayBuffer>;
->           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^: Int32ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Int32Array<ArrayBuffer>;
->           ^^^^^^^^^^: Int32ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^: Int32ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Int32Array<ArrayBuffer>;
->                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     new (): Int32Array<ArrayBuffer>;
->                      ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+>                      ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
 interface Uint32ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Uint32ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): Uint32Array<ArrayBuffer>;
->           ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^^: Uint32ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Uint32Array<ArrayBuffer>;
->           ^^^^^^^^^^^: Uint32ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^^: Uint32ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Uint32Array<ArrayBuffer>;
->                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+>                       ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     new (): Uint32Array<ArrayBuffer>;
->                       ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
 interface Float32ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float32ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): Float32Array<ArrayBuffer>;
->           ^^^^^^^^^^^^: Float32ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^^^: Float32ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Float32Array<ArrayBuffer>;
->           ^^^^^^^^^^^^: Float32ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^^^: Float32ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Float32Array<ArrayBuffer>;
->                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+>                        ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     new (): Float32Array<ArrayBuffer>;
->                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+>                        ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
 interface Float64ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface Float64ArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): Float64Array<ArrayBuffer>;
->           ^^^^^^^^^^^^: Float64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^^^: Float64ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Float64Array<ArrayBuffer>;
->           ^^^^^^^^^^^^: Float64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^^^: Float64ArrayConstructor   (TypeReference) (Identifier)
 
     new (): Float64Array<ArrayBuffer>;
->                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+>                        ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     new (): Float64Array<ArrayBuffer>;
->                        ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+>                        ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)

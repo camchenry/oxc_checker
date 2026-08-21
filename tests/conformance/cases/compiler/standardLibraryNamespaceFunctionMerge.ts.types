@@ -1,17 +1,17 @@
 declare namespace CSS {
->                 ^^^: typeof CSS   (TyTypeQuery) (TSModuleDeclaration)
+>                 ^^^: typeof CSS   (TypeQuery) (Identifier)
 
 declare namespace CSS {
->                 ^^^: typeof CSS   (TyTypeQuery) (BindingIdentifier)
+>                 ^^^: typeof CSS   (TypeQuery) (Identifier)
 
   function Hz(value: number): CSSUnitValue;
->          ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (TyObject) (BindingIdentifier)
+>          ^^: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }   (Object) (Identifier)
 
   function Hz(value: number): CSSUnitValue;
->             ^^^^^: number   (TyNumber) (BindingIdentifier)
+>             ^^^^^: number   (Number) (Identifier)
 
   function Hz(value: number): CSSUnitValue;
->                             ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (TSTypeReference)
+>                             ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (Object) (Identifier)
 
   function Hz(value: number): CSSUnitValue;
->                             ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (TyObject) (IdentifierReference)
+>                             ^^^^^^^^^^^^: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }   (Object) (Identifier)

@@ -1,50 +1,50 @@
 export const moduleMeta = import.meta;
->            ^^^^^^^^^^: ImportMeta   (TyTypeReference) (BindingIdentifier)
+>            ^^^^^^^^^^: ImportMeta   (TypeReference) (Identifier)
 
 export const moduleMeta = import.meta;
->                                ^^^^: ImportMeta   (TyTypeReference) (IdentifierName)
+>                                ^^^^: ImportMeta   (TypeReference) (Identifier)
 
 export const moduleMetaUrl = import.meta.url;
->            ^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>            ^^^^^^^^^^^^^: string   (String) (Identifier)
 
 export const moduleMetaUrl = import.meta.url;
->                                   ^^^^: ImportMeta   (TyTypeReference) (IdentifierName)
+>                                   ^^^^: ImportMeta   (TypeReference) (Identifier)
 
 export const moduleMetaUrl = import.meta.url;
->                                        ^^^: string   (TyString) (StaticMemberExpression)
+>                                        ^^^: string   (String) (Identifier)
 
 class Base {
->     ^^^^: typeof Base   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^: typeof Base   (TypeQuery) (Identifier)
 
     const baseTarget = new.target;
->         ^^^^^^^^^^: typeof Base   (TyTypeQuery) (BindingIdentifier)
+>         ^^^^^^^^^^: typeof Base   (TypeQuery) (Identifier)
 
     const baseTarget = new.target;
->                          ^^^^^^: typeof Base   (TyTypeQuery) (IdentifierName)
+>                          ^^^^^^: typeof Base   (TypeQuery) (Identifier)
 
     const baseArrowTarget = () => new.target;
->         ^^^^^^^^^^^^^^^: () => typeof Base   (TyFunction) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^: () => typeof Base   (Function) (Identifier)
 
     const baseArrowTarget = () => new.target;
->                                     ^^^^^^: typeof Base   (TyTypeQuery) (IdentifierName)
+>                                     ^^^^^^: typeof Base   (TypeQuery) (Identifier)
 
   method() {
-> ^^^^^^: () => void   (TyFunction) (MethodDefinition)
+> ^^^^^^: () => void   (Function) (Identifier)
 
     const methodTarget = new.target;
->         ^^^^^^^^^^^^: any   (TyError) (BindingIdentifier)
+>         ^^^^^^^^^^^^: any   (Error) (Identifier)
 
 function functionTarget() {
->        ^^^^^^^^^^^^^^: () => void   (TyFunction) (BindingIdentifier)
+>        ^^^^^^^^^^^^^^: () => void   (Function) (Identifier)
 
   const target = new.target;
->       ^^^^^^: () => void   (TyFunction) (BindingIdentifier)
+>       ^^^^^^: () => void   (Function) (Identifier)
 
   const target = new.target;
->                    ^^^^^^: () => void   (TyFunction) (IdentifierName)
+>                    ^^^^^^: () => void   (Function) (Identifier)
 
   const arrowTarget = () => new.target;
->       ^^^^^^^^^^^: () => () => void   (TyFunction) (BindingIdentifier)
+>       ^^^^^^^^^^^: () => () => void   (Function) (Identifier)
 
   const arrowTarget = () => new.target;
->                               ^^^^^^: () => void   (TyFunction) (IdentifierName)
+>                               ^^^^^^: () => void   (Function) (Identifier)

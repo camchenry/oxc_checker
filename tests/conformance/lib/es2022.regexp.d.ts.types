@@ -1,58 +1,58 @@
 interface RegExpMatchArray {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface RegExpMatchArray {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     indices?: RegExpIndicesArray;
->   ^^^^^^^: RegExpIndicesArray | undefined   (TyUnion) (TSPropertySignature)
+>   ^^^^^^^: RegExpIndicesArray | undefined   (Union) (Identifier)
 
     indices?: RegExpIndicesArray;
->             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     indices?: RegExpIndicesArray;
->             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>             ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface RegExpExecArray {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface RegExpExecArray {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     indices?: RegExpIndicesArray;
->   ^^^^^^^: RegExpIndicesArray | undefined   (TyUnion) (TSPropertySignature)
+>   ^^^^^^^: RegExpIndicesArray | undefined   (Union) (Identifier)
 
     indices?: RegExpIndicesArray;
->             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     indices?: RegExpIndicesArray;
->             ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>             ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
->                                    ^^^^^: ArrayConstructor   (TyTypeReference) (TSInterfaceHeritage)
+>                                    ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
 interface RegExpIndicesArray extends Array<[number, number] | undefined> {
->                                    ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                    ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
     groups?: {
->   ^^^^^^: { [key: string]: [number, number]; } | undefined   (TyUnion) (TSPropertySignature)
+>   ^^^^^^: { [key: string]: [number, number]; } | undefined   (Union) (Identifier)
 
         [key: string]: [number, number];
->        ^^^: string   (TyString) (TSIndexSignatureName)
+>        ^^^: string   (String) (Identifier)
 
 interface RegExp {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: RegExpConstructor
 
 interface RegExp {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
         expected: RegExpConstructor
 
     readonly hasIndices: boolean;
->            ^^^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+>            ^^^^^^^^^^: boolean   (Boolean) (Identifier)

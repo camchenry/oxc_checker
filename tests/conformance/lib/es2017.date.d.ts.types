@@ -1,29 +1,29 @@
 interface DateConstructor {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface DateConstructor {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
->   ^^^: { (year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; }   (TyObject) (TSMethodSignature)
+>   ^^^: { (year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; (year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number; }   (Object) (Identifier)
 
     UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
->       ^^^^: number   (TyNumber) (BindingIdentifier)
+>       ^^^^: number   (Number) (Identifier)
 
     UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
->                     ^^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                     ^^^^^^^^^^: number | undefined   (Union) (Identifier)
 
     UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
->                                          ^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                          ^^^^: number | undefined   (Union) (Identifier)
 
     UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
->                                                         ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                                         ^^^^^: number | undefined   (Union) (Identifier)
 
     UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
->                                                                         ^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                                                         ^^^^^^^: number | undefined   (Union) (Identifier)
 
     UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
->                                                                                           ^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                                                                           ^^^^^^^: number | undefined   (Union) (Identifier)
 
     UTC(year: number, monthIndex?: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
->                                                                                                             ^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                                                                                             ^^: number | undefined   (Union) (Identifier)

@@ -1,0 +1,69 @@
+{"path":"esnext.intl.d.ts","start":59,"end":63,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"esnext.intl.d.ts","start":59,"end":63,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"esnext.intl.d.ts","start":75,"end":100,"text":"FormattableTemporalObject","nodeType":"Identifier","type":{"name":"Union","display":"Temporal.PlainDate | Temporal.PlainYearMonth | Temporal.PlainMonthDay | Temporal.PlainTime | Temporal.PlainDateTime | Temporal.Instant"}}
+{"path":"esnext.intl.d.ts","start":103,"end":111,"text":"Temporal","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Temporal"}}
+{"path":"esnext.intl.d.ts","start":112,"end":121,"text":"PlainDate","nodeType":"Identifier","type":{"name":"TypeReference","display":"Temporal.PlainDate"}}
+{"path":"esnext.intl.d.ts","start":124,"end":132,"text":"Temporal","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Temporal"}}
+{"path":"esnext.intl.d.ts","start":133,"end":147,"text":"PlainYearMonth","nodeType":"Identifier","type":{"name":"TypeReference","display":"Temporal.PlainYearMonth"}}
+{"path":"esnext.intl.d.ts","start":150,"end":158,"text":"Temporal","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Temporal"}}
+{"path":"esnext.intl.d.ts","start":159,"end":172,"text":"PlainMonthDay","nodeType":"Identifier","type":{"name":"TypeReference","display":"Temporal.PlainMonthDay"}}
+{"path":"esnext.intl.d.ts","start":175,"end":183,"text":"Temporal","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Temporal"}}
+{"path":"esnext.intl.d.ts","start":184,"end":193,"text":"PlainTime","nodeType":"Identifier","type":{"name":"TypeReference","display":"Temporal.PlainTime"}}
+{"path":"esnext.intl.d.ts","start":196,"end":204,"text":"Temporal","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Temporal"}}
+{"path":"esnext.intl.d.ts","start":205,"end":218,"text":"PlainDateTime","nodeType":"Identifier","type":{"name":"TypeReference","display":"Temporal.PlainDateTime"}}
+{"path":"esnext.intl.d.ts","start":221,"end":229,"text":"Temporal","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Temporal"}}
+{"path":"esnext.intl.d.ts","start":230,"end":237,"text":"Instant","nodeType":"Identifier","type":{"name":"TypeReference","display":"Temporal.Instant"}}
+{"path":"esnext.intl.d.ts","start":254,"end":268,"text":"DateTimeFormat","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":254,"end":268,"text":"DateTimeFormat","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":279,"end":285,"text":"format","nodeType":"Identifier","type":{"name":"Object","display":"{ (date?: Date | number): string; (date?: FormattableTemporalObject | Date | number): string; (date?: FormattableTemporalObject | Date | number): string; }"}}
+{"path":"esnext.intl.d.ts","start":286,"end":290,"text":"date","nodeType":"Identifier","type":{"name":"Union","display":"FormattableTemporalObject | Date | number | undefined"}}
+{"path":"esnext.intl.d.ts","start":293,"end":318,"text":"FormattableTemporalObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":321,"end":325,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":321,"end":325,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":353,"end":366,"text":"formatToParts","nodeType":"Identifier","type":{"name":"Object","display":"{ (date?: Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; }"}}
+{"path":"esnext.intl.d.ts","start":367,"end":371,"text":"date","nodeType":"Identifier","type":{"name":"Union","display":"FormattableTemporalObject | Date | number | undefined"}}
+{"path":"esnext.intl.d.ts","start":374,"end":399,"text":"FormattableTemporalObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":402,"end":406,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":402,"end":406,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":418,"end":436,"text":"DateTimeFormatPart","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":418,"end":436,"text":"DateTimeFormatPart","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"esnext.intl.d.ts","start":448,"end":459,"text":"formatRange","nodeType":"Identifier","type":{"name":"Object","display":"{ (startDate: Date | number | bigint, endDate: Date | number | bigint): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): string; }"}}
+{"path":"esnext.intl.d.ts","start":460,"end":469,"text":"startDate","nodeType":"Identifier","type":{"name":"Union","display":"FormattableTemporalObject | Date | number"}}
+{"path":"esnext.intl.d.ts","start":471,"end":496,"text":"FormattableTemporalObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":499,"end":503,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":499,"end":503,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":514,"end":521,"text":"endDate","nodeType":"Identifier","type":{"name":"Union","display":"FormattableTemporalObject | Date | number"}}
+{"path":"esnext.intl.d.ts","start":523,"end":548,"text":"FormattableTemporalObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":551,"end":555,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":551,"end":555,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":583,"end":601,"text":"formatRangeToParts","nodeType":"Identifier","type":{"name":"Object","display":"{ (startDate: Date | number | bigint, endDate: Date | number | bigint): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; (startDate: FormattableTemporalObject | Date | number, endDate: FormattableTemporalObject | Date | number): DateTimeRangeFormatPart[]; }"}}
+{"path":"esnext.intl.d.ts","start":602,"end":611,"text":"startDate","nodeType":"Identifier","type":{"name":"Union","display":"FormattableTemporalObject | Date | number"}}
+{"path":"esnext.intl.d.ts","start":613,"end":638,"text":"FormattableTemporalObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":641,"end":645,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":641,"end":645,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":656,"end":663,"text":"endDate","nodeType":"Identifier","type":{"name":"Union","display":"FormattableTemporalObject | Date | number"}}
+{"path":"esnext.intl.d.ts","start":665,"end":690,"text":"FormattableTemporalObject","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":693,"end":697,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":693,"end":697,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
+{"path":"esnext.intl.d.ts","start":709,"end":732,"text":"DateTimeRangeFormatPart","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":709,"end":732,"text":"DateTimeRangeFormatPart","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"esnext.intl.d.ts","start":757,"end":763,"text":"Locale","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":757,"end":763,"text":"Locale","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":1029,"end":1041,"text":"getCalendars","nodeType":"Identifier","type":{"name":"Object","display":"{ (): string[]; (): string[]; }"}}
+{"path":"esnext.intl.d.ts","start":1307,"end":1320,"text":"getCollations","nodeType":"Identifier","type":{"name":"Object","display":"{ (): string[]; (): string[]; }"}}
+{"path":"esnext.intl.d.ts","start":1600,"end":1613,"text":"getHourCycles","nodeType":"Identifier","type":{"name":"Object","display":"{ (): string[]; (): string[]; }"}}
+{"path":"esnext.intl.d.ts","start":1905,"end":1924,"text":"getNumberingSystems","nodeType":"Identifier","type":{"name":"Object","display":"{ (): string[]; (): string[]; }"}}
+{"path":"esnext.intl.d.ts","start":2243,"end":2254,"text":"getTextInfo","nodeType":"Identifier","type":{"name":"Object","display":"{ (): TextInfo; (): TextInfo; }"}}
+{"path":"esnext.intl.d.ts","start":2258,"end":2266,"text":"TextInfo","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":2258,"end":2266,"text":"TextInfo","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":2512,"end":2524,"text":"getTimeZones","nodeType":"Identifier","type":{"name":"Object","display":"{ (): string[] | undefined; (): string[] | undefined; }"}}
+{"path":"esnext.intl.d.ts","start":2842,"end":2853,"text":"getWeekInfo","nodeType":"Identifier","type":{"name":"Object","display":"{ (): WeekInfo; (): WeekInfo; }"}}
+{"path":"esnext.intl.d.ts","start":2857,"end":2865,"text":"WeekInfo","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":2857,"end":2865,"text":"WeekInfo","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":3184,"end":3192,"text":"TextInfo","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":3184,"end":3192,"text":"TextInfo","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":3512,"end":3521,"text":"direction","nodeType":"Identifier","type":{"name":"Union","display":"\"ltr\" | \"rtl\" | undefined"}}
+{"path":"esnext.intl.d.ts","start":3841,"end":3849,"text":"WeekInfo","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":3841,"end":3849,"text":"WeekInfo","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.intl.d.ts","start":4170,"end":4178,"text":"firstDay","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"esnext.intl.d.ts","start":4464,"end":4471,"text":"weekend","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}

@@ -1,0 +1,118 @@
+{"path":"compiler/symbolGenericCalls.ts::explicit.ts","start":20,"end":36,"text":"explicitIdentity","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => T"}}
+{"path":"compiler/symbolGenericCalls.ts::explicit.ts","start":37,"end":38,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::explicit.ts","start":40,"end":45,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::explicit.ts","start":47,"end":48,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::explicit.ts","start":59,"end":64,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::explicit.ts","start":74,"end":88,"text":"explicitResult","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolGenericCalls.ts::explicit.ts","start":91,"end":107,"text":"explicitIdentity","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => T"}}
+{"path":"compiler/symbolGenericCalls.ts::object.ts","start":20,"end":29,"text":"objectBox","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => { value: T; }"}}
+{"path":"compiler/symbolGenericCalls.ts::object.ts","start":30,"end":31,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::object.ts","start":33,"end":38,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::object.ts","start":40,"end":41,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::object.ts","start":54,"end":59,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::object.ts","start":54,"end":59,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::object.ts","start":71,"end":83,"text":"objectResult","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}
+{"path":"compiler/symbolGenericCalls.ts::object.ts","start":86,"end":95,"text":"objectBox","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => { value: T; }"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":16,"end":25,"text":"ResultBox","nodeType":"Identifier","type":{"name":"Object","display":"{ value: T; }"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":26,"end":27,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":33,"end":38,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":40,"end":41,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":54,"end":66,"text":"referenceBox","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => ResultBox<T>"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":67,"end":68,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":70,"end":75,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":77,"end":78,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":81,"end":90,"text":"ResultBox","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":91,"end":92,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":105,"end":110,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":105,"end":110,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":122,"end":133,"text":"explicitBox","nodeType":"Identifier","type":{"name":"TypeReference","display":"ResultBox<string>"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":135,"end":144,"text":"ResultBox","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":157,"end":162,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":180,"end":191,"text":"inferredBox","nodeType":"Identifier","type":{"name":"TypeReference","display":"ResultBox<number>"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":194,"end":206,"text":"referenceBox","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => ResultBox<T>"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":219,"end":228,"text":"calledBox","nodeType":"Identifier","type":{"name":"TypeReference","display":"ResultBox<string>"}}
+{"path":"compiler/symbolGenericCalls.ts::references.ts","start":231,"end":243,"text":"referenceBox","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => ResultBox<T>"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":21,"end":32,"text":"ConstraintA","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":21,"end":32,"text":"ConstraintA","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":35,"end":36,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":61,"end":72,"text":"constraintA","nodeType":"Identifier","type":{"name":"TypeReference","display":"ConstraintA"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":74,"end":85,"text":"ConstraintA","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":74,"end":85,"text":"ConstraintA","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":101,"end":125,"text":"constrainedFunctionValue","nodeType":"Identifier","type":{"name":"Function","display":"<T extends ConstraintA>(value: T) => T"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":128,"end":129,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":138,"end":149,"text":"ConstraintA","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":138,"end":149,"text":"ConstraintA","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":151,"end":156,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":158,"end":159,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":164,"end":165,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":184,"end":203,"text":"constrainedFunction","nodeType":"Identifier","type":{"name":"Function","display":"<T extends ConstraintA, U extends T = T>(value?: T, other?: U) => [T, U]"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":204,"end":205,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":214,"end":225,"text":"ConstraintA","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":214,"end":225,"text":"ConstraintA","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":227,"end":228,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":237,"end":238,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":241,"end":242,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":244,"end":249,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"T | undefined"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":252,"end":253,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":255,"end":260,"text":"other","nodeType":"Identifier","type":{"name":"Union","display":"U | undefined"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":263,"end":264,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":268,"end":269,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":271,"end":272,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":292,"end":312,"text":"fallbackToConstraint","nodeType":"Identifier","type":{"name":"Function","display":"<T extends string>() => T"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":313,"end":314,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":334,"end":335,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":343,"end":357,"text":"fromConstraint","nodeType":"Identifier","type":{"name":"Tuple","display":"[ConstraintA, ConstraintA]"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":360,"end":379,"text":"constrainedFunction","nodeType":"Identifier","type":{"name":"Function","display":"<T extends ConstraintA, U extends T = T>(value?: T, other?: U) => [T, U]"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":389,"end":412,"text":"fromConstraintInference","nodeType":"Identifier","type":{"name":"Tuple","display":"[ConstraintA, ConstraintA]"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":415,"end":434,"text":"constrainedFunction","nodeType":"Identifier","type":{"name":"Function","display":"<T extends ConstraintA, U extends T = T>(value?: T, other?: U) => [T, U]"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":435,"end":446,"text":"constraintA","nodeType":"Identifier","type":{"name":"TypeReference","display":"ConstraintA"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":455,"end":471,"text":"stringConstraint","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/symbolGenericCalls.ts::constraints.ts","start":474,"end":494,"text":"fallbackToConstraint","nodeType":"Identifier","type":{"name":"Function","display":"<T extends string>() => T"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":17,"end":31,"text":"GenericCallFoo","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof GenericCallFoo"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":36,"end":43,"text":"doThing","nodeType":"Identifier","type":{"name":"Function","display":"(value: { a: number; }) => { b: number; }"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":44,"end":49,"text":"value","nodeType":"Identifier","type":{"name":"Object","display":"{ a: number; }"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":53,"end":54,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":77,"end":78,"text":"b","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":80,"end":85,"text":"value","nodeType":"Identifier","type":{"name":"Object","display":"{ a: number; }"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":86,"end":87,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":101,"end":114,"text":"classInstance","nodeType":"Identifier","type":{"name":"TypeReference","display":"GenericCallFoo"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":121,"end":135,"text":"GenericCallFoo","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof GenericCallFoo"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":145,"end":162,"text":"classMethodResult","nodeType":"Identifier","type":{"name":"Object","display":"{ b: number; }"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":165,"end":178,"text":"classInstance","nodeType":"Identifier","type":{"name":"TypeReference","display":"GenericCallFoo"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":179,"end":186,"text":"doThing","nodeType":"Identifier","type":{"name":"Function","display":"(value: { a: number; }) => { b: number; }"}}
+{"path":"compiler/symbolGenericCalls.ts::class.ts","start":189,"end":190,"text":"a","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericCalls.ts::inference.ts","start":20,"end":36,"text":"inferredIdentity","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => T"}}
+{"path":"compiler/symbolGenericCalls.ts::inference.ts","start":37,"end":38,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::inference.ts","start":40,"end":45,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::inference.ts","start":47,"end":48,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::inference.ts","start":59,"end":64,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::inference.ts","start":74,"end":88,"text":"inferredNumber","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"123"}}
+{"path":"compiler/symbolGenericCalls.ts::inference.ts","start":91,"end":107,"text":"inferredIdentity","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => T"}}
+{"path":"compiler/symbolGenericCalls.ts::inference.ts","start":120,"end":134,"text":"inferredString","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"test\""}}
+{"path":"compiler/symbolGenericCalls.ts::inference.ts","start":137,"end":153,"text":"inferredIdentity","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => T"}}
+{"path":"compiler/symbolGenericCalls.ts::inference.ts","start":169,"end":184,"text":"inferredBoolean","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/symbolGenericCalls.ts::inference.ts","start":187,"end":203,"text":"inferredIdentity","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T) => T"}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":20,"end":27,"text":"nonNull","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | null | undefined) => NonNullable<T>"}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":28,"end":29,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":31,"end":36,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"T | null | undefined"}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":38,"end":39,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":69,"end":74,"text":"value","nodeType":"Identifier","type":{"name":"Union","display":"T | null | undefined"}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":85,"end":98,"text":"nonNullString","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"hello\""}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":101,"end":108,"text":"nonNull","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | null | undefined) => NonNullable<T>"}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":125,"end":141,"text":"nonNullUndefined","nodeType":"Identifier","type":{"name":"Never","display":"never"}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":144,"end":151,"text":"nonNull","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | null | undefined) => NonNullable<T>"}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":152,"end":161,"text":"undefined","nodeType":"Identifier","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":170,"end":183,"text":"nonNullNumber","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/symbolGenericCalls.ts::nonNull.ts","start":186,"end":193,"text":"nonNull","nodeType":"Identifier","type":{"name":"Function","display":"<T>(value: T | null | undefined) => NonNullable<T>"}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":28,"end":39,"text":"genericPick","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(value: T[]): T; <T>(value: T): T; }"}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":40,"end":41,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":43,"end":48,"text":"value","nodeType":"Identifier","type":{"name":"Array","display":"T[]"}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":50,"end":51,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":56,"end":57,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":76,"end":87,"text":"genericPick","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(value: T[]): T; <T>(value: T): T; }"}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":88,"end":89,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":91,"end":96,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":98,"end":99,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":102,"end":103,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":111,"end":132,"text":"genericOverloadResult","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/symbolGenericCalls.ts::genericOverload.ts","start":135,"end":146,"text":"genericPick","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(value: T[]): T; <T>(value: T): T; }"}}

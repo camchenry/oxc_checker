@@ -1,0 +1,10 @@
+{"path":"compiler/importExpression.ts::module.ts","start":13,"end":19,"text":"answer","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"42"}}
+{"path":"compiler/importExpression.ts::main.ts","start":6,"end":19,"text":"modulePromise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<typeof import(\"./module.ts\")>"}}
+{"path":"compiler/importExpression.ts::main.ts","start":51,"end":66,"text":"moduleNamespace","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof import(\"./module.ts\")"}}
+{"path":"compiler/importExpression.ts::main.ts","start":75,"end":88,"text":"modulePromise","nodeType":"Identifier","type":{"name":"TypeReference","display":"Promise<typeof import(\"./module.ts\")>"}}
+{"path":"compiler/importExpression.ts::main.ts","start":96,"end":110,"text":"importedAnswer","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"42"}}
+{"path":"compiler/importExpression.ts::main.ts","start":113,"end":128,"text":"moduleNamespace","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof import(\"./module.ts\")"}}
+{"path":"compiler/importExpression.ts::main.ts","start":129,"end":135,"text":"answer","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"42"}}
+{"path":"compiler/importExpression.ts::main.ts","start":143,"end":158,"text":"importedDefault","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"default\""}}
+{"path":"compiler/importExpression.ts::main.ts","start":161,"end":176,"text":"moduleNamespace","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof import(\"./module.ts\")"}}
+{"path":"compiler/importExpression.ts::main.ts","start":177,"end":184,"text":"default","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"default\""}}

@@ -1,56 +1,56 @@
 interface PromiseConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface PromiseConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->   ^^^: { <T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>; <T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
+>   ^^^: { <T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>; <T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>; }   (Object) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->       ^: any   (TyAny) (TSTypeParameter)
+>       ^: any   (Any) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->          ^: any   (TyAny) (TSTypeParameter)
+>          ^: any   (Any) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                               ^^^^^^^^^^: (...args: U) => T | PromiseLike<T>   (TyFunction) (BindingIdentifier)
+>                               ^^^^^^^^^^: (...args: U) => T | PromiseLike<T>   (Function) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                               ^^^^: U   (TyTypeReference) (BindingIdentifier)
+>                                               ^^^^: U   (TypeReference) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                           ^: any   (TyAny) (TSTypeReference)
+>                                                           ^: any   (Any) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                               ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                               ^^^^^^^^^^^: any   (Any) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                               ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                               ^^^^^^^^^^^: any   (Error) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                                           ^: any   (TyAny) (TSTypeReference)
+>                                                                           ^: any   (Any) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                                                  ^^^^: U   (TyTypeReference) (BindingIdentifier)
+>                                                                                  ^^^^: U   (TypeReference) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                                                        ^: any   (TyAny) (TSTypeReference)
+>                                                                                        ^: any   (Any) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                                                            ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                                                                            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                                                            ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                                                                            ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                                                                    ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                    ^^^^^^^: any   (Any) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                                                                    ^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                                    ^^^^^^^: any   (Error) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                                                                            ^: any   (TyAny) (TSTypeReference)
+>                                                                                                            ^: any   (Any) (Identifier)

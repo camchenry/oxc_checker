@@ -1,173 +1,173 @@
 type IsString = (value: unknown) => value is string;
->    ^^^^^^^^: (value: unknown) => value is string   (TyFunction) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: (value: unknown) => value is string   (Function) (Identifier)
 
 type IsString = (value: unknown) => value is string;
->                ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>                ^^^^^: unknown   (Unknown) (Identifier)
 
 type IsString = (value: unknown) => value is string;
->                                   ^^^^^: unknown   (TyUnknown) (IdentifierName)
+>                                   ^^^^^: unknown   (Unknown) (Identifier)
 
 type AssertString = (value: unknown) => asserts value is string;
->    ^^^^^^^^^^^^: (value: unknown) => asserts value is string   (TyFunction) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: (value: unknown) => asserts value is string   (Function) (Identifier)
 
 type AssertString = (value: unknown) => asserts value is string;
->                    ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>                    ^^^^^: unknown   (Unknown) (Identifier)
 
 type AssertString = (value: unknown) => asserts value is string;
->                                               ^^^^^: unknown   (TyUnknown) (IdentifierName)
+>                                               ^^^^^: unknown   (Unknown) (Identifier)
 
 type AssertValue = (value: unknown) => asserts value;
->    ^^^^^^^^^^^: (value: unknown) => asserts value   (TyFunction) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: (value: unknown) => asserts value   (Function) (Identifier)
 
 type AssertValue = (value: unknown) => asserts value;
->                   ^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>                   ^^^^^: unknown   (Unknown) (Identifier)
 
 type AssertValue = (value: unknown) => asserts value;
->                                              ^^^^^: unknown   (TyUnknown) (IdentifierName)
+>                                              ^^^^^: unknown   (Unknown) (Identifier)
 
 type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
->    ^^^^^^^^^^^: (this: { ready: boolean; }) => this is { ready: true; }   (TyFunction) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: (this: { ready: boolean; }) => this is { ready: true; }   (Function) (Identifier)
 
 type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
->                   ^^^^: { ready: boolean; }   (TyObject) (TSThisParameter)
+>                   ^^^^: { ready: boolean; }   (Object) (Identifier)
 
 type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
->                           ^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+>                           ^^^^^: boolean   (Boolean) (Identifier)
 
 type ThisIsReady = (this: { ready: boolean }) => this is { ready: true };
->                                                          ^^^^^: true   (TyBooleanLiteral) (TSPropertySignature)
+>                                                          ^^^^^: true   (BooleanLiteral) (Identifier)
 
 interface PredicateArray<T> {
->         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface PredicateArray<T> {
->         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface PredicateArray<T> {
->                        ^: any   (TyAny) (TSTypeParameter)
+>                        ^: any   (Any) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->   ^^^^^: <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S) => this is readonly S[]   (TyFunction) (TSMethodSignature)
+>   ^^^^^: <S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S) => this is readonly S[]   (Function) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->         ^: any   (TyAny) (TSTypeParameter)
+>         ^: any   (Any) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                   ^: any   (TyAny) (TSTypeReference)
+>                   ^: any   (Any) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                      ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => value is S   (TyFunction) (BindingIdentifier)
+>                      ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => value is S   (Function) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                  ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                  ^^^^^: T   (TypeReference) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                         ^: any   (TyAny) (TSTypeReference)
+>                                         ^: any   (Any) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                            ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                            ^^^^^: number   (Number) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                                           ^^^^^: readonly T[]   (TyArray) (BindingIdentifier)
+>                                                           ^^^^^: readonly T[]   (Array) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                                                           ^: any   (TyAny) (TSTypeReference)
+>                                                                           ^: any   (Any) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                                                                   ^^^^^: T   (TyTypeReference) (IdentifierName)
+>                                                                                   ^^^^^: T   (TypeReference) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                                                                            ^: any   (TyAny) (TSTypeReference)
+>                                                                                            ^: any   (Any) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                                                                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                                                                                 ^: any   (Any) (Identifier)
 
 interface MethodSignatureCoverage<T> {
->         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface MethodSignatureCoverage<T> {
->         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface MethodSignatureCoverage<T> {
->                                 ^: any   (TyAny) (TSTypeParameter)
+>                                 ^: any   (Any) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->   ^^^^^^: <U extends T>(this: MethodSignatureCoverage<T>, value: U) => value is U   (TyFunction) (TSMethodSignature)
+>   ^^^^^^: <U extends T>(this: MethodSignatureCoverage<T>, value: U) => value is U   (Function) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->          ^: any   (TyAny) (TSTypeParameter)
+>          ^: any   (Any) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->                    ^: any   (TyAny) (TSTypeReference)
+>                    ^: any   (Any) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->                       ^^^^: MethodSignatureCoverage<T>   (TyTypeReference) (TSThisParameter)
+>                       ^^^^: MethodSignatureCoverage<T>   (TypeReference) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->                             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->                             ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                             ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->                                                         ^^^^^: U   (TyTypeReference) (BindingIdentifier)
+>                                                         ^^^^^: U   (TypeReference) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->                                                                ^: any   (TyAny) (TSTypeReference)
+>                                                                ^: any   (Any) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->                                                                    ^^^^^: U   (TyTypeReference) (IdentifierName)
+>                                                                    ^^^^^: U   (TypeReference) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->                                                                             ^: any   (TyAny) (TSTypeReference)
+>                                                                             ^: any   (Any) (Identifier)
 
     overload(value: string): string;
->   ^^^^^^^^: { (value: string): string; (value: number): number; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (value: string): string; (value: number): number; }   (Object) (Identifier)
 
     overload(value: string): string;
->            ^^^^^: string   (TyString) (BindingIdentifier)
+>            ^^^^^: string   (String) (Identifier)
 
     overload(value: number): number;
->   ^^^^^^^^: { (value: string): string; (value: number): number; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (value: string): string; (value: number): number; }   (Object) (Identifier)
 
     overload(value: number): number;
->            ^^^^^: number   (TyNumber) (BindingIdentifier)
+>            ^^^^^: number   (Number) (Identifier)
 
 declare const methodSignatures: MethodSignatureCoverage<string>;
->             ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TypeReference) (Identifier)
 
 declare const methodSignatures: MethodSignatureCoverage<string>;
->                               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const methodSignatures: MethodSignatureCoverage<string>;
->                               ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                               ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const _narrow = methodSignatures.narrow("value");
->     ^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>     ^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _narrow = methodSignatures.narrow("value");
->               ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TyTypeReference) (IdentifierReference)
+>               ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TypeReference) (Identifier)
 
 const _narrow = methodSignatures.narrow("value");
->                                ^^^^^^: <U>(this: MethodSignatureCoverage<string>, value: U) => value is U   (TyFunction) (StaticMemberExpression)
+>                                ^^^^^^: <U>(this: MethodSignatureCoverage<string>, value: U) => value is U   (Function) (Identifier)
 
 const _stringOverload = methodSignatures.overload("value");
->     ^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const _stringOverload = methodSignatures.overload("value");
->                       ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TypeReference) (Identifier)
 
 const _stringOverload = methodSignatures.overload("value");
->                                        ^^^^^^^^: { (value: string): string; (value: number): number; }   (TyObject) (StaticMemberExpression)
+>                                        ^^^^^^^^: { (value: string): string; (value: number): number; }   (Object) (Identifier)
 
 const _numberOverload = methodSignatures.overload(1);
->     ^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const _numberOverload = methodSignatures.overload(1);
->                       ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^^^: MethodSignatureCoverage<string>   (TypeReference) (Identifier)
 
 const _numberOverload = methodSignatures.overload(1);
->                                        ^^^^^^^^: { (value: string): string; (value: number): number; }   (TyObject) (StaticMemberExpression)
+>                                        ^^^^^^^^: { (value: string): string; (value: number): number; }   (Object) (Identifier)

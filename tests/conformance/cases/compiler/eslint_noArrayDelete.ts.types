@@ -1,20 +1,20 @@
 declare const arr: number[];
->             ^^^: number[]   (TyArray) (BindingIdentifier)
+>             ^^^: number[]   (Array) (Identifier)
 
 delete arr[0];
->^^^^^^^^^^^^^^: boolean   (TyBoolean) (ExpressionStatement)
+>^^^^^^^^^^^^^^: boolean   (Boolean) (ExpressionStatement)
 
 delete arr[0];
->      ^^^: number[]   (TyArray) (IdentifierReference)
+>      ^^^: number[]   (Array) (Identifier)
 
 declare const arr: number[];
->             ^^^: number[]   (TyArray) (BindingIdentifier)
+>             ^^^: number[]   (Array) (Identifier)
 
 arr.splice(0, 1);
->^^^: number[]   (TyArray) (IdentifierReference)
+>^^^: number[]   (Array) (Identifier)
 
 arr.splice(0, 1);
->^^^^^^^^^^^^^^^^^: number[]   (TyArray) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^: number[]   (Array) (ExpressionStatement)
 
 arr.splice(0, 1);
->   ^^^^^^: { (start: number, deleteCount?: number): number[]; (start: number, deleteCount: number, ...items: number[]): number[]; }   (TyObject) (StaticMemberExpression)
+>   ^^^^^^: { (start: number, deleteCount?: number): number[]; (start: number, deleteCount: number, ...items: number[]): number[]; }   (Object) (Identifier)

@@ -1,0 +1,17 @@
+{"path":"compiler/callbackReturnInference.ts","start":18,"end":29,"text":"useCallback","nodeType":"Identifier","type":{"name":"Function","display":"<T>(callback: () => T) => T"}}
+{"path":"compiler/callbackReturnInference.ts","start":30,"end":31,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/callbackReturnInference.ts","start":33,"end":41,"text":"callback","nodeType":"Identifier","type":{"name":"Function","display":"() => T"}}
+{"path":"compiler/callbackReturnInference.ts","start":49,"end":50,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/callbackReturnInference.ts","start":53,"end":54,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/callbackReturnInference.ts","start":73,"end":82,"text":"configure","nodeType":"Identifier","type":{"name":"Function","display":"<T>(options: { create: () => T; }) => T"}}
+{"path":"compiler/callbackReturnInference.ts","start":83,"end":84,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/callbackReturnInference.ts","start":86,"end":93,"text":"options","nodeType":"Identifier","type":{"name":"Object","display":"{ create: () => T; }"}}
+{"path":"compiler/callbackReturnInference.ts","start":97,"end":103,"text":"create","nodeType":"Identifier","type":{"name":"Function","display":"() => T"}}
+{"path":"compiler/callbackReturnInference.ts","start":111,"end":112,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/callbackReturnInference.ts","start":117,"end":118,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/callbackReturnInference.ts","start":127,"end":140,"text":"callbackValue","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/callbackReturnInference.ts","start":143,"end":154,"text":"useCallback","nodeType":"Identifier","type":{"name":"Function","display":"<T>(callback: () => T) => T"}}
+{"path":"compiler/callbackReturnInference.ts","start":171,"end":190,"text":"objectCallbackValue","nodeType":"Identifier","type":{"name":"Object","display":"{ value: number; }"}}
+{"path":"compiler/callbackReturnInference.ts","start":193,"end":202,"text":"configure","nodeType":"Identifier","type":{"name":"Function","display":"<T>(options: { create: () => T; }) => T"}}
+{"path":"compiler/callbackReturnInference.ts","start":205,"end":211,"text":"create","nodeType":"Identifier","type":{"name":"Function","display":"() => { value: number; }"}}
+{"path":"compiler/callbackReturnInference.ts","start":222,"end":227,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}

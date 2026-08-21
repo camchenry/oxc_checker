@@ -1,11 +1,11 @@
 interface ArrayBufferConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ArrayBufferConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (): ArrayBuffer;
->           ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (TSTypeReference)
+>           ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     new (): ArrayBuffer;
->           ^^^^^^^^^^^: ArrayBufferConstructor   (TyTypeReference) (IdentifierReference)
+>           ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)

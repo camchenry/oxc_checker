@@ -1,110 +1,110 @@
 interface ObjectConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ObjectConstructor {
->         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
->   ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (Object) (Identifier)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
->          ^: any   (TyAny) (TSTypeParameter)
+>          ^: any   (Any) (Identifier)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
->             ^: { [s: string]: T; } | ArrayLike<T>   (TyUnion) (BindingIdentifier)
+>             ^: { [s: string]: T; } | ArrayLike<T>   (Union) (Identifier)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
->                   ^: string   (TyString) (TSIndexSignatureName)
+>                   ^: string   (String) (Identifier)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
->                                      ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^^^^^: any   (Any) (Identifier)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
->                                      ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                      ^^^^^^^^^: any   (Error) (Identifier)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
->                                                ^: any   (TyAny) (TSTypeReference)
+>                                                ^: any   (Any) (Identifier)
 
     values<T>(o: { [s: string]: T; } | ArrayLike<T>): T[];
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
     values(o: {}): any[];
->   ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }   (Object) (Identifier)
 
     values(o: {}): any[];
->          ^: {}   (TyObject) (BindingIdentifier)
+>          ^: {}   (Object) (Identifier)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
->   ^^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; }   (Object) (Identifier)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
->           ^: any   (TyAny) (TSTypeParameter)
+>           ^: any   (Any) (Identifier)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
->              ^: { [s: string]: T; } | ArrayLike<T>   (TyUnion) (BindingIdentifier)
+>              ^: { [s: string]: T; } | ArrayLike<T>   (Union) (Identifier)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
->                    ^: string   (TyString) (TSIndexSignatureName)
+>                    ^: string   (String) (Identifier)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
->                                ^: any   (TyAny) (TSTypeReference)
+>                                ^: any   (Any) (Identifier)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
->                                       ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                       ^^^^^^^^^: any   (Any) (Identifier)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
->                                       ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                       ^^^^^^^^^: any   (Error) (Identifier)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
->                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                 ^: any   (Any) (Identifier)
 
     entries<T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][];
->                                                               ^: any   (TyAny) (TSTypeReference)
+>                                                               ^: any   (Any) (Identifier)
 
     entries(o: {}): [string, any][];
->   ^^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; }   (Object) (Identifier)
 
     entries(o: {}): [string, any][];
->           ^: {}   (TyObject) (BindingIdentifier)
+>           ^: {}   (Object) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->   ^^^^^^^^^^^^^^^^^^^^^^^^^: { <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^: { <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; }   (Object) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                             ^: any   (TyAny) (TSTypeParameter)
+>                             ^: any   (Any) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                ^: T   (TyTypeReference) (BindingIdentifier)
+>                                ^: T   (TypeReference) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                          ^: any   (TyAny) (TSMappedType)
+>                                          ^: any   (Any) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                                         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                         ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                                         ^^^^^^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                         ^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                                                 ^: any   (Any) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                                                   ^: any   (Any) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                                                                               ^: string   (TyString) (TSIndexSignatureName)
+>                                                                                               ^: string   (String) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                                                                                           ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                                                           ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                                                                                           ^^^^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                                                           ^^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)

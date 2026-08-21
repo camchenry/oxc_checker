@@ -1,32 +1,32 @@
 type DefinedString = (string | null | undefined) & {};
->    ^^^^^^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^: string   (String) (Identifier)
 
 interface Container {
->         ^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^: any   (Any) (Identifier)
 
 interface Container {
->         ^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^: any   (Any) (Identifier)
 
   value: DefinedString;
-> ^^^^^: string   (TyString) (TSPropertySignature)
+> ^^^^^: string   (String) (Identifier)
 
   value: DefinedString;
->        ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>        ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const container: Container;
->             ^^^^^^^^^: Container   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^: Container   (TypeReference) (Identifier)
 
 declare const container: Container;
->                        ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^^^^^^: any   (Any) (Identifier)
 
 declare const container: Container;
->                        ^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                        ^^^^^^^^^: any   (Any) (Identifier)
 
 const _value = container.value;
->     ^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^: string   (String) (Identifier)
 
 const _value = container.value;
->              ^^^^^^^^^: Container   (TyTypeReference) (IdentifierReference)
+>              ^^^^^^^^^: Container   (TypeReference) (Identifier)
 
 const _value = container.value;
->                        ^^^^^: string   (TyString) (StaticMemberExpression)
+>                        ^^^^^: string   (String) (Identifier)

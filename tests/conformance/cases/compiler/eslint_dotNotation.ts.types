@@ -1,53 +1,53 @@
 class X {
->     ^: typeof X   (TyTypeQuery) (BindingIdentifier)
+>     ^: typeof X   (TypeQuery) (Identifier)
 
   private priv_prop = 123;
->         ^^^^^^^^^: number   (TyNumber) (PropertyDefinition)
+>         ^^^^^^^^^: number   (Number) (Identifier)
 
 const x = new X();
->     ^: X   (TyTypeReference) (BindingIdentifier)
+>     ^: X   (TypeReference) (Identifier)
 
 const x = new X();
->             ^: typeof X   (TyTypeQuery) (IdentifierReference)
+>             ^: typeof X   (TypeQuery) (Identifier)
 
 x['priv_prop'] = 123;
->^: X   (TyTypeReference) (IdentifierReference)
+>^: X   (TypeReference) (Identifier)
 
 x['priv_prop'] = 123;
->^^^^^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^: 123   (NumberLiteral) (ExpressionStatement)
 
 class X {
->     ^: typeof X   (TyTypeQuery) (BindingIdentifier)
+>     ^: typeof X   (TypeQuery) (Identifier)
 
   protected protected_prop = 123;
->           ^^^^^^^^^^^^^^: number   (TyNumber) (PropertyDefinition)
+>           ^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 const x = new X();
->     ^: X   (TyTypeReference) (BindingIdentifier)
+>     ^: X   (TypeReference) (Identifier)
 
 const x = new X();
->             ^: typeof X   (TyTypeQuery) (IdentifierReference)
+>             ^: typeof X   (TypeQuery) (Identifier)
 
 x['protected_prop'] = 123;
->^: X   (TyTypeReference) (IdentifierReference)
+>^: X   (TypeReference) (Identifier)
 
 x['protected_prop'] = 123;
->^^^^^^^^^^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^: 123   (NumberLiteral) (ExpressionStatement)
 
 class X {
->     ^: typeof X   (TyTypeQuery) (BindingIdentifier)
+>     ^: typeof X   (TypeQuery) (Identifier)
 
   [key: string]: number;
->  ^^^: string   (TyString) (TSIndexSignatureName)
+>  ^^^: string   (String) (Identifier)
 
 const x = new X();
->     ^: X   (TyTypeReference) (BindingIdentifier)
+>     ^: X   (TypeReference) (Identifier)
 
 const x = new X();
->             ^: typeof X   (TyTypeQuery) (IdentifierReference)
+>             ^: typeof X   (TypeQuery) (Identifier)
 
 x['hello'] = 123;
->^: X   (TyTypeReference) (IdentifierReference)
+>^: X   (TypeReference) (Identifier)
 
 x['hello'] = 123;
->^^^^^^^^^^^^^^^^^: 123   (TyNumberLiteral) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^: 123   (NumberLiteral) (ExpressionStatement)

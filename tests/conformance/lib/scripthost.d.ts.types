@@ -1,503 +1,503 @@
 interface ActiveXObject {
->         ^^^^^^^^^^^^^: ActiveXObject   (TyTypeReference) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^: ActiveXObject   (TypeReference) (Identifier)
 
 interface ActiveXObject {
->         ^^^^^^^^^^^^^: ActiveXObject   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^^^^^^^^: ActiveXObject   (TypeReference) (Identifier)
 
     new (s: string): any;
->        ^: string   (TyString) (BindingIdentifier)
+>        ^: string   (String) (Identifier)
 
 declare var ActiveXObject: ActiveXObject;
->           ^^^^^^^^^^^^^: ActiveXObject   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^^^^^^^^: ActiveXObject   (TypeReference) (Identifier)
 
 declare var ActiveXObject: ActiveXObject;
->                          ^^^^^^^^^^^^^: ActiveXObject   (TyTypeReference) (TSTypeReference)
+>                          ^^^^^^^^^^^^^: ActiveXObject   (TypeReference) (Identifier)
 
 declare var ActiveXObject: ActiveXObject;
->                          ^^^^^^^^^^^^^: ActiveXObject   (TyTypeReference) (IdentifierReference)
+>                          ^^^^^^^^^^^^^: ActiveXObject   (TypeReference) (Identifier)
 
 interface ITextWriter {
->         ^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface ITextWriter {
->         ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^: any   (Any) (Identifier)
 
     Write(s: string): void;
->   ^^^^^: { (s: string): void; (s: string): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (s: string): void; (s: string): void; }   (Object) (Identifier)
 
     Write(s: string): void;
->         ^: string   (TyString) (BindingIdentifier)
+>         ^: string   (String) (Identifier)
 
     WriteLine(s: string): void;
->   ^^^^^^^^^: { (s: string): void; (s: string): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^: { (s: string): void; (s: string): void; }   (Object) (Identifier)
 
     WriteLine(s: string): void;
->             ^: string   (TyString) (BindingIdentifier)
+>             ^: string   (String) (Identifier)
 
     Close(): void;
->   ^^^^^: { (): void; (): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (): void; (): void; }   (Object) (Identifier)
 
 interface TextStreamBase {
->         ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface TextStreamBase {
->         ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     Column: number;
->   ^^^^^^: number   (TyNumber) (TSPropertySignature)
+>   ^^^^^^: number   (Number) (Identifier)
 
     Line: number;
->   ^^^^: number   (TyNumber) (TSPropertySignature)
+>   ^^^^: number   (Number) (Identifier)
 
     Close(): void;
->   ^^^^^: { (): void; (): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (): void; (): void; }   (Object) (Identifier)
 
 interface TextStreamWriter extends TextStreamBase {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface TextStreamWriter extends TextStreamBase {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface TextStreamWriter extends TextStreamBase {
->                                  ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+>                                  ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface TextStreamWriter extends TextStreamBase {
->                                  ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                  ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     Write(s: string): void;
->   ^^^^^: { (s: string): void; (s: string): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (s: string): void; (s: string): void; }   (Object) (Identifier)
 
     Write(s: string): void;
->         ^: string   (TyString) (BindingIdentifier)
+>         ^: string   (String) (Identifier)
 
     WriteBlankLines(intLines: number): void;
->   ^^^^^^^^^^^^^^^: { (intLines: number): void; (intLines: number): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^: { (intLines: number): void; (intLines: number): void; }   (Object) (Identifier)
 
     WriteBlankLines(intLines: number): void;
->                   ^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>                   ^^^^^^^^: number   (Number) (Identifier)
 
     WriteLine(s: string): void;
->   ^^^^^^^^^: { (s: string): void; (s: string): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^: { (s: string): void; (s: string): void; }   (Object) (Identifier)
 
     WriteLine(s: string): void;
->             ^: string   (TyString) (BindingIdentifier)
+>             ^: string   (String) (Identifier)
 
 interface TextStreamReader extends TextStreamBase {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface TextStreamReader extends TextStreamBase {
->         ^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface TextStreamReader extends TextStreamBase {
->                                  ^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+>                                  ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface TextStreamReader extends TextStreamBase {
->                                  ^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                                  ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     Read(characters: number): string;
->   ^^^^: { (characters: number): string; (characters: number): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { (characters: number): string; (characters: number): string; }   (Object) (Identifier)
 
     Read(characters: number): string;
->        ^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>        ^^^^^^^^^^: number   (Number) (Identifier)
 
     ReadAll(): string;
->   ^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { (): string; (): string; }   (Object) (Identifier)
 
     ReadLine(): string;
->   ^^^^^^^^: { (): string; (): string; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (): string; (): string; }   (Object) (Identifier)
 
     Skip(characters: number): void;
->   ^^^^: { (characters: number): void; (characters: number): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { (characters: number): void; (characters: number): void; }   (Object) (Identifier)
 
     Skip(characters: number): void;
->        ^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>        ^^^^^^^^^^: number   (Number) (Identifier)
 
     SkipLine(): void;
->   ^^^^^^^^: { (): void; (): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (): void; (): void; }   (Object) (Identifier)
 
     AtEndOfLine: boolean;
->   ^^^^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+>   ^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
     AtEndOfStream: boolean;
->   ^^^^^^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+>   ^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 declare var WScript: {
->           ^^^^^^^: { Echo(s: any): void; StdErr: TextStreamWriter; StdOut: TextStreamWriter; Arguments: { length: number; Item(n: number): string; }; ScriptFullName: string; Quit(exitCode?: number): number; BuildVersion: number; FullName: string; Interactive: boolean; Name: string; Path: string; ScriptName: string; StdIn: TextStreamReader; Version: string; ConnectObject(objEventSource: any, strPrefix: string): void; CreateObject(strProgID: string, strPrefix?: string): any; DisconnectObject(obj: any): void; GetObject(strPathname: string, strProgID?: string, strPrefix?: string): any; Sleep(intTime: number): void; }   (TyObject) (BindingIdentifier)
+>           ^^^^^^^: { Echo(s: any): void; StdErr: TextStreamWriter; StdOut: TextStreamWriter; Arguments: { length: number; Item(n: number): string; }; ScriptFullName: string; Quit(exitCode?: number): number; BuildVersion: number; FullName: string; Interactive: boolean; Name: string; Path: string; ScriptName: string; StdIn: TextStreamReader; Version: string; ConnectObject(objEventSource: any, strPrefix: string): void; CreateObject(strProgID: string, strPrefix?: string): any; DisconnectObject(obj: any): void; GetObject(strPathname: string, strProgID?: string, strPrefix?: string): any; Sleep(intTime: number): void; }   (Object) (Identifier)
 
     Echo(s: any): void;
->   ^^^^: (s: any) => void   (TyFunction) (TSMethodSignature)
+>   ^^^^: (s: any) => void   (Function) (Identifier)
 
     Echo(s: any): void;
->        ^: any   (TyAny) (BindingIdentifier)
+>        ^: any   (Any) (Identifier)
 
     StdErr: TextStreamWriter;
->   ^^^^^^: TextStreamWriter   (TyTypeReference) (TSPropertySignature)
+>   ^^^^^^: TextStreamWriter   (TypeReference) (Identifier)
 
     StdErr: TextStreamWriter;
->           ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     StdErr: TextStreamWriter;
->           ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>           ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     StdOut: TextStreamWriter;
->   ^^^^^^: TextStreamWriter   (TyTypeReference) (TSPropertySignature)
+>   ^^^^^^: TextStreamWriter   (TypeReference) (Identifier)
 
     StdOut: TextStreamWriter;
->           ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     StdOut: TextStreamWriter;
->           ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>           ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     Arguments: { length: number; Item(n: number): string; };
->   ^^^^^^^^^: { length: number; Item(n: number): string; }   (TyObject) (TSPropertySignature)
+>   ^^^^^^^^^: { length: number; Item(n: number): string; }   (Object) (Identifier)
 
     Arguments: { length: number; Item(n: number): string; };
->                ^^^^^^: number   (TyNumber) (TSPropertySignature)
+>                ^^^^^^: number   (Number) (Identifier)
 
     Arguments: { length: number; Item(n: number): string; };
->                                ^^^^: (n: number) => string   (TyFunction) (TSMethodSignature)
+>                                ^^^^: (n: number) => string   (Function) (Identifier)
 
     Arguments: { length: number; Item(n: number): string; };
->                                     ^: number   (TyNumber) (BindingIdentifier)
+>                                     ^: number   (Number) (Identifier)
 
     ScriptFullName: string;
->   ^^^^^^^^^^^^^^: string   (TyString) (TSPropertySignature)
+>   ^^^^^^^^^^^^^^: string   (String) (Identifier)
 
     Quit(exitCode?: number): number;
->   ^^^^: (exitCode?: number) => number   (TyFunction) (TSMethodSignature)
+>   ^^^^: (exitCode?: number) => number   (Function) (Identifier)
 
     Quit(exitCode?: number): number;
->        ^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^^: number | undefined   (Union) (Identifier)
 
     BuildVersion: number;
->   ^^^^^^^^^^^^: number   (TyNumber) (TSPropertySignature)
+>   ^^^^^^^^^^^^: number   (Number) (Identifier)
 
     FullName: string;
->   ^^^^^^^^: string   (TyString) (TSPropertySignature)
+>   ^^^^^^^^: string   (String) (Identifier)
 
     Interactive: boolean;
->   ^^^^^^^^^^^: boolean   (TyBoolean) (TSPropertySignature)
+>   ^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
     Name: string;
->   ^^^^: string   (TyString) (TSPropertySignature)
+>   ^^^^: string   (String) (Identifier)
 
     Path: string;
->   ^^^^: string   (TyString) (TSPropertySignature)
+>   ^^^^: string   (String) (Identifier)
 
     ScriptName: string;
->   ^^^^^^^^^^: string   (TyString) (TSPropertySignature)
+>   ^^^^^^^^^^: string   (String) (Identifier)
 
     StdIn: TextStreamReader;
->   ^^^^^: TextStreamReader   (TyTypeReference) (TSPropertySignature)
+>   ^^^^^: TextStreamReader   (TypeReference) (Identifier)
 
     StdIn: TextStreamReader;
->          ^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>          ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     StdIn: TextStreamReader;
->          ^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>          ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     Version: string;
->   ^^^^^^^: string   (TyString) (TSPropertySignature)
+>   ^^^^^^^: string   (String) (Identifier)
 
     ConnectObject(objEventSource: any, strPrefix: string): void;
->   ^^^^^^^^^^^^^: (objEventSource: any, strPrefix: string) => void   (TyFunction) (TSMethodSignature)
+>   ^^^^^^^^^^^^^: (objEventSource: any, strPrefix: string) => void   (Function) (Identifier)
 
     ConnectObject(objEventSource: any, strPrefix: string): void;
->                 ^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                 ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     ConnectObject(objEventSource: any, strPrefix: string): void;
->                                      ^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>                                      ^^^^^^^^^: string   (String) (Identifier)
 
     CreateObject(strProgID: string, strPrefix?: string): any;
->   ^^^^^^^^^^^^: (strProgID: string, strPrefix?: string) => any   (TyFunction) (TSMethodSignature)
+>   ^^^^^^^^^^^^: (strProgID: string, strPrefix?: string) => any   (Function) (Identifier)
 
     CreateObject(strProgID: string, strPrefix?: string): any;
->                ^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>                ^^^^^^^^^: string   (String) (Identifier)
 
     CreateObject(strProgID: string, strPrefix?: string): any;
->                                   ^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>                                   ^^^^^^^^^: string | undefined   (Union) (Identifier)
 
     DisconnectObject(obj: any): void;
->   ^^^^^^^^^^^^^^^^: (obj: any) => void   (TyFunction) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^^: (obj: any) => void   (Function) (Identifier)
 
     DisconnectObject(obj: any): void;
->                    ^^^: any   (TyAny) (BindingIdentifier)
+>                    ^^^: any   (Any) (Identifier)
 
     GetObject(strPathname: string, strProgID?: string, strPrefix?: string): any;
->   ^^^^^^^^^: (strPathname: string, strProgID?: string, strPrefix?: string) => any   (TyFunction) (TSMethodSignature)
+>   ^^^^^^^^^: (strPathname: string, strProgID?: string, strPrefix?: string) => any   (Function) (Identifier)
 
     GetObject(strPathname: string, strProgID?: string, strPrefix?: string): any;
->             ^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>             ^^^^^^^^^^^: string   (String) (Identifier)
 
     GetObject(strPathname: string, strProgID?: string, strPrefix?: string): any;
->                                  ^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>                                  ^^^^^^^^^: string | undefined   (Union) (Identifier)
 
     GetObject(strPathname: string, strProgID?: string, strPrefix?: string): any;
->                                                      ^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>                                                      ^^^^^^^^^: string | undefined   (Union) (Identifier)
 
     Sleep(intTime: number): void;
->   ^^^^^: (intTime: number) => void   (TyFunction) (TSMethodSignature)
+>   ^^^^^: (intTime: number) => void   (Function) (Identifier)
 
     Sleep(intTime: number): void;
->         ^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>         ^^^^^^^: number   (Number) (Identifier)
 
 declare var WSH: typeof WScript;
->           ^^^: { Echo(s: any): void; StdErr: TextStreamWriter; StdOut: TextStreamWriter; Arguments: { length: number; Item(n: number): string; }; ScriptFullName: string; Quit(exitCode?: number): number; BuildVersion: number; FullName: string; Interactive: boolean; Name: string; Path: string; ScriptName: string; StdIn: TextStreamReader; Version: string; ConnectObject(objEventSource: any, strPrefix: string): void; CreateObject(strProgID: string, strPrefix?: string): any; DisconnectObject(obj: any): void; GetObject(strPathname: string, strProgID?: string, strPrefix?: string): any; Sleep(intTime: number): void; }   (TyObject) (BindingIdentifier)
+>           ^^^: { Echo(s: any): void; StdErr: TextStreamWriter; StdOut: TextStreamWriter; Arguments: { length: number; Item(n: number): string; }; ScriptFullName: string; Quit(exitCode?: number): number; BuildVersion: number; FullName: string; Interactive: boolean; Name: string; Path: string; ScriptName: string; StdIn: TextStreamReader; Version: string; ConnectObject(objEventSource: any, strPrefix: string): void; CreateObject(strProgID: string, strPrefix?: string): any; DisconnectObject(obj: any): void; GetObject(strPathname: string, strProgID?: string, strPrefix?: string): any; Sleep(intTime: number): void; }   (Object) (Identifier)
 
 declare var WSH: typeof WScript;
->                       ^^^^^^^: { Echo(s: any): void; StdErr: TextStreamWriter; StdOut: TextStreamWriter; Arguments: { length: number; Item(n: number): string; }; ScriptFullName: string; Quit(exitCode?: number): number; BuildVersion: number; FullName: string; Interactive: boolean; Name: string; Path: string; ScriptName: string; StdIn: TextStreamReader; Version: string; ConnectObject(objEventSource: any, strPrefix: string): void; CreateObject(strProgID: string, strPrefix?: string): any; DisconnectObject(obj: any): void; GetObject(strPathname: string, strProgID?: string, strPrefix?: string): any; Sleep(intTime: number): void; }   (TyObject) (IdentifierReference)
+>                       ^^^^^^^: { Echo(s: any): void; StdErr: TextStreamWriter; StdOut: TextStreamWriter; Arguments: { length: number; Item(n: number): string; }; ScriptFullName: string; Quit(exitCode?: number): number; BuildVersion: number; FullName: string; Interactive: boolean; Name: string; Path: string; ScriptName: string; StdIn: TextStreamReader; Version: string; ConnectObject(objEventSource: any, strPrefix: string): void; CreateObject(strProgID: string, strPrefix?: string): any; DisconnectObject(obj: any): void; GetObject(strPathname: string, strProgID?: string, strPrefix?: string): any; Sleep(intTime: number): void; }   (Object) (Identifier)
 
 declare class SafeArray<T = any> {
->             ^^^^^^^^^: typeof SafeArray   (TyTypeQuery) (BindingIdentifier)
+>             ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
                expected: { new <T = any>(): { SafeArray_typekey: SafeArray<T>; }; }
 
 declare class SafeArray<T = any> {
->                       ^: any   (TyAny) (TSTypeParameter)
+>                       ^: any   (Any) (Identifier)
 
     private SafeArray_typekey: SafeArray<T>;
->           ^^^^^^^^^^^^^^^^^: SafeArray<T>   (TyTypeReference) (PropertyDefinition)
+>           ^^^^^^^^^^^^^^^^^: SafeArray<T>   (TypeReference) (Identifier)
 
     private SafeArray_typekey: SafeArray<T>;
->                              ^^^^^^^^^: typeof SafeArray   (TyTypeQuery) (TSTypeReference)
+>                              ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
 
     private SafeArray_typekey: SafeArray<T>;
->                              ^^^^^^^^^: typeof SafeArray   (TyTypeQuery) (IdentifierReference)
+>                              ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
 
     private SafeArray_typekey: SafeArray<T>;
->                                        ^: any   (TyAny) (TSTypeReference)
+>                                        ^: any   (Any) (Identifier)
 
 interface Enumerator<T = any> {
->         ^^^^^^^^^^: EnumeratorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^: EnumeratorConstructor   (TypeReference) (Identifier)
 
 interface Enumerator<T = any> {
->         ^^^^^^^^^^: EnumeratorConstructor   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^^^^^: EnumeratorConstructor   (TypeReference) (Identifier)
 
 interface Enumerator<T = any> {
->                    ^: any   (TyAny) (TSTypeParameter)
+>                    ^: any   (Any) (Identifier)
 
     atEnd(): boolean;
->   ^^^^^: { (): boolean; (): boolean; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (): boolean; (): boolean; }   (Object) (Identifier)
 
     item(): T;
->   ^^^^: { (): T; (): T; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { (): T; (): T; }   (Object) (Identifier)
 
     item(): T;
->           ^: any   (TyAny) (TSTypeReference)
+>           ^: any   (Any) (Identifier)
 
     moveFirst(): void;
->   ^^^^^^^^^: { (): void; (): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^: { (): void; (): void; }   (Object) (Identifier)
 
     moveNext(): void;
->   ^^^^^^^^: { (): void; (): void; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (): void; (): void; }   (Object) (Identifier)
 
 interface EnumeratorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface EnumeratorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new <T = any>(safearray: SafeArray<T>): Enumerator<T>;
->        ^: any   (TyAny) (TSTypeParameter)
+>        ^: any   (Any) (Identifier)
 
     new <T = any>(safearray: SafeArray<T>): Enumerator<T>;
->                 ^^^^^^^^^: SafeArray<T>   (TyTypeReference) (BindingIdentifier)
+>                 ^^^^^^^^^: SafeArray<T>   (TypeReference) (Identifier)
 
     new <T = any>(safearray: SafeArray<T>): Enumerator<T>;
->                            ^^^^^^^^^: typeof SafeArray   (TyTypeQuery) (TSTypeReference)
+>                            ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
 
     new <T = any>(safearray: SafeArray<T>): Enumerator<T>;
->                            ^^^^^^^^^: typeof SafeArray   (TyTypeQuery) (IdentifierReference)
+>                            ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
 
     new <T = any>(safearray: SafeArray<T>): Enumerator<T>;
->                                      ^: any   (TyAny) (TSTypeReference)
+>                                      ^: any   (Any) (Identifier)
 
     new <T = any>(safearray: SafeArray<T>): Enumerator<T>;
->                                           ^^^^^^^^^^: EnumeratorConstructor   (TyTypeReference) (TSTypeReference)
+>                                           ^^^^^^^^^^: EnumeratorConstructor   (TypeReference) (Identifier)
 
     new <T = any>(safearray: SafeArray<T>): Enumerator<T>;
->                                           ^^^^^^^^^^: EnumeratorConstructor   (TyTypeReference) (IdentifierReference)
+>                                           ^^^^^^^^^^: EnumeratorConstructor   (TypeReference) (Identifier)
 
     new <T = any>(safearray: SafeArray<T>): Enumerator<T>;
->                                                      ^: any   (TyAny) (TSTypeReference)
+>                                                      ^: any   (Any) (Identifier)
 
     new <T = any>(collection: { Item(index: any): T; }): Enumerator<T>;
->        ^: any   (TyAny) (TSTypeParameter)
+>        ^: any   (Any) (Identifier)
 
     new <T = any>(collection: { Item(index: any): T; }): Enumerator<T>;
->                 ^^^^^^^^^^: { Item(index: any): T; }   (TyObject) (BindingIdentifier)
+>                 ^^^^^^^^^^: { Item(index: any): T; }   (Object) (Identifier)
 
     new <T = any>(collection: { Item(index: any): T; }): Enumerator<T>;
->                               ^^^^: (index: any) => T   (TyFunction) (TSMethodSignature)
+>                               ^^^^: (index: any) => T   (Function) (Identifier)
 
     new <T = any>(collection: { Item(index: any): T; }): Enumerator<T>;
->                                    ^^^^^: any   (TyAny) (BindingIdentifier)
+>                                    ^^^^^: any   (Any) (Identifier)
 
     new <T = any>(collection: { Item(index: any): T; }): Enumerator<T>;
->                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                 ^: any   (Any) (Identifier)
 
     new <T = any>(collection: { Item(index: any): T; }): Enumerator<T>;
->                                                        ^^^^^^^^^^: EnumeratorConstructor   (TyTypeReference) (TSTypeReference)
+>                                                        ^^^^^^^^^^: EnumeratorConstructor   (TypeReference) (Identifier)
 
     new <T = any>(collection: { Item(index: any): T; }): Enumerator<T>;
->                                                        ^^^^^^^^^^: EnumeratorConstructor   (TyTypeReference) (IdentifierReference)
+>                                                        ^^^^^^^^^^: EnumeratorConstructor   (TypeReference) (Identifier)
 
     new <T = any>(collection: { Item(index: any): T; }): Enumerator<T>;
->                                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                                   ^: any   (Any) (Identifier)
 
     new <T = any>(collection: any): Enumerator<T>;
->        ^: any   (TyAny) (TSTypeParameter)
+>        ^: any   (Any) (Identifier)
 
     new <T = any>(collection: any): Enumerator<T>;
->                 ^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>                 ^^^^^^^^^^: any   (Any) (Identifier)
 
     new <T = any>(collection: any): Enumerator<T>;
->                                   ^^^^^^^^^^: EnumeratorConstructor   (TyTypeReference) (TSTypeReference)
+>                                   ^^^^^^^^^^: EnumeratorConstructor   (TypeReference) (Identifier)
 
     new <T = any>(collection: any): Enumerator<T>;
->                                   ^^^^^^^^^^: EnumeratorConstructor   (TyTypeReference) (IdentifierReference)
+>                                   ^^^^^^^^^^: EnumeratorConstructor   (TypeReference) (Identifier)
 
     new <T = any>(collection: any): Enumerator<T>;
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
 declare var Enumerator: EnumeratorConstructor;
->           ^^^^^^^^^^: EnumeratorConstructor   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^^^^^: EnumeratorConstructor   (TypeReference) (Identifier)
 
 declare var Enumerator: EnumeratorConstructor;
->                       ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare var Enumerator: EnumeratorConstructor;
->                       ^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface VBArray<T = any> {
->         ^^^^^^^: VBArrayConstructor   (TyTypeReference) (TSInterfaceDeclaration)
+>         ^^^^^^^: VBArrayConstructor   (TypeReference) (Identifier)
 
 interface VBArray<T = any> {
->         ^^^^^^^: VBArrayConstructor   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^^: VBArrayConstructor   (TypeReference) (Identifier)
 
 interface VBArray<T = any> {
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
     dimensions(): number;
->   ^^^^^^^^^^: { (): number; (): number; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^: { (): number; (): number; }   (Object) (Identifier)
 
     getItem(dimension1Index: number, ...dimensionNIndexes: number[]): T;
->   ^^^^^^^: { (dimension1Index: number, ...dimensionNIndexes: number[]): T; (dimension1Index: number, ...dimensionNIndexes: number[]): T; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { (dimension1Index: number, ...dimensionNIndexes: number[]): T; (dimension1Index: number, ...dimensionNIndexes: number[]): T; }   (Object) (Identifier)
 
     getItem(dimension1Index: number, ...dimensionNIndexes: number[]): T;
->           ^^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+>           ^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     getItem(dimension1Index: number, ...dimensionNIndexes: number[]): T;
->                                       ^^^^^^^^^^^^^^^^^: number[]   (TyArray) (BindingIdentifier)
+>                                       ^^^^^^^^^^^^^^^^^: number[]   (Array) (Identifier)
 
     getItem(dimension1Index: number, ...dimensionNIndexes: number[]): T;
->                                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                                     ^: any   (Any) (Identifier)
 
     lbound(dimension?: number): number;
->   ^^^^^^: { (dimension?: number): number; (dimension?: number): number; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^: { (dimension?: number): number; (dimension?: number): number; }   (Object) (Identifier)
 
     lbound(dimension?: number): number;
->          ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>          ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
     ubound(dimension?: number): number;
->   ^^^^^^: { (dimension?: number): number; (dimension?: number): number; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^: { (dimension?: number): number; (dimension?: number): number; }   (Object) (Identifier)
 
     ubound(dimension?: number): number;
->          ^^^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>          ^^^^^^^^^: number | undefined   (Union) (Identifier)
 
     toArray(): T[];
->   ^^^^^^^: { (): T[]; (): T[]; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^: { (): T[]; (): T[]; }   (Object) (Identifier)
 
     toArray(): T[];
->              ^: any   (TyAny) (TSTypeReference)
+>              ^: any   (Any) (Identifier)
 
 interface VBArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface VBArrayConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new <T = any>(safeArray: SafeArray<T>): VBArray<T>;
->        ^: any   (TyAny) (TSTypeParameter)
+>        ^: any   (Any) (Identifier)
 
     new <T = any>(safeArray: SafeArray<T>): VBArray<T>;
->                 ^^^^^^^^^: SafeArray<T>   (TyTypeReference) (BindingIdentifier)
+>                 ^^^^^^^^^: SafeArray<T>   (TypeReference) (Identifier)
 
     new <T = any>(safeArray: SafeArray<T>): VBArray<T>;
->                            ^^^^^^^^^: typeof SafeArray   (TyTypeQuery) (TSTypeReference)
+>                            ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
 
     new <T = any>(safeArray: SafeArray<T>): VBArray<T>;
->                            ^^^^^^^^^: typeof SafeArray   (TyTypeQuery) (IdentifierReference)
+>                            ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
 
     new <T = any>(safeArray: SafeArray<T>): VBArray<T>;
->                                      ^: any   (TyAny) (TSTypeReference)
+>                                      ^: any   (Any) (Identifier)
 
     new <T = any>(safeArray: SafeArray<T>): VBArray<T>;
->                                           ^^^^^^^: VBArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                                           ^^^^^^^: VBArrayConstructor   (TypeReference) (Identifier)
 
     new <T = any>(safeArray: SafeArray<T>): VBArray<T>;
->                                           ^^^^^^^: VBArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                           ^^^^^^^: VBArrayConstructor   (TypeReference) (Identifier)
 
     new <T = any>(safeArray: SafeArray<T>): VBArray<T>;
->                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                   ^: any   (Any) (Identifier)
 
 declare var VBArray: VBArrayConstructor;
->           ^^^^^^^: VBArrayConstructor   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^^: VBArrayConstructor   (TypeReference) (Identifier)
 
 declare var VBArray: VBArrayConstructor;
->                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare var VBArray: VBArrayConstructor;
->                    ^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                    ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare class VarDate {
->             ^^^^^^^: typeof VarDate   (TyTypeQuery) (BindingIdentifier)
+>             ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
              expected: { new (): { VarDate_typekey: VarDate; }; }
 
     private VarDate_typekey: VarDate;
->           ^^^^^^^^^^^^^^^: VarDate   (TyTypeReference) (PropertyDefinition)
+>           ^^^^^^^^^^^^^^^: VarDate   (TypeReference) (Identifier)
 
     private VarDate_typekey: VarDate;
->                            ^^^^^^^: typeof VarDate   (TyTypeQuery) (TSTypeReference)
+>                            ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
 
     private VarDate_typekey: VarDate;
->                            ^^^^^^^: typeof VarDate   (TyTypeQuery) (IdentifierReference)
+>                            ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
 
 interface DateConstructor {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface DateConstructor {
->         ^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (vd: VarDate): Date;
->        ^^: VarDate   (TyTypeReference) (BindingIdentifier)
+>        ^^: VarDate   (TypeReference) (Identifier)
 
     new (vd: VarDate): Date;
->            ^^^^^^^: typeof VarDate   (TyTypeQuery) (TSTypeReference)
+>            ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
 
     new (vd: VarDate): Date;
->            ^^^^^^^: typeof VarDate   (TyTypeQuery) (IdentifierReference)
+>            ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
 
     new (vd: VarDate): Date;
->                      ^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^: any   (Any) (Identifier)
                    expected: DateConstructor
 
     new (vd: VarDate): Date;
->                      ^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^: any   (Any) (Identifier)
                    expected: DateConstructor
 
 interface Date {
->         ^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^: any   (Any) (Identifier)
       expected: DateConstructor
 
 interface Date {
->         ^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^: any   (Any) (Identifier)
       expected: DateConstructor
 
     getVarDate: () => VarDate;
->   ^^^^^^^^^^: () => VarDate   (TyFunction) (TSPropertySignature)
+>   ^^^^^^^^^^: () => VarDate   (Function) (Identifier)
 
     getVarDate: () => VarDate;
->                     ^^^^^^^: typeof VarDate   (TyTypeQuery) (TSTypeReference)
+>                     ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
 
     getVarDate: () => VarDate;
->                     ^^^^^^^: typeof VarDate   (TyTypeQuery) (IdentifierReference)
+>                     ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)

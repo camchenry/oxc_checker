@@ -1,0 +1,40 @@
+{"path":"compiler/overloadRanking.ts","start":18,"end":33,"text":"literalOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): \"wide\"; (x: \"ready\"): \"literal\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":34,"end":35,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/overloadRanking.ts","start":71,"end":86,"text":"literalOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): \"wide\"; (x: \"ready\"): \"literal\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":87,"end":88,"text":"x","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"ready\""}}
+{"path":"compiler/overloadRanking.ts","start":129,"end":144,"text":"genericOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(x: T): T[]; (x: string): string; }"}}
+{"path":"compiler/overloadRanking.ts","start":145,"end":146,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/overloadRanking.ts","start":148,"end":149,"text":"x","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/overloadRanking.ts","start":151,"end":152,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/overloadRanking.ts","start":155,"end":156,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/overloadRanking.ts","start":177,"end":192,"text":"genericOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(x: T): T[]; (x: string): string; }"}}
+{"path":"compiler/overloadRanking.ts","start":193,"end":194,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/overloadRanking.ts","start":231,"end":243,"text":"tiedOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string, y?: number): \"first\"; (x: string): \"second\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":244,"end":245,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/overloadRanking.ts","start":255,"end":256,"text":"y","nodeType":"Identifier","type":{"name":"Union","display":"number | undefined"}}
+{"path":"compiler/overloadRanking.ts","start":294,"end":306,"text":"tiedOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string, y?: number): \"first\"; (x: string): \"second\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":307,"end":308,"text":"x","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/overloadRanking.ts","start":347,"end":364,"text":"tupleRestOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (args_0: string): \"one\"; (args_0: string, args_1: number): \"two\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":368,"end":372,"text":"args","nodeType":"Identifier","type":{"name":"Tuple","display":"[string]"}}
+{"path":"compiler/overloadRanking.ts","start":409,"end":426,"text":"tupleRestOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (args_0: string): \"one\"; (args_0: string, args_1: number): \"two\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":430,"end":434,"text":"args","nodeType":"Identifier","type":{"name":"Tuple","display":"[string, number]"}}
+{"path":"compiler/overloadRanking.ts","start":480,"end":505,"text":"optionalTupleRestOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (args_0: string, args_1?: number | undefined): \"optional\"; (args_0: string, args_1: number, args_2: boolean): \"three\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":509,"end":513,"text":"args","nodeType":"Identifier","type":{"name":"Tuple","display":"[string, (number | undefined)?]"}}
+{"path":"compiler/overloadRanking.ts","start":564,"end":589,"text":"optionalTupleRestOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (args_0: string, args_1?: number | undefined): \"optional\"; (args_0: string, args_1: number, args_2: boolean): \"three\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":593,"end":597,"text":"args","nodeType":"Identifier","type":{"name":"Tuple","display":"[string, number, boolean]"}}
+{"path":"compiler/overloadRanking.ts","start":643,"end":656,"text":"literalResult","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"literal\""}}
+{"path":"compiler/overloadRanking.ts","start":659,"end":674,"text":"literalOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string): \"wide\"; (x: \"ready\"): \"literal\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":691,"end":704,"text":"genericResult","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/overloadRanking.ts","start":707,"end":722,"text":"genericOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(x: T): T[]; (x: string): string; }"}}
+{"path":"compiler/overloadRanking.ts","start":739,"end":749,"text":"tiedResult","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"first\""}}
+{"path":"compiler/overloadRanking.ts","start":752,"end":764,"text":"tiedOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (x: string, y?: number): \"first\"; (x: string): \"second\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":781,"end":793,"text":"tupleRestOne","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"one\""}}
+{"path":"compiler/overloadRanking.ts","start":796,"end":813,"text":"tupleRestOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (args_0: string): \"one\"; (args_0: string, args_1: number): \"two\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":830,"end":842,"text":"tupleRestTwo","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"two\""}}
+{"path":"compiler/overloadRanking.ts","start":845,"end":862,"text":"tupleRestOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (args_0: string): \"one\"; (args_0: string, args_1: number): \"two\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":882,"end":902,"text":"optionalTupleRestOne","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"optional\""}}
+{"path":"compiler/overloadRanking.ts","start":905,"end":930,"text":"optionalTupleRestOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (args_0: string, args_1?: number | undefined): \"optional\"; (args_0: string, args_1: number, args_2: boolean): \"three\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":947,"end":967,"text":"optionalTupleRestTwo","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"optional\""}}
+{"path":"compiler/overloadRanking.ts","start":970,"end":995,"text":"optionalTupleRestOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (args_0: string, args_1?: number | undefined): \"optional\"; (args_0: string, args_1: number, args_2: boolean): \"three\"; }"}}
+{"path":"compiler/overloadRanking.ts","start":1015,"end":1037,"text":"optionalTupleRestThree","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"three\""}}
+{"path":"compiler/overloadRanking.ts","start":1040,"end":1065,"text":"optionalTupleRestOverload","nodeType":"Identifier","type":{"name":"Object","display":"{ (args_0: string, args_1?: number | undefined): \"optional\"; (args_0: string, args_1: number, args_2: boolean): \"three\"; }"}}

@@ -1,11 +1,11 @@
 var abstract = true;
->   ^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>   ^^^^^^^^: boolean   (Boolean) (Identifier)
 
 function foo() {
->        ^^^: () => void   (TyFunction) (BindingIdentifier)
+>        ^^^: () => void   (Function) (Identifier)
 
     "use strict";
->   ^^^^^^^^^^^^^: "use strict"   (TyStringLiteral) (Directive)
+>   ^^^^^^^^^^^^^: "use strict"   (StringLiteral) (ExpressionStatement)
 
     var abstract = true;
->       ^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+>       ^^^^^^^^: boolean   (Boolean) (Identifier)

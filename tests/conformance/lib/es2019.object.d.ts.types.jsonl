@@ -1,0 +1,16 @@
+{"path":"es2019.object.d.ts","start":51,"end":68,"text":"ObjectConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2019.object.d.ts","start":51,"end":68,"text":"ObjectConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2019.object.d.ts","start":273,"end":284,"text":"fromEntries","nodeType":"Identifier","type":{"name":"Object","display":"{ <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }"}}
+{"path":"es2019.object.d.ts","start":285,"end":286,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2019.object.d.ts","start":294,"end":301,"text":"entries","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<readonly [PropertyKey, T]>"}}
+{"path":"es2019.object.d.ts","start":303,"end":311,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2019.object.d.ts","start":303,"end":311,"text":"Iterable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2019.object.d.ts","start":322,"end":333,"text":"PropertyKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2019.object.d.ts","start":322,"end":333,"text":"PropertyKey","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"es2019.object.d.ts","start":335,"end":336,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2019.object.d.ts","start":344,"end":345,"text":"k","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"es2019.object.d.ts","start":356,"end":357,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2019.object.d.ts","start":565,"end":576,"text":"fromEntries","nodeType":"Identifier","type":{"name":"Object","display":"{ <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }"}}
+{"path":"es2019.object.d.ts","start":577,"end":584,"text":"entries","nodeType":"Identifier","type":{"name":"TypeReference","display":"Iterable<readonly any[]>"}}
+{"path":"es2019.object.d.ts","start":586,"end":594,"text":"Iterable","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"es2019.object.d.ts","start":586,"end":594,"text":"Iterable","nodeType":"Identifier","type":{"name":"Error","display":"any"}}

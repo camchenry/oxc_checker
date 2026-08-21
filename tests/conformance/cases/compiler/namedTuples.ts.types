@@ -1,110 +1,110 @@
 type Point = [x: number, y: number];
->    ^^^^^: [x: number, y: number]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^: [x: number, y: number]   (Tuple) (Identifier)
 
 const point: Point = [10, 20];
->     ^^^^^: Point   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^: Point   (TypeReference) (Identifier)
 
 const point: Point = [10, 20];
->            ^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^: any   (Any) (Identifier)
 
 type OptionalPoint = [x: number, y?: number];
->    ^^^^^^^^^^^^^: [x: number, y?: number | undefined]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^: [x: number, y?: number | undefined]   (Tuple) (Identifier)
 
 const pointWithX: OptionalPoint = [10];
->     ^^^^^^^^^^: OptionalPoint   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^: OptionalPoint   (TypeReference) (Identifier)
 
 const pointWithX: OptionalPoint = [10];
->                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const pointWithY: OptionalPoint = [10, 20];
->     ^^^^^^^^^^: OptionalPoint   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^: OptionalPoint   (TypeReference) (Identifier)
 
 const pointWithY: OptionalPoint = [10, 20];
->                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type Command = [name: string, ...args: string[]];
->    ^^^^^^^: [name: string, ...args: string[]]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^^^: [name: string, ...args: string[]]   (Tuple) (Identifier)
 
 const command: Command = ["build", "--watch", "--verbose"];
->     ^^^^^^^: Command   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^: Command   (TypeReference) (Identifier)
 
 const command: Command = ["build", "--watch", "--verbose"];
->              ^^^^^^^: any   (TyAny) (TSTypeReference)
+>              ^^^^^^^: any   (Any) (Identifier)
 
 type ReadonlyPoint = readonly [x: number, y: number];
->    ^^^^^^^^^^^^^: readonly [x: number, y: number]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^: readonly [x: number, y: number]   (Tuple) (Identifier)
 
 const readonlyPoint: ReadonlyPoint = [10, 20];
->     ^^^^^^^^^^^^^: ReadonlyPoint   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: ReadonlyPoint   (TypeReference) (Identifier)
 
 const readonlyPoint: ReadonlyPoint = [10, 20];
->                    ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type MessageTuple = [kind: "message", payload: string];
->    ^^^^^^^^^^^^: [kind: "message", payload: string]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: [kind: "message", payload: string]   (Tuple) (Identifier)
 
 type ErrorTuple = [kind: "error", message: string];
->    ^^^^^^^^^^: [kind: "error", message: string]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: [kind: "error", message: string]   (Tuple) (Identifier)
 
 type TupleEvent = MessageTuple | ErrorTuple;
->    ^^^^^^^^^^: MessageTuple | ErrorTuple   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^: MessageTuple | ErrorTuple   (Union) (Identifier)
 
 type TupleEvent = MessageTuple | ErrorTuple;
->                 ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type TupleEvent = MessageTuple | ErrorTuple;
->                                ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const messageEvent: TupleEvent;
->             ^^^^^^^^^^^^: TupleEvent   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^^^: TupleEvent   (TypeReference) (Identifier)
 
 declare const messageEvent: TupleEvent;
->                           ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const errorEvent: TupleEvent;
->             ^^^^^^^^^^: TupleEvent   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^^^^: TupleEvent   (TypeReference) (Identifier)
 
 declare const errorEvent: TupleEvent;
->                         ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^: any   (Any) (Identifier)
 
 type NestedPoint = [name: string, position: Point];
->    ^^^^^^^^^^^: [name: string, position: Point]   (TyTuple) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: [name: string, position: Point]   (Tuple) (Identifier)
 
 type NestedPoint = [name: string, position: Point];
->                                           ^^^^^: any   (TyAny) (TSTypeReference)
+>                                           ^^^^^: any   (Any) (Identifier)
 
 const nestedPoint: NestedPoint = ["origin", point];
->     ^^^^^^^^^^^: NestedPoint   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^: NestedPoint   (TypeReference) (Identifier)
 
 const nestedPoint: NestedPoint = ["origin", point];
->                  ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^^^^: any   (Any) (Identifier)
 
 const nestedPoint: NestedPoint = ["origin", point];
->                                           ^^^^^: Point   (TyTypeReference) (IdentifierReference)
+>                                           ^^^^^: Point   (TypeReference) (Identifier)
 
 declare function emit(...event: TupleEvent): void;
->                ^^^^: (...event: TupleEvent) => void   (TyFunction) (BindingIdentifier)
+>                ^^^^: (...event: TupleEvent) => void   (Function) (Identifier)
 
 declare function emit(...event: TupleEvent): void;
->                        ^^^^^: TupleEvent   (TyTypeReference) (BindingIdentifier)
+>                        ^^^^^: TupleEvent   (TypeReference) (Identifier)
 
 declare function emit(...event: TupleEvent): void;
->                               ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^^^^: any   (Any) (Identifier)
 
 emit(...messageEvent);
->^^^^: (...event: TupleEvent) => void   (TyFunction) (IdentifierReference)
+>^^^^: (...event: TupleEvent) => void   (Function) (Identifier)
 
 emit(...messageEvent);
->^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 emit(...messageEvent);
->       ^^^^^^^^^^^^: TupleEvent   (TyTypeReference) (IdentifierReference)
+>       ^^^^^^^^^^^^: TupleEvent   (TypeReference) (Identifier)
 
 emit(...errorEvent);
->^^^^: (...event: TupleEvent) => void   (TyFunction) (IdentifierReference)
+>^^^^: (...event: TupleEvent) => void   (Function) (Identifier)
 
 emit(...errorEvent);
->^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 emit(...errorEvent);
->       ^^^^^^^^^^: TupleEvent   (TyTypeReference) (IdentifierReference)
+>       ^^^^^^^^^^: TupleEvent   (TypeReference) (Identifier)

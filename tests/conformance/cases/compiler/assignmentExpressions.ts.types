@@ -1,140 +1,140 @@
 let x: any = 5;
->   ^: any   (TyAny) (BindingIdentifier)
+>   ^: any   (Any) (Identifier)
 
 const x1 = x = 5;
->     ^^: 5   (TyNumberLiteral) (BindingIdentifier)
+>     ^^: 5   (NumberLiteral) (Identifier)
 
 const x1 = x = 5;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const x2 = x += 1;
->     ^^: any   (TyAny) (BindingIdentifier)
+>     ^^: any   (Any) (Identifier)
 
 const x2 = x += 1;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const x3 = x += "hello"
->     ^^: string   (TyString) (BindingIdentifier)
+>     ^^: string   (String) (Identifier)
 
 const x3 = x += "hello"
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const x4 = x -= 1;
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x4 = x -= 1;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const x5 = x *= 2;
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x5 = x *= 2;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const x6 = x /= 2;
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x6 = x /= 2;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const x7 = x %= 2;
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x7 = x %= 2;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const x8 = x |= 1;
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x8 = x |= 1;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const x9 = x ^= 1;
->     ^^: number   (TyNumber) (BindingIdentifier)
+>     ^^: number   (Number) (Identifier)
 
 const x9 = x ^= 1;
->          ^: any   (TyAny) (IdentifierReference)
+>          ^: any   (Any) (Identifier)
 
 const x10 = x &= 1;
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x10 = x &= 1;
->           ^: any   (TyAny) (IdentifierReference)
+>           ^: any   (Any) (Identifier)
 
 const x11 = x >>= 1;
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x11 = x >>= 1;
->           ^: any   (TyAny) (IdentifierReference)
+>           ^: any   (Any) (Identifier)
 
 const x12 = x <<= 1;
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x12 = x <<= 1;
->           ^: any   (TyAny) (IdentifierReference)
+>           ^: any   (Any) (Identifier)
 
 const x13 = x >>= 1;
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x13 = x >>= 1;
->           ^: any   (TyAny) (IdentifierReference)
+>           ^: any   (Any) (Identifier)
 
 const x14 = x >>>= 1;
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x14 = x >>>= 1;
->           ^: any   (TyAny) (IdentifierReference)
+>           ^: any   (Any) (Identifier)
 
 const x15 = x **= 2;
->     ^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^: number   (Number) (Identifier)
 
 const x15 = x **= 2;
->           ^: any   (TyAny) (IdentifierReference)
+>           ^: any   (Any) (Identifier)
 
 let y: string | undefined | null = "test"
->   ^: string | undefined | null   (TyUnion) (BindingIdentifier)
+>   ^: string | undefined | null   (Union) (Identifier)
 
 const x16 = y ??= "foo"
->     ^^^: string   (TyString) (BindingIdentifier)
+>     ^^^: string   (String) (Identifier)
 
 const x16 = y ??= "foo"
->           ^: string | undefined | null   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (Union) (Identifier)
 
 const x17 = y ??= undefined
->     ^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>     ^^^: string | undefined   (Union) (Identifier)
 
 const x17 = y ??= undefined
->           ^: string | undefined | null   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (Union) (Identifier)
 
 const x17 = y ??= undefined
->                 ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>                 ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 const x18 = y &&= "foo"
->     ^^^: "" | null | undefined | "foo"   (TyUnion) (BindingIdentifier)
+>     ^^^: "" | null | undefined | "foo"   (Union) (Identifier)
 
 const x18 = y &&= "foo"
->           ^: string | undefined | null   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (Union) (Identifier)
 
 const x19 = y &&= undefined
->     ^^^: "" | null | undefined   (TyUnion) (BindingIdentifier)
+>     ^^^: "" | null | undefined   (Union) (Identifier)
 
 const x19 = y &&= undefined
->           ^: string | undefined | null   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (Union) (Identifier)
 
 const x19 = y &&= undefined
->                 ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>                 ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 const x20 = y ||= "foo"
->     ^^^: string   (TyString) (BindingIdentifier)
+>     ^^^: string   (String) (Identifier)
 
 const x20 = y ||= "foo"
->           ^: string | undefined | null   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (Union) (Identifier)
 
 const x21 = y ||= undefined
->     ^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>     ^^^: string | undefined   (Union) (Identifier)
 
 const x21 = y ||= undefined
->           ^: string | undefined | null   (TyUnion) (IdentifierReference)
+>           ^: string | undefined | null   (Union) (Identifier)
 
 const x21 = y ||= undefined
->                 ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>                 ^^^^^^^^^: undefined   (Undefined) (Identifier)

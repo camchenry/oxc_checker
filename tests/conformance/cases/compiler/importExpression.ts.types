@@ -1,29 +1,29 @@
 export const answer: 42 = 42;
->            ^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+>            ^^^^^^: 42   (NumberLiteral) (Identifier)
 
 const modulePromise = import("./module.ts");
->     ^^^^^^^^^^^^^: Promise<typeof import("./module.ts")>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^^^^: Promise<typeof import("./module.ts")>   (TypeReference) (Identifier)
 
 const moduleNamespace = await modulePromise;
->     ^^^^^^^^^^^^^^^: typeof import("./module.ts")   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: typeof import("./module.ts")   (TypeQuery) (Identifier)
 
 const moduleNamespace = await modulePromise;
->                             ^^^^^^^^^^^^^: Promise<typeof import("./module.ts")>   (TyTypeReference) (IdentifierReference)
+>                             ^^^^^^^^^^^^^: Promise<typeof import("./module.ts")>   (TypeReference) (Identifier)
 
 const importedAnswer = moduleNamespace.answer;
->     ^^^^^^^^^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: 42   (NumberLiteral) (Identifier)
 
 const importedAnswer = moduleNamespace.answer;
->                      ^^^^^^^^^^^^^^^: typeof import("./module.ts")   (TyTypeQuery) (IdentifierReference)
+>                      ^^^^^^^^^^^^^^^: typeof import("./module.ts")   (TypeQuery) (Identifier)
 
 const importedAnswer = moduleNamespace.answer;
->                                      ^^^^^^: 42   (TyNumberLiteral) (StaticMemberExpression)
+>                                      ^^^^^^: 42   (NumberLiteral) (Identifier)
 
 const importedDefault = moduleNamespace.default;
->     ^^^^^^^^^^^^^^^: "default"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^: "default"   (StringLiteral) (Identifier)
 
 const importedDefault = moduleNamespace.default;
->                       ^^^^^^^^^^^^^^^: typeof import("./module.ts")   (TyTypeQuery) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^^: typeof import("./module.ts")   (TypeQuery) (Identifier)
 
 const importedDefault = moduleNamespace.default;
->                                       ^^^^^^^: "default"   (TyStringLiteral) (StaticMemberExpression)
+>                                       ^^^^^^^: "default"   (StringLiteral) (Identifier)

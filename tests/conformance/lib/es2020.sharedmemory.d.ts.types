@@ -1,382 +1,382 @@
 interface Atomics {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: Atomics
 
 interface Atomics {
->         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^: any   (Any) (Identifier)
          expected: Atomics
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (TyObject) (TSMethodSignature)
+>   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (Object) (Identifier)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->       ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
+>       ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (Union) (Identifier)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                 ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                 ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                   ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                   ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                     ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                                                     ^^^^^: number   (Number) (Identifier)
 
     add(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                                    ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>                                                                                                    ^^^^^: bigint   (Bigint) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (TyObject) (TSMethodSignature)
+>   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (Object) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->       ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
+>       ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (Union) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                 ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                 ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                   ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                   ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                     ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                                                     ^^^^^: number   (Number) (Identifier)
 
     and(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                                    ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>                                                                                                    ^^^^^: bigint   (Bigint) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->   ^^^^^^^^^^^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^^^^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, expectedValue: number, replacementValue: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint; }   (Object) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                   ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
+>                   ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (Union) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                               ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                               ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                               ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                               ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                                             ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                             ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                                             ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                             ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                                                                ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                                                                ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                                                                ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                                                ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                                                                               ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                               ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                                                                               ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                               ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                                                                                                 ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                                                                 ^^^^^: number   (Number) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                                                                                                                ^^^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>                                                                                                                ^^^^^^^^^^^^^: bigint   (Bigint) (Identifier)
 
     compareExchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, expectedValue: bigint, replacementValue: bigint): bigint;
->                                                                                                                                       ^^^^^^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>                                                                                                                                       ^^^^^^^^^^^^^^^^: bigint   (Bigint) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->   ^^^^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (Object) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->            ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
+>            ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (Union) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                        ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                        ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                        ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                        ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                      ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                      ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                      ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                                         ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                        ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                        ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                        ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                          ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                                                          ^^^^^: number   (Number) (Identifier)
 
     exchange(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                                         ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>                                                                                                         ^^^^^: bigint   (Bigint) (Identifier)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
->   ^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint; }   (Object) (Identifier)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
->        ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
+>        ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (Union) (Identifier)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
->                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
->                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
->                                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                  ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
->                                  ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                  ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
->                                                     ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                                                     ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
->                                                     ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                                     ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
->                                                                    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                    ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
->                                                                    ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                    ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     load(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number): bigint;
->                                                                                      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                                                      ^^^^^: number   (Number) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->   ^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (TyObject) (TSMethodSignature)
+>   ^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (Object) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->      ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
+>      ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (Union) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                  ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                  ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                  ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                  ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                   ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                                                   ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                   ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                                   ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                  ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                  ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                  ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                    ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                                                    ^^^^^: number   (Number) (Identifier)
 
     or(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                                   ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>                                                                                                   ^^^^^: bigint   (Bigint) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->   ^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (TyObject) (TSMethodSignature)
+>   ^^^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (Object) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->         ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
+>         ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (Union) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                     ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                     ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                     ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                     ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                   ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                   ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                      ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                                                      ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                      ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                                      ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                     ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                     ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                     ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                     ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                       ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                                                       ^^^^^: number   (Number) (Identifier)
 
     store(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                                      ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>                                                                                                      ^^^^^: bigint   (Bigint) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (TyObject) (TSMethodSignature)
+>   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (Object) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->       ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
+>       ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (Union) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                 ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                 ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                   ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                   ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                     ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                                                     ^^^^^: number   (Number) (Identifier)
 
     sub(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                                    ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>                                                                                                    ^^^^^: bigint   (Bigint) (Identifier)
 
     wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
->   ^^^^: { (typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out"; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out"; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out"; }   (TyObject) (TSMethodSignature)
+>   ^^^^: { (typedArray: Int32Array<ArrayBufferLike>, index: number, value: number, timeout?: number): "ok" | "not-equal" | "timed-out"; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out"; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out"; }   (Object) (Identifier)
 
     wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
->        ^^^^^^^^^^: BigInt64Array<ArrayBufferLike>   (TyTypeReference) (BindingIdentifier)
+>        ^^^^^^^^^^: BigInt64Array<ArrayBufferLike>   (TypeReference) (Identifier)
 
     wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
->                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
->                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                    ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
->                                  ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                  ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
->                                  ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                  ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
->                                                    ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                    ^^^^^: number   (Number) (Identifier)
 
     wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
->                                                                   ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>                                                                   ^^^^^: bigint   (Bigint) (Identifier)
 
     wait(typedArray: BigInt64Array<ArrayBufferLike>, index: number, value: bigint, timeout?: number): "ok" | "not-equal" | "timed-out";
->                                                                                  ^^^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                                                                  ^^^^^^^: number | undefined   (Union) (Identifier)
 
     notify(typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number;
->   ^^^^^^: { (typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number; }   (TyObject) (TSMethodSignature)
+>   ^^^^^^: { (typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number; }   (Object) (Identifier)
 
     notify(typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number;
->          ^^^^^^^^^^: BigInt64Array<ArrayBufferLike>   (TyTypeReference) (BindingIdentifier)
+>          ^^^^^^^^^^: BigInt64Array<ArrayBufferLike>   (TypeReference) (Identifier)
 
     notify(typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number;
->                      ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                      ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     notify(typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number;
->                      ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                      ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     notify(typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number;
->                                    ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     notify(typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number;
->                                    ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                    ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     notify(typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number;
->                                                      ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                      ^^^^^: number   (Number) (Identifier)
 
     notify(typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number;
->                                                                     ^^^^^: number | undefined   (TyUnion) (BindingIdentifier)
+>                                                                     ^^^^^: number | undefined   (Union) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (TyObject) (TSMethodSignature)
+>   ^^^: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }   (Object) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->       ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (TyUnion) (BindingIdentifier)
+>       ^^^^^^^^^^: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>   (Union) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                   ^^^^^^^^^^^^^: BigInt64ArrayConstructor   (TypeReference) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                 ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                 ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                 ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>                                                    ^^^^^^^^^^^^^^: BigUint64ArrayConstructor   (TypeReference) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                   ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                   ^^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                                   ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                     ^^^^^: number   (TyNumber) (BindingIdentifier)
+>                                                                                     ^^^^^: number   (Number) (Identifier)
 
     xor(typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint;
->                                                                                                    ^^^^^: bigint   (TyBigint) (BindingIdentifier)
+>                                                                                                    ^^^^^: bigint   (Bigint) (Identifier)

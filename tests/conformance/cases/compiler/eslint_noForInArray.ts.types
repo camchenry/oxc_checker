@@ -1,158 +1,158 @@
 declare const array: string[];
->             ^^^^^: string[]   (TyArray) (BindingIdentifier)
+>             ^^^^^: string[]   (Array) (Identifier)
 
 for (const i in array) {
->          ^: string   (TyString) (BindingIdentifier)
+>          ^: string   (String) (Identifier)
 
 for (const i in array) {
->               ^^^^^: string[]   (TyArray) (IdentifierReference)
+>               ^^^^^: string[]   (Array) (Identifier)
 
   console.log(array[i]);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(array[i]);
-> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(array[i]);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(array[i]);
->             ^^^^^: string[]   (TyArray) (IdentifierReference)
+>             ^^^^^: string[]   (Array) (Identifier)
 
   console.log(array[i]);
->                   ^: string   (TyString) (IdentifierReference)
+>                   ^: string   (String) (Identifier)
 
 for (const i in array) {
->          ^: string   (TyString) (BindingIdentifier)
+>          ^: string   (String) (Identifier)
 
 for (const i in array) {
->               ^^^^^: string[]   (TyArray) (IdentifierReference)
+>               ^^^^^: string[]   (Array) (Identifier)
 
   console.log(i, array[i]);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(i, array[i]);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(i, array[i]);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(i, array[i]);
->             ^: string   (TyString) (IdentifierReference)
+>             ^: string   (String) (Identifier)
 
   console.log(i, array[i]);
->                ^^^^^: string[]   (TyArray) (IdentifierReference)
+>                ^^^^^: string[]   (Array) (Identifier)
 
   console.log(i, array[i]);
->                      ^: string   (TyString) (IdentifierReference)
+>                      ^: string   (String) (Identifier)
 
 declare const array: string[];
->             ^^^^^: string[]   (TyArray) (BindingIdentifier)
+>             ^^^^^: string[]   (Array) (Identifier)
 
 for (const value of array) {
->          ^^^^^: string   (TyString) (BindingIdentifier)
+>          ^^^^^: string   (String) (Identifier)
 
 for (const value of array) {
->                   ^^^^^: string[]   (TyArray) (IdentifierReference)
+>                   ^^^^^: string[]   (Array) (Identifier)
 
   console.log(value);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(value);
-> ^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(value);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(value);
->             ^^^^^: string   (TyString) (IdentifierReference)
+>             ^^^^^: string   (String) (Identifier)
 
 for (let i = 0; i < array.length; i += 1) {
->        ^: number   (TyNumber) (BindingIdentifier)
+>        ^: number   (Number) (Identifier)
 
 for (let i = 0; i < array.length; i += 1) {
->               ^: number   (TyNumber) (IdentifierReference)
+>               ^: number   (Number) (Identifier)
 
 for (let i = 0; i < array.length; i += 1) {
->                   ^^^^^: string[]   (TyArray) (IdentifierReference)
+>                   ^^^^^: string[]   (Array) (Identifier)
 
 for (let i = 0; i < array.length; i += 1) {
->                         ^^^^^^: number   (TyNumber) (StaticMemberExpression)
+>                         ^^^^^^: number   (Number) (Identifier)
 
 for (let i = 0; i < array.length; i += 1) {
->                                 ^: number   (TyNumber) (IdentifierReference)
+>                                 ^: number   (Number) (Identifier)
 
   console.log(i, array[i]);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(i, array[i]);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(i, array[i]);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(i, array[i]);
->             ^: number   (TyNumber) (IdentifierReference)
+>             ^: number   (Number) (Identifier)
 
   console.log(i, array[i]);
->                ^^^^^: string[]   (TyArray) (IdentifierReference)
+>                ^^^^^: string[]   (Array) (Identifier)
 
   console.log(i, array[i]);
->                      ^: number   (TyNumber) (IdentifierReference)
+>                      ^: number   (Number) (Identifier)
 
 array.forEach((value, i) => {
->^^^^^: string[]   (TyArray) (IdentifierReference)
+>^^^^^: string[]   (Array) (Identifier)
 
 array.forEach((value, i) => {
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 array.forEach((value, i) => {
->     ^^^^^^^: (callbackfn: (value: string, index: number, array: string[]) => void, thisArg?: any) => void   (TyFunction) (StaticMemberExpression)
+>     ^^^^^^^: (callbackfn: (value: string, index: number, array: string[]) => void, thisArg?: any) => void   (Function) (Identifier)
 
 array.forEach((value, i) => {
->              ^^^^^: string   (TyString) (BindingIdentifier)
+>              ^^^^^: string   (String) (Identifier)
 
 array.forEach((value, i) => {
->                     ^: number   (TyNumber) (BindingIdentifier)
+>                     ^: number   (Number) (Identifier)
 
   console.log(i, value);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(i, value);
-> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(i, value);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(i, value);
->             ^: number   (TyNumber) (IdentifierReference)
+>             ^: number   (Number) (Identifier)
 
   console.log(i, value);
->                ^^^^^: string   (TyString) (IdentifierReference)
+>                ^^^^^: string   (String) (Identifier)
 
 for (const [i, value] of array.entries()) {
->           ^: number   (TyNumber) (BindingIdentifier)
+>           ^: number   (Number) (Identifier)
 
 for (const [i, value] of array.entries()) {
->              ^^^^^: string   (TyString) (BindingIdentifier)
+>              ^^^^^: string   (String) (Identifier)
 
 for (const [i, value] of array.entries()) {
->                        ^^^^^: string[]   (TyArray) (IdentifierReference)
+>                        ^^^^^: string[]   (Array) (Identifier)
 
 for (const [i, value] of array.entries()) {
->                              ^^^^^^^: () => ArrayIterator<[number, string]>   (TyFunction) (StaticMemberExpression)
+>                              ^^^^^^^: () => ArrayIterator<[number, string]>   (Function) (Identifier)
 
   console.log(i, value);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(i, value);
-> ^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(i, value);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(i, value);
->             ^: number   (TyNumber) (IdentifierReference)
+>             ^: number   (Number) (Identifier)
 
   console.log(i, value);
->                ^^^^^: string   (TyString) (IdentifierReference)
+>                ^^^^^: string   (String) (Identifier)

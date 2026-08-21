@@ -1,29 +1,29 @@
 interface Promise<T> {
->         ^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^: any   (Any) (Identifier)
 
 interface Promise<T> {
->         ^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^: any   (Any) (Identifier)
 
 interface Promise<T> {
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
   value: T;
-> ^^^^^: T   (TyTypeReference) (TSPropertySignature)
+> ^^^^^: T   (TypeReference) (Identifier)
 
   value: T;
->        ^: any   (TyAny) (TSTypeReference)
+>        ^: any   (Any) (Identifier)
 
 declare const promise: Promise<number>;
->             ^^^^^^^: Promise<number>   (TyTypeReference) (BindingIdentifier)
+>             ^^^^^^^: Promise<number>   (TypeReference) (Identifier)
 
 declare const promise: Promise<number>;
->                      ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^: any   (Any) (Identifier)
 
 declare const promise: Promise<number>;
->                      ^^^^^^^: any   (TyAny) (IdentifierReference)
+>                      ^^^^^^^: any   (Any) (Identifier)
 
 const value = await promise;
->     ^^^^^: Promise<number>   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^: Promise<number>   (TypeReference) (Identifier)
 
 const value = await promise;
->                   ^^^^^^^: Promise<number>   (TyTypeReference) (IdentifierReference)
+>                   ^^^^^^^: Promise<number>   (TypeReference) (Identifier)

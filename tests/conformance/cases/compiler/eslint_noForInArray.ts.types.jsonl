@@ -1,0 +1,53 @@
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":14,"end":19,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":43,"end":44,"text":"i","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":48,"end":53,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":59,"end":66,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":59,"end":81,"text":"console.log(array[i]);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":67,"end":70,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":71,"end":76,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":77,"end":78,"text":"i","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":96,"end":97,"text":"i","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":101,"end":106,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":112,"end":119,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":112,"end":137,"text":"console.log(i, array[i]);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":120,"end":123,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":124,"end":125,"text":"i","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":127,"end":132,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noForInArray.ts::a.ts","start":133,"end":134,"text":"i","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":14,"end":19,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":43,"end":48,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":52,"end":57,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":63,"end":70,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":63,"end":82,"text":"console.log(value);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":71,"end":74,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":75,"end":80,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":95,"end":96,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":102,"end":103,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":106,"end":111,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":112,"end":118,"text":"length","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":120,"end":121,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":132,"end":139,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":132,"end":157,"text":"console.log(i, array[i]);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":140,"end":143,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":144,"end":145,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":147,"end":152,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":153,"end":154,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":161,"end":166,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":161,"end":219,"text":"array.forEach((value, i) => {   console.log(i, value); });","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":167,"end":174,"text":"forEach","nodeType":"Identifier","type":{"name":"Function","display":"(callbackfn: (value: string, index: number, array: string[]) => void, thisArg?: any) => void"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":176,"end":181,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":183,"end":184,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":193,"end":200,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":193,"end":215,"text":"console.log(i, value);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":201,"end":204,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":205,"end":206,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":208,"end":213,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":233,"end":234,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":236,"end":241,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":246,"end":251,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":252,"end":259,"text":"entries","nodeType":"Identifier","type":{"name":"Function","display":"() => ArrayIterator<[number, string]>"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":267,"end":274,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":267,"end":289,"text":"console.log(i, value);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":275,"end":278,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":279,"end":280,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":282,"end":287,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}

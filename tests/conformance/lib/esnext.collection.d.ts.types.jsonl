@@ -1,0 +1,38 @@
+{"path":"esnext.collection.d.ts","start":53,"end":56,"text":"Map","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":53,"end":56,"text":"Map","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":57,"end":58,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":60,"end":61,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":413,"end":424,"text":"getOrInsert","nodeType":"Identifier","type":{"name":"Object","display":"{ (key: K, defaultValue: V): V; (key: K, defaultValue: V): V; }"}}
+{"path":"esnext.collection.d.ts","start":425,"end":428,"text":"key","nodeType":"Identifier","type":{"name":"TypeReference","display":"K"}}
+{"path":"esnext.collection.d.ts","start":430,"end":431,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":433,"end":445,"text":"defaultValue","nodeType":"Identifier","type":{"name":"TypeReference","display":"V"}}
+{"path":"esnext.collection.d.ts","start":447,"end":448,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":451,"end":452,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":834,"end":853,"text":"getOrInsertComputed","nodeType":"Identifier","type":{"name":"Object","display":"{ (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }"}}
+{"path":"esnext.collection.d.ts","start":854,"end":857,"text":"key","nodeType":"Identifier","type":{"name":"TypeReference","display":"K"}}
+{"path":"esnext.collection.d.ts","start":859,"end":860,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":862,"end":870,"text":"callback","nodeType":"Identifier","type":{"name":"Function","display":"(key: K) => V"}}
+{"path":"esnext.collection.d.ts","start":873,"end":876,"text":"key","nodeType":"Identifier","type":{"name":"TypeReference","display":"K"}}
+{"path":"esnext.collection.d.ts","start":878,"end":879,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":884,"end":885,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":888,"end":889,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":904,"end":911,"text":"WeakMap","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":904,"end":911,"text":"WeakMap","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":912,"end":913,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":922,"end":929,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":922,"end":929,"text":"WeakKey","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"esnext.collection.d.ts","start":931,"end":932,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":1292,"end":1303,"text":"getOrInsert","nodeType":"Identifier","type":{"name":"Object","display":"{ (key: K, defaultValue: V): V; (key: K, defaultValue: V): V; }"}}
+{"path":"esnext.collection.d.ts","start":1304,"end":1307,"text":"key","nodeType":"Identifier","type":{"name":"TypeReference","display":"K"}}
+{"path":"esnext.collection.d.ts","start":1309,"end":1310,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":1312,"end":1324,"text":"defaultValue","nodeType":"Identifier","type":{"name":"TypeReference","display":"V"}}
+{"path":"esnext.collection.d.ts","start":1326,"end":1327,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":1330,"end":1331,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":1721,"end":1740,"text":"getOrInsertComputed","nodeType":"Identifier","type":{"name":"Object","display":"{ (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }"}}
+{"path":"esnext.collection.d.ts","start":1741,"end":1744,"text":"key","nodeType":"Identifier","type":{"name":"TypeReference","display":"K"}}
+{"path":"esnext.collection.d.ts","start":1746,"end":1747,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":1749,"end":1757,"text":"callback","nodeType":"Identifier","type":{"name":"Function","display":"(key: K) => V"}}
+{"path":"esnext.collection.d.ts","start":1760,"end":1763,"text":"key","nodeType":"Identifier","type":{"name":"TypeReference","display":"K"}}
+{"path":"esnext.collection.d.ts","start":1765,"end":1766,"text":"K","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":1771,"end":1772,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"esnext.collection.d.ts","start":1775,"end":1776,"text":"V","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

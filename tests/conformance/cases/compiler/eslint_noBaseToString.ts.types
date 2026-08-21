@@ -1,149 +1,149 @@
 '' + {};
->^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^: string   (String) (ExpressionStatement)
 
 class MyClass {}
->     ^^^^^^^: typeof MyClass   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^^^^: typeof MyClass   (TypeQuery) (Identifier)
 
 const value = new MyClass();
->     ^^^^^: MyClass   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^: MyClass   (TypeReference) (Identifier)
 
 const value = new MyClass();
->                 ^^^^^^^: typeof MyClass   (TyTypeQuery) (IdentifierReference)
+>                 ^^^^^^^: typeof MyClass   (TypeQuery) (Identifier)
 
 value + '';
->^^^^^: MyClass   (TyTypeReference) (IdentifierReference)
+>^^^^^: MyClass   (TypeReference) (Identifier)
 
 value + '';
->^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 `Value: ${value}`;
->^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 `Value: ${value}`;
->         ^^^^^: MyClass   (TyTypeReference) (IdentifierReference)
+>         ^^^^^: MyClass   (TypeReference) (Identifier)
 
 String({});
->^^^^^^: StringConstructor   (TyTypeReference) (IdentifierReference)
+>^^^^^^: StringConstructor   (TypeReference) (Identifier)
 
 String({});
->^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 ({}).toString();
->^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 ({}).toString();
->    ^^^^^^^^: () => string   (TyFunction) (StaticMemberExpression)
+>    ^^^^^^^^: () => string   (Function) (Identifier)
 
 ({}).toLocaleString();
->^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 ({}).toLocaleString();
->    ^^^^^^^^^^^^^^: () => string   (TyFunction) (StaticMemberExpression)
+>    ^^^^^^^^^^^^^^: () => string   (Function) (Identifier)
 
 [{}, new MyClass()].join('');
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 [{}, new MyClass()].join('');
->        ^^^^^^^: typeof MyClass   (TyTypeQuery) (IdentifierReference)
+>        ^^^^^^^: typeof MyClass   (TypeQuery) (Identifier)
 
 [{}, new MyClass()].join('');
->                   ^^^^: (separator?: string) => string   (TyFunction) (StaticMemberExpression)
+>                   ^^^^: (separator?: string) => string   (Function) (Identifier)
 
 'Text' + true;
->^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 `Value: ${123}`;
->^^^^^^^^^^^^^^^^: "Value: 123"   (TyStringLiteral) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^: "Value: 123"   (StringLiteral) (ExpressionStatement)
 
 `Arrays too: ${[1, 2, 3]}`;
->^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 (() => {}).toString();
->^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 (() => {}).toString();
->          ^^^^^^^^: () => string   (TyFunction) (StaticMemberExpression)
+>          ^^^^^^^^: () => string   (Function) (Identifier)
 
 String(42);
->^^^^^^: StringConstructor   (TyTypeReference) (IdentifierReference)
+>^^^^^^: StringConstructor   (TypeReference) (Identifier)
 
 String(42);
->^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 (() => {}).toLocaleString();
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 (() => {}).toLocaleString();
->          ^^^^^^^^^^^^^^: () => string   (TyFunction) (StaticMemberExpression)
+>          ^^^^^^^^^^^^^^: () => string   (Function) (Identifier)
 
 class CustomToString {
->     ^^^^^^^^^^^^^^: typeof CustomToString   (TyTypeQuery) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: typeof CustomToString   (TypeQuery) (Identifier)
 
   toString() {
-> ^^^^^^^^: () => string   (TyFunction) (MethodDefinition)
+> ^^^^^^^^: () => string   (Function) (Identifier)
 
 `Value: ${new CustomToString()}`;
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 `Value: ${new CustomToString()}`;
->             ^^^^^^^^^^^^^^: typeof CustomToString   (TyTypeQuery) (IdentifierReference)
+>             ^^^^^^^^^^^^^^: typeof CustomToString   (TypeQuery) (Identifier)
 
 const literalWithToString = {
->     ^^^^^^^^^^^^^^^^^^^: { toString: () => string; }   (TyObject) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^^^^^^: { toString: () => string; }   (Object) (Identifier)
 
   toString: () => 'Hello, world!',
-> ^^^^^^^^: () => string   (TyFunction) (ObjectProperty)
+> ^^^^^^^^: () => string   (Function) (Identifier)
 
 `Value: ${literalWithToString}`;
->^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 `Value: ${literalWithToString}`;
->         ^^^^^^^^^^^^^^^^^^^: { toString: () => string; }   (TyObject) (IdentifierReference)
+>         ^^^^^^^^^^^^^^^^^^^: { toString: () => string; }   (Object) (Identifier)
 
 `${/regex/}`;
->^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 '' + /regex/;
->^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 /regex/.toString();
->^^^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 /regex/.toString();
->       ^^^^^^^^: () => string   (TyFunction) (StaticMemberExpression)
+>       ^^^^^^^^: () => string   (Function) (Identifier)
 
 let value = /regex/;
->   ^^^^^: RegExp   (TyTypeReference) (BindingIdentifier)
+>   ^^^^^: RegExp   (TypeReference) (Identifier)
 
 value.toString();
->^^^^^: RegExp   (TyTypeReference) (IdentifierReference)
+>^^^^^: RegExp   (TypeReference) (Identifier)
 
 value.toString();
->^^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 value.toString();
->     ^^^^^^^^: () => string   (TyFunction) (StaticMemberExpression)
+>     ^^^^^^^^: () => string   (Function) (Identifier)
 
 let text = `${value}`;
->   ^^^^: string   (TyString) (BindingIdentifier)
+>   ^^^^: string   (String) (Identifier)
 
 let text = `${value}`;
->             ^^^^^: RegExp   (TyTypeReference) (IdentifierReference)
+>             ^^^^^: RegExp   (TypeReference) (Identifier)
 
 String(/regex/);
->^^^^^^: StringConstructor   (TyTypeReference) (IdentifierReference)
+>^^^^^^: StringConstructor   (TypeReference) (Identifier)
 
 String(/regex/);
->^^^^^^^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 declare const x: unknown;
->             ^: unknown   (TyUnknown) (BindingIdentifier)
+>             ^: unknown   (Unknown) (Identifier)
 
 String(x);
->^^^^^^: StringConstructor   (TyTypeReference) (IdentifierReference)
+>^^^^^^: StringConstructor   (TypeReference) (Identifier)
 
 String(x);
->^^^^^^^^^^: string   (TyString) (ExpressionStatement)
+>^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 String(x);
->      ^: unknown   (TyUnknown) (IdentifierReference)
+>      ^: unknown   (Unknown) (Identifier)

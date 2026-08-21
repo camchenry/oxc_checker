@@ -1,0 +1,58 @@
+{"path":"compiler/typePredicates.ts","start":5,"end":13,"text":"IsString","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => value is string"}}
+{"path":"compiler/typePredicates.ts","start":17,"end":22,"text":"value","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/typePredicates.ts","start":36,"end":41,"text":"value","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/typePredicates.ts","start":58,"end":70,"text":"AssertString","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => asserts value is string"}}
+{"path":"compiler/typePredicates.ts","start":74,"end":79,"text":"value","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/typePredicates.ts","start":101,"end":106,"text":"value","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/typePredicates.ts","start":123,"end":134,"text":"AssertValue","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => asserts value"}}
+{"path":"compiler/typePredicates.ts","start":138,"end":143,"text":"value","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/typePredicates.ts","start":165,"end":170,"text":"value","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
+{"path":"compiler/typePredicates.ts","start":177,"end":188,"text":"ThisIsReady","nodeType":"Identifier","type":{"name":"Function","display":"(this: { ready: boolean; }) => this is { ready: true; }"}}
+{"path":"compiler/typePredicates.ts","start":192,"end":196,"text":"this","nodeType":"Identifier","type":{"name":"Object","display":"{ ready: boolean; }"}}
+{"path":"compiler/typePredicates.ts","start":200,"end":205,"text":"ready","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/typePredicates.ts","start":231,"end":236,"text":"ready","nodeType":"Identifier","type":{"name":"BooleanLiteral","display":"true"}}
+{"path":"compiler/typePredicates.ts","start":257,"end":271,"text":"PredicateArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":257,"end":271,"text":"PredicateArray","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":272,"end":273,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":281,"end":286,"text":"every","nodeType":"Identifier","type":{"name":"Function","display":"<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S) => this is readonly S[]"}}
+{"path":"compiler/typePredicates.ts","start":287,"end":288,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":297,"end":298,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":300,"end":309,"text":"predicate","nodeType":"Identifier","type":{"name":"Function","display":"(value: T, index: number, array: readonly T[]) => value is S"}}
+{"path":"compiler/typePredicates.ts","start":312,"end":317,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/typePredicates.ts","start":319,"end":320,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":322,"end":327,"text":"index","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/typePredicates.ts","start":337,"end":342,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"readonly T[]"}}
+{"path":"compiler/typePredicates.ts","start":353,"end":354,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":361,"end":366,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"T"}}
+{"path":"compiler/typePredicates.ts","start":370,"end":371,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":391,"end":392,"text":"S","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":409,"end":432,"text":"MethodSignatureCoverage","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":409,"end":432,"text":"MethodSignatureCoverage","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":433,"end":434,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":442,"end":448,"text":"narrow","nodeType":"Identifier","type":{"name":"Function","display":"<U extends T>(this: MethodSignatureCoverage<T>, value: U) => value is U"}}
+{"path":"compiler/typePredicates.ts","start":449,"end":450,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":459,"end":460,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":462,"end":466,"text":"this","nodeType":"Identifier","type":{"name":"TypeReference","display":"MethodSignatureCoverage<T>"}}
+{"path":"compiler/typePredicates.ts","start":468,"end":491,"text":"MethodSignatureCoverage","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":468,"end":491,"text":"MethodSignatureCoverage","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":492,"end":493,"text":"T","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":496,"end":501,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"U"}}
+{"path":"compiler/typePredicates.ts","start":503,"end":504,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":507,"end":512,"text":"value","nodeType":"Identifier","type":{"name":"TypeReference","display":"U"}}
+{"path":"compiler/typePredicates.ts","start":516,"end":517,"text":"U","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":523,"end":531,"text":"overload","nodeType":"Identifier","type":{"name":"Object","display":"{ (value: string): string; (value: number): number; }"}}
+{"path":"compiler/typePredicates.ts","start":532,"end":537,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/typePredicates.ts","start":560,"end":568,"text":"overload","nodeType":"Identifier","type":{"name":"Object","display":"{ (value: string): string; (value: number): number; }"}}
+{"path":"compiler/typePredicates.ts","start":569,"end":574,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/typePredicates.ts","start":610,"end":626,"text":"methodSignatures","nodeType":"Identifier","type":{"name":"TypeReference","display":"MethodSignatureCoverage<string>"}}
+{"path":"compiler/typePredicates.ts","start":628,"end":651,"text":"MethodSignatureCoverage","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":628,"end":651,"text":"MethodSignatureCoverage","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/typePredicates.ts","start":668,"end":675,"text":"_narrow","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/typePredicates.ts","start":678,"end":694,"text":"methodSignatures","nodeType":"Identifier","type":{"name":"TypeReference","display":"MethodSignatureCoverage<string>"}}
+{"path":"compiler/typePredicates.ts","start":695,"end":701,"text":"narrow","nodeType":"Identifier","type":{"name":"Function","display":"<U>(this: MethodSignatureCoverage<string>, value: U) => value is U"}}
+{"path":"compiler/typePredicates.ts","start":718,"end":733,"text":"_stringOverload","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/typePredicates.ts","start":736,"end":752,"text":"methodSignatures","nodeType":"Identifier","type":{"name":"TypeReference","display":"MethodSignatureCoverage<string>"}}
+{"path":"compiler/typePredicates.ts","start":753,"end":761,"text":"overload","nodeType":"Identifier","type":{"name":"Object","display":"{ (value: string): string; (value: number): number; }"}}
+{"path":"compiler/typePredicates.ts","start":778,"end":793,"text":"_numberOverload","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/typePredicates.ts","start":796,"end":812,"text":"methodSignatures","nodeType":"Identifier","type":{"name":"TypeReference","display":"MethodSignatureCoverage<string>"}}
+{"path":"compiler/typePredicates.ts","start":813,"end":821,"text":"overload","nodeType":"Identifier","type":{"name":"Object","display":"{ (value: string): string; (value: number): number; }"}}

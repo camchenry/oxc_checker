@@ -1,0 +1,4 @@
+{"path":"es2016.intl.d.ts","start":18,"end":22,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2016.intl.d.ts","start":18,"end":22,"text":"Intl","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Intl"}}
+{"path":"es2016.intl.d.ts","start":561,"end":580,"text":"getCanonicalLocales","nodeType":"Identifier","type":{"name":"Object","display":"{ (locale?: string | readonly string[]): string[]; (locale?: string | readonly string[]): string[]; }"}}
+{"path":"es2016.intl.d.ts","start":581,"end":587,"text":"locale","nodeType":"Identifier","type":{"name":"Union","display":"string | readonly string[] | undefined"}}

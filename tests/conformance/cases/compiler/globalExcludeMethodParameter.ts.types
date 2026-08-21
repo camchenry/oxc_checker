@@ -1,23 +1,23 @@
 interface Shape {
->         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^: any   (Any) (Identifier)
 
 interface Shape {
->         ^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^: any   (Any) (Identifier)
 
   method(format: Exclude<KeyFormat, "jwk">): void;
-> ^^^^^^: (format: Exclude<KeyFormat, "jwk">) => void   (TyFunction) (TSMethodSignature)
+> ^^^^^^: (format: Exclude<KeyFormat, "jwk">) => void   (Function) (Identifier)
 
   method(format: Exclude<KeyFormat, "jwk">): void;
->        ^^^^^^: "pkcs8" | "raw" | "spki"   (TyUnion) (BindingIdentifier)
+>        ^^^^^^: "pkcs8" | "raw" | "spki"   (Union) (Identifier)
 
   method(format: Exclude<KeyFormat, "jwk">): void;
->                ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^^: any   (Any) (Identifier)
 
   method(format: Exclude<KeyFormat, "jwk">): void;
->                ^^^^^^^: any   (TyError) (IdentifierReference)
+>                ^^^^^^^: any   (Error) (Identifier)
 
   method(format: Exclude<KeyFormat, "jwk">): void;
->                        ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                        ^^^^^^^^^: any   (Any) (Identifier)
 
   method(format: Exclude<KeyFormat, "jwk">): void;
->                        ^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                        ^^^^^^^^^: any   (Error) (Identifier)

@@ -1,224 +1,224 @@
 declare const x: string | undefined;
->             ^: string | undefined   (TyUnion) (BindingIdentifier)
+>             ^: string | undefined   (Union) (Identifier)
 
 if (x) {
->   ^: string | undefined   (TyUnion) (IdentifierReference)
+>   ^: string | undefined   (Union) (Identifier)
 
   console.log(x);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(x);
-> ^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(x);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(x);
->             ^: string   (TyString) (IdentifierReference)
+>             ^: string   (String) (Identifier)
 
   console.log(x);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(x);
-> ^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(x);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(x);
->             ^: string | undefined   (TyUnion) (IdentifierReference)
+>             ^: string | undefined   (Union) (Identifier)
 
 declare const y: string | number | boolean;
->             ^: string | number | boolean   (TyUnion) (BindingIdentifier)
+>             ^: string | number | boolean   (Union) (Identifier)
 
 const z = typeof y === "string" ? y : undefined;
->     ^: string | undefined   (TyUnion) (BindingIdentifier)
+>     ^: string | undefined   (Union) (Identifier)
 
 const z = typeof y === "string" ? y : undefined;
->                ^: string | number | boolean   (TyUnion) (IdentifierReference)
+>                ^: string | number | boolean   (Union) (Identifier)
 
 const z = typeof y === "string" ? y : undefined;
->                                 ^: string   (TyString) (IdentifierReference)
+>                                 ^: string   (String) (Identifier)
 
 const z = typeof y === "string" ? y : undefined;
->                                     ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+>                                     ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 if (typeof y === "string") {
->          ^: string | number | boolean   (TyUnion) (IdentifierReference)
+>          ^: string | number | boolean   (Union) (Identifier)
 
   console.log(y);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(y);
-> ^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(y);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(y);
->             ^: string   (TyString) (IdentifierReference)
+>             ^: string   (String) (Identifier)
 
   console.log(y)
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(y)
-> ^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(y)
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(y)
->             ^: number | boolean   (TyUnion) (IdentifierReference)
+>             ^: number | boolean   (Union) (Identifier)
 
 const andResult = x && x;
->     ^^^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>     ^^^^^^^^^: string | undefined   (Union) (Identifier)
 
 const andResult = x && x;
->                 ^: string | undefined   (TyUnion) (IdentifierReference)
+>                 ^: string | undefined   (Union) (Identifier)
 
 const andResult = x && x;
->                      ^: string   (TyString) (IdentifierReference)
+>                      ^: string   (String) (Identifier)
 
 const orResult = x || "fallback";
->     ^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^: string   (String) (Identifier)
 
 const orResult = x || "fallback";
->                ^: string | undefined   (TyUnion) (IdentifierReference)
+>                ^: string | undefined   (Union) (Identifier)
 
 const coalesceResult = x ?? "fallback";
->     ^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+>     ^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const coalesceResult = x ?? "fallback";
->                      ^: string | undefined   (TyUnion) (IdentifierReference)
+>                      ^: string | undefined   (Union) (Identifier)
 
 if (x && typeof y === "string") {
->   ^: string | undefined   (TyUnion) (IdentifierReference)
+>   ^: string | undefined   (Union) (Identifier)
 
 if (x && typeof y === "string") {
->               ^: string | number | boolean   (TyUnion) (IdentifierReference)
+>               ^: string | number | boolean   (Union) (Identifier)
 
   console.log(x);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(x);
-> ^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(x);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(x);
->             ^: string   (TyString) (IdentifierReference)
+>             ^: string   (String) (Identifier)
 
   console.log(y);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(y);
-> ^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(y);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(y);
->             ^: string   (TyString) (IdentifierReference)
+>             ^: string   (String) (Identifier)
 
 interface Action {
->         ^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^: any   (Any) (Identifier)
 
 interface Action {
->         ^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^: any   (Any) (Identifier)
 
   type: string;
-> ^^^^: string   (TyString) (TSPropertySignature)
+> ^^^^: string   (String) (Identifier)
 
 declare function isAction(action: unknown): action is Action;
->                ^^^^^^^^: (action: unknown) => action is Action   (TyFunction) (BindingIdentifier)
+>                ^^^^^^^^: (action: unknown) => action is Action   (Function) (Identifier)
 
 declare function isAction(action: unknown): action is Action;
->                         ^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>                         ^^^^^^: unknown   (Unknown) (Identifier)
 
 declare function isAction(action: unknown): action is Action;
->                                           ^^^^^^: unknown   (TyUnknown) (IdentifierName)
+>                                           ^^^^^^: unknown   (Unknown) (Identifier)
 
 declare function isAction(action: unknown): action is Action;
->                                                     ^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                     ^^^^^^: any   (Any) (Identifier)
 
 declare function isAction(action: unknown): action is Action;
->                                                     ^^^^^^: any   (TyAny) (IdentifierReference)
+>                                                     ^^^^^^: any   (Any) (Identifier)
 
 declare const maybeAction: unknown;
->             ^^^^^^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+>             ^^^^^^^^^^^: unknown   (Unknown) (Identifier)
 
 if (isAction(maybeAction) && maybeAction.type) {
->   ^^^^^^^^: (action: unknown) => action is Action   (TyFunction) (IdentifierReference)
+>   ^^^^^^^^: (action: unknown) => action is Action   (Function) (Identifier)
 
 if (isAction(maybeAction) && maybeAction.type) {
->            ^^^^^^^^^^^: unknown   (TyUnknown) (IdentifierReference)
+>            ^^^^^^^^^^^: unknown   (Unknown) (Identifier)
 
 if (isAction(maybeAction) && maybeAction.type) {
->                            ^^^^^^^^^^^: Action   (TyTypeReference) (IdentifierReference)
+>                            ^^^^^^^^^^^: Action   (TypeReference) (Identifier)
 
 if (isAction(maybeAction) && maybeAction.type) {
->                                        ^^^^: string   (TyString) (StaticMemberExpression)
+>                                        ^^^^: string   (String) (Identifier)
 
   console.log(maybeAction);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(maybeAction);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(maybeAction);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(maybeAction);
->             ^^^^^^^^^^^: Action   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^^^^^^: Action   (TypeReference) (Identifier)
 
   console.log(maybeAction.type);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(maybeAction.type);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(maybeAction.type);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(maybeAction.type);
->             ^^^^^^^^^^^: Action   (TyTypeReference) (IdentifierReference)
+>             ^^^^^^^^^^^: Action   (TypeReference) (Identifier)
 
   console.log(maybeAction.type);
->                         ^^^^: string   (TyString) (StaticMemberExpression)
+>                         ^^^^: string   (String) (Identifier)
 
 if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAction) {
->          ^^^^^^^^^^^: unknown   (TyUnknown) (IdentifierReference)
+>          ^^^^^^^^^^^: unknown   (Unknown) (Identifier)
 
 if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAction) {
->                                      ^^^^^^^^^^^: object | null   (TyUnion) (IdentifierReference)
+>                                      ^^^^^^^^^^^: object | null   (Union) (Identifier)
 
 if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAction) {
->                                                                        ^^^^^^^^^^^: object   (TyPrimitiveObject) (IdentifierReference)
+>                                                                        ^^^^^^^^^^^: object   (PrimitiveObject) (Identifier)
 
   console.log(maybeAction);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(maybeAction);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(maybeAction);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(maybeAction);
->             ^^^^^^^^^^^: object & Record<"type", unknown>   (TyIntersection) (IdentifierReference)
+>             ^^^^^^^^^^^: object & Record<"type", unknown>   (Intersection) (Identifier)
 
   console.log(maybeAction.type);
-> ^^^^^^^: Console   (TyTypeReference) (IdentifierReference)
+> ^^^^^^^: Console   (TypeReference) (Identifier)
 
   console.log(maybeAction.type);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (TyVoid) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
   console.log(maybeAction.type);
->         ^^^: (...data: any[]) => void   (TyFunction) (StaticMemberExpression)
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(maybeAction.type);
->             ^^^^^^^^^^^: object & Record<"type", unknown>   (TyIntersection) (IdentifierReference)
+>             ^^^^^^^^^^^: object & Record<"type", unknown>   (Intersection) (Identifier)
 
   console.log(maybeAction.type);
->                         ^^^^: unknown   (TyUnknown) (StaticMemberExpression)
+>                         ^^^^: unknown   (Unknown) (Identifier)

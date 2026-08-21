@@ -1,0 +1,3 @@
+{"path":"compiler/transparentAliasInTypeAliasDisplay.ts","start":5,"end":13,"text":"ArrayKey","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/transparentAliasInTypeAliasDisplay.ts","start":29,"end":33,"text":"Path","nodeType":"Identifier","type":{"name":"TemplateLiteral","display":"`${number}`"}}
+{"path":"compiler/transparentAliasInTypeAliasDisplay.ts","start":39,"end":47,"text":"ArrayKey","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

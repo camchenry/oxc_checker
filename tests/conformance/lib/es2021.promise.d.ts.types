@@ -1,149 +1,149 @@
 interface AggregateError extends Error {
->         ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
 interface AggregateError extends Error {
->         ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
 interface AggregateError extends Error {
->                                ^^^^^: ErrorConstructor   (TyTypeReference) (TSInterfaceHeritage)
+>                                ^^^^^: ErrorConstructor   (TypeReference) (Identifier)
 
 interface AggregateError extends Error {
->                                ^^^^^: ErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                ^^^^^: ErrorConstructor   (TypeReference) (Identifier)
 
     errors: any[];
->   ^^^^^^: any[]   (TyArray) (TSPropertySignature)
+>   ^^^^^^: any[]   (Array) (Identifier)
 
 interface AggregateErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface AggregateErrorConstructor {
->         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     new (errors: Iterable<any>, message?: string): AggregateError;
->        ^^^^^^: Iterable<any>   (TyTypeReference) (BindingIdentifier)
+>        ^^^^^^: Iterable<any>   (TypeReference) (Identifier)
 
     new (errors: Iterable<any>, message?: string): AggregateError;
->                ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                ^^^^^^^^: any   (Any) (Identifier)
 
     new (errors: Iterable<any>, message?: string): AggregateError;
->                ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                ^^^^^^^^: any   (Error) (Identifier)
 
     new (errors: Iterable<any>, message?: string): AggregateError;
->                               ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>                               ^^^^^^^: string | undefined   (Union) (Identifier)
 
     new (errors: Iterable<any>, message?: string): AggregateError;
->                                                  ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                                  ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
     new (errors: Iterable<any>, message?: string): AggregateError;
->                                                  ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                                  ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
     (errors: Iterable<any>, message?: string): AggregateError;
->    ^^^^^^: Iterable<any>   (TyTypeReference) (BindingIdentifier)
+>    ^^^^^^: Iterable<any>   (TypeReference) (Identifier)
 
     (errors: Iterable<any>, message?: string): AggregateError;
->            ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^^^^: any   (Any) (Identifier)
 
     (errors: Iterable<any>, message?: string): AggregateError;
->            ^^^^^^^^: any   (TyError) (IdentifierReference)
+>            ^^^^^^^^: any   (Error) (Identifier)
 
     (errors: Iterable<any>, message?: string): AggregateError;
->                           ^^^^^^^: string | undefined   (TyUnion) (BindingIdentifier)
+>                           ^^^^^^^: string | undefined   (Union) (Identifier)
 
     (errors: Iterable<any>, message?: string): AggregateError;
->                                              ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                                              ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
     (errors: Iterable<any>, message?: string): AggregateError;
->                                              ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                                              ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
     readonly prototype: AggregateError;
->            ^^^^^^^^^: AggregateError   (TyTypeReference) (TSPropertySignature)
+>            ^^^^^^^^^: AggregateError   (TypeReference) (Identifier)
 
     readonly prototype: AggregateError;
->                       ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (TSTypeReference)
+>                       ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
     readonly prototype: AggregateError;
->                       ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (IdentifierReference)
+>                       ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
 declare var AggregateError: AggregateErrorConstructor;
->           ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TyTypeReference) (BindingIdentifier)
+>           ^^^^^^^^^^^^^^: AggregateErrorConstructor   (TypeReference) (Identifier)
 
 declare var AggregateError: AggregateErrorConstructor;
->                           ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare var AggregateError: AggregateErrorConstructor;
->                           ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+>                           ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface PromiseConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 interface PromiseConstructor {
->         ^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
+>   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (Object) (Identifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->       ^: any   (TyAny) (TSTypeParameter)
+>       ^: any   (Any) (Identifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                          ^^^^^^: T   (TyTypeReference) (BindingIdentifier)
+>                                          ^^^^^^: T   (TypeReference) (Identifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                  ^: any   (TyAny) (TSTypeReference)
+>                                                  ^: any   (Any) (Identifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                      ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                                      ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                      ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                                      ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                              ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                              ^^^^^^^: any   (Any) (Identifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                              ^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                              ^^^^^^^: any   (Error) (Identifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                                                      ^: any   (TyAny) (TSTypeReference)
+>                                                                      ^: any   (Any) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (TyObject) (TSMethodSignature)
+>   ^^^: { <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; }   (Object) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->       ^: any   (TyAny) (TSTypeParameter)
+>       ^: any   (Any) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->          ^^^^^^: Iterable<T | PromiseLike<T>>   (TyTypeReference) (BindingIdentifier)
+>          ^^^^^^: Iterable<T | PromiseLike<T>>   (TypeReference) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                  ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                  ^^^^^^^^: any   (Any) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                  ^^^^^^^^: any   (TyError) (IdentifierReference)
+>                  ^^^^^^^^: any   (Error) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                           ^: any   (TyAny) (TSTypeReference)
+>                           ^: any   (Any) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                               ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^^^^^: any   (Any) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                               ^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                               ^^^^^^^^^^^: any   (Error) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                                           ^: any   (TyAny) (TSTypeReference)
+>                                           ^: any   (Any) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                                                 ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+>                                                 ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                                                 ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+>                                                 ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                                                         ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                         ^^^^^^^: any   (Any) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                                                         ^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                         ^^^^^^^: any   (Error) (Identifier)
 
     any<T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>;
->                                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                                 ^: any   (Any) (Identifier)

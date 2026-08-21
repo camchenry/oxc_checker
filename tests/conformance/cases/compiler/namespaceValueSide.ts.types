@@ -1,101 +1,101 @@
 namespace Values {
->         ^^^^^^: typeof Values   (TyTypeQuery) (TSModuleDeclaration)
+>         ^^^^^^: typeof Values   (TypeQuery) (Identifier)
 
 namespace Values {
->         ^^^^^^: typeof Values   (TyTypeQuery) (BindingIdentifier)
+>         ^^^^^^: typeof Values   (TypeQuery) (Identifier)
 
   export const literal: "value" = "value";
->              ^^^^^^^: "value"   (TyStringLiteral) (BindingIdentifier)
+>              ^^^^^^^: "value"   (StringLiteral) (Identifier)
 
   const hidden = 1;
->       ^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+>       ^^^^^^: 1   (NumberLiteral) (Identifier)
 
   export type TypeOnly = string;
->             ^^^^^^^^: string   (TyString) (TSTypeAliasDeclaration)
+>             ^^^^^^^^: string   (String) (Identifier)
 
   export function make(): number {
->                 ^^^^: () => number   (TyFunction) (BindingIdentifier)
+>                 ^^^^: () => number   (Function) (Identifier)
 
     return hidden;
->          ^^^^^^: 1   (TyNumberLiteral) (IdentifierReference)
+>          ^^^^^^: 1   (NumberLiteral) (Identifier)
 
   export namespace Nested {
->                  ^^^^^^: typeof Nested   (TyTypeQuery) (TSModuleDeclaration)
+>                  ^^^^^^: typeof Nested   (TypeQuery) (Identifier)
 
   export namespace Nested {
->                  ^^^^^^: typeof Nested   (TyTypeQuery) (BindingIdentifier)
+>                  ^^^^^^: typeof Nested   (TypeQuery) (Identifier)
 
     export const flag: true = true;
->                ^^^^: true   (TyBooleanLiteral) (BindingIdentifier)
+>                ^^^^: true   (BooleanLiteral) (Identifier)
 
     export namespace Deep {
->                    ^^^^: typeof Deep   (TyTypeQuery) (TSModuleDeclaration)
+>                    ^^^^: typeof Deep   (TypeQuery) (Identifier)
 
     export namespace Deep {
->                    ^^^^: typeof Deep   (TyTypeQuery) (BindingIdentifier)
+>                    ^^^^: typeof Deep   (TypeQuery) (Identifier)
 
       export const count: 2 = 2;
->                  ^^^^^: 2   (TyNumberLiteral) (BindingIdentifier)
+>                  ^^^^^: 2   (NumberLiteral) (Identifier)
 
 namespace Values {
->         ^^^^^^: typeof Values   (TyTypeQuery) (TSModuleDeclaration)
+>         ^^^^^^: typeof Values   (TypeQuery) (Identifier)
 
 namespace Values {
->         ^^^^^^: typeof Values   (TyTypeQuery) (BindingIdentifier)
+>         ^^^^^^: typeof Values   (TypeQuery) (Identifier)
 
   export const merged: 42 = 42;
->              ^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+>              ^^^^^^: 42   (NumberLiteral) (Identifier)
 
 const literal = Values.literal;
->     ^^^^^^^: "value"   (TyStringLiteral) (BindingIdentifier)
+>     ^^^^^^^: "value"   (StringLiteral) (Identifier)
 
 const literal = Values.literal;
->               ^^^^^^: typeof Values   (TyTypeQuery) (IdentifierReference)
+>               ^^^^^^: typeof Values   (TypeQuery) (Identifier)
 
 const literal = Values.literal;
->                      ^^^^^^^: "value"   (TyStringLiteral) (StaticMemberExpression)
+>                      ^^^^^^^: "value"   (StringLiteral) (Identifier)
 
 const made = Values.make();
->     ^^^^: number   (TyNumber) (BindingIdentifier)
+>     ^^^^: number   (Number) (Identifier)
 
 const made = Values.make();
->            ^^^^^^: typeof Values   (TyTypeQuery) (IdentifierReference)
+>            ^^^^^^: typeof Values   (TypeQuery) (Identifier)
 
 const made = Values.make();
->                   ^^^^: () => number   (TyFunction) (StaticMemberExpression)
+>                   ^^^^: () => number   (Function) (Identifier)
 
 const flag = Values.Nested.flag;
->     ^^^^: true   (TyBooleanLiteral) (BindingIdentifier)
+>     ^^^^: true   (BooleanLiteral) (Identifier)
 
 const flag = Values.Nested.flag;
->            ^^^^^^: typeof Values   (TyTypeQuery) (IdentifierReference)
+>            ^^^^^^: typeof Values   (TypeQuery) (Identifier)
 
 const flag = Values.Nested.flag;
->                   ^^^^^^: typeof Values.Nested   (TyTypeQuery) (StaticMemberExpression)
+>                   ^^^^^^: typeof Values.Nested   (TypeQuery) (Identifier)
 
 const flag = Values.Nested.flag;
->                          ^^^^: true   (TyBooleanLiteral) (StaticMemberExpression)
+>                          ^^^^: true   (BooleanLiteral) (Identifier)
 
 const count = Values.Nested.Deep.count;
->     ^^^^^: 2   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^: 2   (NumberLiteral) (Identifier)
 
 const count = Values.Nested.Deep.count;
->             ^^^^^^: typeof Values   (TyTypeQuery) (IdentifierReference)
+>             ^^^^^^: typeof Values   (TypeQuery) (Identifier)
 
 const count = Values.Nested.Deep.count;
->                    ^^^^^^: typeof Values.Nested   (TyTypeQuery) (StaticMemberExpression)
+>                    ^^^^^^: typeof Values.Nested   (TypeQuery) (Identifier)
 
 const count = Values.Nested.Deep.count;
->                           ^^^^: typeof Values.Nested.Deep   (TyTypeQuery) (StaticMemberExpression)
+>                           ^^^^: typeof Values.Nested.Deep   (TypeQuery) (Identifier)
 
 const count = Values.Nested.Deep.count;
->                                ^^^^^: 2   (TyNumberLiteral) (StaticMemberExpression)
+>                                ^^^^^: 2   (NumberLiteral) (Identifier)
 
 const merged = Values.merged;
->     ^^^^^^: 42   (TyNumberLiteral) (BindingIdentifier)
+>     ^^^^^^: 42   (NumberLiteral) (Identifier)
 
 const merged = Values.merged;
->              ^^^^^^: typeof Values   (TyTypeQuery) (IdentifierReference)
+>              ^^^^^^: typeof Values   (TypeQuery) (Identifier)
 
 const merged = Values.merged;
->                     ^^^^^^: 42   (TyNumberLiteral) (StaticMemberExpression)
+>                     ^^^^^^: 42   (NumberLiteral) (Identifier)

@@ -1,940 +1,940 @@
 export type Primitive = null | undefined | string | number | boolean | symbol | bigint
->           ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (Union) (Identifier)
 
 export type BrowserNativeObject = Date | FileList | File
->           ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (Union) (Identifier)
 
 export type BrowserNativeObject = Date | FileList | File
->                                 ^^^^: DateConstructor   (TyTypeReference) (TSTypeReference)
+>                                 ^^^^: DateConstructor   (TypeReference) (Identifier)
 
 export type BrowserNativeObject = Date | FileList | File
->                                 ^^^^: DateConstructor   (TyTypeReference) (IdentifierReference)
+>                                 ^^^^: DateConstructor   (TypeReference) (Identifier)
 
 export type BrowserNativeObject = Date | FileList | File
->                                        ^^^^^^^^: { new (): FileList; prototype: FileList; }   (TyObject) (TSTypeReference)
+>                                        ^^^^^^^^: { new (): FileList; prototype: FileList; }   (Object) (Identifier)
 
 export type BrowserNativeObject = Date | FileList | File
->                                        ^^^^^^^^: { new (): FileList; prototype: FileList; }   (TyObject) (IdentifierReference)
+>                                        ^^^^^^^^: { new (): FileList; prototype: FileList; }   (Object) (Identifier)
 
 export type BrowserNativeObject = Date | FileList | File
->                                                   ^^^^: { new (fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File; prototype: File; }   (TyObject) (TSTypeReference)
+>                                                   ^^^^: { new (fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File; prototype: File; }   (Object) (Identifier)
 
 export type BrowserNativeObject = Date | FileList | File
->                                                   ^^^^: { new (fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File; prototype: File; }   (TyObject) (IdentifierReference)
+>                                                   ^^^^: { new (fileBits: BlobPart[], fileName: string, options?: FilePropertyBag): File; prototype: File; }   (Object) (Identifier)
 
 export type IsAny<T> = 0 extends 1 & T ? true : false
->           ^^^^^: 0 extends 1 & T ? true : false   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^: 0 extends 1 & T ? true : false   (Conditional) (Identifier)
 
 export type IsAny<T> = 0 extends 1 & T ? true : false
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
 export type IsAny<T> = 0 extends 1 & T ? true : false
->                                    ^: any   (TyAny) (TSTypeReference)
+>                                    ^: any   (Any) (Identifier)
 
 export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
->           ^^^^^^^: number extends T["length"] ? false : true   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^: number extends T["length"] ? false : true   (Conditional) (Identifier)
 
 export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
->                   ^: any   (TyAny) (TSTypeParameter)
+>                   ^: any   (Any) (Identifier)
 
 export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
->                             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
->                             ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                             ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
 export type IsTuple<T extends ReadonlyArray<any>> = number extends T['length']
->                                                                  ^: any   (TyAny) (TSTypeReference)
+>                                                                  ^: any   (Any) (Identifier)
 
 export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
->           ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (Conditional) (Identifier)
 
 export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
->                     ^: any   (TyAny) (TSTypeParameter)
+>                     ^: any   (Any) (Identifier)
 
 export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
->                               ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
->                               ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                               ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
 export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
->                                                     ^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                     ^^^^^^^: any   (Any) (Identifier)
 
 export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
->                                                     ^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                     ^^^^^^^: any   (Error) (Identifier)
 
 export type TupleKeys<T extends ReadonlyArray<any>> = Exclude<keyof T, keyof any[]>
->                                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                                   ^: any   (Any) (Identifier)
 
 export type ArrayKey = number
->           ^^^^^^^^: number   (TyNumber) (TSTypeAliasDeclaration)
+>           ^^^^^^^^: number   (Number) (Identifier)
 
 export type AnyIsEqual<T1, T2> = T1 extends T2
->           ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (Conditional) (Identifier)
 
 export type AnyIsEqual<T1, T2> = T1 extends T2
->                      ^^: any   (TyAny) (TSTypeParameter)
+>                      ^^: any   (Any) (Identifier)
 
 export type AnyIsEqual<T1, T2> = T1 extends T2
->                          ^^: any   (TyAny) (TSTypeParameter)
+>                          ^^: any   (Any) (Identifier)
 
 export type AnyIsEqual<T1, T2> = T1 extends T2
->                                ^^: any   (TyAny) (TSTypeReference)
+>                                ^^: any   (Any) (Identifier)
 
 export type AnyIsEqual<T1, T2> = T1 extends T2
->                                           ^^: any   (TyAny) (TSTypeReference)
+>                                           ^^: any   (Any) (Identifier)
 
   ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
->     ^: any   (TyAny) (TSTypeParameter)
+>     ^: any   (Any) (Identifier)
 
   ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
->             ^: any   (TyAny) (TSTypeReference)
+>             ^: any   (Any) (Identifier)
 
   ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
->                       ^^: any   (TyAny) (TSTypeReference)
+>                       ^^: any   (Any) (Identifier)
 
   ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
->                                            ^: any   (TyAny) (TSTypeParameter)
+>                                            ^: any   (Any) (Identifier)
 
   ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
->                                                    ^: any   (TyAny) (TSTypeReference)
+>                                                    ^: any   (Any) (Identifier)
 
   ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => G extends T2 ? 1 : 2
->                                                              ^^: any   (TyAny) (TSTypeReference)
+>                                                              ^^: any   (Any) (Identifier)
 
   AnyIsEqual,
-> ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (BindingIdentifier)
+> ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (Conditional) (Identifier)
 
   ArrayKey,
-> ^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+> ^^^^^^^^: number   (Number) (Identifier)
 
   BrowserNativeObject,
-> ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion) (BindingIdentifier)
+> ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (Union) (Identifier)
 
   IsAny,
-> ^^^^^: 0 extends 1 & T ? true : false   (TyConditional) (BindingIdentifier)
+> ^^^^^: 0 extends 1 & T ? true : false   (Conditional) (Identifier)
 
   IsTuple,
-> ^^^^^^^: number extends T["length"] ? false : true   (TyConditional) (BindingIdentifier)
+> ^^^^^^^: number extends T["length"] ? false : true   (Conditional) (Identifier)
 
   Primitive,
-> ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion) (BindingIdentifier)
+> ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (Union) (Identifier)
 
   TupleKeys,
-> ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional) (BindingIdentifier)
+> ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (Conditional) (Identifier)
 
 type PathImpl<K extends string | number, V, TraversedTypes> = V extends
->    ^^^^^^^^: V extends Primitive | BrowserNativeObject ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: V extends Primitive | BrowserNativeObject ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`   (Conditional) (Identifier)
      expected: V extends BrowserNativeObject | Primitive ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
 
 type PathImpl<K extends string | number, V, TraversedTypes> = V extends
->             ^: any   (TyAny) (TSTypeParameter)
+>             ^: any   (Any) (Identifier)
 
 type PathImpl<K extends string | number, V, TraversedTypes> = V extends
->                                        ^: any   (TyAny) (TSTypeParameter)
+>                                        ^: any   (Any) (Identifier)
 
 type PathImpl<K extends string | number, V, TraversedTypes> = V extends
->                                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                           ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type PathImpl<K extends string | number, V, TraversedTypes> = V extends
->                                                             ^: any   (TyAny) (TSTypeReference)
+>                                                             ^: any   (Any) (Identifier)
 
   | Primitive
->   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion) (TSTypeReference)
+>   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (Union) (Identifier)
 
   | Primitive
->   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion) (IdentifierReference)
+>   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (Union) (Identifier)
 
   | BrowserNativeObject
->   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion) (TSTypeReference)
+>   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (Union) (Identifier)
 
   | BrowserNativeObject
->   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion) (IdentifierReference)
+>   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (Union) (Identifier)
 
   ? `${K}`
->      ^: any   (TyAny) (TSTypeReference)
+>      ^: any   (Any) (Identifier)
 
   : true extends AnyIsEqual<TraversedTypes, V>
->                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (TSTypeReference)
+>                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (Conditional) (Identifier)
 
   : true extends AnyIsEqual<TraversedTypes, V>
->                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (IdentifierReference)
+>                ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (Conditional) (Identifier)
 
   : true extends AnyIsEqual<TraversedTypes, V>
->                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   : true extends AnyIsEqual<TraversedTypes, V>
->                                           ^: any   (TyAny) (TSTypeReference)
+>                                           ^: any   (Any) (Identifier)
 
     ? `${K}`
->        ^: any   (TyAny) (TSTypeReference)
+>        ^: any   (Any) (Identifier)
 
     : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
->        ^: any   (TyAny) (TSTypeReference)
+>        ^: any   (Any) (Identifier)
 
     : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
->                 ^: any   (TyAny) (TSTypeReference)
+>                 ^: any   (Any) (Identifier)
 
     : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
->                      ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                      ^^^^^^^^^^^^: any   (Any) (Identifier)
 
     : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
->                                   ^: any   (TyAny) (TSTypeReference)
+>                                   ^: any   (Any) (Identifier)
 
     : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
->                                      ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
->                                                       ^: any   (TyAny) (TSTypeReference)
+>                                                       ^: any   (Any) (Identifier)
 
 type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->    ^^^^^^^^^^^^: T extends readonly (infer V)[] ? IsTuple<T> extends true ? { [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>; }[TupleKeys<T>] : PathImpl<number, V, TraversedTypes> : { [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>; }[keyof T]   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: T extends readonly (infer V)[] ? IsTuple<T> extends true ? { [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>; }[TupleKeys<T>] : PathImpl<number, V, TraversedTypes> : { [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>; }[keyof T]   (Conditional) (Identifier)
 
 type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
 type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                    ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                    ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                     ^: any   (TyAny) (TSTypeReference)
+>                                     ^: any   (Any) (Identifier)
 
 type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                          ^: any   (TyAny) (TSTypeReference)
+>                                          ^: any   (Any) (Identifier)
 
 type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                                    ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                    ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                                    ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                    ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
 type PathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                                                        ^: any   (TyAny) (TSTypeParameter)
+>                                                                        ^: any   (Any) (Identifier)
 
   ? IsTuple<T> extends true
->   ^^^^^^^: number extends T["length"] ? false : true   (TyConditional) (TSTypeReference)
+>   ^^^^^^^: number extends T["length"] ? false : true   (Conditional) (Identifier)
 
   ? IsTuple<T> extends true
->   ^^^^^^^: number extends T["length"] ? false : true   (TyConditional) (IdentifierReference)
+>   ^^^^^^^: number extends T["length"] ? false : true   (Conditional) (Identifier)
 
   ? IsTuple<T> extends true
->           ^: any   (TyAny) (TSTypeReference)
+>           ^: any   (Any) (Identifier)
 
         [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
->        ^: any   (TyAny) (TSMappedType)
+>        ^: any   (Any) (Identifier)
 
         [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
->             ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional) (TSTypeReference)
+>             ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (Conditional) (Identifier)
 
         [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
->             ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional) (IdentifierReference)
+>             ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (Conditional) (Identifier)
 
         [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
->                       ^: any   (TyAny) (TSTypeReference)
+>                       ^: any   (Any) (Identifier)
 
         [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
->                              ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^: any   (Any) (Identifier)
 
         [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
->                                       ^: any   (TyAny) (TSTypeReference)
+>                                       ^: any   (Any) (Identifier)
 
         [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
->                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                   ^: any   (Any) (Identifier)
 
         [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
         [K in TupleKeys<T>]-?: PathImpl<K & string, T[K], TraversedTypes>
->                                                         ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       }[TupleKeys<T>]
->       ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional) (TSTypeReference)
+>       ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (Conditional) (Identifier)
 
       }[TupleKeys<T>]
->       ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional) (IdentifierReference)
+>       ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (Conditional) (Identifier)
 
       }[TupleKeys<T>]
->                 ^: any   (TyAny) (TSTypeReference)
+>                 ^: any   (Any) (Identifier)
 
     : PathImpl<ArrayKey, V, TraversedTypes>
->     ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>     ^^^^^^^^: any   (Any) (Identifier)
 
     : PathImpl<ArrayKey, V, TraversedTypes>
->              ^^^^^^^^: number   (TyNumber) (TSTypeReference)
+>              ^^^^^^^^: number   (Number) (Identifier)
 
     : PathImpl<ArrayKey, V, TraversedTypes>
->              ^^^^^^^^: number   (TyNumber) (IdentifierReference)
+>              ^^^^^^^^: number   (Number) (Identifier)
 
     : PathImpl<ArrayKey, V, TraversedTypes>
->                        ^: any   (TyAny) (TSTypeReference)
+>                        ^: any   (Any) (Identifier)
 
     : PathImpl<ArrayKey, V, TraversedTypes>
->                           ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
->      ^: any   (TyAny) (TSMappedType)
+>      ^: any   (Any) (Identifier)
 
       [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
->                 ^: any   (TyAny) (TSTypeReference)
+>                 ^: any   (Any) (Identifier)
 
       [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
->                       ^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^: any   (Any) (Identifier)
 
       [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
->                                ^: any   (TyAny) (TSTypeReference)
+>                                ^: any   (Any) (Identifier)
 
       [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
->                                            ^: any   (TyAny) (TSTypeReference)
+>                                            ^: any   (Any) (Identifier)
 
       [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
       [K in keyof T]-?: PathImpl<K & string, T[K], TraversedTypes>
->                                                  ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                  ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     }[keyof T]
->           ^: any   (TyAny) (TSTypeReference)
+>           ^: any   (Any) (Identifier)
 
 export type Path<T> = T extends any ? PathInternal<T> : never
->           ^^^^: T extends any ? PathInternal<T, T> : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^: T extends any ? PathInternal<T, T> : never   (Conditional) (Identifier)
 
 export type Path<T> = T extends any ? PathInternal<T> : never
->                ^: any   (TyAny) (TSTypeParameter)
+>                ^: any   (Any) (Identifier)
 
 export type Path<T> = T extends any ? PathInternal<T> : never
->                     ^: any   (TyAny) (TSTypeReference)
+>                     ^: any   (Any) (Identifier)
 
 export type Path<T> = T extends any ? PathInternal<T> : never
->                                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                     ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type Path<T> = T extends any ? PathInternal<T> : never
->                                                  ^: any   (TyAny) (TSTypeReference)
+>                                                  ^: any   (Any) (Identifier)
 
 export type FieldPath<TFieldValues> = Path<TFieldValues>
->           ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (Conditional) (Identifier)
 
 export type FieldPath<TFieldValues> = Path<TFieldValues>
->                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                     ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type FieldPath<TFieldValues> = Path<TFieldValues>
->                                     ^^^^: any   (TyAny) (TSTypeReference)
+>                                     ^^^^: any   (Any) (Identifier)
 
 export type FieldPath<TFieldValues> = Path<TFieldValues>
->                                          ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
->    ^^^^^^^^^: T extends any ? P extends `${infer K}.${infer R}` ? K extends keyof T ? R extends Path<T[K]> ? PathValue<T[K], R> : never : K extends `${number}` ? T extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : P extends keyof T ? T[P] : P extends `${number}` ? T extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: T extends any ? P extends `${infer K}.${infer R}` ? K extends keyof T ? R extends Path<T[K]> ? PathValue<T[K], R> : never : K extends `${number}` ? T extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : P extends keyof T ? T[P] : P extends `${number}` ? T extends readonly (infer V)[] ? V : never : never : never   (Conditional) (Identifier)
 
 type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
->              ^: any   (TyAny) (TSTypeParameter)
+>              ^: any   (Any) (Identifier)
 
 type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
->                 ^: any   (TyAny) (TSTypeParameter)
+>                 ^: any   (Any) (Identifier)
 
 type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
->                           ^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^: any   (Any) (Identifier)
 
 type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
->                                ^: any   (TyAny) (TSTypeReference)
+>                                ^: any   (Any) (Identifier)
 
 type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
->                                     ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                     ^^^^^^^^^: any   (Any) (Identifier)
 
 type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
 type PathValue<T, P extends Path<T> | ArrayPath<T>> = T extends any
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
   ? P extends `${infer K}.${infer R}`
->   ^: any   (TyAny) (TSTypeReference)
+>   ^: any   (Any) (Identifier)
 
   ? P extends `${infer K}.${infer R}`
->                      ^: any   (TyAny) (TSTypeParameter)
+>                      ^: any   (Any) (Identifier)
 
   ? P extends `${infer K}.${infer R}`
->                                 ^: any   (TyAny) (TSTypeParameter)
+>                                 ^: any   (Any) (Identifier)
 
     ? K extends keyof T
->     ^: any   (TyAny) (TSTypeReference)
+>     ^: any   (Any) (Identifier)
 
     ? K extends keyof T
->                     ^: any   (TyAny) (TSTypeReference)
+>                     ^: any   (Any) (Identifier)
 
       ? R extends Path<T[K]>
->       ^: any   (TyAny) (TSTypeReference)
+>       ^: any   (Any) (Identifier)
 
       ? R extends Path<T[K]>
->                 ^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^: any   (Any) (Identifier)
 
       ? R extends Path<T[K]>
->                      ^: any   (TyAny) (TSTypeReference)
+>                      ^: any   (Any) (Identifier)
 
       ? R extends Path<T[K]>
->                        ^: any   (TyAny) (TSTypeReference)
+>                        ^: any   (Any) (Identifier)
 
         ? PathValue<T[K], R>
->         ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>         ^^^^^^^^^: any   (Any) (Identifier)
 
         ? PathValue<T[K], R>
->                   ^: any   (TyAny) (TSTypeReference)
+>                   ^: any   (Any) (Identifier)
 
         ? PathValue<T[K], R>
->                     ^: any   (TyAny) (TSTypeReference)
+>                     ^: any   (Any) (Identifier)
 
         ? PathValue<T[K], R>
->                         ^: any   (TyAny) (TSTypeReference)
+>                         ^: any   (Any) (Identifier)
 
       : K extends `${ArrayKey}`
->       ^: any   (TyAny) (TSTypeReference)
+>       ^: any   (Any) (Identifier)
 
       : K extends `${ArrayKey}`
->                    ^^^^^^^^: number   (TyNumber) (TSTypeReference)
+>                    ^^^^^^^^: number   (Number) (Identifier)
 
       : K extends `${ArrayKey}`
->                    ^^^^^^^^: number   (TyNumber) (IdentifierReference)
+>                    ^^^^^^^^: number   (Number) (Identifier)
 
         ? T extends ReadonlyArray<infer V>
->         ^: any   (TyAny) (TSTypeReference)
+>         ^: any   (Any) (Identifier)
 
         ? T extends ReadonlyArray<infer V>
->                   ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         ? T extends ReadonlyArray<infer V>
->                   ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                   ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         ? T extends ReadonlyArray<infer V>
->                                       ^: any   (TyAny) (TSTypeParameter)
+>                                       ^: any   (Any) (Identifier)
 
           ? PathValue<V, R & Path<V>>
->           ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^^^^: any   (Any) (Identifier)
 
           ? PathValue<V, R & Path<V>>
->                     ^: any   (TyAny) (TSTypeReference)
+>                     ^: any   (Any) (Identifier)
 
           ? PathValue<V, R & Path<V>>
->                        ^: any   (TyAny) (TSTypeReference)
+>                        ^: any   (Any) (Identifier)
 
           ? PathValue<V, R & Path<V>>
->                            ^^^^: any   (TyAny) (TSTypeReference)
+>                            ^^^^: any   (Any) (Identifier)
 
           ? PathValue<V, R & Path<V>>
->                                 ^: any   (TyAny) (TSTypeReference)
+>                                 ^: any   (Any) (Identifier)
 
     : P extends keyof T
->     ^: any   (TyAny) (TSTypeReference)
+>     ^: any   (Any) (Identifier)
 
     : P extends keyof T
->                     ^: any   (TyAny) (TSTypeReference)
+>                     ^: any   (Any) (Identifier)
 
       ? T[P]
->       ^: any   (TyAny) (TSTypeReference)
+>       ^: any   (Any) (Identifier)
 
       ? T[P]
->         ^: any   (TyAny) (TSTypeReference)
+>         ^: any   (Any) (Identifier)
 
       : P extends `${ArrayKey}`
->       ^: any   (TyAny) (TSTypeReference)
+>       ^: any   (Any) (Identifier)
 
       : P extends `${ArrayKey}`
->                    ^^^^^^^^: number   (TyNumber) (TSTypeReference)
+>                    ^^^^^^^^: number   (Number) (Identifier)
 
       : P extends `${ArrayKey}`
->                    ^^^^^^^^: number   (TyNumber) (IdentifierReference)
+>                    ^^^^^^^^: number   (Number) (Identifier)
 
         ? T extends ReadonlyArray<infer V>
->         ^: any   (TyAny) (TSTypeReference)
+>         ^: any   (Any) (Identifier)
 
         ? T extends ReadonlyArray<infer V>
->                   ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                   ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         ? T extends ReadonlyArray<infer V>
->                   ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                   ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
         ? T extends ReadonlyArray<infer V>
->                                       ^: any   (TyAny) (TSTypeParameter)
+>                                       ^: any   (Any) (Identifier)
 
           ? V
->           ^: any   (TyAny) (TSTypeReference)
+>           ^: any   (Any) (Identifier)
 
 type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
->    ^^^^^^^^^^^^^: V extends Primitive | BrowserNativeObject ? never : V extends readonly (infer U)[] ? U extends Primitive | BrowserNativeObject ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^: V extends Primitive | BrowserNativeObject ? never : V extends readonly (infer U)[] ? U extends Primitive | BrowserNativeObject ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`   (Conditional) (Identifier)
           expected: V extends BrowserNativeObject | Primitive ? never : V extends readonly (infer U)[] ? U extends BrowserNativeObject | Primitive ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
 
 type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
->                  ^: any   (TyAny) (TSTypeParameter)
+>                  ^: any   (Any) (Identifier)
 
 type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
->                                             ^: any   (TyAny) (TSTypeParameter)
+>                                             ^: any   (Any) (Identifier)
 
 type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
->                                                ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                                                ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type ArrayPathImpl<K extends string | number, V, TraversedTypes> = V extends
->                                                                  ^: any   (TyAny) (TSTypeReference)
+>                                                                  ^: any   (Any) (Identifier)
 
   | Primitive
->   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion) (TSTypeReference)
+>   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (Union) (Identifier)
 
   | Primitive
->   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion) (IdentifierReference)
+>   ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (Union) (Identifier)
 
   | BrowserNativeObject
->   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion) (TSTypeReference)
+>   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (Union) (Identifier)
 
   | BrowserNativeObject
->   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion) (IdentifierReference)
+>   ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (Union) (Identifier)
 
   : V extends ReadonlyArray<infer U>
->   ^: any   (TyAny) (TSTypeReference)
+>   ^: any   (Any) (Identifier)
 
   : V extends ReadonlyArray<infer U>
->             ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   : V extends ReadonlyArray<infer U>
->             ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>             ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
   : V extends ReadonlyArray<infer U>
->                                 ^: any   (TyAny) (TSTypeParameter)
+>                                 ^: any   (Any) (Identifier)
 
     ? U extends Primitive | BrowserNativeObject
->     ^: any   (TyAny) (TSTypeReference)
+>     ^: any   (Any) (Identifier)
 
     ? U extends Primitive | BrowserNativeObject
->               ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion) (TSTypeReference)
+>               ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (Union) (Identifier)
 
     ? U extends Primitive | BrowserNativeObject
->               ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (TyUnion) (IdentifierReference)
+>               ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (Union) (Identifier)
 
     ? U extends Primitive | BrowserNativeObject
->                           ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion) (TSTypeReference)
+>                           ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (Union) (Identifier)
 
     ? U extends Primitive | BrowserNativeObject
->                           ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (TyUnion) (IdentifierReference)
+>                           ^^^^^^^^^^^^^^^^^^^: Date | FileList | File   (Union) (Identifier)
 
       : true extends AnyIsEqual<TraversedTypes, V>
->                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (TSTypeReference)
+>                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (Conditional) (Identifier)
 
       : true extends AnyIsEqual<TraversedTypes, V>
->                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (IdentifierReference)
+>                    ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (Conditional) (Identifier)
 
       : true extends AnyIsEqual<TraversedTypes, V>
->                               ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       : true extends AnyIsEqual<TraversedTypes, V>
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
         : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
->            ^: any   (TyAny) (TSTypeReference)
+>            ^: any   (Any) (Identifier)
 
         : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
->                     ^: any   (TyAny) (TSTypeReference)
+>                     ^: any   (Any) (Identifier)
 
         : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
->                          ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                          ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
->                                            ^: any   (TyAny) (TSTypeReference)
+>                                            ^: any   (Any) (Identifier)
 
         : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
->                                               ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                               ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
->                                                                ^: any   (TyAny) (TSTypeReference)
+>                                                                ^: any   (Any) (Identifier)
 
     : true extends AnyIsEqual<TraversedTypes, V>
->                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (TSTypeReference)
+>                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (Conditional) (Identifier)
 
     : true extends AnyIsEqual<TraversedTypes, V>
->                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (TyConditional) (IdentifierReference)
+>                  ^^^^^^^^^^: T1 extends T2 ? (<G>() => G extends T1 ? 1 : 2) extends <G>() => (G extends T2 ? 1 : 2) ? true : never : never   (Conditional) (Identifier)
 
     : true extends AnyIsEqual<TraversedTypes, V>
->                             ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     : true extends AnyIsEqual<TraversedTypes, V>
->                                             ^: any   (TyAny) (TSTypeReference)
+>                                             ^: any   (Any) (Identifier)
 
       : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
->          ^: any   (TyAny) (TSTypeReference)
+>          ^: any   (Any) (Identifier)
 
       : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
->               ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>               ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
->                                 ^: any   (TyAny) (TSTypeReference)
+>                                 ^: any   (Any) (Identifier)
 
       : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
->                                    ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                    ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
->                                                     ^: any   (TyAny) (TSTypeReference)
+>                                                     ^: any   (Any) (Identifier)
 
 type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->    ^^^^^^^^^^^^^^^^^: T extends readonly (infer V)[] ? IsAny<T> extends true ? string : IsTuple<T> extends true ? { [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>; }[TupleKeys<T>] : ArrayPathImpl<number, V, TraversedTypes> : { [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>; }[keyof T]   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^: T extends readonly (infer V)[] ? IsAny<T> extends true ? string : IsTuple<T> extends true ? { [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>; }[TupleKeys<T>] : ArrayPathImpl<number, V, TraversedTypes> : { [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>; }[keyof T]   (Conditional) (Identifier)
 
 type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                      ^: any   (TyAny) (TSTypeParameter)
+>                      ^: any   (Any) (Identifier)
 
 type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                         ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                          ^: any   (TyAny) (TSTypeReference)
+>                                          ^: any   (Any) (Identifier)
 
 type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                               ^: any   (TyAny) (TSTypeReference)
+>                                               ^: any   (Any) (Identifier)
 
 type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                                         ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                         ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                                         ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+>                                                         ^^^^^^^^^^^^^: any   (Error) (Identifier)
 
 type ArrayPathInternal<T, TraversedTypes = T> = T extends ReadonlyArray<infer V>
->                                                                             ^: any   (TyAny) (TSTypeParameter)
+>                                                                             ^: any   (Any) (Identifier)
 
   ? IsAny<T> extends true
->   ^^^^^: 0 extends 1 & T ? true : false   (TyConditional) (TSTypeReference)
+>   ^^^^^: 0 extends 1 & T ? true : false   (Conditional) (Identifier)
 
   ? IsAny<T> extends true
->   ^^^^^: 0 extends 1 & T ? true : false   (TyConditional) (IdentifierReference)
+>   ^^^^^: 0 extends 1 & T ? true : false   (Conditional) (Identifier)
 
   ? IsAny<T> extends true
->         ^: any   (TyAny) (TSTypeReference)
+>         ^: any   (Any) (Identifier)
 
     : IsTuple<T> extends true
->     ^^^^^^^: number extends T["length"] ? false : true   (TyConditional) (TSTypeReference)
+>     ^^^^^^^: number extends T["length"] ? false : true   (Conditional) (Identifier)
 
     : IsTuple<T> extends true
->     ^^^^^^^: number extends T["length"] ? false : true   (TyConditional) (IdentifierReference)
+>     ^^^^^^^: number extends T["length"] ? false : true   (Conditional) (Identifier)
 
     : IsTuple<T> extends true
->             ^: any   (TyAny) (TSTypeReference)
+>             ^: any   (Any) (Identifier)
 
           [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->          ^: any   (TyAny) (TSMappedType)
+>          ^: any   (Any) (Identifier)
 
           [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->               ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional) (TSTypeReference)
+>               ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (Conditional) (Identifier)
 
           [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->               ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional) (IdentifierReference)
+>               ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (Conditional) (Identifier)
 
           [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                         ^: any   (TyAny) (TSTypeReference)
+>                         ^: any   (Any) (Identifier)
 
           [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                                ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
           [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                                              ^: any   (TyAny) (TSTypeReference)
+>                                              ^: any   (Any) (Identifier)
 
           [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                                                          ^: any   (TyAny) (TSTypeReference)
+>                                                          ^: any   (Any) (Identifier)
 
           [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                                                            ^: any   (TyAny) (TSTypeReference)
+>                                                            ^: any   (Any) (Identifier)
 
           [K in TupleKeys<T>]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                                                                ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                                ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         }[TupleKeys<T>]
->         ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional) (TSTypeReference)
+>         ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (Conditional) (Identifier)
 
         }[TupleKeys<T>]
->         ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (TyConditional) (IdentifierReference)
+>         ^^^^^^^^^: keyof T extends keyof any[] ? never : keyof T   (Conditional) (Identifier)
 
         }[TupleKeys<T>]
->                   ^: any   (TyAny) (TSTypeReference)
+>                   ^: any   (Any) (Identifier)
 
       : ArrayPathImpl<ArrayKey, V, TraversedTypes>
->       ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>       ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       : ArrayPathImpl<ArrayKey, V, TraversedTypes>
->                     ^^^^^^^^: number   (TyNumber) (TSTypeReference)
+>                     ^^^^^^^^: number   (Number) (Identifier)
 
       : ArrayPathImpl<ArrayKey, V, TraversedTypes>
->                     ^^^^^^^^: number   (TyNumber) (IdentifierReference)
+>                     ^^^^^^^^: number   (Number) (Identifier)
 
       : ArrayPathImpl<ArrayKey, V, TraversedTypes>
->                               ^: any   (TyAny) (TSTypeReference)
+>                               ^: any   (Any) (Identifier)
 
       : ArrayPathImpl<ArrayKey, V, TraversedTypes>
->                                  ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                  ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->      ^: any   (TyAny) (TSMappedType)
+>      ^: any   (Any) (Identifier)
 
       [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                 ^: any   (TyAny) (TSTypeReference)
+>                 ^: any   (Any) (Identifier)
 
       [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                       ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                       ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
       [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                                     ^: any   (TyAny) (TSTypeReference)
+>                                     ^: any   (Any) (Identifier)
 
       [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                                                 ^: any   (TyAny) (TSTypeReference)
+>                                                 ^: any   (Any) (Identifier)
 
       [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                                                   ^: any   (TyAny) (TSTypeReference)
+>                                                   ^: any   (Any) (Identifier)
 
       [K in keyof T]-?: ArrayPathImpl<K & string, T[K], TraversedTypes>
->                                                       ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                       ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     }[keyof T]
->           ^: any   (TyAny) (TSTypeReference)
+>           ^: any   (Any) (Identifier)
 
 export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
->           ^^^^^^^^^: T extends any ? ArrayPathInternal<T, T> : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^: T extends any ? ArrayPathInternal<T, T> : never   (Conditional) (Identifier)
 
 export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
->                     ^: any   (TyAny) (TSTypeParameter)
+>                     ^: any   (Any) (Identifier)
 
 export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
->                          ^: any   (TyAny) (TSTypeReference)
+>                          ^: any   (Any) (Identifier)
 
 export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
->                                          ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type ArrayPath<T> = T extends any ? ArrayPathInternal<T> : never
->                                                            ^: any   (TyAny) (TSTypeReference)
+>                                                            ^: any   (Any) (Identifier)
 
 export type FieldArrayPath<TFieldValues> = ArrayPath<TFieldValues>
->           ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (Conditional) (Identifier)
 
 export type FieldArrayPath<TFieldValues> = ArrayPath<TFieldValues>
->                          ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+>                          ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type FieldArrayPath<TFieldValues> = ArrayPath<TFieldValues>
->                                          ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                          ^^^^^^^^^: any   (Any) (Identifier)
 
 export type FieldArrayPath<TFieldValues> = ArrayPath<TFieldValues>
->                                                    ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 export type FieldPathValue<
->           ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (Conditional) (Identifier)
 
   TFieldValues,
-> ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   TFieldPath extends FieldPath<TFieldValues>,
-> ^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^: any   (Any) (Identifier)
 
   TFieldPath extends FieldPath<TFieldValues>,
->                    ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                    ^^^^^^^^^: any   (Any) (Identifier)
 
   TFieldPath extends FieldPath<TFieldValues>,
->                              ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                              ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 > = PathValue<TFieldValues, TFieldPath>
->   ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^^^: any   (Any) (Identifier)
 
 > = PathValue<TFieldValues, TFieldPath>
->             ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 > = PathValue<TFieldValues, TFieldPath>
->                           ^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^^^: any   (Any) (Identifier)
 
 export type FieldArrayPathValue<
->           ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (TSTypeAliasDeclaration)
+>           ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (Conditional) (Identifier)
 
   TFieldValues,
-> ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   TFieldArrayPath extends FieldArrayPath<TFieldValues>,
-> ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+> ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   TFieldArrayPath extends FieldArrayPath<TFieldValues>,
->                         ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   TFieldArrayPath extends FieldArrayPath<TFieldValues>,
->                                        ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                        ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 > = PathValue<TFieldValues, TFieldArrayPath>
->   ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>   ^^^^^^^^^: any   (Any) (Identifier)
 
 > = PathValue<TFieldValues, TFieldArrayPath>
->             ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 > = PathValue<TFieldValues, TFieldArrayPath>
->                           ^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                           ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   FieldArrayPath,
-> ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (BindingIdentifier)
+> ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (Conditional) (Identifier)
 
   FieldArrayPathValue,
-> ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (BindingIdentifier)
+> ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (Conditional) (Identifier)
 
   FieldPath,
-> ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (BindingIdentifier)
+> ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (Conditional) (Identifier)
 
   FieldPathValue,
-> ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (BindingIdentifier)
+> ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (Conditional) (Identifier)
 
 type ContactForm = {
->    ^^^^^^^^^^^: { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }   (TyObject) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }   (Object) (Identifier)
 
   user: {
-> ^^^^: { name: string; address: { city: string; zip?: number; }; }   (TyObject) (TSPropertySignature)
+> ^^^^: { name: string; address: { city: string; zip?: number; }; }   (Object) (Identifier)
 
     name: string
->   ^^^^: string   (TyString) (TSPropertySignature)
+>   ^^^^: string   (String) (Identifier)
 
     address: {
->   ^^^^^^^: { city: string; zip?: number; }   (TyObject) (TSPropertySignature)
+>   ^^^^^^^: { city: string; zip?: number; }   (Object) (Identifier)
 
       city: string
->     ^^^^: string   (TyString) (TSPropertySignature)
+>     ^^^^: string   (String) (Identifier)
 
       zip?: number
->     ^^^: number | undefined   (TyUnion) (TSPropertySignature)
+>     ^^^: number | undefined   (Union) (Identifier)
 
   tags: string[]
-> ^^^^: string[]   (TyArray) (TSPropertySignature)
+> ^^^^: string[]   (Array) (Identifier)
 
   friends: Array<{
-> ^^^^^^^: { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]   (TyArray) (TSPropertySignature)
+> ^^^^^^^: { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]   (Array) (Identifier)
 
   friends: Array<{
->          ^^^^^: ArrayConstructor   (TyTypeReference) (TSTypeReference)
+>          ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
   friends: Array<{
->          ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+>          ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
 
     name: string
->   ^^^^: string   (TyString) (TSPropertySignature)
+>   ^^^^: string   (String) (Identifier)
 
     socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
->   ^^^^^^^: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]   (TyTuple) (TSPropertySignature)
+>   ^^^^^^^: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]   (Tuple) (Identifier)
 
     socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
->               ^^^^: "email"   (TyStringLiteral) (TSPropertySignature)
+>               ^^^^: "email"   (StringLiteral) (Identifier)
 
     socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
->                              ^^^^^: string   (TyString) (TSPropertySignature)
+>                              ^^^^^: string   (String) (Identifier)
 
     socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
->                                                 ^^^^: "phone"   (TyStringLiteral) (TSPropertySignature)
+>                                                 ^^^^: "phone"   (StringLiteral) (Identifier)
 
     socials: [{ kind: 'email'; value: string }, { kind: 'phone'; value: number }]
->                                                                ^^^^^: number   (TyNumber) (TSPropertySignature)
+>                                                                ^^^^^: number   (Number) (Identifier)
 
 type ContactField = FieldPath<ContactForm>
->    ^^^^^^^^^^^^: { user: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; tags: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; friends: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; }[keyof { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^: { user: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; tags: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; friends: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; }[keyof { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }]   (IndexedAccess) (Identifier)
          expected: "friends" | "tags" | "user" | "user.address" | "user.address.city" | "user.address.zip" | "user.name" | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value` | `tags.${number}`
 
 type ContactField = FieldPath<ContactForm>
->                   ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (TSTypeReference)
+>                   ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (Conditional) (Identifier)
 
 type ContactField = FieldPath<ContactForm>
->                   ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (IdentifierReference)
+>                   ^^^^^^^^^: TFieldValues extends any ? PathInternal<TFieldValues, TFieldValues> : never   (Conditional) (Identifier)
 
 type ContactField = FieldPath<ContactForm>
->                             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                             ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type ContactArrayField = FieldArrayPath<ContactForm>
->    ^^^^^^^^^^^^^^^^^: { user: `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`; tags: never; friends: `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`; }[keyof { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }]   (TyIndexedAccess) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^^^^^^^: { user: `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`; tags: never; friends: `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`; }[keyof { user: { name: string; address: { city: string; zip?: number; }; }; tags: string[]; friends: Array<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }>; }]   (IndexedAccess) (Identifier)
               expected: "friends" | `friends.${number}.socials`
 
 type ContactArrayField = FieldArrayPath<ContactForm>
->                        ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (TSTypeReference)
+>                        ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (Conditional) (Identifier)
 
 type ContactArrayField = FieldArrayPath<ContactForm>
->                        ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (TyConditional) (IdentifierReference)
+>                        ^^^^^^^^^^^^^^: TFieldValues extends any ? ArrayPathInternal<TFieldValues, TFieldValues> : never   (Conditional) (Identifier)
 
 type ContactArrayField = FieldArrayPath<ContactForm>
->                                       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                       ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type CityValue = FieldPathValue<ContactForm, 'user.address.city'>
->    ^^^^^^^^^: "address.city" extends { name: `${K}`; address: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; }[keyof { name: string; address: { city: string; zip?: number; }; }] ? "city" extends { city: `${K}`; zip: `${K}`; }[keyof { city: string; zip?: number; }] ? string : never : never   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^: "address.city" extends { name: `${K}`; address: `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`; }[keyof { name: string; address: { city: string; zip?: number; }; }] ? "city" extends { city: `${K}`; zip: `${K}`; }[keyof { city: string; zip?: number; }] ? string : never : never   (Conditional) (Identifier)
       expected: string
 
 type CityValue = FieldPathValue<ContactForm, 'user.address.city'>
->                ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (TSTypeReference)
+>                ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (Conditional) (Identifier)
 
 type CityValue = FieldPathValue<ContactForm, 'user.address.city'>
->                ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (IdentifierReference)
+>                ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (Conditional) (Identifier)
 
 type CityValue = FieldPathValue<ContactForm, 'user.address.city'>
->                               ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                               ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type FriendValue = FieldArrayPathValue<ContactForm, 'friends'>
->    ^^^^^^^^^^^: { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]   (TyArray) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]   (Array) (Identifier)
 
 type FriendValue = FieldArrayPathValue<ContactForm, 'friends'>
->                  ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (Conditional) (Identifier)
 
 type FriendValue = FieldArrayPathValue<ContactForm, 'friends'>
->                  ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (IdentifierReference)
+>                  ^^^^^^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldArrayPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldArrayPath extends keyof TFieldValues ? TFieldValues[TFieldArrayPath] : TFieldArrayPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (Conditional) (Identifier)
 
 type FriendValue = FieldArrayPathValue<ContactForm, 'friends'>
->                                      ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                      ^^^^^^^^^^^: any   (Any) (Identifier)
 
 type SocialValue = FieldPathValue<ContactForm, 'friends.0.socials.1.value'>
->    ^^^^^^^^^^^: "0.socials.1.value" extends { [K in TupleKeys<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]>]-?: PathImpl<K & string, { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[][K], { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]>; }[TupleKeys<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]>] ? never : never   (TyConditional) (TSTypeAliasDeclaration)
+>    ^^^^^^^^^^^: "0.socials.1.value" extends { [K in TupleKeys<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]>]-?: PathImpl<K & string, { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[][K], { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]>; }[TupleKeys<{ name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]>] ? never : never   (Conditional) (Identifier)
         expected: number
 
 type SocialValue = FieldPathValue<ContactForm, 'friends.0.socials.1.value'>
->                  ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (TSTypeReference)
+>                  ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${ArrayKey}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (Conditional) (Identifier)
 
 type SocialValue = FieldPathValue<ContactForm, 'friends.0.socials.1.value'>
->                  ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (TyConditional) (IdentifierReference)
+>                  ^^^^^^^^^^^^^^: TFieldValues extends any ? TFieldPath extends `${infer K}.${infer R}` ? K extends keyof TFieldValues ? R extends Path<TFieldValues[K]> ? PathValue<TFieldValues[K], R> : never : K extends `${number}` ? TFieldValues extends readonly (infer V)[] ? PathValue<V, R & Path<V>> : never : never : TFieldPath extends keyof TFieldValues ? TFieldValues[TFieldPath] : TFieldPath extends `${number}` ? TFieldValues extends readonly (infer V)[] ? V : never : never : never   (Conditional) (Identifier)
 
 type SocialValue = FieldPathValue<ContactForm, 'friends.0.socials.1.value'>
->                                 ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                                 ^^^^^^^^^^^: any   (Any) (Identifier)
 
 const field: ContactField = 'friends.0.socials.1.value'
->     ^^^^^: ContactField   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^: ContactField   (TypeReference) (Identifier)
    expected: "friends" | "tags" | "user" | "user.address" | "user.address.city" | "user.address.zip" | "user.name" | `friends.${number}` | `friends.${number}.name` | `friends.${number}.socials` | `friends.${number}.socials.0` | `friends.${number}.socials.0.kind` | `friends.${number}.socials.0.value` | `friends.${number}.socials.1` | `friends.${number}.socials.1.kind` | `friends.${number}.socials.1.value` | `tags.${number}`
 
 const field: ContactField = 'friends.0.socials.1.value'
->            ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>            ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const arrayField: ContactArrayField = 'friends.0.socials'
->     ^^^^^^^^^^: ContactArrayField   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^^^^^: ContactArrayField   (TypeReference) (Identifier)
         expected: "friends" | `friends.${number}.socials`
 
 const arrayField: ContactArrayField = 'friends.0.socials'
->                 ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>                 ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const city: CityValue = 'Paris'
->     ^^^^: CityValue   (TyTypeReference) (BindingIdentifier)
+>     ^^^^: CityValue   (TypeReference) (Identifier)
   expected: string
 
 const city: CityValue = 'Paris'
->           ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>           ^^^^^^^^^: any   (Any) (Identifier)
 
 const friend: FriendValue = {
->     ^^^^^^: FriendValue   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^: FriendValue   (TypeReference) (Identifier)
     expected: { name: string; socials: [{ kind: 'email'; value: string; }, { kind: 'phone'; value: number; }]; }[]
 
 const friend: FriendValue = {
->             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^: any   (Any) (Identifier)
 
   name: 'Ada',
-> ^^^^: string   (TyString) (ObjectProperty)
+> ^^^^: string   (String) (Identifier)
 
   socials: [
-> ^^^^^^^: ({ kind: string; value: string; } | { kind: string; value: number; })[]   (TyArray) (ObjectProperty)
+> ^^^^^^^: ({ kind: string; value: string; } | { kind: string; value: number; })[]   (Array) (Identifier)
 
     { kind: 'email', value: 'a@example.test' },
->     ^^^^: string   (TyString) (ObjectProperty)
+>     ^^^^: string   (String) (Identifier)
 
     { kind: 'email', value: 'a@example.test' },
->                    ^^^^^: string   (TyString) (ObjectProperty)
+>                    ^^^^^: string   (String) (Identifier)
 
     { kind: 'phone', value: 1 },
->     ^^^^: string   (TyString) (ObjectProperty)
+>     ^^^^: string   (String) (Identifier)
 
     { kind: 'phone', value: 1 },
->                    ^^^^^: number   (TyNumber) (ObjectProperty)
+>                    ^^^^^: number   (Number) (Identifier)
 
 const social: SocialValue = 123
->     ^^^^^^: SocialValue   (TyTypeReference) (BindingIdentifier)
+>     ^^^^^^: SocialValue   (TypeReference) (Identifier)
     expected: number
 
 const social: SocialValue = 123
->             ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+>             ^^^^^^^^^^^: any   (Any) (Identifier)

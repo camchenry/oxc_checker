@@ -1,0 +1,38 @@
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":10,"end":21,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":10,"end":21,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":26,"end":33,"text":"onClick","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":56,"end":62,"text":"Button","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Button"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":74,"end":85,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":74,"end":85,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":90,"end":97,"text":"onClick","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":106,"end":113,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":114,"end":117,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":142,"end":148,"text":"Button","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Button"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":142,"end":148,"text":"Button","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Button"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":150,"end":161,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::a.ts","start":150,"end":161,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":10,"end":21,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":10,"end":21,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":26,"end":33,"text":"onClick","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":56,"end":62,"text":"Button","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Button"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":74,"end":85,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":74,"end":85,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":90,"end":97,"text":"onClick","nodeType":"Identifier","type":{"name":"Function","display":"() => void"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":106,"end":113,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":114,"end":117,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":142,"end":148,"text":"Button","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Button"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":142,"end":148,"text":"Button","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Button"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":166,"end":177,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::b.ts","start":166,"end":177,"text":"ButtonProps","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::c.ts","start":6,"end":7,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::c.ts","start":18,"end":19,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::c.ts","start":40,"end":41,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::c.ts","start":43,"end":44,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::d.ts","start":6,"end":7,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::d.ts","start":18,"end":19,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::d.ts","start":40,"end":41,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::d.ts","start":48,"end":49,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::e.ts","start":6,"end":7,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::e.ts","start":18,"end":19,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::e.ts","start":45,"end":46,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::e.ts","start":59,"end":60,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}

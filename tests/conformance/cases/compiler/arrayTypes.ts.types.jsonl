@@ -1,0 +1,11 @@
+{"path":"compiler/arrayTypes.ts","start":7,"end":9,"text":"a1","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/arrayTypes.ts","start":39,"end":41,"text":"a2","nodeType":"Identifier","type":{"name":"Array","display":"number[]"}}
+{"path":"compiler/arrayTypes.ts","start":61,"end":63,"text":"a3","nodeType":"Identifier","type":{"name":"Array","display":"any[]"}}
+{"path":"compiler/arrayTypes.ts","start":76,"end":78,"text":"a4","nodeType":"Identifier","type":{"name":"Array","display":"null[]"}}
+{"path":"compiler/arrayTypes.ts","start":95,"end":97,"text":"a5","nodeType":"Identifier","type":{"name":"Array","display":"undefined[]"}}
+{"path":"compiler/arrayTypes.ts","start":101,"end":110,"text":"undefined","nodeType":"Identifier","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/arrayTypes.ts","start":119,"end":121,"text":"a6","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/arrayTypes.ts","start":136,"end":138,"text":"a7","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/arrayTypes.ts","start":164,"end":166,"text":"a8","nodeType":"Identifier","type":{"name":"Array","display":"(number | number[])[]"}}
+{"path":"compiler/arrayTypes.ts","start":185,"end":187,"text":"a9","nodeType":"Identifier","type":{"name":"Array","display":"(number | (string | { bar: number; }[])[])[]"}}
+{"path":"compiler/arrayTypes.ts","start":205,"end":208,"text":"bar","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
