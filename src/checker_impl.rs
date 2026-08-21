@@ -1593,12 +1593,16 @@ impl<'a, 'store> Checker<'a, 'store> {
         node_id: Option<NodeId>,
         flags: GetTypeFlags,
     ) -> Ty<'a> {
-        let left = self.get_type_of_assignment_target(
-            program_id,
-            &assignment_expression.left,
-            node_id,
-            flags | GetTypeFlags::CONTEXT_FREE,
-        );
+        let left = if let Some(target) = assignment_expression.left.as_simple_assignment_target() {
+            self.get_type_of_simple_assignment_target(
+                program_id,
+                target,
+                node_id,
+                flags | GetTypeFlags::CONTEXT_FREE,
+            )
+        } else {
+            self.ty.error(TypeErrorKind::UnsupportedType)
+        };
         let right = self.get_type_of_expression_with_node(
             program_id,
             &assignment_expression.right,
@@ -1653,21 +1657,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .arena()
                 .union([self.remove_null_or_undefined(left), right]),
         }
-    }
-
-    // TODO(inline)
-    fn get_type_of_assignment_target(
-        &self,
-        program_id: ProgramId,
-        target: &'a AssignmentTarget<'a>,
-        node_id: Option<NodeId>,
-        flags: GetTypeFlags,
-    ) -> Ty<'a> {
-        // TODO: Avoid erroring here and just only handle simple assignment targets in the first place
-        if let Some(target) = target.as_simple_assignment_target() {
-            return self.get_type_of_simple_assignment_target(program_id, target, node_id, flags);
-        }
-        self.ty.error(TypeErrorKind::UnsupportedType)
     }
 
     fn get_type_of_simple_assignment_target(
