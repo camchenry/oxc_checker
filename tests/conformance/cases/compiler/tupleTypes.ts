@@ -33,5 +33,8 @@ const firstChorus: StringsThenConfig = ["Blow", "Me Bully boys", "blow", { huh: 
 const secondChorus: StringsThenConfig = ["We'll take our leave and go", { huh: false }];
 const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
 
+const directVariadic: [...string[], { huh: boolean }] = ["value", { huh: true }];
+const optionalElement: [number?] = [];
+
 // You can learn more about how the feature has evolved in the beta blog post:
 // https://devblogs.microsoft.com/typescript/announcing-typescript-4-2-beta/

@@ -1,0 +1,182 @@
+const declaredNumber: number = 1;
+>     ^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const declaredString: string = "hello";
+>     ^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+
+const declaredBoolean: boolean = true;
+>     ^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+const declaredBigint: bigint = 1n;
+>     ^^^^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+const declaredUndefined: undefined = undefined;
+>     ^^^^^^^^^^^^^^^^^: undefined   (TyUndefined) (BindingIdentifier)
+
+const declaredUndefined: undefined = undefined;
+>                                    ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)
+
+const declaredNull: null = null;
+>     ^^^^^^^^^^^^: null   (TyNull) (BindingIdentifier)
+
+const declaredAny: any = 1;
+>     ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+const declaredUnknown: unknown = 1;
+>     ^^^^^^^^^^^^^^^: unknown   (TyUnknown) (BindingIdentifier)
+
+const arrayCtor = Array;
+>     ^^^^^^^^^: ArrayConstructor   (TyTypeReference) (BindingIdentifier)
+
+const arrayCtor = Array;
+>                 ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+const promiseCtor = Promise;
+>     ^^^^^^^^^^^: PromiseConstructor   (TyTypeReference) (BindingIdentifier)
+
+const promiseCtor = Promise;
+>                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+
+const mapCtor = Map;
+>     ^^^^^^^: MapConstructor   (TyTypeReference) (BindingIdentifier)
+
+const mapCtor = Map;
+>               ^^^: MapConstructor   (TyTypeReference) (IdentifierReference)
+
+const setCtor = Set;
+>     ^^^^^^^: SetConstructor   (TyTypeReference) (BindingIdentifier)
+
+const setCtor = Set;
+>               ^^^: SetConstructor   (TyTypeReference) (IdentifierReference)
+
+const symbolCtor = Symbol;
+>     ^^^^^^^^^^: SymbolConstructor   (TyTypeReference) (BindingIdentifier)
+
+const symbolCtor = Symbol;
+>                  ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+
+const objectCtor = Object;
+>     ^^^^^^^^^^: ObjectConstructor   (TyTypeReference) (BindingIdentifier)
+
+const objectCtor = Object;
+>                  ^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
+
+const objectKeys = Object.keys({ a: 1 });
+>     ^^^^^^^^^^: string[]   (TyArray) (BindingIdentifier)
+
+const objectKeys = Object.keys({ a: 1 });
+>                  ^^^^^^: ObjectConstructor   (TyTypeReference) (IdentifierReference)
+
+const objectKeys = Object.keys({ a: 1 });
+>                         ^^^^: { (o: object): string[]; (o: {}): string[]; }   (TyObject) (StaticMemberExpression)
+
+const objectKeys = Object.keys({ a: 1 });
+>                                ^: number   (TyNumber) (ObjectProperty)
+
+const constructedArray = new Array<number>(1);
+>     ^^^^^^^^^^^^^^^^: number[]   (TyArray) (BindingIdentifier)
+
+const constructedArray = new Array<number>(1);
+>                            ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+const declaredArray: number[] = [1, 2, 3];
+>     ^^^^^^^^^^^^^: number[]   (TyArray) (BindingIdentifier)
+
+const genericArray: Array<number> = [1, 2, 3];
+>     ^^^^^^^^^^^^: number[]   (TyArray) (BindingIdentifier)
+
+const genericArray: Array<number> = [1, 2, 3];
+>                   ^^^^^: ArrayConstructor   (TyTypeReference) (TSTypeReference)
+
+const genericArray: Array<number> = [1, 2, 3];
+>                   ^^^^^: ArrayConstructor   (TyTypeReference) (IdentifierReference)
+
+const readonlyArray: ReadonlyArray<string> = ["a"];
+>     ^^^^^^^^^^^^^: readonly string[]   (TyArray) (BindingIdentifier)
+
+const readonlyArray: ReadonlyArray<string> = ["a"];
+>                    ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+const readonlyArray: ReadonlyArray<string> = ["a"];
+>                    ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+let tuple: [number, string];
+>   ^^^^^: [number, string]   (TyTuple) (BindingIdentifier)
+
+let tupleNumber = tuple[0];
+>   ^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+let tupleNumber = tuple[0];
+>                 ^^^^^: [number, string]   (TyTuple) (IdentifierReference)
+
+let tupleString = tuple[1];
+>   ^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+
+let tupleString = tuple[1];
+>                 ^^^^^: [number, string]   (TyTuple) (IdentifierReference)
+
+let tupleMissing = tuple[2];
+>   ^^^^^^^^^^^^: undefined   (TyUndefined) (BindingIdentifier)
+
+let tupleMissing = tuple[2];
+>                  ^^^^^: [number, string]   (TyTuple) (IdentifierReference)
+
+declare const stringIndex: { [key: string]: bigint };
+>             ^^^^^^^^^^^: { [key: string]: bigint; }   (TyObject) (BindingIdentifier)
+
+declare const stringIndex: { [key: string]: bigint };
+>                             ^^^: string   (TyString) (TSIndexSignatureName)
+
+const stringIndexValue = stringIndex.anything;
+>     ^^^^^^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+const stringIndexValue = stringIndex.anything;
+>                        ^^^^^^^^^^^: { [key: string]: bigint; }   (TyObject) (IdentifierReference)
+
+const stringIndexValue = stringIndex.anything;
+>                                    ^^^^^^^^: bigint   (TyBigint) (StaticMemberExpression)
+
+const literalCount = 1;
+>     ^^^^^^^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+
+const literalLabel = "ready";
+>     ^^^^^^^^^^^^: "ready"   (TyStringLiteral) (BindingIdentifier)
+
+const quotedLabel = '\"ready\"';
+>     ^^^^^^^^^^^: "\"ready\""   (TyStringLiteral) (BindingIdentifier)
+
+const quoteOnlyNot = !'\"\"';
+>     ^^^^^^^^^^^^: false   (TyBooleanLiteral) (BindingIdentifier)
+
+const literalEnabled = true;
+>     ^^^^^^^^^^^^^^: true   (TyBooleanLiteral) (BindingIdentifier)
+
+const widenedSum = literalCount + 2;
+>     ^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+const widenedSum = literalCount + 2;
+>                  ^^^^^^^^^^^^: 1   (TyNumberLiteral) (IdentifierReference)
+
+const widenedMessage = literalLabel + "!";
+>     ^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+
+const widenedMessage = literalLabel + "!";
+>                      ^^^^^^^^^^^^: "ready"   (TyStringLiteral) (IdentifierReference)
+
+let inferredBoolean = false;
+>   ^^^^^^^^^^^^^^^: boolean   (TyBoolean) (BindingIdentifier)
+
+let inferredNumber = 23;
+>   ^^^^^^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+let inferredString = "hello";
+>   ^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)
+
+let inferredBigint = 1n;
+>   ^^^^^^^^^^^^^^: bigint   (TyBigint) (BindingIdentifier)
+
+let inferredAny;
+>   ^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+let mismatchedAnnotation: string = 23;
+>   ^^^^^^^^^^^^^^^^^^^^: string   (TyString) (BindingIdentifier)

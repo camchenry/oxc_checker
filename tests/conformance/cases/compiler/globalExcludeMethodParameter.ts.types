@@ -1,0 +1,23 @@
+interface Shape {
+>         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Shape {
+>         ^^^^^: any   (TyAny) (BindingIdentifier)
+
+  method(format: Exclude<KeyFormat, "jwk">): void;
+> ^^^^^^: (format: Exclude<KeyFormat, "jwk">) => void   (TyFunction) (TSMethodSignature)
+
+  method(format: Exclude<KeyFormat, "jwk">): void;
+>        ^^^^^^: "pkcs8" | "raw" | "spki"   (TyUnion) (BindingIdentifier)
+
+  method(format: Exclude<KeyFormat, "jwk">): void;
+>                ^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  method(format: Exclude<KeyFormat, "jwk">): void;
+>                ^^^^^^^: any   (TyError) (IdentifierReference)
+
+  method(format: Exclude<KeyFormat, "jwk">): void;
+>                        ^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  method(format: Exclude<KeyFormat, "jwk">): void;
+>                        ^^^^^^^^^: any   (TyError) (IdentifierReference)

@@ -285,3 +285,39 @@ declare const functionParameterInfer: ((value: string) => void) extends ((value:
 
 declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
 >                                                                                                    ^: any   (TyAny) (TSTypeReference)
+
+declare const constrainedRepeatedInfer: { a: "ready"; b: "set" } extends { a: infer U extends string; b: infer U extends string } ? U : never;
+>             ^^^^^^^^^^^^^^^^^^^^^^^^: "ready" | "set"   (TyUnion) (BindingIdentifier)
+
+declare const constrainedRepeatedInfer: { a: "ready"; b: "set" } extends { a: infer U extends string; b: infer U extends string } ? U : never;
+>                                         ^: "ready"   (TyStringLiteral) (TSPropertySignature)
+
+declare const constrainedRepeatedInfer: { a: "ready"; b: "set" } extends { a: infer U extends string; b: infer U extends string } ? U : never;
+>                                                     ^: "set"   (TyStringLiteral) (TSPropertySignature)
+
+declare const constrainedRepeatedInfer: { a: "ready"; b: "set" } extends { a: infer U extends string; b: infer U extends string } ? U : never;
+>                                                                          ^: U   (TyTypeReference) (TSPropertySignature)
+
+declare const constrainedRepeatedInfer: { a: "ready"; b: "set" } extends { a: infer U extends string; b: infer U extends string } ? U : never;
+>                                                                                   ^: any   (TyAny) (TSTypeParameter)
+
+declare const constrainedRepeatedInfer: { a: "ready"; b: "set" } extends { a: infer U extends string; b: infer U extends string } ? U : never;
+>                                                                                                     ^: U   (TyTypeReference) (TSPropertySignature)
+
+declare const constrainedRepeatedInfer: { a: "ready"; b: "set" } extends { a: infer U extends string; b: infer U extends string } ? U : never;
+>                                                                                                              ^: any   (TyAny) (TSTypeParameter)
+
+declare const constrainedRepeatedInfer: { a: "ready"; b: "set" } extends { a: infer U extends string; b: infer U extends string } ? U : never;
+>                                                                                                                                   ^: any   (TyAny) (TSTypeReference)
+
+declare const twoElementTupleRestInfer: [string, number] extends [infer Head, ...infer Rest] ? Rest : never;
+>             ^^^^^^^^^^^^^^^^^^^^^^^^: [number]   (TyTuple) (BindingIdentifier)
+
+declare const twoElementTupleRestInfer: [string, number] extends [infer Head, ...infer Rest] ? Rest : never;
+>                                                                       ^^^^: any   (TyAny) (TSTypeParameter)
+
+declare const twoElementTupleRestInfer: [string, number] extends [infer Head, ...infer Rest] ? Rest : never;
+>                                                                                      ^^^^: any   (TyAny) (TSTypeParameter)
+
+declare const twoElementTupleRestInfer: [string, number] extends [infer Head, ...infer Rest] ? Rest : never;
+>                                                                                              ^^^^: any   (TyAny) (TSTypeReference)

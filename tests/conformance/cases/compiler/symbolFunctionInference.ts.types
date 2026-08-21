@@ -1,0 +1,77 @@
+const predicate = () => false;
+>     ^^^^^^^^^: () => boolean   (TyFunction) (BindingIdentifier)
+
+async function returnsString() { return "value"; }
+>              ^^^^^^^^^^^^^: () => Promise<string>   (TyFunction) (BindingIdentifier)
+
+async function empty() {}
+>              ^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
+
+async function unwrapPromise(value: Promise<number>) { return value; }
+>              ^^^^^^^^^^^^^: (value: Promise<number>) => Promise<number>   (TyFunction) (BindingIdentifier)
+
+async function unwrapPromise(value: Promise<number>) { return value; }
+>                            ^^^^^: Promise<number>   (TyTypeReference) (BindingIdentifier)
+
+async function unwrapPromise(value: Promise<number>) { return value; }
+>                                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+
+async function unwrapPromise(value: Promise<number>) { return value; }
+>                                   ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+
+async function unwrapPromise(value: Promise<number>) { return value; }
+>                                                             ^^^^^: Promise<number>   (TyTypeReference) (IdentifierReference)
+
+async function preserveGeneric<T>(value: T) { return value; }
+>              ^^^^^^^^^^^^^^^: <T>(value: T) => Promise<T>   (TyFunction) (BindingIdentifier)
+
+async function preserveGeneric<T>(value: T) { return value; }
+>                              ^: any   (TyAny) (TSTypeParameter)
+
+async function preserveGeneric<T>(value: T) { return value; }
+>                                 ^^^^^: T   (TyTypeReference) (BindingIdentifier)
+
+async function preserveGeneric<T>(value: T) { return value; }
+>                                        ^: any   (TyAny) (TSTypeReference)
+
+async function preserveGeneric<T>(value: T) { return value; }
+>                                                    ^^^^^: T   (TyTypeReference) (IdentifierReference)
+
+const returnsNumber = async () => 1;
+>     ^^^^^^^^^^^^^: () => Promise<number>   (TyFunction) (BindingIdentifier)
+
+const stringResult = returnsString();
+>     ^^^^^^^^^^^^: Promise<string>   (TyTypeReference) (BindingIdentifier)
+
+const stringResult = returnsString();
+>                    ^^^^^^^^^^^^^: () => Promise<string>   (TyFunction) (IdentifierReference)
+
+const emptyResult = empty();
+>     ^^^^^^^^^^^: Promise<void>   (TyTypeReference) (BindingIdentifier)
+
+const emptyResult = empty();
+>                   ^^^^^: () => Promise<void>   (TyFunction) (IdentifierReference)
+
+const unwrappedResult = unwrapPromise(Promise.resolve(1));
+>     ^^^^^^^^^^^^^^^: Promise<number>   (TyTypeReference) (BindingIdentifier)
+
+const unwrappedResult = unwrapPromise(Promise.resolve(1));
+>                       ^^^^^^^^^^^^^: (value: Promise<number>) => Promise<number>   (TyFunction) (IdentifierReference)
+
+const unwrappedResult = unwrapPromise(Promise.resolve(1));
+>                                     ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+
+const unwrappedResult = unwrapPromise(Promise.resolve(1));
+>                                             ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (TyObject) (StaticMemberExpression)
+
+const genericResult = preserveGeneric("value");
+>     ^^^^^^^^^^^^^: Promise<string>   (TyTypeReference) (BindingIdentifier)
+
+const genericResult = preserveGeneric("value");
+>                     ^^^^^^^^^^^^^^^: <T>(value: T) => Promise<T>   (TyFunction) (IdentifierReference)
+
+const numberResult = returnsNumber();
+>     ^^^^^^^^^^^^: Promise<number>   (TyTypeReference) (BindingIdentifier)
+
+const numberResult = returnsNumber();
+>                    ^^^^^^^^^^^^^: () => Promise<number>   (TyFunction) (IdentifierReference)

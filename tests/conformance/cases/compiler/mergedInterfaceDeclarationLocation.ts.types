@@ -1,0 +1,26 @@
+interface Widget {}
+>         ^^^^^^: WidgetConstructor   (TyTypeReference) (TSInterfaceDeclaration)
+
+interface Widget {}
+>         ^^^^^^: WidgetConstructor   (TyTypeReference) (BindingIdentifier)
+
+interface WidgetConstructor { new (): Widget }
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface WidgetConstructor { new (): Widget }
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface WidgetConstructor { new (): Widget }
+>                                     ^^^^^^: WidgetConstructor   (TyTypeReference) (TSTypeReference)
+
+interface WidgetConstructor { new (): Widget }
+>                                     ^^^^^^: WidgetConstructor   (TyTypeReference) (IdentifierReference)
+
+declare var Widget: WidgetConstructor;
+>           ^^^^^^: WidgetConstructor   (TyTypeReference) (BindingIdentifier)
+
+declare var Widget: WidgetConstructor;
+>                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare var Widget: WidgetConstructor;
+>                   ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)

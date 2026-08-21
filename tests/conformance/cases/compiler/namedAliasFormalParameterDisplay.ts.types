@@ -1,0 +1,38 @@
+type Lazy<T, R> = () => R;
+>    ^^^^: () => R   (TyFunction) (TSTypeAliasDeclaration)
+
+type Lazy<T, R> = () => R;
+>         ^: any   (TyAny) (TSTypeParameter)
+
+type Lazy<T, R> = () => R;
+>            ^: any   (TyAny) (TSTypeParameter)
+
+type Lazy<T, R> = () => R;
+>                       ^: any   (TyAny) (TSTypeReference)
+
+type Pred<T> = Lazy<T, boolean>;
+>    ^^^^: () => boolean   (TyFunction) (TSTypeAliasDeclaration)
+
+type Pred<T> = Lazy<T, boolean>;
+>         ^: any   (TyAny) (TSTypeParameter)
+
+type Pred<T> = Lazy<T, boolean>;
+>              ^^^^: any   (TyAny) (TSTypeReference)
+
+type Pred<T> = Lazy<T, boolean>;
+>                   ^: any   (TyAny) (TSTypeReference)
+
+declare function filter<T>(predicate: Pred<T>): void;
+>                ^^^^^^: <T>(predicate: Pred<T>) => void   (TyFunction) (BindingIdentifier)
+
+declare function filter<T>(predicate: Pred<T>): void;
+>                       ^: any   (TyAny) (TSTypeParameter)
+
+declare function filter<T>(predicate: Pred<T>): void;
+>                          ^^^^^^^^^: Pred<T>   (TyTypeReference) (BindingIdentifier)
+
+declare function filter<T>(predicate: Pred<T>): void;
+>                                     ^^^^: any   (TyAny) (TSTypeReference)
+
+declare function filter<T>(predicate: Pred<T>): void;
+>                                          ^: any   (TyAny) (TSTypeReference)

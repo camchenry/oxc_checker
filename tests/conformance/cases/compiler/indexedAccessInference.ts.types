@@ -51,3 +51,12 @@ const name = get({ value: 1, name: "ready" }, "name");
 
 const name = get({ value: 1, name: "ready" }, "name");
 >                            ^^^^: string   (TyString) (ObjectProperty)
+
+declare const firstTupleElement: ["yes", "no"][0];
+>             ^^^^^^^^^^^^^^^^^: "yes"   (TyStringLiteral) (BindingIdentifier)
+
+declare const secondTupleElement: ["yes", "no"][1];
+>             ^^^^^^^^^^^^^^^^^^: "no"   (TyStringLiteral) (BindingIdentifier)
+
+declare const eitherTupleElement: ["yes", "no"][0 | 1];
+>             ^^^^^^^^^^^^^^^^^^: "yes" | "no"   (TyUnion) (BindingIdentifier)

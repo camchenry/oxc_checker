@@ -1,0 +1,32 @@
+interface Shape {
+>         ^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface Shape {
+>         ^^^^^: any   (TyAny) (BindingIdentifier)
+
+  hash: HashWrapper;
+> ^^^^: HashTarget   (TyTypeReference) (TSPropertySignature)
+
+  hash: HashWrapper;
+>       ^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+interface HashAlgorithm {}
+>         ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface HashAlgorithm {}
+>         ^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+type HashTarget = HashAlgorithm | string;
+>    ^^^^^^^^^^: HashAlgorithm | string   (TyUnion) (TSTypeAliasDeclaration)
+
+type HashTarget = HashAlgorithm | string;
+>                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+type HashTarget = HashAlgorithm | string;
+>                 ^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+type HashWrapper = HashTarget;
+>    ^^^^^^^^^^^: HashAlgorithm | string   (TyUnion) (TSTypeAliasDeclaration)
+
+type HashWrapper = HashTarget;
+>                  ^^^^^^^^^^: any   (TyAny) (TSTypeReference)

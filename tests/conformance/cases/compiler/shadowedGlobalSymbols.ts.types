@@ -1,0 +1,35 @@
+const Array = 1;
+>     ^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+
+const arrayValue = Array;
+>     ^^^^^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+
+const arrayValue = Array;
+>                  ^^^^^: 1   (TyNumberLiteral) (IdentifierReference)
+
+const undefined = 1;
+>     ^^^^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+
+const undefinedValue = undefined;
+>     ^^^^^^^^^^^^^^: 1   (TyNumberLiteral) (BindingIdentifier)
+
+const undefinedValue = undefined;
+>                      ^^^^^^^^^: 1   (TyNumberLiteral) (IdentifierReference)
+
+function shadow(undefined: number) {
+>        ^^^^^^: (undefined: number) => void   (TyFunction) (BindingIdentifier)
+
+function shadow(undefined: number) {
+>               ^^^^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+  const inside = undefined;
+>       ^^^^^^: number   (TyNumber) (BindingIdentifier)
+
+  const inside = undefined;
+>                ^^^^^^^^^: number   (TyNumber) (IdentifierReference)
+
+const outside = undefined;
+>     ^^^^^^^: undefined   (TyUndefined) (BindingIdentifier)
+
+const outside = undefined;
+>               ^^^^^^^^^: undefined   (TyUndefined) (IdentifierReference)

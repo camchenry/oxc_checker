@@ -21,3 +21,5 @@ declare const arrayElementInfer: string[] extends (infer T)[] ? T : never;
 declare const unionInfer: { value: string } | { value: number } extends { value: infer U } ? U : never;
 declare const functionReturnInfer: (() => string) extends (() => infer R) ? R : never;
 declare const functionParameterInfer: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
+declare const constrainedRepeatedInfer: { a: "ready"; b: "set" } extends { a: infer U extends string; b: infer U extends string } ? U : never;
+declare const twoElementTupleRestInfer: [string, number] extends [infer Head, ...infer Rest] ? Rest : never;

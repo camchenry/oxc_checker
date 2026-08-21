@@ -428,42 +428,6 @@ fn default_lib_provides_global_type_symbols() {
 }
 
 #[test]
-fn merged_interface_declaration_location_uses_value_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-        interface Widget {}
-        interface WidgetConstructor { new (): Widget }
-        declare var Widget: WidgetConstructor;
-        ",
-    );
-    let checker = checker(&ret);
-    let interface_node_id = ret
-        .store
-        .entry(ret.program_id)
-        .unwrap()
-        .semantic()
-        .nodes()
-        .iter_enumerated()
-        .find_map(|(node_id, node)| {
-            matches!(
-                node.kind(),
-                AstKind::TSInterfaceDeclaration(interface)
-                    if interface.id.name == Ident::from("Widget")
-            )
-            .then_some(node_id)
-        })
-        .unwrap();
-    let node = NodeRef::new(ret.program_id, interface_node_id);
-
-    assert_eq!(
-        checker.type_to_string(checker.get_type_at_location(node), node),
-        "WidgetConstructor"
-    );
-}
-
-#[test]
 fn interface_symbol_has_named_declared_type() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -552,43 +516,6 @@ fn type_alias_binding_location_uses_type_meaning_for_merged_symbol() {
         get_global_symbol_type(&ret, "nodeFilterValue").to_type_string(ret.arena),
         "{ readonly VALUE: 1; }"
     );
-}
-
-#[test]
-fn duplicate_class_declaration_value_types_are_location_specific() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-        class C<T = number> {}
-        class D extends C {}
-        class D extends C<string> {}
-        export {};
-        ",
-    );
-    let checker = checker(&ret);
-    let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
-    let types = semantic
-        .nodes()
-        .iter_enumerated()
-        .filter_map(|(node_id, node)| {
-            let AstKind::BindingIdentifier(identifier) = node.kind() else {
-                return None;
-            };
-            if identifier.name != Ident::from("D")
-                || !matches!(semantic.nodes().parent_kind(node_id), AstKind::Class(_))
-            {
-                return None;
-            }
-            Some(
-                checker
-                    .get_type_at_location(NodeRef::new(ret.program_id, node_id))
-                    .to_type_string(ret.arena),
-            )
-        })
-        .collect::<Vec<_>>();
-
-    assert_eq!(types, vec!["typeof D", "{ new <string>(): {}; }"]);
 }
 
 #[test]
@@ -794,61 +721,6 @@ fn checker_expands_object_type_queries_at_variable_bindings() {
 }
 
 #[test]
-fn checker_merges_standard_library_namespace_function_declarations() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "declare namespace CSS { function Hz(value: number): CSSUnitValue; }",
-    );
-    let checker = checker(&ret);
-    let nodes = ret.store.entry(ret.program_id).unwrap().semantic().nodes();
-    let hz_node_id = nodes
-        .iter_enumerated()
-        .find_map(|(node_id, node)| {
-            matches!(
-                node.kind(),
-                AstKind::BindingIdentifier(identifier) if identifier.name == Ident::from("Hz")
-            )
-            .then_some(node_id)
-        })
-        .unwrap();
-    let hz_node = NodeRef::new(ret.program_id, hz_node_id);
-
-    assert_eq!(
-        checker.type_to_string(checker.get_type_at_location(hz_node), hz_node),
-        "{ (value: number): CSSUnitValue; (value: number): CSSUnitValue; }"
-    );
-}
-
-#[test]
-fn checker_expands_global_exclude_in_method_parameters() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "interface Shape { method(format: Exclude<KeyFormat, \"jwk\">): void; }",
-    );
-    let checker = checker(&ret);
-    let nodes = ret.store.entry(ret.program_id).unwrap().semantic().nodes();
-    let format_node_id = nodes
-        .iter_enumerated()
-        .find_map(|(node_id, node)| {
-            matches!(
-                node.kind(),
-                AstKind::BindingIdentifier(identifier)
-                    if identifier.name == Ident::from("format")
-            )
-            .then_some(node_id)
-        })
-        .unwrap();
-    let format_node = NodeRef::new(ret.program_id, format_node_id);
-
-    assert_eq!(
-        checker.type_to_string(checker.get_type_at_location(format_node), format_node),
-        "\"pkcs8\" | \"raw\" | \"spki\""
-    );
-}
-
-#[test]
 fn checker_renders_transparent_local_type_aliases_by_display_context() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -886,63 +758,6 @@ fn checker_renders_transparent_local_type_aliases_by_display_context() {
 }
 
 #[test]
-fn checker_renders_transparent_aliases_in_type_alias_context() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "type ArrayKey = number; type Path = `${ArrayKey}`;",
-    );
-    let checker = checker(&ret);
-    let nodes = ret.store.entry(ret.program_id).unwrap().semantic().nodes();
-    let path_node_id = nodes
-        .iter_enumerated()
-        .find_map(|(node_id, node)| {
-            matches!(
-                node.kind(),
-                AstKind::BindingIdentifier(identifier)
-                    if identifier.name == Ident::from("Path")
-                        && matches!(
-                            nodes.parent_kind(node_id),
-                            AstKind::TSTypeAliasDeclaration(_)
-                        )
-            )
-            .then_some(node_id)
-        })
-        .unwrap();
-    let path_node = NodeRef::new(ret.program_id, path_node_id);
-
-    assert_eq!(
-        checker.type_to_string(checker.get_type_at_location(path_node), path_node),
-        "`${number}`"
-    );
-}
-
-#[test]
-fn checker_renders_alias_chains_to_named_unions() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "interface Shape { hash: HashWrapper; } interface HashAlgorithm {} type HashTarget = HashAlgorithm | string; type HashWrapper = HashTarget;",
-    );
-    let checker = checker(&ret);
-    let hash_node_id = ret
-        .store
-        .entry(ret.program_id)
-        .unwrap()
-        .semantic()
-        .nodes()
-        .iter_enumerated()
-        .find_map(|(node_id, node)| {
-            matches!(node.kind(), AstKind::TSPropertySignature(_)).then_some(node_id)
-        })
-        .unwrap();
-    let hash_node = NodeRef::new(ret.program_id, hash_node_id);
-    let hash_type = checker.get_type_at_location(hash_node);
-
-    assert_eq!(checker.type_to_string(hash_type, hash_node), "HashTarget");
-}
-
-#[test]
 fn without_default_lib_has_no_global_type_symbols() {
     let allocator = Allocator::default();
     let host = TestProgramHost::new("/project").add_file("/project/main.ts", "const x = 1;");
@@ -964,34 +779,6 @@ fn without_default_lib_has_no_global_type_symbols() {
         checker
             .get_value_symbol_for_name(program_id, "Array")
             .is_none()
-    );
-}
-
-#[test]
-fn checker_preserves_named_alias_chains_for_formal_parameters() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "type Lazy<T, R> = () => R; type Pred<T> = Lazy<T, boolean>; declare function filter<T>(predicate: Pred<T>): void;",
-    );
-    let checker = checker(&ret);
-    let parameter_node_id = ret
-        .store
-        .entry(ret.program_id)
-        .unwrap()
-        .semantic()
-        .nodes()
-        .iter_enumerated()
-        .find_map(|(node_id, node)| {
-            matches!(node.kind(), AstKind::FormalParameter(_)).then_some(node_id)
-        })
-        .unwrap();
-    let parameter_node = NodeRef::new(ret.program_id, parameter_node_id);
-    let parameter_type = checker.get_type_at_location(parameter_node);
-
-    assert_eq!(
-        checker.type_to_string(parameter_type, parameter_node),
-        "Pred<T>"
     );
 }
 
@@ -1024,146 +811,6 @@ fn global_symbol_table_resolves_other_root_script_declarations() {
             .get_type_of_symbol(SymbolRef::new(program_id, value_symbol_id))
             .to_type_string(checker.arena),
         "Shared"
-    );
-}
-
-#[test]
-fn local_value_symbols_shadow_default_lib_globals() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const Array = 1;
-    const value = Array;
-    ",
-    );
-    let arena = arena(&ret);
-
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "value"),
-        &arena.number_literal(1.0, "1", NumberBase::Decimal),
-    );
-}
-
-#[test]
-fn local_undefined_binding_wins_before_global_undefined_fallback() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const undefined = 1;
-    const value = undefined;
-    ",
-    );
-    let arena = arena(&ret);
-
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "value"),
-        &arena.number_literal(1.0, "1", NumberBase::Decimal),
-    );
-    assert_type_eq(
-        arena,
-        &get_identifier_reference_types(&ret, "undefined"),
-        &vec![arena.number_literal(1.0, "1", NumberBase::Decimal)],
-    );
-}
-
-#[test]
-fn parameter_named_undefined_shadows_global_undefined() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    function shadow(undefined: number) {
-        const inside = undefined;
-    }
-    const outside = undefined;
-    ",
-    );
-
-    assert_eq!(get_first_symbol_type(&ret, "inside"), Ty::number());
-    assert_eq!(get_global_symbol_type(&ret, "outside"), Ty::undefined());
-    assert_eq!(
-        get_identifier_reference_types(&ret, "undefined"),
-        vec![Ty::number(), Ty::undefined()]
-    );
-    assert_eq!(
-        get_symbol_type_in_function(&ret, "shadow", "undefined"),
-        Ty::number()
-    );
-}
-
-#[test]
-fn value_position_global_identifiers_resolve_to_constructor_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const arrayCtor = Array;
-    const promiseCtor = Promise;
-    const mapCtor = Map;
-    const setCtor = Set;
-    const symbolCtor = Symbol;
-    const objectCtor = Object;
-    ",
-    );
-    let arena = arena(&ret);
-
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "arrayCtor"),
-        &arena.type_reference("ArrayConstructor", []),
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "promiseCtor"),
-        &arena.type_reference("PromiseConstructor", []),
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "mapCtor"),
-        &arena.type_reference("MapConstructor", []),
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "setCtor"),
-        &arena.type_reference("SetConstructor", []),
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "symbolCtor"),
-        &arena.type_reference("SymbolConstructor", []),
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "objectCtor"),
-        &arena.type_reference("ObjectConstructor", []),
-    );
-}
-
-#[test]
-fn value_position_global_constructors_expose_members_and_construct_signatures() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const keys = Object.keys({ a: 1 });
-    const values = new Array<number>(1);
-    ",
-    );
-    let arena = arena(&ret);
-
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "keys"),
-        &arena.array(Ty::string()),
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "values"),
-        &arena.array(Ty::number()),
     );
 }
 
@@ -1421,23 +1068,6 @@ fn enum_member_types_are_canonical_across_locations() {
             .map(|ty| ty.to_type_string(ret.arena))
             .collect::<Vec<_>>(),
         ["E.A", "E.B"]
-    );
-}
-
-#[test]
-fn array_inference_reduces_sibling_enum_members_to_parent_enum() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-        enum E { A, B }
-        const values = [E.A, E.B];
-        ",
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "values").to_type_string(ret.arena),
-        "E[]"
     );
 }
 
@@ -2244,33 +1874,6 @@ fn assignability_handles_complex_types() {
 }
 
 #[test]
-fn simple_declared_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const a: number = 1;
-    const b: string = 'hello';
-    const c: boolean = true;
-    const d: bigint = 1n;
-    const e: undefined = undefined;
-    const f: null = null;
-    const g: any = 1;
-    const h: unknown = 1;
-    ",
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "a"), Ty::number());
-    assert_eq!(get_global_symbol_type(&ret, "b"), Ty::string());
-    assert_eq!(get_global_symbol_type(&ret, "c"), Ty::boolean());
-    assert_eq!(get_global_symbol_type(&ret, "d"), Ty::bigint());
-    assert_eq!(get_global_symbol_type(&ret, "e"), Ty::undefined());
-    assert_eq!(get_global_symbol_type(&ret, "f"), Ty::null());
-    assert_eq!(get_global_symbol_type(&ret, "g"), Ty::any());
-    assert_eq!(get_global_symbol_type(&ret, "h"), Ty::unknown());
-}
-
-#[test]
 fn destructured_parameters_preserve_pattern_and_property_types() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -2336,25 +1939,6 @@ fn destructured_parameters_preserve_pattern_and_property_types() {
         &get_first_symbol_type(&ret, "chunk"),
         &arena(&ret).type_reference("TQueryFnData", std::iter::empty()),
     );
-}
-
-#[test]
-fn destructured_class_properties_preserve_property_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-            abstract class Base {
-                abstract value: string;
-
-                constructor() {
-                    const { value: renamed } = this;
-                }
-            }
-        ",
-    );
-
-    assert_eq!(get_first_symbol_type(&ret, "renamed"), Ty::string());
 }
 
 #[test]
@@ -2436,31 +2020,6 @@ fn object_literal_call_argument_contextually_types_callback_property_parameters(
         &get_object_property_types(&ret, "pageParams"),
         arena.array(Ty::never()),
     ));
-}
-
-#[test]
-fn returned_function_expression_uses_annotated_return_context_for_parameters() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-            type QueryFunctionContext<TQueryKey, TPageParam = never> =
-                [TPageParam] extends [never]
-                    ? { queryKey: TQueryKey; pageParam?: unknown }
-                    : { queryKey: TQueryKey; pageParam: TPageParam };
-            type QueryFunction<T, TQueryKey, TPageParam = never> =
-                (queryContext: QueryFunctionContext<TQueryKey, TPageParam>) => T | Promise<T>;
-
-            function makeQuery<TData, TQueryKey>(): QueryFunction<TData, TQueryKey> {
-                return async (context) => undefined as TData;
-            }
-            ",
-    );
-
-    assert_eq!(
-        get_first_symbol_type(&ret, "context").to_type_string(ret.arena),
-        "{ queryKey: TQueryKey; pageParam?: unknown; }"
-    );
 }
 
 #[test]
@@ -2687,46 +2246,6 @@ fn global_undefined_reference_has_type_at_location() {
 }
 
 #[test]
-fn declared_array_types_use_array_variant() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const values: number[] = [1, 2, 3];
-    ",
-    );
-
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "values"),
-        &arena(&ret).array(Ty::number()),
-    );
-}
-
-#[test]
-fn global_array_type_references_use_array_variant() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const values: Array<number> = [1, 2, 3];
-    const readonlyValues: ReadonlyArray<string> = ['a'];
-    ",
-    );
-
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "values"),
-        &arena(&ret).array(Ty::number()),
-    );
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "readonlyValues"),
-        &arena(&ret).readonly_array(Ty::string()),
-    );
-}
-
-#[test]
 fn array_type_references_without_default_lib_stay_type_references() {
     let allocator = Allocator::default();
     let host = TestProgramHost::new("/project").add_file(
@@ -2752,27 +2271,6 @@ fn array_type_references_without_default_lib_stay_type_references() {
         checker.arena,
         &checker.get_type_of_symbol(SymbolRef::new(program_id, symbol_id)),
         &checker.arena.type_reference("Array", [Ty::number()]),
-    );
-}
-
-#[test]
-fn declared_tuple_types_preserve_rest_and_optional_element_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const variadic: [...string[], { huh: boolean }] = ['value', { huh: true }];
-    const optional: [number?] = [];
-    ",
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "variadic").to_type_string(ret.arena),
-        "[...string[], { huh: boolean; }]"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "optional").to_type_string(ret.arena),
-        "[(number | undefined)?]"
     );
 }
 
@@ -2857,53 +2355,6 @@ fn tuple_spreads_are_limited_to_ten_thousand_elements() {
 }
 
 #[test]
-fn conditional_types_resolve_concrete_branches() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const yes: number extends number ? boolean : string = true;
-    const no: number extends string ? boolean : string = 'no';
-    ",
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "yes"), Ty::boolean());
-    assert_eq!(get_global_symbol_type(&ret, "no"), Ty::string());
-}
-
-#[test]
-fn conditional_types_preserve_unresolved_generic_checks() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const value: T extends string ? number : boolean;
-    ",
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
-        "T extends string ? number : boolean"
-    );
-}
-
-#[test]
-fn infer_types_resolve_when_concrete() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const value: string extends infer U ? U : never;
-    ",
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
-        "string"
-    );
-}
-
-#[test]
 fn conditional_infer_extracts_template_literal_segments() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -2975,117 +2426,6 @@ fn conditional_infer_extracts_template_literal_segments() {
     assert_eq!(
         get_type_alias_type(&ret, "Formats").to_type_string(ret.arena),
         "\"pkcs8\" | \"raw\" | \"spki\""
-    );
-}
-
-#[test]
-fn conditional_infer_extracts_object_property_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const value: { value: number } extends { value: infer U } ? U : never;
-    ",
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
-        "number"
-    );
-}
-
-#[test]
-fn conditional_infer_merges_repeated_candidates() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const value: { a: string; b: number } extends { a: infer U; b: infer U } ? U : never;
-    ",
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
-        "string | number"
-    );
-}
-
-#[test]
-fn conditional_infer_merges_repeated_constrained_candidates() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare const value: { a: "ready"; b: "set" } extends { a: infer U extends string; b: infer U extends string } ? U : never;
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
-        "\"ready\" | \"set\""
-    );
-}
-
-#[test]
-fn conditional_infer_extracts_tuple_rest() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const value: [string, number] extends [infer Head, ...infer Rest] ? Rest : never;
-    ",
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "value").to_type_string(ret.arena),
-        "[number]"
-    );
-}
-
-#[test]
-fn conditional_infer_extracts_function_signature_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const returnValue: (() => string) extends (() => infer R) ? R : never;
-    declare const parameterValue: ((value: string) => void) extends ((value: infer P) => void) ? P : never;
-    ",
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "returnValue").to_type_string(ret.arena),
-        "string"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "parameterValue").to_type_string(ret.arena),
-        "string"
-    );
-}
-
-#[test]
-fn indexed_access_resolves_tuple_numeric_literal_indices() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare const first: ["yes", "no"][0];
-    declare const second: ["yes", "no"][1];
-    declare const either: ["yes", "no"][0 | 1];
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "first").to_type_string(ret.arena),
-        "\"yes\""
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "second").to_type_string(ret.arena),
-        "\"no\""
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "either").to_type_string(ret.arena),
-        "\"yes\" | \"no\""
     );
 }
 
@@ -3553,24 +2893,6 @@ fn naked_type_parameter_conditionals_distribute_over_substituted_unions() {
 }
 
 #[test]
-fn tuple_numeric_index_access_resolves_element_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    let t: [number, string];
-    let t0 = t[0];
-    let t1 = t[1];
-    let t2 = t[2];
-    ",
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "t0"), Ty::number());
-    assert_eq!(get_global_symbol_type(&ret, "t1"), Ty::string());
-    assert_eq!(get_global_symbol_type(&ret, "t2"), Ty::undefined());
-}
-
-#[test]
 fn structural_property_lookup_uses_compatible_index_signatures() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -3608,42 +2930,6 @@ fn contextually_typed_boolean_object_properties_keep_literal_location_types() {
         get_object_property_types(&ret, "huh"),
         vec![Ty::boolean(), Ty::boolean_true(), Ty::boolean_false(),]
     );
-}
-
-#[test]
-fn const_initializers_use_literal_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    const count = 1;
-    const label = "ready";
-    const quoted = '\"ready\"';
-    const quoteOnlyNot = !'\"\"';
-    const enabled = true;
-    "#,
-    );
-
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "count"),
-        &arena(&ret).number_literal(1.0, "1", NumberBase::Decimal),
-    );
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "label"),
-        &arena(&ret).string_literal("ready"),
-    );
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "quoted"),
-        &arena(&ret).string_literal("\"ready\""),
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "quoteOnlyNot"),
-        Ty::boolean_false()
-    );
-    assert_eq!(get_global_symbol_type(&ret, "enabled"), Ty::boolean_true());
 }
 
 #[test]
@@ -3774,118 +3060,6 @@ fn type_strings_render_string_literals_with_double_quotes() {
 }
 
 #[test]
-fn literal_types_participate_in_widening_expressions() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    const count = 1;
-    const sum = count + 2;
-    const label = "ready";
-    const message = label + "!";
-    "#,
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "sum"), Ty::number());
-    assert_eq!(get_global_symbol_type(&ret, "message"), Ty::string());
-}
-
-#[test]
-fn simple_inferred_variable_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    let l7 = false;
-    let n = 23;
-    let s = 'hello';
-    let b = 1n;
-    let a;
-    let annotated: string = 23;
-    ",
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "l7"), Ty::boolean());
-    assert_eq!(get_global_symbol_type(&ret, "n"), Ty::number());
-    assert_eq!(get_global_symbol_type(&ret, "s"), Ty::string());
-    assert_eq!(get_global_symbol_type(&ret, "b"), Ty::bigint());
-    assert_eq!(get_global_symbol_type(&ret, "a"), Ty::any());
-    assert_eq!(get_global_symbol_type(&ret, "annotated"), Ty::string());
-}
-
-#[test]
-fn angle_bracket_type_assertions_use_asserted_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare const x: any;
-    interface Box<T = number> { value: T; }
-    interface SelfDefault<T = T> { value: T; }
-    interface ForwardDefault<T = U, U = string> { t: T; u: U; }
-    type Identity<T> = T;
-    type DefaultIdentity<T = string> = T;
-    type AliasBox<T> = { value: T };
-
-    const xs = <string>x;
-    const xu = <unknown>x;
-    const xn = <number>x;
-    const xa = <any>x;
-    const identityString = x as Identity<string>;
-    const identityAny = <Identity<any>>x;
-    const defaultIdentity = x as DefaultIdentity;
-    const aliasBox = x as AliasBox<string>;
-    const boxed = (<Box>x);
-    const explicitDefaultBox = (<Box<number>>x);
-    const boxedValue = (<Box>x).value;
-    const explicitBoxedValue = (<Box<string>>x).value;
-    const selfDefaultValue = (<SelfDefault>x).value;
-    const forwardDefaultT = (<ForwardDefault>x).t;
-    const forwardDefaultU = (<ForwardDefault>x).u;
-    "#,
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "xs"), Ty::string());
-    assert_eq!(get_global_symbol_type(&ret, "xu"), Ty::unknown());
-    assert_eq!(get_global_symbol_type(&ret, "xn"), Ty::number());
-    assert_eq!(get_global_symbol_type(&ret, "xa"), Ty::any());
-    assert_eq!(get_global_symbol_type(&ret, "identityString"), Ty::string());
-    assert_eq!(get_global_symbol_type(&ret, "identityAny"), Ty::any());
-    assert_eq!(
-        get_global_symbol_type(&ret, "defaultIdentity"),
-        Ty::string()
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "aliasBox").to_type_string(ret.arena),
-        "AliasBox<string>"
-    );
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "boxed"),
-        &arena(&ret).type_reference("Box", [Ty::number()]),
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "boxed").to_type_string(ret.arena),
-        "Box<number>"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "explicitDefaultBox").to_type_string(ret.arena),
-        "Box<number>"
-    );
-    assert_eq!(get_global_symbol_type(&ret, "boxedValue"), Ty::number());
-    assert_eq!(
-        get_global_symbol_type(&ret, "explicitBoxedValue"),
-        Ty::string()
-    );
-    assert_eq!(get_global_symbol_type(&ret, "selfDefaultValue"), Ty::any());
-    assert_eq!(get_global_symbol_type(&ret, "forwardDefaultT"), Ty::any());
-    assert_eq!(
-        get_global_symbol_type(&ret, "forwardDefaultU"),
-        Ty::string()
-    );
-}
-
-#[test]
 fn declaration_display_handles_defaulted_type_arguments() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -3915,36 +3089,6 @@ fn declaration_display_handles_defaulted_type_arguments() {
 }
 
 #[test]
-fn generic_function_infers_type_parameters_from_arguments() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    function foo<T>(x: T) {
-        return x;
-    }
-
-    const x = foo(123);
-    const y = foo("test");
-    const z = foo(true);
-    "#,
-    );
-
-    let arena = arena(&ret);
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "x"),
-        &arena.number_literal(123.0, "123", NumberBase::Decimal),
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "y"),
-        &arena.string_literal("test"),
-    );
-    assert_eq!(get_global_symbol_type(&ret, "z"), Ty::boolean_true());
-}
-
-#[test]
 fn generic_function_mapped_constraint_preserves_literal_inference() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -3963,52 +3107,6 @@ fn generic_function_mapped_constraint_preserves_literal_inference() {
         get_object_property_types(&ret, "active"),
         vec![Ty::boolean(), Ty::boolean_true()]
     );
-}
-
-#[test]
-fn generic_function_contextualizes_object_properties_independently() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function accept<T extends { kind: "event"; value: string }>(value: T): T;
-
-    const result = accept({ kind: "event", value: "payload" });
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "result").to_type_string(ret.arena),
-        "{ kind: \"event\"; value: string; }"
-    );
-}
-
-#[test]
-fn generic_function_non_null_assertion_returns_non_nullable_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    function foo3<T>(x: T | undefined | null) {
-        return x!
-    }
-
-    const stringValue = foo3("hello");
-    const undefinedValue = foo3(undefined);
-    const numberValue = foo3(123 as number);
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "foo3").to_type_string(ret.arena),
-        "<T>(x: T | null | undefined) => NonNullable<T>"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "stringValue").to_type_string(ret.arena),
-        "\"hello\""
-    );
-    assert_eq!(get_global_symbol_type(&ret, "undefinedValue"), Ty::never());
-    assert_eq!(get_global_symbol_type(&ret, "numberValue"), Ty::number());
 }
 
 #[test]
@@ -4055,33 +3153,6 @@ fn generic_function_prefers_naked_type_variable_inference_candidate() {
 }
 
 #[test]
-fn generic_function_infers_from_array_and_tuple_shapes() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function first<T>(values: T[]): T;
-    declare function pair<T, U>(value: [T, U]): [T, U];
-    declare function tail<T extends unknown[]>(value: [string, ...T]): T;
-
-    const firstValue = first([1, 2]);
-    const pairValue = pair([1, "ready"] as [number, string]);
-    const tailValue = tail(["start", 1, true] as [string, number, boolean]);
-    "#,
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "firstValue"), Ty::number());
-    assert_eq!(
-        get_global_symbol_type(&ret, "pairValue").to_type_string(ret.arena),
-        "[number, string]"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "tailValue").to_type_string(ret.arena),
-        "[number, boolean]"
-    );
-}
-
-#[test]
 fn generic_function_infers_from_keyof_and_indexed_access_shapes() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -4108,84 +3179,6 @@ fn generic_function_infers_from_keyof_and_indexed_access_shapes() {
 }
 
 #[test]
-fn generic_function_resolves_indexed_access_return_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
-
-    const value = get({ value: 1, name: "ready" }, "value");
-    const name = get({ value: 1, name: "ready" }, "name");
-    "#,
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "value"), Ty::number());
-    assert_eq!(get_global_symbol_type(&ret, "name"), Ty::string());
-}
-
-#[test]
-fn generic_function_infers_from_union_parameter_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function maybe<T>(value: T | undefined): T;
-    declare function nullable<T>(value: T | null): T;
-    declare function falsy<T>(value: T | false): T;
-    declare function unwrapPromise<T>(value: Promise<T> | T): T;
-    declare const promiseString: Promise<string>;
-
-    const maybeValue = maybe("ready");
-    const nullableValue = nullable("ready");
-    const falsyValue = falsy("ready");
-    const promiseValue = unwrapPromise(promiseString);
-    const directValue = unwrapPromise("ready");
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "maybeValue").to_type_string(ret.arena),
-        "\"ready\""
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "nullableValue").to_type_string(ret.arena),
-        "\"ready\""
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "falsyValue").to_type_string(ret.arena),
-        "\"ready\""
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "promiseValue").to_type_string(ret.arena),
-        "string"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "directValue").to_type_string(ret.arena),
-        "\"ready\""
-    );
-}
-
-#[test]
-fn generic_function_infers_from_intersection_parameter_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare const source: string[] & { extra: number };
-    declare function extra<T>(value: string[] & T): T;
-
-    const extraValue = extra(source);
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "extraValue").to_type_string(ret.arena),
-        "{ extra: number; }"
-    );
-}
-
-#[test]
 fn generic_function_detects_same_shape_mapped_type_inference() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -4203,232 +3196,6 @@ fn generic_function_detects_same_shape_mapped_type_inference() {
         get_global_symbol_type(&ret, "unwrapped").to_type_string(ret.arena),
         "Box<number>"
     );
-}
-
-#[test]
-fn generic_function_infers_reverse_same_shape_mapped_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
-    declare function unwrapPartial<T>(value: { [P in keyof T]?: T[P] }): T;
-
-    const unwrapped = unwrap({ value: 1, name: "ready" });
-    const partial = unwrapPartial({ value: 1 });
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "unwrapped").to_type_string(ret.arena),
-        "{ value: number; name: string; }"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "partial").to_type_string(ret.arena),
-        "{ value: number; }"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "unwrap").to_type_string(ret.arena),
-        "<T>(value: { [P in keyof T]: T[P]; }) => T"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "unwrapPartial").to_type_string(ret.arena),
-        "<T>(value: { [P in keyof T]?: T[P] | undefined; }) => T"
-    );
-}
-
-#[test]
-fn generic_function_infers_reverse_mapped_arrays_and_tuples() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function unwrap<T>(value: { [P in keyof T]: T[P] }): T;
-    declare function unwrapReadonly<T>(value: { readonly [P in keyof T]: T[P] }): T;
-
-    const arrayValue = unwrap([1, 2]);
-    const tupleValue = unwrap([1, "ready"] as [number, string]);
-    const readonlyTupleValue = unwrapReadonly([1, "ready"] as readonly [number, string]);
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "arrayValue").to_type_string(ret.arena),
-        "number[]"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "tupleValue").to_type_string(ret.arena),
-        "[number, string]"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "readonlyTupleValue").to_type_string(ret.arena),
-        "readonly [number, string]"
-    );
-}
-
-#[test]
-fn generic_function_infers_through_mapped_type_parameter_constraints() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function pickish<T, K extends keyof T>(value: { [P in K]: T[P] }): T;
-
-    const picked = pickish({ value: 1 });
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "picked").to_type_string(ret.arena),
-        "{ value: number; }"
-    );
-}
-
-#[test]
-fn function_overloads_select_matching_signature() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    function pick(x: string): string;
-    function pick(x: number): number;
-    function pick(x: string | number): string | number {
-        return x;
-    }
-
-    const fromString = pick("ready");
-    const fromNumber = pick(123);
-    "#,
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "fromString"), Ty::string());
-    assert_eq!(get_global_symbol_type(&ret, "fromNumber"), Ty::number());
-}
-
-#[test]
-fn function_overloads_rank_more_specific_applicable_signature() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function literalOverload(x: string): "wide";
-    declare function literalOverload(x: "ready"): "literal";
-
-    declare function genericOverload<T>(x: T): T[];
-    declare function genericOverload(x: string): string;
-
-    declare function tiedOverload(x: string, y?: number): "first";
-    declare function tiedOverload(x: string): "second";
-
-    declare function tupleRestOverload(...args: [value: string]): "one";
-    declare function tupleRestOverload(...args: [value: string, count: number]): "two";
-
-    declare function optionalTupleRestOverload(...args: [value: string, count?: number]): "optional";
-    declare function optionalTupleRestOverload(...args: [value: string, count: number, flag: boolean]): "three";
-
-    const literalResult = literalOverload("ready");
-    const genericResult = genericOverload("ready");
-    const tiedResult = tiedOverload("ready");
-    const tupleRestOne = tupleRestOverload("ready");
-    const tupleRestTwo = tupleRestOverload("ready", 1);
-    const optionalTupleRestOne = optionalTupleRestOverload("ready");
-    const optionalTupleRestTwo = optionalTupleRestOverload("ready", 1);
-    const optionalTupleRestThree = optionalTupleRestOverload("ready", 1, true);
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "literalResult").to_type_string(ret.arena),
-        "\"literal\""
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "genericResult").to_type_string(ret.arena),
-        "string[]"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "tiedResult").to_type_string(ret.arena),
-        "\"first\""
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "tupleRestOne").to_type_string(ret.arena),
-        "\"one\""
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "tupleRestTwo").to_type_string(ret.arena),
-        "\"two\""
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "optionalTupleRestOne").to_type_string(ret.arena),
-        "\"optional\""
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "optionalTupleRestTwo").to_type_string(ret.arena),
-        "\"optional\""
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "optionalTupleRestThree").to_type_string(ret.arena),
-        "\"three\""
-    );
-}
-
-#[test]
-fn function_overloads_skip_signatures_with_too_many_type_arguments() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    function pick<T>(x: T): T;
-    function pick<T, U>(x: T): U;
-    function pick(x: unknown): unknown {
-        return x;
-    }
-
-    const value = pick<number, string>(123);
-    "#,
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "value"), Ty::string());
-}
-
-#[test]
-fn generic_overloads_use_candidate_inference_for_applicability() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function pick<T>(x: T[]): T;
-    declare function pick<T>(x: T): T;
-
-    const value = pick("ready");
-    "#,
-    );
-
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "value"),
-        &arena(&ret).string_literal("ready"),
-    );
-}
-
-#[test]
-fn interface_method_overloads_select_matching_signature() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    interface Picker {
-        pick(x: string): string;
-        pick(x: number): number;
-    }
-
-    declare const picker: Picker;
-    const fromString = picker.pick("ready");
-    const fromNumber = picker.pick(123);
-    "#,
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "fromString"), Ty::string());
-    assert_eq!(get_global_symbol_type(&ret, "fromNumber"), Ty::number());
 }
 
 #[test]
@@ -4765,138 +3532,6 @@ fn function_return_inference_visits_body_statements() {
 }
 
 #[test]
-fn expression_bodied_arrow_function_infers_return_expression() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(&allocator, "var predicate = () => false;");
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "predicate").to_type_string(ret.arena),
-        "() => boolean"
-    );
-}
-
-#[test]
-fn async_function_inference_wraps_return_type_in_promise() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    async function returnsString() {
-        return 'value';
-    }
-
-    async function empty() {}
-
-    async function unwrapPromise(value: Promise<number>) {
-        return value;
-    }
-
-    async function preserveGeneric<T>(value: T) {
-        return value;
-    }
-
-    const returnsNumber = async () => 1;
-    const stringResult = returnsString();
-    const emptyResult = empty();
-    const unwrappedResult = unwrapPromise(Promise.resolve(1));
-    const genericResult = preserveGeneric('value');
-    const numberResult = returnsNumber();
-    "#,
-    );
-    let arena = arena(&ret);
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "returnsString").to_type_string(ret.arena),
-        "() => Promise<string>"
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "stringResult"),
-        &arena.type_reference("Promise", [Ty::string()]),
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "emptyResult"),
-        &arena.type_reference("Promise", [Ty::void()]),
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "unwrapPromise").to_type_string(ret.arena),
-        "(value: Promise<number>) => Promise<number>"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "preserveGeneric").to_type_string(ret.arena),
-        "<T>(value: T) => Promise<T>"
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "unwrappedResult"),
-        &arena.type_reference("Promise", [Ty::number()]),
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "genericResult"),
-        &arena.type_reference("Promise", [Ty::string()]),
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "numberResult"),
-        &arena.type_reference("Promise", [Ty::number()]),
-    );
-}
-
-#[test]
-fn await_union_and_for_await_preserve_async_iterable_element_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    async function useStream<TQueryFnData>(
-        streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>,
-    ) {
-        const stream = await streamFn();
-        for await (const chunk of stream) {
-            chunk;
-        }
-    }
-    "#,
-    );
-
-    assert_eq!(
-        get_first_symbol_type(&ret, "stream").to_type_string(ret.arena),
-        "AsyncIterable<TQueryFnData>"
-    );
-    assert_eq!(
-        get_first_symbol_type(&ret, "chunk").to_type_string(ret.arena),
-        "Awaited<TQueryFnData>"
-    );
-}
-
-#[test]
-fn for_await_extracts_builtin_async_generator_yield_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    async function* values() {
-        yield 1;
-        yield 2;
-    }
-
-    async function consume() {
-        for await (const value of values()) {
-            value;
-        }
-    }
-    "#,
-    );
-
-    assert_eq!(
-        get_first_symbol_type(&ret, "value").to_type_string(ret.arena),
-        "1 | 2"
-    );
-}
-
-#[test]
 fn for_await_does_not_classify_shadowed_async_generator_as_global() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -4991,57 +3626,6 @@ fn iterable_protocol_does_not_use_a_shadowed_symbol_value() {
     );
 
     assert_eq!(get_first_symbol_type(&ret, "value"), Ty::any());
-}
-
-#[test]
-fn structural_async_iterable_supplies_for_await_element_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    interface TextAsyncIterator {
-        next(): Promise<IteratorResult<"chunk", void>>;
-    }
-    interface TextStream {
-        [Symbol.asyncIterator](): TextAsyncIterator;
-    }
-    declare const stream: TextStream;
-
-    async function consume() {
-        for await (const chunk of stream) {
-            chunk;
-        }
-    }
-    "#,
-    );
-
-    assert_eq!(
-        get_first_symbol_type(&ret, "chunk").to_type_string(ret.arena),
-        "\"chunk\""
-    );
-}
-
-#[test]
-fn inherited_async_iterable_supplies_for_await_element_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    interface TextStream extends AsyncIterable<"chunk"> {}
-    declare const stream: TextStream;
-
-    async function consume() {
-        for await (const chunk of stream) {
-            chunk;
-        }
-    }
-    "#,
-    );
-
-    assert_eq!(
-        get_first_symbol_type(&ret, "chunk").to_type_string(ret.arena),
-        "\"chunk\""
-    );
 }
 
 #[test]
@@ -5256,29 +3840,6 @@ fn await_structural_thenable_uses_fulfilled_callback_value_type() {
 }
 
 #[test]
-fn await_does_not_unwrap_non_thenable_named_promise() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    export {};
-
-    interface Promise<T> {
-        value: T;
-    }
-
-    declare const promise: Promise<number>;
-    const value = await promise;
-    "#,
-    );
-
-    assert_eq!(
-        get_first_symbol_type(&ret, "value").to_type_string(ret.arena),
-        "Promise<number>"
-    );
-}
-
-#[test]
 fn promise_constructor_contextually_types_executor_parameters() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -5356,86 +3917,6 @@ fn promise_then_and_catch_infer_callback_returns_through_nullable_callback_types
         &get_global_symbol_type(&ret, "catchResult"),
         &arena.type_reference("Promise", [Ty::void()]),
     );
-}
-
-#[test]
-fn generic_function_infers_from_callback_return_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function useCallback<T>(callback: () => T): T;
-    declare function configure<T>(options: { create: () => T }): T;
-
-    const callbackValue = useCallback(() => 1);
-    const objectCallbackValue = configure({ create: () => ({ value: 1 }) });
-    "#,
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "callbackValue"), Ty::number());
-    assert_eq!(
-        get_global_symbol_type(&ret, "objectCallbackValue").to_type_string(ret.arena),
-        "{ value: number; }"
-    );
-}
-
-#[test]
-fn object_literal_callbacks_share_intra_expression_inference() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function configure<T>(options: {
-        create: () => T;
-        consume: (value: T) => void;
-    }): T;
-
-    const result = configure({
-        create: () => ({ value: 1 }),
-        consume: (item) => {
-            const derivedValue = item.value;
-        },
-    });
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "result").to_type_string(ret.arena),
-        "{ value: number; }"
-    );
-    assert_eq!(
-        get_first_symbol_type(&ret, "item").to_type_string(ret.arena),
-        "{ value: number; }"
-    );
-    assert_eq!(get_first_symbol_type(&ret, "derivedValue"), Ty::number());
-}
-
-#[test]
-fn tuple_callbacks_share_intra_expression_inference() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare function configure<T>(callbacks: [() => T, (value: T) => void]): T;
-
-    const result = configure([
-        () => ({ value: 1 }),
-        (item) => {
-            const derivedValue = item.value;
-        },
-    ]);
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "result").to_type_string(ret.arena),
-        "{ value: number; }"
-    );
-    assert_eq!(
-        get_first_symbol_type(&ret, "item").to_type_string(ret.arena),
-        "{ value: number; }"
-    );
-    assert_eq!(get_first_symbol_type(&ret, "derivedValue"), Ty::number());
 }
 
 #[test]
@@ -5785,79 +4266,6 @@ fn module_scoped_namespace_has_no_symbol_in_sibling_program() {
 }
 
 #[test]
-fn generic_function_uses_explicit_type_arguments() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    function foo<T>(x: T) {
-        return x;
-    }
-
-    const x = foo<string>("test");
-    "#,
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "x"), Ty::string());
-}
-
-#[test]
-fn generic_function_substitutes_object_return_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    function box<T>(x: T) {
-        return {value: x};
-    }
-
-    const x = box(123);
-    "#,
-    );
-
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "x"),
-        &arena(&ret).object([Ty::property("value", Ty::number())]),
-    );
-}
-
-#[test]
-fn generic_type_references_preserve_type_arguments() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    type Box<T> = { value: T };
-
-    function box<T>(x: T): Box<T> {
-        return {value: x};
-    }
-
-    const explicit: Box<string> = {value: "test"};
-    const inferred = box(123);
-    const fromExplicitCall = box<string>("test");
-    "#,
-    );
-
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "explicit"),
-        &arena(&ret).type_reference("Box", [Ty::string()]),
-    );
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "inferred"),
-        &arena(&ret).type_reference("Box", [Ty::number()]),
-    );
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "fromExplicitCall"),
-        &arena(&ret).type_reference("Box", [Ty::string()]),
-    );
-}
-
-#[test]
 fn generic_function_defaults_render_and_apply_when_not_inferred() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -5907,46 +4315,6 @@ fn generic_function_defaults_render_and_apply_when_not_inferred() {
 }
 
 #[test]
-fn generic_function_constraints_render_and_apply_when_not_inferred() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    interface A { a: number; }
-    declare const a: A;
-    declare const fn: <T extends A>(x: T) => T;
-    declare function foo<T extends A, U extends T = T>(x?: T, y?: U): [T, U];
-    declare function fallbackToConstraint<T extends string>(): T;
-
-    const fromConstraint = foo();
-    const fromInference = foo(a);
-    const stringConstraint = fallbackToConstraint();
-    "#,
-    );
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "fn").to_type_string(ret.arena),
-        "<T extends A>(x: T) => T"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "foo").to_type_string(ret.arena),
-        "<T extends A, U extends T = T>(x?: T, y?: U) => [T, U]"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "fromConstraint").to_type_string(ret.arena),
-        "[A, A]"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "fromInference").to_type_string(ret.arena),
-        "[A, A]"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "stringConstraint"),
-        Ty::string()
-    );
-}
-
-#[test]
 fn keyof_constraints_and_indexed_access_types_render() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -5963,34 +4331,6 @@ fn keyof_constraints_and_indexed_access_types_render() {
     assert_eq!(
         get_global_symbol_type(&ret, "source").to_type_string(ret.arena),
         "{ <K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any): void; }"
-    );
-}
-
-#[test]
-fn new_expression_infers_class_instance_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    class Foo {
-        doThing(x: {a: number}) {
-            return {b: x.a};
-        }
-    }
-    const c = new Foo();
-    const x = c.doThing({a: 12});
-    ",
-    );
-
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "c"),
-        &arena(&ret).type_reference("Foo", std::iter::empty()),
-    );
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "x"),
-        &arena(&ret).object([Ty::property("b", Ty::number())]),
     );
 }
 
@@ -6025,139 +4365,6 @@ fn new_expression_infers_from_tuple_rest_arguments() {
         ret.arena,
         &get_global_symbol_type(&ret, "value"),
         &arena(&ret).number_literal(42.0, "42", NumberBase::Decimal),
-    );
-}
-
-#[test]
-fn class_properties_are_available_on_instances_statics_and_this() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    class Item {
-        name: string = "item";
-    }
-
-    class Example {
-        ready: boolean = false;
-        count = 1;
-        item: Item = new Item();
-        static enabled: boolean = true;
-
-        getReady() {
-            return this.ready;
-        }
-
-        getCount() {
-            return this.count;
-        }
-
-        getItemName() {
-            return this.item.name;
-        }
-
-        static getEnabled() {
-            return Example.enabled;
-        }
-    }
-
-    const instance = new Example();
-    const ready = instance.ready;
-    const count = instance.count;
-    const itemName = instance.item.name;
-    const readyFromThis = instance.getReady();
-    const countFromThis = instance.getCount();
-    const nameFromThis = instance.getItemName();
-    const enabled = Example.enabled;
-    const enabledFromMethod = Example.getEnabled();
-    "#,
-    );
-
-    assert_eq!(get_global_symbol_type(&ret, "ready"), Ty::boolean());
-    assert_eq!(get_global_symbol_type(&ret, "count"), Ty::number());
-    assert_eq!(get_global_symbol_type(&ret, "itemName"), Ty::string());
-    assert_eq!(get_global_symbol_type(&ret, "readyFromThis"), Ty::boolean());
-    assert_eq!(get_global_symbol_type(&ret, "countFromThis"), Ty::number());
-    assert_eq!(get_global_symbol_type(&ret, "nameFromThis"), Ty::string());
-    assert_eq!(get_global_symbol_type(&ret, "enabled"), Ty::boolean());
-    assert_eq!(
-        get_global_symbol_type(&ret, "enabledFromMethod"),
-        Ty::boolean()
-    );
-}
-
-#[test]
-fn array_every_contextually_types_callback_parameters() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    class Ship {
-        isSunk: boolean = false;
-    }
-
-    class Board {
-        ships: Ship[] = [];
-
-        allShipsSunk() {
-            return this.ships.every(function (val) {
-                return val.isSunk;
-            });
-        }
-    }
-
-    const board = new Board();
-    const sunk = board.allShipsSunk();
-    "#,
-    );
-
-    assert_type_eq(
-        ret.arena,
-        &get_first_symbol_type(&ret, "val"),
-        &arena(&ret).type_reference("Ship", std::iter::empty()),
-    );
-    assert_eq!(get_global_symbol_type(&ret, "sunk"), Ty::boolean());
-}
-
-#[test]
-fn array_map_infers_async_callback_return_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const mapped = [1, 2, 3].map(async x => x + 1);
-    ",
-    );
-    let arena = arena(&ret);
-
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "mapped"),
-        &arena.array(arena.type_reference("Promise", [Ty::number()])),
-    );
-    assert_eq!(get_first_symbol_type(&ret, "x"), Ty::number());
-}
-
-#[test]
-fn array_map_string_callback_member_uses_global_string_interface() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const lengths = ['a', 'bb', 'ccc'].map(x => x.length);
-    ",
-    );
-    let arena = arena(&ret);
-
-    assert_eq!(get_first_symbol_type(&ret, "x"), Ty::string());
-    assert_eq!(
-        get_static_member_expression_types(&ret, "length"),
-        vec![Ty::number()]
-    );
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "lengths"),
-        &arena.array(Ty::number()),
     );
 }
 
@@ -6301,35 +4508,6 @@ fn chain_expression_types() {
 }
 
 #[test]
-fn function_parameter_declared_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "function foo(a: number, b: string, c: boolean) {}",
-    );
-
-    assert_eq!(get_symbol_type_in_function(&ret, "foo", "a"), Ty::number());
-    assert_eq!(get_symbol_type_in_function(&ret, "foo", "b"), Ty::string());
-    assert_eq!(get_symbol_type_in_function(&ret, "foo", "c"), Ty::boolean());
-}
-
-#[test]
-fn optional_function_parameters_render_optional_in_signatures() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(&allocator, "declare function foo(a?: number): number;");
-
-    assert_eq!(
-        get_global_symbol_type(&ret, "foo").to_type_string(ret.arena),
-        "(a?: number) => number"
-    );
-    assert_type_eq(
-        ret.arena,
-        &get_symbol_type_in_function(&ret, "foo", "a"),
-        &arena(&ret).union([Ty::number(), Ty::undefined()]),
-    );
-}
-
-#[test]
 fn rest_function_parameters_render_in_signatures() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -6348,72 +4526,6 @@ fn rest_function_parameters_render_in_signatures() {
     let rest_parameter = function.parameters[3];
     assert_eq!(rest_parameter.name, "d");
     assert!(rest_parameter.rest);
-}
-
-#[test]
-fn function_type_annotations_resolve_to_function_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "declare function pipe<A extends any[], B>(ab: (...args: A) => B): B;",
-    );
-    let arena = arena(&ret);
-
-    assert_type_eq(
-        arena,
-        &get_first_symbol_type(&ret, "ab"),
-        &arena.function(
-            [],
-            [Ty::rest_parameter(
-                arena.str("args"),
-                arena.type_reference(arena.str("A"), []),
-            )],
-            arena.type_reference(arena.str("B"), []),
-        ),
-    );
-}
-
-#[test]
-fn function_type_predicates_render_in_signatures() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-declare function acceptsPredicate<T, S extends T>(
-predicate: (value: T) => value is S,
-assertion: (value: unknown) => asserts value is string,
-thisPredicate: (this: unknown) => this is { ready: true },
-thisAssertion: (this: unknown) => asserts this is { ready: true },
-bareAssertion: (value: unknown) => asserts value,
-bareThisAssertion: (this: unknown) => asserts this,
-): void;
-"#,
-    );
-
-    assert_eq!(
-        get_first_symbol_type(&ret, "predicate").to_type_string(ret.arena),
-        "(value: T) => value is S"
-    );
-    assert_eq!(
-        get_first_symbol_type(&ret, "assertion").to_type_string(ret.arena),
-        "(value: unknown) => asserts value is string"
-    );
-    assert_eq!(
-        get_first_symbol_type(&ret, "thisPredicate").to_type_string(ret.arena),
-        "(this: unknown) => this is { ready: true; }"
-    );
-    assert_eq!(
-        get_first_symbol_type(&ret, "thisAssertion").to_type_string(ret.arena),
-        "(this: unknown) => asserts this is { ready: true; }"
-    );
-    assert_eq!(
-        get_first_symbol_type(&ret, "bareAssertion").to_type_string(ret.arena),
-        "(value: unknown) => asserts value"
-    );
-    assert_eq!(
-        get_first_symbol_type(&ret, "bareThisAssertion").to_type_string(ret.arena),
-        "(this: unknown) => asserts this"
-    );
 }
 
 #[test]

@@ -1,0 +1,173 @@
+async function useStream<TQueryFnData>(
+>              ^^^^^^^^^: <TQueryFnData>(streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>) => Promise<void>   (TyFunction) (BindingIdentifier)
+
+async function useStream<TQueryFnData>(
+>                        ^^^^^^^^^^^^: any   (TyAny) (TSTypeParameter)
+
+  streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>,
+> ^^^^^^^^: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction) (BindingIdentifier)
+
+  streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>,
+>                 ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>,
+>                 ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+  streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>,
+>                               ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>,
+>                                               ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+
+  streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>,
+>                                               ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+
+  streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>,
+>                                                       ^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>,
+>                                                       ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+  streamFn: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>,
+>                                                                     ^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  const stream = await streamFn();
+>       ^^^^^^: AsyncIterable<TQueryFnData>   (TyTypeReference) (BindingIdentifier)
+
+  const stream = await streamFn();
+>                      ^^^^^^^^: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (TyFunction) (IdentifierReference)
+
+  for await (const chunk of stream) {
+>                  ^^^^^: Awaited<TQueryFnData>   (TyTypeReference) (BindingIdentifier)
+
+  for await (const chunk of stream) {
+>                           ^^^^^^: AsyncIterable<TQueryFnData>   (TyTypeReference) (IdentifierReference)
+
+    chunk;
+>   ^^^^^: Awaited<TQueryFnData>   (TyTypeReference) (IdentifierReference)
+
+    chunk;
+>   ^^^^^^: Awaited<TQueryFnData>   (TyTypeReference) (ExpressionStatement)
+
+async function* asyncGeneratorValues() {
+>               ^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (TyFunction) (BindingIdentifier)
+
+  yield 1;
+> ^^^^^^^^: any   (TyAny) (ExpressionStatement)
+
+  yield 2;
+> ^^^^^^^^: any   (TyAny) (ExpressionStatement)
+
+async function consumeGenerator() {
+>              ^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
+
+  for await (const generatedValue of asyncGeneratorValues()) {
+>                  ^^^^^^^^^^^^^^: 1 | 2   (TyUnion) (BindingIdentifier)
+
+  for await (const generatedValue of asyncGeneratorValues()) {
+>                                    ^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (TyFunction) (IdentifierReference)
+
+    generatedValue;
+>   ^^^^^^^^^^^^^^: 1 | 2   (TyUnion) (IdentifierReference)
+
+    generatedValue;
+>   ^^^^^^^^^^^^^^^: 1 | 2   (TyUnion) (ExpressionStatement)
+
+interface TextAsyncIterator {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface TextAsyncIterator {
+>         ^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+  next(): Promise<IteratorResult<"chunk", void>>;
+> ^^^^: () => Promise<IteratorResult<"chunk", void>>   (TyFunction) (TSMethodSignature)
+
+  next(): Promise<IteratorResult<"chunk", void>>;
+>         ^^^^^^^: PromiseConstructor   (TyTypeReference) (TSTypeReference)
+
+  next(): Promise<IteratorResult<"chunk", void>>;
+>         ^^^^^^^: PromiseConstructor   (TyTypeReference) (IdentifierReference)
+
+  next(): Promise<IteratorResult<"chunk", void>>;
+>                 ^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  next(): Promise<IteratorResult<"chunk", void>>;
+>                 ^^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+interface StructuralTextStream {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface StructuralTextStream {
+>         ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+  [Symbol.asyncIterator](): TextAsyncIterator;
+>  ^^^^^^: SymbolConstructor   (TyTypeReference) (IdentifierReference)
+
+  [Symbol.asyncIterator](): TextAsyncIterator;
+>         ^^^^^^^^^^^^^: unique symbol   (TyUniqueSymbol) (StaticMemberExpression)
+
+  [Symbol.asyncIterator](): TextAsyncIterator;
+>                           ^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+  [Symbol.asyncIterator](): TextAsyncIterator;
+>                           ^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+declare const structuralStream: StructuralTextStream;
+>             ^^^^^^^^^^^^^^^^: StructuralTextStream   (TyTypeReference) (BindingIdentifier)
+
+declare const structuralStream: StructuralTextStream;
+>                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare const structuralStream: StructuralTextStream;
+>                               ^^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+async function consumeStructuralStream() {
+>              ^^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
+
+  for await (const structuralChunk of structuralStream) {
+>                  ^^^^^^^^^^^^^^^: "chunk"   (TyStringLiteral) (BindingIdentifier)
+
+  for await (const structuralChunk of structuralStream) {
+>                                     ^^^^^^^^^^^^^^^^: StructuralTextStream   (TyTypeReference) (IdentifierReference)
+
+    structuralChunk;
+>   ^^^^^^^^^^^^^^^: "chunk"   (TyStringLiteral) (IdentifierReference)
+
+    structuralChunk;
+>   ^^^^^^^^^^^^^^^^: "chunk"   (TyStringLiteral) (ExpressionStatement)
+
+interface InheritedTextStream extends AsyncIterable<"chunk"> {}
+>         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceDeclaration)
+
+interface InheritedTextStream extends AsyncIterable<"chunk"> {}
+>         ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (BindingIdentifier)
+
+interface InheritedTextStream extends AsyncIterable<"chunk"> {}
+>                                     ^^^^^^^^^^^^^: any   (TyAny) (TSInterfaceHeritage)
+
+interface InheritedTextStream extends AsyncIterable<"chunk"> {}
+>                                     ^^^^^^^^^^^^^: any   (TyError) (IdentifierReference)
+
+declare const inheritedStream: InheritedTextStream;
+>             ^^^^^^^^^^^^^^^: InheritedTextStream   (TyTypeReference) (BindingIdentifier)
+
+declare const inheritedStream: InheritedTextStream;
+>                              ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (TSTypeReference)
+
+declare const inheritedStream: InheritedTextStream;
+>                              ^^^^^^^^^^^^^^^^^^^: any   (TyAny) (IdentifierReference)
+
+async function consumeInheritedStream() {
+>              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (TyFunction) (BindingIdentifier)
+
+  for await (const inheritedChunk of inheritedStream) {
+>                  ^^^^^^^^^^^^^^: "chunk"   (TyStringLiteral) (BindingIdentifier)
+
+  for await (const inheritedChunk of inheritedStream) {
+>                                    ^^^^^^^^^^^^^^^: InheritedTextStream   (TyTypeReference) (IdentifierReference)
+
+    inheritedChunk;
+>   ^^^^^^^^^^^^^^: "chunk"   (TyStringLiteral) (IdentifierReference)
+
+    inheritedChunk;
+>   ^^^^^^^^^^^^^^^: "chunk"   (TyStringLiteral) (ExpressionStatement)

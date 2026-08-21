@@ -39,3 +39,15 @@ const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true
 
 const thirdChorus: StringsThenConfig = ["When she dived down below", { huh: true }];
 >                                                                      ^^^: true   (TyBooleanLiteral) (ObjectProperty)
+
+const directVariadic: [...string[], { huh: boolean }] = ["value", { huh: true }];
+>     ^^^^^^^^^^^^^^: [...string[], { huh: boolean; }]   (TyTuple) (BindingIdentifier)
+
+const directVariadic: [...string[], { huh: boolean }] = ["value", { huh: true }];
+>                                     ^^^: boolean   (TyBoolean) (TSPropertySignature)
+
+const directVariadic: [...string[], { huh: boolean }] = ["value", { huh: true }];
+>                                                                   ^^^: true   (TyBooleanLiteral) (ObjectProperty)
+
+const optionalElement: [number?] = [];
+>     ^^^^^^^^^^^^^^^: [(number | undefined)?]   (TyTuple) (BindingIdentifier)

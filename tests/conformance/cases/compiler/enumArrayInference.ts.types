@@ -1,0 +1,26 @@
+enum E { A, B }
+>    ^: typeof E   (TyTypeQuery) (TSEnumDeclaration)
+
+enum E { A, B }
+>    ^: typeof E   (TyTypeQuery) (BindingIdentifier)
+
+enum E { A, B }
+>        ^: E.A   (TyTypeReference) (TSEnumMember)
+
+enum E { A, B }
+>           ^: E.B   (TyTypeReference) (TSEnumMember)
+
+const values = [E.A, E.B];
+>     ^^^^^^: E[]   (TyArray) (BindingIdentifier)
+
+const values = [E.A, E.B];
+>               ^: typeof E   (TyTypeQuery) (IdentifierReference)
+
+const values = [E.A, E.B];
+>                 ^: E.A   (TyTypeReference) (StaticMemberExpression)
+
+const values = [E.A, E.B];
+>                    ^: typeof E   (TyTypeQuery) (IdentifierReference)
+
+const values = [E.A, E.B];
+>                      ^: E.B   (TyTypeReference) (StaticMemberExpression)

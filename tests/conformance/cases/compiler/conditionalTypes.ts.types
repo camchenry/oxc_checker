@@ -24,3 +24,12 @@ const distributed = choose<string | number>();
 
 const distributed = choose<string | number>();
 >                   ^^^^^^: <T>() => T extends string ? boolean : number   (TyFunction) (IdentifierReference)
+
+declare function unresolvedConditional<T>(): T extends string ? number : boolean;
+>                ^^^^^^^^^^^^^^^^^^^^^: <T>() => T extends string ? number : boolean   (TyFunction) (BindingIdentifier)
+
+declare function unresolvedConditional<T>(): T extends string ? number : boolean;
+>                                      ^: any   (TyAny) (TSTypeParameter)
+
+declare function unresolvedConditional<T>(): T extends string ? number : boolean;
+>                                            ^: any   (TyAny) (TSTypeReference)
