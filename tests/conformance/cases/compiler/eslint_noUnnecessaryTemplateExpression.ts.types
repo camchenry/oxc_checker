@@ -83,7 +83,8 @@ enum ABC {
 > ^: ABC.C   (TyTypeReference) (TSEnumMember)
 
 type ABCUnion = `${ABC}`;
->    ^^^^^^^^: "A" | "B" | "C"   (TyUnion) (TSTypeAliasDeclaration)
+>    ^^^^^^^^: `${ABC}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
+     expected: "A" | "B" | "C"
 
 type ABCUnion = `${ABC}`;
 >                  ^^^: typeof ABC   (TyTypeQuery) (TSTypeReference)
@@ -92,7 +93,8 @@ type ABCUnion = `${ABC}`;
 >                  ^^^: typeof ABC   (TyTypeQuery) (IdentifierReference)
 
 type A = `${ABC.A}`;
->    ^: "A"   (TyStringLiteral) (TSTypeAliasDeclaration)
+>    ^: `${ABC.A}`   (TyTemplateLiteral) (TSTypeAliasDeclaration)
+expected: "A"
 
 type A = `${ABC.A}`;
 >           ^^^: typeof ABC   (TyTypeQuery) (IdentifierReference)

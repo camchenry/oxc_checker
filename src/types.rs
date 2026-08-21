@@ -3153,27 +3153,6 @@ impl<'a> Ty<'a> {
             TyKind::Any | TyKind::Error(_) | TyKind::Unknown
         )
     }
-
-    pub(crate) fn template_substitution_static_value(
-        &self,
-        arena: CheckerArena<'a>,
-    ) -> Option<&'a str> {
-        match arena.ty_kind(*self) {
-            TyKind::StringLiteral(literal) => Some(literal.value),
-            TyKind::NumberLiteral(literal) => Some(if literal.value == 0.0 {
-                "0"
-            } else {
-                arena.str(&literal.value.to_string())
-            }),
-            TyKind::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
-            TyKind::Null => Some("null"),
-            TyKind::Undefined | TyKind::Void => Some("undefined"),
-            TyKind::TemplateLiteral(template) if template.expressions.is_empty() => {
-                Some(template.quasis[0].value)
-            }
-            _ => None,
-        }
-    }
 }
 
 fn element_type_needs_parentheses<'a>(arena: CheckerArena<'a>, element: &TupleElement<'a>) -> bool {

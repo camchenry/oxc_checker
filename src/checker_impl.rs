@@ -1796,10 +1796,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                     node_id,
                     GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS,
                 );
+                // TODO: Just use `template_substitution_static_value` directly here?
                 value.push_str({
                     match self.ty_kind(expression_type) {
                         TyKind::StringLiteral(_) | TyKind::NumberLiteral(_) => {
-                            expression_type.template_substitution_static_value(self.arena())
+                            self.template_substitution_static_value(program_id, expression_type)
                         }
                         _ => None,
                     }
@@ -1809,67 +1810,46 @@ impl<'a, 'store> Checker<'a, 'store> {
         Some(self.arena().str(&value))
     }
 
+    fn template_substitution_static_value(
+        &self,
+        _program_id: ProgramId,
+        ty: Ty<'a>,
+    ) -> Option<&'a str> {
+        match self.ty_kind(ty) {
+            TyKind::StringLiteral(literal) => Some(literal.value),
+            TyKind::NumberLiteral(literal) => Some(if literal.value == 0.0 {
+                "0"
+            } else {
+                self.arena.str(&literal.value.to_string())
+            }),
+            TyKind::BooleanLiteral(value) => Some(if value { "true" } else { "false" }),
+            TyKind::Null => Some("null"),
+            TyKind::Undefined | TyKind::Void => Some("undefined"),
+            TyKind::TemplateLiteral(template) if template.expressions.is_empty() => {
+                Some(template.quasis[0].value)
+            }
+            TyKind::TypeReference(_reference) => {
+                // TODO: Handle enums like `Enum` and also `Enum`
+                None
+            }
+            _ => None,
+        }
+    }
+
     fn template_substitution_static_values(
         &self,
         program_id: ProgramId,
         ty: Ty<'a>,
     ) -> Option<Vec<&'a str>> {
         let ty = self.expand_type(program_id, ty, 0);
-        let ty = self
-            .get_enum_literal_union_type(program_id, ty)
-            .unwrap_or(ty);
         match self.ty_kind(ty) {
             TyKind::Union(union) => union.types.iter().try_fold(Vec::new(), |mut values, ty| {
                 values.extend(self.template_substitution_static_values(program_id, *ty)?);
                 Some(values)
             }),
-            _ => Some(vec![ty.template_substitution_static_value(self.arena())?]),
-        }
-    }
-
-    // TODO(inline)
-    fn get_enum_literal_union_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Option<Ty<'a>> {
-        let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
-            return None;
-        };
-        if let Some((symbol, declaration)) =
-            self.get_type_reference_symbol_and_declaration(program_id, reference)
-        {
-            return self.get_enum_literal_union_from_declaration(symbol.program_id, declaration);
-        }
-
-        let (enum_name, member_name) = reference.name.rsplit_once('.')?;
-        let (symbol, declaration) =
-            self.get_type_symbol_and_declaration_for_name(program_id, enum_name)?;
-        self.get_enum_member_literal_from_declaration(symbol.program_id, declaration, member_name)
-    }
-
-    fn get_enum_member_literal_from_declaration(
-        &self,
-        program_id: ProgramId,
-        declaration: NodeId,
-        member_name: &str,
-    ) -> Option<Ty<'a>> {
-        match self.nodes(program_id).kind(declaration) {
-            AstKind::TSEnumDeclaration(enum_declaration) => {
-                let member = enum_declaration
-                    .body
-                    .members
-                    .iter()
-                    .find(|member| member.id.static_name() == member_name)?;
-                Some(self.get_type_of_expression_with_node(
-                    program_id,
-                    member.initializer.as_ref()?,
-                    None,
-                    GetTypeFlags::PRESERVE_LITERALS,
-                ))
-            }
-            AstKind::BindingIdentifier(_) => self.get_enum_member_literal_from_declaration(
-                program_id,
-                self.nodes(program_id).parent_id(declaration),
-                member_name,
-            ),
-            _ => None,
+            _ => Some(vec![
+                self.template_substitution_static_value(program_id, ty)?,
+            ]),
         }
     }
 
@@ -1910,45 +1890,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 program_id,
                 self.nodes(program_id).parent_id(declaration),
                 member_name,
-            ),
-            _ => None,
-        }
-    }
-
-    fn get_enum_literal_union_from_declaration(
-        &self,
-        program_id: ProgramId,
-        declaration: NodeId,
-    ) -> Option<Ty<'a>> {
-        match self.nodes(program_id).kind(declaration) {
-            // TODO(correctness): Evaluate implicit and computed enum member values.
-            AstKind::TSEnumDeclaration(enum_declaration) => Some(
-                self.ty.union(
-                    enum_declaration
-                        .body
-                        .members
-                        .iter()
-                        .map(|member| {
-                            self.get_type_of_expression_with_node(
-                                program_id,
-                                member.initializer.as_ref()?,
-                                None,
-                                GetTypeFlags::PRESERVE_LITERALS,
-                            )
-                            .into()
-                        })
-                        .collect::<Option<Vec<_>>>()?,
-                ),
-            ),
-            AstKind::TSEnumMember(member) => Some(self.get_type_of_expression_with_node(
-                program_id,
-                member.initializer.as_ref()?,
-                None,
-                GetTypeFlags::PRESERVE_LITERALS,
-            )),
-            AstKind::BindingIdentifier(_) => self.get_enum_literal_union_from_declaration(
-                program_id,
-                self.nodes(program_id).parent_id(declaration),
             ),
             _ => None,
         }
