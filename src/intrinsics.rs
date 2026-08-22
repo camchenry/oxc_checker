@@ -59,7 +59,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 }))
             }
             TyKind::StringLiteral(literal) => {
-                self.arena()
+                self.ty
                     .string_literal(self.apply_intrinsic_string_mapping_to_string(
                         name,
                         literal.value,

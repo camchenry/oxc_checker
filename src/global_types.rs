@@ -438,7 +438,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.get_type_symbol_for_name(program_id, name)?;
 
         Some(
-            self.arena()
+            self.ty
                 .type_reference(self.arena().str(name), type_arguments),
         )
     }

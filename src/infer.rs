@@ -1515,7 +1515,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 } else {
                     GetTypeFlags::NONE
                 };
-                self.arena()
+                self.ty
                     .union(expressions.yield_expressions.into_iter().map(|argument| {
                         self.get_type_of_expression_with_node(program_id, argument, node_id, flags)
                     }))
