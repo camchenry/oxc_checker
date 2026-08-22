@@ -6,19 +6,19 @@ use oxc_ast::{
         Argument, ArrayExpression, ArrayExpressionElement, ArrowFunctionExpression,
         AssignmentExpression, AssignmentTarget, AwaitExpression, BigintBase, BinaryExpression,
         BindingPattern, CallExpression, ChainElement, Class, ClassElement,
-        ComputedMemberExpression, ConditionalExpression, ExportSpecifier, Expression,
-        FormalParameter, FormalParameterRest, FormalParameters, Function, IdentifierReference,
-        ImportExpression, LogicalExpression, MethodDefinition, MethodDefinitionKind,
-        ModuleExportName, NewExpression, NumberBase, ObjectExpression, ObjectPropertyKind,
-        PrivateFieldExpression, PropertyDefinition, PropertyKey, SimpleAssignmentTarget,
-        StaticMemberExpression, TSImportEqualsDeclaration, TSImportType, TSImportTypeQualifier,
-        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature, TSMethodSignatureKind,
-        TSModuleDeclaration, TSModuleDeclarationName, TSModuleReference, TSNamedTupleMember,
-        TSPropertySignature, TSQualifiedName, TSSignature, TSThisParameter, TSTupleElement, TSType,
-        TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
-        TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
-        TSTypeReference, TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind,
-        VariableDeclarator, YieldExpression,
+        ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
+        FormalParameterRest, FormalParameters, Function, IdentifierReference, ImportExpression,
+        LogicalExpression, MethodDefinition, MethodDefinitionKind, NewExpression, NumberBase,
+        ObjectExpression, ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition,
+        PropertyKey, SimpleAssignmentTarget, StaticMemberExpression, TSImportEqualsDeclaration,
+        TSImportType, TSImportTypeQualifier, TSInterfaceDeclaration, TSLiteral, TSMappedType,
+        TSMethodSignature, TSMethodSignatureKind, TSModuleDeclaration, TSModuleDeclarationName,
+        TSModuleReference, TSNamedTupleMember, TSPropertySignature, TSQualifiedName, TSSignature,
+        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
+        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
+        TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
+        YieldExpression,
     },
 };
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
@@ -1438,46 +1438,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                     | AstKind::ExportAllDeclaration(_)
             )
         })
-    }
-
-    // TODO(inline)
-    fn get_type_symbol_for_export_specifier_local(
-        &self,
-        program_id: ProgramId,
-        node_id: NodeId,
-        identifier: &IdentifierReference<'a>,
-    ) -> Option<SymbolRef> {
-        let AstKind::ExportSpecifier(specifier) = self.nodes(program_id).parent_kind(node_id)
-        else {
-            return None;
-        };
-        let ModuleExportName::IdentifierReference(local) = &specifier.local else {
-            return None;
-        };
-        if local.span != identifier.span {
-            return None;
-        }
-        self.get_type_symbol_in_program(program_id, identifier.name.as_str())
-    }
-
-    // TODO: refactor away the export specifier part?
-    fn get_type_of_export_specifier_local(
-        &self,
-        program_id: ProgramId,
-        specifier: &ExportSpecifier<'a>,
-    ) -> Ty<'a> {
-        let Some(local_name) = specifier.local.identifier_name() else {
-            return self.ty.none();
-        };
-        let local_name = local_name.as_str();
-
-        self.get_type_symbol_in_program(program_id, local_name)
-            .and_then(|symbol| {
-                let ty = self.get_type_of_symbol(symbol);
-                if ty.is_none() { None } else { Some(ty) }
-            })
-            .or_else(|| self.get_type_of_local_type_declaration_by_name(program_id, local_name))
-            .unwrap_or_else(|| self.ty.none())
     }
 
     fn get_type_of_local_type_declaration_by_name(
@@ -12267,11 +12227,12 @@ impl<'a> Checker<'a, '_> {
                     self.get_value_symbol_for_name(node.program_id, identifier.name.as_str())
                 })
                 .or_else(|| {
-                    self.get_type_symbol_for_export_specifier_local(
-                        node.program_id,
-                        node.node_id,
-                        identifier,
-                    )
+                    let AstKind::ExportSpecifier(specifier) =
+                        self.nodes(node.program_id).parent_kind(node.node_id)
+                    else {
+                        return None;
+                    };
+                    self.get_type_symbol_in_program(node.program_id, &specifier.local.name())
                 }),
             AstKind::TSTypeReference(reference) => match &reference.type_name {
                 TSTypeName::IdentifierReference(identifier) => self
@@ -12601,9 +12562,16 @@ impl<'a> Checker<'a, '_> {
             AstKind::TSInterfaceDeclaration(interface) => {
                 self.get_type_at_interface_declaration(node.program_id, interface)
             }
-            AstKind::ExportSpecifier(specifier) => {
-                self.get_type_of_export_specifier_local(node.program_id, specifier)
-            }
+            AstKind::ExportSpecifier(specifier) => self
+                .get_type_symbol_in_program(node.program_id, &specifier.local.name())
+                .map(|symbol| self.get_type_of_symbol(symbol))
+                .or_else(|| {
+                    self.get_type_of_local_type_declaration_by_name(
+                        node.program_id,
+                        &specifier.local.name(),
+                    )
+                })
+                .unwrap_or_else(|| self.ty.any()),
             AstKind::TSModuleDeclaration(module) => {
                 self.get_type_of_namespace_declaration(node.program_id, module)
             }

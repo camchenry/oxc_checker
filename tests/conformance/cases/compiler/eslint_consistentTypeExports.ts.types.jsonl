@@ -27,12 +27,12 @@
 {"path":"compiler/eslint_consistentTypeExports.ts::c.ts","start":6,"end":7,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
 {"path":"compiler/eslint_consistentTypeExports.ts::c.ts","start":18,"end":19,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
 {"path":"compiler/eslint_consistentTypeExports.ts::c.ts","start":40,"end":41,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
-{"path":"compiler/eslint_consistentTypeExports.ts::c.ts","start":43,"end":44,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::c.ts","start":40,"end":41,"text":"x","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
 {"path":"compiler/eslint_consistentTypeExports.ts::d.ts","start":6,"end":7,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
 {"path":"compiler/eslint_consistentTypeExports.ts::d.ts","start":18,"end":19,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
 {"path":"compiler/eslint_consistentTypeExports.ts::d.ts","start":40,"end":41,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
-{"path":"compiler/eslint_consistentTypeExports.ts::d.ts","start":48,"end":49,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::d.ts","start":40,"end":41,"text":"x","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
 {"path":"compiler/eslint_consistentTypeExports.ts::e.ts","start":6,"end":7,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
 {"path":"compiler/eslint_consistentTypeExports.ts::e.ts","start":18,"end":19,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
-{"path":"compiler/eslint_consistentTypeExports.ts::e.ts","start":45,"end":46,"text":"T","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
 {"path":"compiler/eslint_consistentTypeExports.ts::e.ts","start":59,"end":60,"text":"x","nodeType":"Identifier","type":{"name":"NumberLiteral","display":"1"}}
+{"path":"compiler/eslint_consistentTypeExports.ts::e.ts","start":59,"end":60,"text":"x","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

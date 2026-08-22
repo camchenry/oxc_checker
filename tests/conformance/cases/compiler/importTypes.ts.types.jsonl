@@ -8,6 +8,7 @@
 {"path":"compiler/importTypes.ts::a.ts","start":85,"end":92,"text":"process","nodeType":"Identifier","type":{"name":"Function","display":"<T>(x: T) => 1 | T"}}
 {"path":"compiler/importTypes.ts::a.ts","start":85,"end":92,"text":"process","nodeType":"Identifier","type":{"name":"Function","display":"<T>(x: T) => 1 | T"}}
 {"path":"compiler/importTypes.ts::a.ts","start":105,"end":112,"text":"process","nodeType":"Identifier","type":{"name":"Function","display":"<T>(x: T) => 1 | T"}}
+{"path":"compiler/importTypes.ts::a.ts","start":105,"end":112,"text":"process","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
 {"path":"compiler/importTypes.ts::a.ts","start":131,"end":134,"text":"mod","nodeType":"Identifier","type":{"name":"Object","display":"{ process: <T>(x: T) => 1 | T; }"}}
 {"path":"compiler/importTypes.ts::index.ts","start":9,"end":16,"text":"process","nodeType":"Identifier","type":{"name":"Function","display":"<T>(x: T) => 1 | T"}}
 {"path":"compiler/importTypes.ts::index.ts","start":40,"end":43,"text":"num","nodeType":"Identifier","type":{"name":"Number","display":"number"}}

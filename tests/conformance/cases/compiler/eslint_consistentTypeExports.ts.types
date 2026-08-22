@@ -84,9 +84,11 @@ type T = number;
 
 export { x, T };
 >        ^: 1   (NumberLiteral) (Identifier)
+  expected: 1
 
 export { x, T };
->           ^: number   (Number) (Identifier)
+>        ^: any   (Any) (Identifier)
+  expected: 1
 
 const x = 1;
 >     ^: 1   (NumberLiteral) (Identifier)
@@ -96,18 +98,22 @@ type T = number;
 
 export { x, type T };
 >        ^: 1   (NumberLiteral) (Identifier)
+  expected: 1
 
 export { x, type T };
->                ^: number   (Number) (Identifier)
+>        ^: any   (Any) (Identifier)
+  expected: 1
 
 const x = 1;
 >     ^: 1   (NumberLiteral) (Identifier)
 
 type T = number;
 >    ^: number   (Number) (Identifier)
-
-export type { T };
->             ^: number   (Number) (Identifier)
 
 export { x };
 >        ^: 1   (NumberLiteral) (Identifier)
+  expected: 1
+
+export { x };
+>        ^: any   (Any) (Identifier)
+  expected: 1

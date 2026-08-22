@@ -27,6 +27,11 @@ const mod = { process };
 
 export { process };
 >        ^^^^^^^: <T>(x: T) => 1 | T   (Function) (Identifier)
+        expected: <T>(x: T) => 1 | T
+
+export { process };
+>        ^^^^^^^: any   (Any) (Identifier)
+        expected: <T>(x: T) => 1 | T
 
 export default mod;
 >              ^^^: { process: <T>(x: T) => 1 | T; }   (Object) (Identifier)
