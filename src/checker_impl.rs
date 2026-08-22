@@ -5605,15 +5605,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         properties
     }
 
-    // TODO(inline)
-    fn interface_declarations_for_type_name(
-        &self,
-        program_id: ProgramId,
-        type_name: &str,
-    ) -> Vec<(ProgramId, &'a TSInterfaceDeclaration<'a>)> {
-        self.interface_declarations_for_type_name_and_target(program_id, type_name, None)
-    }
-
     fn interface_declarations_for_type_reference(
         &self,
         program_id: ProgramId,
@@ -7499,9 +7490,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .to_vec()
             })
             .unwrap_or_else(|| {
-                self.interface_declarations_for_type_name(
+                self.interface_declarations_for_type_name_and_target(
                     program_id,
                     current_interface.id.name.as_str(),
+                    None,
                 )
             });
 
