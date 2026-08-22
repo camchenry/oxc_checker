@@ -582,7 +582,7 @@ fn object_method_display_uses_signature_syntax() {
         flags: TyPropertyFlags::NONE,
         ty: arena.function(
             [],
-            [Ty::optional_parameter("reason", Ty::any())],
+            [Ty::parameter("reason", Ty::any()).optional(true)],
             abort_signal,
         ),
         computed: false,

@@ -163,24 +163,6 @@ impl<'a> TypeBuilder<'a> {
         }
     }
 
-    pub const fn optional_parameter(self, name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
-        TyParameter {
-            name,
-            ty,
-            optional: true,
-            rest: false,
-        }
-    }
-
-    pub const fn rest_parameter(self, name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
-        TyParameter {
-            name,
-            ty,
-            optional: false,
-            rest: true,
-        }
-    }
-
     pub const fn type_parameter(
         self,
         name: &'a str,
@@ -780,6 +762,20 @@ pub struct TyParameter<'a> {
     pub ty: Ty<'a>,
     pub optional: bool,
     pub rest: bool,
+}
+
+impl<'a> TyParameter<'a> {
+    /// Returns a copy of this parameter with the `optional` field set to the given value.
+    #[must_use]
+    pub fn optional(self, optional: bool) -> Self {
+        Self { optional, ..self }
+    }
+
+    /// Returns a copy of this parameter with the `rest` field set to the given value.
+    #[must_use]
+    pub fn rest(self, rest: bool) -> Self {
+        Self { rest, ..self }
+    }
 }
 
 pub(crate) fn function_minimum_argument_count<'a>(
@@ -1723,15 +1719,6 @@ impl<'a> Ty<'a> {
             name,
             ty,
             optional: false,
-            rest: false,
-        }
-    }
-
-    pub const fn optional_parameter(name: &'a str, ty: Ty<'a>) -> TyParameter<'a> {
-        TyParameter {
-            name,
-            ty,
-            optional: true,
             rest: false,
         }
     }

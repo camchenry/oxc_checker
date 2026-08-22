@@ -609,13 +609,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                         let ty = self.instantiate_type_at_depth(parameter.ty, &mapper, depth + 1);
                         was_semantically_instantiated |=
                             !self.arena().is_type_identical_to(parameter.ty, ty);
-                        if parameter.rest {
-                            self.ty.rest_parameter(parameter.name, ty)
-                        } else if parameter.optional {
-                            self.ty.optional_parameter(parameter.name, ty)
-                        } else {
-                            self.ty.parameter(parameter.name, ty)
-                        }
+                        self.ty
+                            .parameter(parameter.name, ty)
+                            .optional(parameter.optional)
+                            .rest(parameter.rest)
                     })
                     .collect::<Vec<_>>();
                 let return_type =
@@ -4563,13 +4560,10 @@ impl<'a, 'store> Checker<'a, 'store> {
             remaining_type_parameters,
             function.parameters.iter().map(|parameter| {
                 let ty = self.instantiate_type(parameter.ty, &mapper);
-                if parameter.rest {
-                    self.ty.rest_parameter(parameter.name, ty)
-                } else if parameter.optional {
-                    self.ty.optional_parameter(parameter.name, ty)
-                } else {
-                    self.ty.parameter(parameter.name, ty)
-                }
+                self.ty
+                    .parameter(parameter.name, ty)
+                    .optional(parameter.optional)
+                    .rest(parameter.rest)
             }),
             self.instantiate_type(function.return_type, &mapper),
             function
@@ -8449,13 +8443,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                 function.type_parameters.iter().copied(),
                 function.parameters.iter().map(|parameter| {
                     let ty = self.get_apparent_type(program_id, parameter.ty, depth + 1);
-                    if parameter.rest {
-                        self.ty.rest_parameter(parameter.name, ty)
-                    } else if parameter.optional {
-                        self.ty.optional_parameter(parameter.name, ty)
-                    } else {
-                        self.ty.parameter(parameter.name, ty)
-                    }
+                    self.ty
+                        .parameter(parameter.name, ty)
+                        .optional(parameter.optional)
+                        .rest(parameter.rest)
                 }),
                 self.get_apparent_type(program_id, function.return_type, depth + 1),
                 function.type_predicate.copied(),
@@ -9139,13 +9130,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         let name = binding_pattern_to_parameter_name(self.arena(), &parameter.pattern);
         let ty =
             self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref());
-        // TODO(refactor): allow chaining on `TyParameter` so we can do something like this instead:
-        // `self.ty.parameter(name, ty).optional(parameter.optional)`
-        if parameter.optional {
-            self.ty.optional_parameter(name, ty)
-        } else {
-            self.ty.parameter(name, ty)
-        }
+        self.ty.parameter(name, ty).optional(parameter.optional)
     }
 
     // TODO(inline)
@@ -9164,11 +9149,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             || self.ty.any(),
             |parameter| self.get_apparent_contextual_parameter_type(program_id, parameter.ty),
         );
-        if parameter.optional {
-            self.ty.optional_parameter(name, ty)
-        } else {
-            self.ty.parameter(name, ty)
-        }
+        self.ty.parameter(name, ty).optional(parameter.optional)
     }
 
     fn function_signature_rest_parameter(
@@ -9177,10 +9158,15 @@ impl<'a, 'store> Checker<'a, 'store> {
         parameter: &'a FormalParameterRest<'a>,
     ) -> TyParameter<'a> {
         let name = binding_pattern_to_parameter_name(self.arena(), &parameter.rest.argument);
-        self.ty.rest_parameter(
-            name,
-            self.get_type_from_ts_type_annotation(program_id, parameter.type_annotation.as_deref()),
-        )
+        self.ty
+            .parameter(
+                name,
+                self.get_type_from_ts_type_annotation(
+                    program_id,
+                    parameter.type_annotation.as_deref(),
+                ),
+            )
+            .rest(true)
     }
 
     fn get_parameter_type_from_ts_type_annotation(
