@@ -46,7 +46,8 @@ use crate::{
     },
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::{self, ProgramId},
-    property_key_name_str, ts_type_name_to_str, ts_type_query_expr_name_to_str, type_facts,
+    property_key_name_str, ts_type_name_to_str, ts_type_query_expr_name_to_str,
+    type_facts::{TypeFacts, get_type_facts},
     type_set::UnionAccumulator,
     types::{
         CheckerArena, IndexInfo, LabeledTupleElement, MappedModifier, Signature, SignatureKind,
@@ -964,7 +965,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                         node_id,
                         flags | GetTypeFlags::PRESERVE_LITERALS,
                     );
-                    type_facts::get_logical_not_type(self.arena(), argument_type)
+                    match get_type_facts(self.arena(), argument_type) {
+                        TypeFacts::TRUTHY => self.ty.boolean_false(),
+                        TypeFacts::FALSY => self.ty.boolean_true(),
+                        _ => self.ty.boolean(),
+                    }
                 }
                 UnaryOperator::Typeof => self.ty.typeof_string_values(),
                 UnaryOperator::Void => self.ty.undefined(),
@@ -1599,7 +1604,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
-    // TODO(refactor): move to type_facts module
     fn get_truthy_type(&self, ty: Ty<'a>) -> Ty<'a> {
         match self.ty_kind(ty) {
             TyKind::Union(union) => self
@@ -1607,15 +1611,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .union(union.types.iter().map(|ty| self.get_truthy_type(*ty))),
             TyKind::Boolean => self.ty.boolean_true(),
             TyKind::BooleanLiteral(false) | TyKind::StringLiteral(_)
-                if type_facts::get_type_facts(self.arena(), ty, type_facts::TypeFacts::TRUTHY)
-                    .is_empty() =>
+                if !get_type_facts(self.arena(), ty).contains(TypeFacts::TRUTHY) =>
             {
                 self.ty.never()
             }
             TyKind::NumberLiteral(literal) if literal.value == 0.0 => self.ty.never(),
             TyKind::BigIntLiteral(_)
-                if type_facts::get_type_facts(self.arena(), ty, type_facts::TypeFacts::TRUTHY)
-                    .is_empty() =>
+                if !get_type_facts(self.arena(), ty).contains(TypeFacts::TRUTHY) =>
             {
                 self.ty.never()
             }
@@ -1624,7 +1626,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
-    // TODO(refactor): move to type_facts module
     fn get_falsy_type(&self, ty: Ty<'a>) -> Ty<'a> {
         match self.ty_kind(ty) {
             TyKind::Union(union) => self
@@ -1641,16 +1642,11 @@ impl<'a, 'store> Checker<'a, 'store> {
             | TyKind::Null
             | TyKind::Undefined
             | TyKind::Void
-                if type_facts::get_type_facts(self.arena(), ty, type_facts::TypeFacts::FALSY)
-                    .is_empty() =>
+                if !get_type_facts(self.arena(), ty).contains(TypeFacts::FALSY) =>
             {
                 self.ty.never()
             }
-            _ if type_facts::get_type_facts(self.arena(), ty, type_facts::TypeFacts::FALSY)
-                .is_empty() =>
-            {
-                self.ty.never()
-            }
+            _ if !get_type_facts(self.arena(), ty).contains(TypeFacts::FALSY) => self.ty.never(),
             _ => ty,
         }
     }

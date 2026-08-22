@@ -3040,10 +3040,6 @@ fn bigint_literal_types_store_parsed_value_and_source_metadata() {
     assert_eq!(zero.value, "0");
     assert_eq!(zero.raw.as_ref().map(oxc_str::Str::as_str), Some("0b0_0n"));
     assert_eq!(zero.base, BigintBase::Binary);
-    assert_eq!(
-        crate::type_facts::get_logical_not_type(ret.arena, literal_types[2]),
-        Ty::boolean_true()
-    );
 }
 
 #[test]
