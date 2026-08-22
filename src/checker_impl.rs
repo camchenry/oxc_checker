@@ -1808,48 +1808,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
-    // TODO(inline)
-    fn get_enum_member_symbol_for_name(
-        &self,
-        program_id: ProgramId,
-        name: &str,
-    ) -> Option<SymbolRef> {
-        let (enum_name, member_name) = name.rsplit_once('.')?;
-        let (enum_symbol, declaration) =
-            self.get_type_symbol_and_declaration_for_name(program_id, enum_name)?;
-        self.get_enum_member_symbol_from_declaration(
-            enum_symbol.program_id,
-            declaration,
-            member_name,
-        )
-    }
-
-    fn get_enum_member_symbol_from_declaration(
-        &self,
-        program_id: ProgramId,
-        declaration: NodeId,
-        member_name: &str,
-    ) -> Option<SymbolRef> {
-        match self.nodes(program_id).kind(declaration) {
-            AstKind::TSEnumDeclaration(declaration) => declaration
-                .body
-                .scope_id
-                .get()
-                .and_then(|scope_id| {
-                    self.semantic(program_id)
-                        .scoping()
-                        .get_binding(scope_id, Ident::from(member_name))
-                })
-                .map(|symbol_id| SymbolRef::new(program_id, symbol_id)),
-            AstKind::BindingIdentifier(_) => self.get_enum_member_symbol_from_declaration(
-                program_id,
-                self.nodes(program_id).parent_id(declaration),
-                member_name,
-            ),
-            _ => None,
-        }
-    }
-
     fn get_type_of_enum_declaration(
         &self,
         program_id: ProgramId,
@@ -4824,8 +4782,7 @@ impl<'a, 'store> Checker<'a, 'store> {
     ) -> Ty<'a> {
         let target = self
             .get_type_symbol_and_declaration_for_name(program_id, name)
-            .map(|(symbol, _)| symbol)
-            .or_else(|| self.get_enum_member_symbol_for_name(program_id, name));
+            .map(|(symbol, _)| symbol);
         let ty = if let Some(target) = target {
             self.arena().type_reference_for_symbol(
                 name,
