@@ -2293,425 +2293,422 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         depth.set(current + 1);
-        let result = self.get_type_from_ts_type_inner(program_id, ty);
-        depth.set(current);
-        result
-    }
-
-    // TODO(inline)
-    fn get_type_from_ts_type_inner(&self, program_id: ProgramId, ty: &'a TSType<'a>) -> Ty<'a> {
-        match ty {
-            TSType::TSNumberKeyword(_) => self.ty.number(),
-            TSType::TSStringKeyword(_) => self.ty.string(),
-            TSType::TSBooleanKeyword(_) => self.ty.boolean(),
-            TSType::TSBigIntKeyword(_) => self.ty.bigint(),
-            TSType::TSSymbolKeyword(_) => self.ty.symbol(),
-            TSType::TSUndefinedKeyword(_) => self.ty.undefined(),
-            TSType::TSNullKeyword(_) => self.ty.null(),
-            TSType::TSAnyKeyword(_) => self.ty.any(),
-            TSType::TSUnknownKeyword(_) => self.ty.unknown(),
-            TSType::TSVoidKeyword(_) => self.ty.void(),
-            TSType::TSNeverKeyword(_) => self.ty.never(),
-            TSType::TSObjectKeyword(_) => self.ty.primitive_object(),
-            TSType::TSThisType(_) => self.ty.this(),
-            TSType::TSTypeLiteral(type_literal) => self.ty.object_with_signatures_and_index_infos(
-                type_literal
-                    .members
-                    .iter()
-                    .filter(|member| !Self::is_late_bound_type_literal_member(member))
-                    .chain(
-                        type_literal
-                            .members
-                            .iter()
-                            .filter(|member| Self::is_late_bound_type_literal_member(member)),
-                    )
-                    .filter_map(|member| match member {
-                        TSSignature::TSPropertySignature(property) => {
-                            let name = self.resolved_property_key_name(program_id, &property.key)?;
-                            let ty = property.type_annotation.as_deref().map_or_else(
-                                || self.ty.any(),
-                                |annotation| {
-                                    self.get_type_from_ts_type(
-                                        program_id,
-                                        &annotation.type_annotation,
-                                    )
-                                },
-                            );
-                            Some(TyProperty {
-                                name,
-                                flags: Self::property_signature_flags(property),
-                                ty,
-                                computed: property.computed,
-                                optional: property.optional,
-                                method: false,
-                                readonly: property.readonly,
-                            })
-                        }
-                        TSSignature::TSMethodSignature(method) => {
-                            let name = self.resolved_property_key_name(program_id, &method.key)?;
-                            if let Some(ty) =
-                                self.get_type_of_ts_accessor_signature(program_id, method)
-                            {
-                                let has_getter = type_literal.members.iter().any(|member| {
-                                    matches!(
-                                        member,
-                                        TSSignature::TSMethodSignature(candidate)
-                                            if candidate.kind == TSMethodSignatureKind::Get
-                                                && property_key_name_str(&candidate.key) == Some(name)
-                                    )
-                                });
-                                if method.kind == TSMethodSignatureKind::Set && has_getter {
-                                    return None;
+        let result = {
+            match ty {
+                TSType::TSNumberKeyword(_) => self.ty.number(),
+                TSType::TSStringKeyword(_) => self.ty.string(),
+                TSType::TSBooleanKeyword(_) => self.ty.boolean(),
+                TSType::TSBigIntKeyword(_) => self.ty.bigint(),
+                TSType::TSSymbolKeyword(_) => self.ty.symbol(),
+                TSType::TSUndefinedKeyword(_) => self.ty.undefined(),
+                TSType::TSNullKeyword(_) => self.ty.null(),
+                TSType::TSAnyKeyword(_) => self.ty.any(),
+                TSType::TSUnknownKeyword(_) => self.ty.unknown(),
+                TSType::TSVoidKeyword(_) => self.ty.void(),
+                TSType::TSNeverKeyword(_) => self.ty.never(),
+                TSType::TSObjectKeyword(_) => self.ty.primitive_object(),
+                TSType::TSThisType(_) => self.ty.this(),
+                TSType::TSTypeLiteral(type_literal) => self.ty.object_with_signatures_and_index_infos(
+                    type_literal
+                        .members
+                        .iter()
+                        .filter(|member| !Self::is_late_bound_type_literal_member(member))
+                        .chain(
+                            type_literal
+                                .members
+                                .iter()
+                                .filter(|member| Self::is_late_bound_type_literal_member(member)),
+                        )
+                        .filter_map(|member| match member {
+                            TSSignature::TSPropertySignature(property) => {
+                                let name = self.resolved_property_key_name(program_id, &property.key)?;
+                                let ty = property.type_annotation.as_deref().map_or_else(
+                                    || self.ty.any(),
+                                    |annotation| {
+                                        self.get_type_from_ts_type(
+                                            program_id,
+                                            &annotation.type_annotation,
+                                        )
+                                    },
+                                );
+                                Some(TyProperty {
+                                    name,
+                                    flags: Self::property_signature_flags(property),
+                                    ty,
+                                    computed: property.computed,
+                                    optional: property.optional,
+                                    method: false,
+                                    readonly: property.readonly,
+                                })
+                            }
+                            TSSignature::TSMethodSignature(method) => {
+                                let name = self.resolved_property_key_name(program_id, &method.key)?;
+                                if let Some(ty) =
+                                    self.get_type_of_ts_accessor_signature(program_id, method)
+                                {
+                                    let has_getter = type_literal.members.iter().any(|member| {
+                                        matches!(
+                                            member,
+                                            TSSignature::TSMethodSignature(candidate)
+                                                if candidate.kind == TSMethodSignatureKind::Get
+                                                    && property_key_name_str(&candidate.key) == Some(name)
+                                        )
+                                    });
+                                    if method.kind == TSMethodSignatureKind::Set && has_getter {
+                                        return None;
+                                    }
+                                    let has_setter = type_literal.members.iter().any(|member| {
+                                        matches!(
+                                            member,
+                                            TSSignature::TSMethodSignature(candidate)
+                                                if candidate.kind == TSMethodSignatureKind::Set
+                                                    && property_key_name_str(&candidate.key) == Some(name)
+                                        )
+                                    });
+                                    return Some(TyProperty {
+                                        name,
+                                        flags: property_name_flags(&method.key),
+                                        ty,
+                                        computed: method.computed,
+                                        optional: method.optional,
+                                        method: false,
+                                        readonly: !has_setter,
+                                    });
                                 }
-                                let has_setter = type_literal.members.iter().any(|member| {
-                                    matches!(
-                                        member,
-                                        TSSignature::TSMethodSignature(candidate)
-                                            if candidate.kind == TSMethodSignatureKind::Set
-                                                && property_key_name_str(&candidate.key) == Some(name)
-                                    )
-                                });
-                                return Some(TyProperty {
+
+                                let parameters = self.function_type_parameters(
+                                    program_id,
+                                    method.this_param.as_deref(),
+                                    method.params.as_ref(),
+                                );
+                                let (return_type, type_predicate) = self
+                                    .return_type_and_type_predicate_from_annotation(
+                                        program_id,
+                                        &parameters,
+                                        method.return_type.as_deref(),
+                                    );
+                                let ty = self.ty.function_with_type_predicate(
+                                    self.type_parameters_from_declaration(
+                                        program_id,
+                                        method.type_parameters.as_deref(),
+                                    ),
+                                    parameters,
+                                    return_type,
+                                    type_predicate,
+                                );
+                                Some(TyProperty {
                                     name,
                                     flags: property_name_flags(&method.key),
                                     ty,
                                     computed: method.computed,
                                     optional: method.optional,
-                                    method: false,
-                                    readonly: !has_setter,
-                                });
+                                    method: true,
+                                    readonly: false,
+                                })
                             }
-
-                            let parameters = self.function_type_parameters(
-                                program_id,
-                                method.this_param.as_deref(),
-                                method.params.as_ref(),
-                            );
-                            let (return_type, type_predicate) = self
-                                .return_type_and_type_predicate_from_annotation(
-                                    program_id,
-                                    &parameters,
-                                    method.return_type.as_deref(),
-                                );
-                            let ty = self.ty.function_with_type_predicate(
-                                self.type_parameters_from_declaration(
-                                    program_id,
-                                    method.type_parameters.as_deref(),
-                                ),
-                                parameters,
-                                return_type,
-                                type_predicate,
-                            );
-                            Some(TyProperty {
-                                name,
-                                flags: property_name_flags(&method.key),
-                                ty,
-                                computed: method.computed,
-                                optional: method.optional,
-                                method: true,
-                                readonly: false,
-                            })
-                        }
-                        _ => None,
+                            _ => None,
+                        }),
+                    type_literal.members.iter().filter_map(|member| {
+                        self.signature_from_type_literal_signature(program_id, member)
                     }),
-                type_literal.members.iter().filter_map(|member| {
-                    self.signature_from_type_literal_signature(program_id, member)
-                }),
-                type_literal
-                    .members
-                    .iter()
-                    .filter_map(|member| {
-                        let TSSignature::TSIndexSignature(index_signature) = member else {
-                            return None;
-                        };
-                        if index_signature.parameters.len() != 1 {
-                            return None;
-                        }
-                        Some(index_signature.parameters.iter().map(|index_sig_name| {
-                            IndexInfo::new(
-                                index_sig_name.name.as_str(),
-                                self.get_type_from_ts_type_annotation(
-                                    program_id,
-                                    Some(&index_sig_name.type_annotation),
-                                ),
-                                self.get_type_from_ts_type_annotation(
-                                    program_id,
-                                    Some(&index_signature.type_annotation),
-                                ),
-                                index_signature.readonly,
-                            )
-                        }))
-                    })
-                    .flatten(),
-            ),
-            TSType::TSArrayType(array) => self.ty.array(
-                self.get_type_from_ts_type(program_id, &array.element_type),
-            ),
-            TSType::TSTypeReference(reference) => {
-                self.get_type_from_ts_type_reference(program_id, reference)
-            }
-            TSType::TSTypeQuery(query) => self.get_type_from_ts_type_query(program_id, query),
-            TSType::TSParenthesizedType(parenthesized) => {
-                self.get_type_from_ts_type(program_id, &parenthesized.type_annotation)
-            }
-            TSType::TSTemplateLiteralType(template_literal) => self.get_template_literal_type(
-                program_id,
-                template_literal
-                    .quasis
-                    .iter()
-                    .map(|q| TemplateLiteralElement {
-                        value: q.value.raw.as_str(),
-                    }),
-                template_literal
-                    .types
-                    .iter()
-                    .map(|ty| self.get_type_from_ts_type(program_id, ty)),
-            ),
-            TSType::TSIntersectionType(intersection_type) => self.ty.intersection(
-                intersection_type
-                    .types
-                    .iter()
-                    .map(|ty| self.get_type_from_ts_type(program_id, ty)),
-            ),
-            TSType::TSUnionType(union_type) => self.ty.source_union(
-                union_type
-                    .types
-                    .iter()
-                    .map(|ty| self.get_type_from_ts_type(program_id, ty)),
-            ),
-            TSType::TSFunctionType(function) => {
-                let previous_hide_implicit_type_argument_display =
-                    self.hide_implicit_type_argument_display.replace(true);
-                let parameters = self.function_type_parameters(
+                    type_literal
+                        .members
+                        .iter()
+                        .filter_map(|member| {
+                            let TSSignature::TSIndexSignature(index_signature) = member else {
+                                return None;
+                            };
+                            if index_signature.parameters.len() != 1 {
+                                return None;
+                            }
+                            Some(index_signature.parameters.iter().map(|index_sig_name| {
+                                IndexInfo::new(
+                                    index_sig_name.name.as_str(),
+                                    self.get_type_from_ts_type_annotation(
+                                        program_id,
+                                        Some(&index_sig_name.type_annotation),
+                                    ),
+                                    self.get_type_from_ts_type_annotation(
+                                        program_id,
+                                        Some(&index_signature.type_annotation),
+                                    ),
+                                    index_signature.readonly,
+                                )
+                            }))
+                        })
+                        .flatten(),
+                ),
+                TSType::TSArrayType(array) => self.ty.array(
+                    self.get_type_from_ts_type(program_id, &array.element_type),
+                ),
+                TSType::TSTypeReference(reference) => {
+                    self.get_type_from_ts_type_reference(program_id, reference)
+                }
+                TSType::TSTypeQuery(query) => self.get_type_from_ts_type_query(program_id, query),
+                TSType::TSParenthesizedType(parenthesized) => {
+                    self.get_type_from_ts_type(program_id, &parenthesized.type_annotation)
+                }
+                TSType::TSTemplateLiteralType(template_literal) => self.get_template_literal_type(
                     program_id,
-                    function.this_param.as_deref(),
-                    function.params.as_ref(),
-                );
-                let (return_type, type_predicate) = self
-                    .return_type_and_type_predicate_from_annotation(
-                        program_id,
-                        &parameters,
-                        Some(&function.return_type),
-                    );
-                 self.hide_implicit_type_argument_display
-                    .set(previous_hide_implicit_type_argument_display);
-                self.ty.function_with_type_predicate(
-                    self.type_parameters_from_declaration(
-                        program_id,
-                        function.type_parameters.as_deref(),
-                    ),
-                    parameters,
-                    return_type,
-                    type_predicate,
-                )
-            }
-            TSType::TSLiteralType(literal) => match &literal.literal {
-                TSLiteral::BooleanLiteral(boolean_literal) => {
-                    self.ty.boolean_literal(boolean_literal.value)
-                }
-                TSLiteral::NumericLiteral(numeric_literal) => {
-                    self.ty.number_literal_from_ast(numeric_literal, false)
-                }
-                TSLiteral::StringLiteral(string_literal) => {
-                    self.ty.string_literal( string_literal.value.as_str())
-                }
-                TSLiteral::BigIntLiteral(bigint_literal) => {
-                    self.ty.bigint_literal(
-                        bigint_literal.value.as_str(),
-                        bigint_literal.raw,
-                        bigint_literal.base,
-                    )
-                }
-                TSLiteral::TemplateLiteral(template_literal) => {
-                    let quasis = template_literal
+                    template_literal
                         .quasis
                         .iter()
                         .map(|q| TemplateLiteralElement {
                             value: q.value.raw.as_str(),
-                        });
-                    let expressions = template_literal.expressions.iter().map(|expr| {
-                        self.get_type_of_expression_with_node(
-                            program_id,
-                            expr,
-                            None,
-                            GetTypeFlags::NONE,
-                        )
-                    });
-                    self.get_template_literal_type(program_id, quasis, expressions)
-                }
-                TSLiteral::UnaryExpression(unary_expression) => {
-                    let Expression::NumericLiteral(numeric_literal) = &unary_expression.argument
-                    else {
-                        return self.ty.none();
-                    };
-                    match unary_expression.operator {
-                        UnaryOperator::UnaryNegation => self
-                            .arena()
-                            .number_literal_from_ast(numeric_literal, true),
-                        UnaryOperator::UnaryPlus => self
-                            .arena()
-                            .number_literal_from_ast(numeric_literal, false),
-                        _ => self.ty.none(),
-                    }
-                }
-            },
-            TSType::TSTupleType(tuple_type) => self.ty.tuple_with_labels(
-                tuple_type
-                    .element_types
-                    .iter()
-                    .map(|element| {
-                        LabeledTupleElement::new(
-                            self.get_type_from_ts_tuple_element(program_id, element),
-                            Self::get_ts_tuple_element_label(element),
-                        )
-                    }),
-                TupleReadonly::Mutable,
-            ),
-            TSType::TSTypeOperatorType(operator) => match operator.operator {
-                TSTypeOperatorOperator::Keyof => self.ty.keyof(
-                    self.get_type_from_ts_type(program_id, &operator.type_annotation),
+                        }),
+                    template_literal
+                        .types
+                        .iter()
+                        .map(|ty| self.get_type_from_ts_type(program_id, ty)),
                 ),
-                TSTypeOperatorOperator::Unique
-                    if matches!(operator.type_annotation, TSType::TSSymbolKeyword(_)) =>
-                {
-                    self.ty.unique_symbol( None)
-                }
-                TSTypeOperatorOperator::Readonly => {
-                    let inner = self.get_type_from_ts_type(program_id, &operator.type_annotation);
-                    match self.ty_kind(inner) {
-                        TyKind::Array(array) => {
-                            self.ty.readonly_array( array.element_type)
-                        }
-                        TyKind::Tuple(tuple) => self.ty.tuple_with_labels(
-                            tuple.labeled_elements(),
-                            TupleReadonly::Readonly,
-                        ),
-                        _ => inner,
-                    }
-                }
-                TSTypeOperatorOperator::Unique => self.ty.none(),
-            },
-            TSType::TSIndexedAccessType(indexed_access) => {
-                let object_type =
-                    self.get_type_from_ts_type(program_id, &indexed_access.object_type);
-                let index_type = self.get_type_from_ts_type(program_id, &indexed_access.index_type);
-                let lookup_index_type = self.get_type_from_ts_type_expanding_top_level_aliases(
-                    program_id,
-                    &indexed_access.index_type,
-                );
-                match self.resolve_indexed_access_type(
-                    program_id,
-                    None,
-                    object_type,
-                    lookup_index_type,
-                ) {
-                    IndexedAccessResolution::Resolved(ty) => ty,
-                    IndexedAccessResolution::Deferred | IndexedAccessResolution::Missing => {
-                        self.ty.indexed_access( object_type, index_type)
-                    }
-                }
-            }
-            TSType::TSConditionalType(conditional) => {
-                let source_check_type =
-                    self.get_type_from_ts_type(program_id, &conditional.check_type);
-                let contains_infer = ts_type_contains_infer(&conditional.extends_type);
-                let source_extends_type =
-                    self.get_type_from_ts_type(program_id, &conditional.extends_type);
-                let match_extends_type = if contains_infer {
-                    self.get_type_from_ts_type_expanding_top_level_aliases(
+                TSType::TSIntersectionType(intersection_type) => self.ty.intersection(
+                    intersection_type
+                        .types
+                        .iter()
+                        .map(|ty| self.get_type_from_ts_type(program_id, ty)),
+                ),
+                TSType::TSUnionType(union_type) => self.ty.source_union(
+                    union_type
+                        .types
+                        .iter()
+                        .map(|ty| self.get_type_from_ts_type(program_id, ty)),
+                ),
+                TSType::TSFunctionType(function) => {
+                    let previous_hide_implicit_type_argument_display =
+                        self.hide_implicit_type_argument_display.replace(true);
+                    let parameters = self.function_type_parameters(
                         program_id,
-                        &conditional.extends_type,
-                    )
-                } else {
-                    source_extends_type
-                };
-                let match_check_type = if contains_infer {
-                    self.apparent_type_for_conditional_match(program_id, source_check_type, 0)
-                } else if matches!(
-                    self.ty_kind(source_check_type),
-                    TyKind::IndexedAccess(_)
-                ) {
-                    self.expand_type(program_id, source_check_type, 0)
-                } else {
-                    source_check_type
-                };
-                let true_type = self.get_type_from_ts_type(program_id, &conditional.true_type);
-                let false_type = self.get_type_from_ts_type(program_id, &conditional.false_type);
-                let is_distributive = matches!(
-                    conditional.check_type,
-                    TSType::TSTypeReference(ref reference) if reference.type_arguments.is_none()
-                );
-                let ty = self.conditional_type(
-                    match_check_type,
-                    match_extends_type,
-                    true_type,
-                    false_type,
-                    is_distributive,
-                );
-                if contains_infer && matches!(self.ty_kind(ty), TyKind::Conditional(_))
-                {
-                    self.arena()
-                        .alloc_type(TyKind::Conditional(self.arena().alloc(TyConditional {
-                            check_type: source_check_type,
-                            extends_type: source_extends_type,
-                            true_type,
-                            false_type,
-                            is_distributive,
-                        })))
-                } else {
-                    ty
-                }
-            }
-            TSType::TSInferType(infer) => self.ty.infer(
-                self.type_parameter_from_ts_type_parameter(program_id, &infer.type_parameter),
-            ),
-            TSType::TSMappedType(mapped) => self.get_type_from_ts_mapped_type(program_id, mapped),
-            TSType::TSTypePredicate(predicate) => type_predicate_return_type(predicate.asserts),
-            TSType::TSIntrinsicKeyword(_) => self.ty.type_reference(
-                "intrinsic",
-                std::iter::empty(),
-            ),
-            TSType::TSConstructorType(constructor) => {
-                let parameters = self.function_type_parameters(
-                    program_id,
-                    None,
-                    constructor.params.as_ref(),
-                );
-                let (return_type, type_predicate) =
-                    self.return_type_and_type_predicate_from_annotation(
-                        program_id,
-                        &parameters,
-                        Some(&constructor.return_type),
+                        function.this_param.as_deref(),
+                        function.params.as_ref(),
                     );
-                let constructor_type = self.ty.function_with_type_predicate(
-                    self.type_parameters_from_declaration(
-                        program_id,
-                        constructor.type_parameters.as_deref(),
+                    let (return_type, type_predicate) = self
+                        .return_type_and_type_predicate_from_annotation(
+                            program_id,
+                            &parameters,
+                            Some(&function.return_type),
+                        );
+                     self.hide_implicit_type_argument_display
+                        .set(previous_hide_implicit_type_argument_display);
+                    self.ty.function_with_type_predicate(
+                        self.type_parameters_from_declaration(
+                            program_id,
+                            function.type_parameters.as_deref(),
+                        ),
+                        parameters,
+                        return_type,
+                        type_predicate,
+                    )
+                }
+                TSType::TSLiteralType(literal) => match &literal.literal {
+                    TSLiteral::BooleanLiteral(boolean_literal) => {
+                        self.ty.boolean_literal(boolean_literal.value)
+                    }
+                    TSLiteral::NumericLiteral(numeric_literal) => {
+                        self.ty.number_literal_from_ast(numeric_literal, false)
+                    }
+                    TSLiteral::StringLiteral(string_literal) => {
+                        self.ty.string_literal( string_literal.value.as_str())
+                    }
+                    TSLiteral::BigIntLiteral(bigint_literal) => {
+                        self.ty.bigint_literal(
+                            bigint_literal.value.as_str(),
+                            bigint_literal.raw,
+                            bigint_literal.base,
+                        )
+                    }
+                    TSLiteral::TemplateLiteral(template_literal) => {
+                        let quasis = template_literal
+                            .quasis
+                            .iter()
+                            .map(|q| TemplateLiteralElement {
+                                value: q.value.raw.as_str(),
+                            });
+                        let expressions = template_literal.expressions.iter().map(|expr| {
+                            self.get_type_of_expression_with_node(
+                                program_id,
+                                expr,
+                                None,
+                                GetTypeFlags::NONE,
+                            )
+                        });
+                        self.get_template_literal_type(program_id, quasis, expressions)
+                    }
+                    TSLiteral::UnaryExpression(unary_expression) => {
+                        let Expression::NumericLiteral(numeric_literal) = &unary_expression.argument
+                        else {
+                            return self.ty.none();
+                        };
+                        match unary_expression.operator {
+                            UnaryOperator::UnaryNegation => self
+                                .arena()
+                                .number_literal_from_ast(numeric_literal, true),
+                            UnaryOperator::UnaryPlus => self
+                                .arena()
+                                .number_literal_from_ast(numeric_literal, false),
+                            _ => self.ty.none(),
+                        }
+                    }
+                },
+                TSType::TSTupleType(tuple_type) => self.ty.tuple_with_labels(
+                    tuple_type
+                        .element_types
+                        .iter()
+                        .map(|element| {
+                            LabeledTupleElement::new(
+                                self.get_type_from_ts_tuple_element(program_id, element),
+                                Self::get_ts_tuple_element_label(element),
+                            )
+                        }),
+                    TupleReadonly::Mutable,
+                ),
+                TSType::TSTypeOperatorType(operator) => match operator.operator {
+                    TSTypeOperatorOperator::Keyof => self.ty.keyof(
+                        self.get_type_from_ts_type(program_id, &operator.type_annotation),
                     ),
-                    parameters,
-                    return_type,
-                    type_predicate,
-                );
-                let signature = if constructor.r#abstract {
-                    Signature::abstract_construct(constructor_type)
-                } else {
-                    Signature::new(SignatureKind::Construct, constructor_type)
-                };
-                self.ty.constructor_type( signature)
+                    TSTypeOperatorOperator::Unique
+                        if matches!(operator.type_annotation, TSType::TSSymbolKeyword(_)) =>
+                    {
+                        self.ty.unique_symbol( None)
+                    }
+                    TSTypeOperatorOperator::Readonly => {
+                        let inner = self.get_type_from_ts_type(program_id, &operator.type_annotation);
+                        match self.ty_kind(inner) {
+                            TyKind::Array(array) => {
+                                self.ty.readonly_array( array.element_type)
+                            }
+                            TyKind::Tuple(tuple) => self.ty.tuple_with_labels(
+                                tuple.labeled_elements(),
+                                TupleReadonly::Readonly,
+                            ),
+                            _ => inner,
+                        }
+                    }
+                    TSTypeOperatorOperator::Unique => self.ty.none(),
+                },
+                TSType::TSIndexedAccessType(indexed_access) => {
+                    let object_type =
+                        self.get_type_from_ts_type(program_id, &indexed_access.object_type);
+                    let index_type = self.get_type_from_ts_type(program_id, &indexed_access.index_type);
+                    let lookup_index_type = self.get_type_from_ts_type_expanding_top_level_aliases(
+                        program_id,
+                        &indexed_access.index_type,
+                    );
+                    match self.resolve_indexed_access_type(
+                        program_id,
+                        None,
+                        object_type,
+                        lookup_index_type,
+                    ) {
+                        IndexedAccessResolution::Resolved(ty) => ty,
+                        IndexedAccessResolution::Deferred | IndexedAccessResolution::Missing => {
+                            self.ty.indexed_access( object_type, index_type)
+                        }
+                    }
+                }
+                TSType::TSConditionalType(conditional) => {
+                    let source_check_type =
+                        self.get_type_from_ts_type(program_id, &conditional.check_type);
+                    let contains_infer = ts_type_contains_infer(&conditional.extends_type);
+                    let source_extends_type =
+                        self.get_type_from_ts_type(program_id, &conditional.extends_type);
+                    let match_extends_type = if contains_infer {
+                        self.get_type_from_ts_type_expanding_top_level_aliases(
+                            program_id,
+                            &conditional.extends_type,
+                        )
+                    } else {
+                        source_extends_type
+                    };
+                    let match_check_type = if contains_infer {
+                        self.apparent_type_for_conditional_match(program_id, source_check_type, 0)
+                    } else if matches!(
+                        self.ty_kind(source_check_type),
+                        TyKind::IndexedAccess(_)
+                    ) {
+                        self.expand_type(program_id, source_check_type, 0)
+                    } else {
+                        source_check_type
+                    };
+                    let true_type = self.get_type_from_ts_type(program_id, &conditional.true_type);
+                    let false_type = self.get_type_from_ts_type(program_id, &conditional.false_type);
+                    let is_distributive = matches!(
+                        conditional.check_type,
+                        TSType::TSTypeReference(ref reference) if reference.type_arguments.is_none()
+                    );
+                    let ty = self.conditional_type(
+                        match_check_type,
+                        match_extends_type,
+                        true_type,
+                        false_type,
+                        is_distributive,
+                    );
+                    if contains_infer && matches!(self.ty_kind(ty), TyKind::Conditional(_))
+                    {
+                        self.arena()
+                            .alloc_type(TyKind::Conditional(self.arena().alloc(TyConditional {
+                                check_type: source_check_type,
+                                extends_type: source_extends_type,
+                                true_type,
+                                false_type,
+                                is_distributive,
+                            })))
+                    } else {
+                        ty
+                    }
+                }
+                TSType::TSInferType(infer) => self.ty.infer(
+                    self.type_parameter_from_ts_type_parameter(program_id, &infer.type_parameter),
+                ),
+                TSType::TSMappedType(mapped) => self.get_type_from_ts_mapped_type(program_id, mapped),
+                TSType::TSTypePredicate(predicate) => type_predicate_return_type(predicate.asserts),
+                TSType::TSIntrinsicKeyword(_) => self.ty.type_reference(
+                    "intrinsic",
+                    std::iter::empty(),
+                ),
+                TSType::TSConstructorType(constructor) => {
+                    let parameters = self.function_type_parameters(
+                        program_id,
+                        None,
+                        constructor.params.as_ref(),
+                    );
+                    let (return_type, type_predicate) =
+                        self.return_type_and_type_predicate_from_annotation(
+                            program_id,
+                            &parameters,
+                            Some(&constructor.return_type),
+                        );
+                    let constructor_type = self.ty.function_with_type_predicate(
+                        self.type_parameters_from_declaration(
+                            program_id,
+                            constructor.type_parameters.as_deref(),
+                        ),
+                        parameters,
+                        return_type,
+                        type_predicate,
+                    );
+                    let signature = if constructor.r#abstract {
+                        Signature::abstract_construct(constructor_type)
+                    } else {
+                        Signature::new(SignatureKind::Construct, constructor_type)
+                    };
+                    self.ty.constructor_type( signature)
+                }
+                TSType::TSImportType(import_type) => {
+                    self.get_type_from_ts_import_type(program_id, import_type)
+                }
+                TSType::TSNamedTupleMember(named) => {
+                    self.get_type_from_ts_named_tuple_member(program_id, named)
+                }
+                TSType::JSDocNullableType(_)
+                | TSType::JSDocNonNullableType(_)
+                | TSType::JSDocUnknownType(_) => {
+                    // TODO(completeness): We are not currently handling JSDoc.
+                    self.ty.error( TypeErrorKind::UnsupportedType)
+                }
             }
-            TSType::TSImportType(import_type) => {
-                self.get_type_from_ts_import_type(program_id, import_type)
-            }
-            TSType::TSNamedTupleMember(named) => {
-                self.get_type_from_ts_named_tuple_member(program_id, named)
-            }
-            TSType::JSDocNullableType(_)
-            | TSType::JSDocNonNullableType(_)
-            | TSType::JSDocUnknownType(_) => {
-                // TODO(completeness): We are not currently handling JSDoc.
-                self.ty.error( TypeErrorKind::UnsupportedType)
-            }
-        }
+        };
+        depth.set(current);
+        result
     }
 
     fn get_type_from_ts_import_type(
