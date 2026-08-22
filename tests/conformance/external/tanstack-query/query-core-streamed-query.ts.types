@@ -849,7 +849,8 @@ export function streamedQuery<
 >                ^^^^^^^^^^^^: TData   (TypeReference) (Identifier)
 
     for await (const chunk of stream) {
->                    ^^^^^: Awaited<TQueryFnData>   (TypeReference) (Identifier)
+>                    ^^^^^: any   (Any) (Identifier)
+                  expected: Awaited<TQueryFnData>
 
     for await (const chunk of stream) {
 >                             ^^^^^^: AsyncIterable<TQueryFnData>   (TypeReference) (Identifier)
@@ -870,7 +871,8 @@ export function streamedQuery<
 >                        ^^^^^^: TData   (TypeReference) (Identifier)
 
         result = reducer(result, chunk)
->                                ^^^^^: Awaited<TQueryFnData>   (TypeReference) (Identifier)
+>                                ^^^^^: any   (Any) (Identifier)
+                              expected: Awaited<TQueryFnData>
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
 >       ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
@@ -912,7 +914,8 @@ export function streamedQuery<
 >                                                         ^^^^^^^^: TData & ({} | null)   (Intersection) (Identifier)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                                                                   ^^^^^: Awaited<TQueryFnData>   (TypeReference) (Identifier)
+>                                                                   ^^^^^: any   (Any) (Identifier)
+                                                                 expected: Awaited<TQueryFnData>
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
 >          ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)

@@ -14,7 +14,7 @@
 {"path":"compiler/eslint_noMisusedSpread.ts::a.ts","start":222,"end":231,"text":"mapSpread","nodeType":"Identifier","type":{"name":"Object","display":"{ clear(): void; delete(key: string): boolean; forEach(callbackfn: (value: number, key: string, map: Map<string, number>) => void, thisArg?: any): void; get(key: string): number | undefined; has(key: string): boolean; set(key: string, value: number): Map<string, number>; size: number; [Symbol.iterator](): MapIterator<[string, number]>; entries(): MapIterator<[string, number]>; keys(): MapIterator<string>; values(): MapIterator<number>; [Symbol.toStringTag]: string; getOrInsert(key: string, defaultValue: number): number; getOrInsertComputed(key: string, callback: (key: string) => number): number; }"}}
 {"path":"compiler/eslint_noMisusedSpread.ts::a.ts","start":239,"end":242,"text":"map","nodeType":"Identifier","type":{"name":"TypeReference","display":"Map<string, number>"}}
 {"path":"compiler/eslint_noMisusedSpread.ts::a.ts","start":261,"end":269,"text":"userName","nodeType":"Identifier","type":{"name":"String","display":"string"}}
-{"path":"compiler/eslint_noMisusedSpread.ts::a.ts","start":285,"end":295,"text":"characters","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"compiler/eslint_noMisusedSpread.ts::a.ts","start":285,"end":295,"text":"characters","nodeType":"Identifier","type":{"name":"Array","display":"any[]"}}
 {"path":"compiler/eslint_noMisusedSpread.ts::a.ts","start":302,"end":310,"text":"userName","nodeType":"Identifier","type":{"name":"String","display":"string"}}
 {"path":"compiler/eslint_noMisusedSpread.ts::b.ts","start":14,"end":17,"text":"Box","nodeType":"Identifier","type":{"name":"TypeQuery","display":"typeof Box"}}
 {"path":"compiler/eslint_noMisusedSpread.ts::b.ts","start":22,"end":27,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
@@ -38,7 +38,7 @@
 {"path":"compiler/eslint_noMisusedSpread.ts::c.ts","start":200,"end":203,"text":"map","nodeType":"Identifier","type":{"name":"TypeReference","display":"Map<string, number>"}}
 {"path":"compiler/eslint_noMisusedSpread.ts::c.ts","start":205,"end":208,"text":"Map","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
 {"path":"compiler/eslint_noMisusedSpread.ts::c.ts","start":205,"end":208,"text":"Map","nodeType":"Identifier","type":{"name":"TypeReference","display":"MapConstructor"}}
-{"path":"compiler/eslint_noMisusedSpread.ts::c.ts","start":232,"end":241,"text":"mapObject","nodeType":"Identifier","type":{"name":"Object","display":"{ [k: string]: number; }"}}
+{"path":"compiler/eslint_noMisusedSpread.ts::c.ts","start":232,"end":241,"text":"mapObject","nodeType":"Identifier","type":{"name":"Object","display":"{ [k: string]: any; }"}}
 {"path":"compiler/eslint_noMisusedSpread.ts::c.ts","start":244,"end":250,"text":"Object","nodeType":"Identifier","type":{"name":"TypeReference","display":"ObjectConstructor"}}
 {"path":"compiler/eslint_noMisusedSpread.ts::c.ts","start":251,"end":262,"text":"fromEntries","nodeType":"Identifier","type":{"name":"Object","display":"{ <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }"}}
 {"path":"compiler/eslint_noMisusedSpread.ts::c.ts","start":263,"end":266,"text":"map","nodeType":"Identifier","type":{"name":"TypeReference","display":"Map<string, number>"}}

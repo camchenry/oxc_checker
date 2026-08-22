@@ -56,9 +56,9 @@
 {"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":410,"end":417,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
 {"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":430,"end":462,"text":"this.thing = await fetchThing();","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
 {"path":"compiler/eslint_noMisusedPromises.ts::c.ts","start":435,"end":440,"text":"thing","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
-{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":51,"end":56,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":51,"end":56,"text":"value","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
 {"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":75,"end":100,"text":"await doSomething(value);","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
-{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":93,"end":98,"text":"value","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
+{"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":93,"end":98,"text":"value","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
 {"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":164,"end":171,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
 {"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":164,"end":267,"text":"Promise.all(   [1, 2, 3].map(async value => {     await doSomething(value);   }), ).catch(handleError);","nodeType":"ExpressionStatement","type":{"name":"TypeReference","display":"Promise<void[]>"}}
 {"path":"compiler/eslint_noMisusedPromises.ts::d.ts","start":172,"end":175,"text":"all","nodeType":"Identifier","type":{"name":"Object","display":"{ <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }"}}

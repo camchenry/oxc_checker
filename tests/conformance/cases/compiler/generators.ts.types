@@ -2,10 +2,10 @@ function* g1() {
 >         ^^: () => Generator<1 | "foo", void, unknown>   (Function) (Identifier)
 
   yield 1
-> ^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^: any   (Error) (ExpressionStatement)
 
   yield "foo"
-> ^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
 function* g2() {
 >         ^^: () => Generator<never, string, unknown>   (Function) (Identifier)
@@ -14,7 +14,7 @@ function* g3() {
 >         ^^: () => Generator<string, void, unknown>   (Function) (Identifier)
 
   yield "foo"
-> ^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
 async function* g4() {
 >               ^^: () => AsyncGenerator<string, "bar" | undefined, unknown>   (Function) (Identifier)
@@ -26,13 +26,13 @@ async function* g4() {
 >          ^^^^^^: () => number   (Function) (Identifier)
 
   yield "foo"
-> ^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
 async function* g5() {
 >               ^^: () => AsyncGenerator<"foo" | 1 | 3, string, unknown>   (Function) (Identifier)
 
   yield "foo"
-> ^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
 > ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (Unknown) (ExpressionStatement)
@@ -50,7 +50,7 @@ async function* g5() {
 >                                         ^^^^^^^: (value: unknown) => void   (Function) (Identifier)
 
   yield 1
-> ^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^: any   (Error) (ExpressionStatement)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
 > ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (Unknown) (ExpressionStatement)
@@ -68,13 +68,13 @@ async function* g5() {
 >                                         ^^^^^^^: (value: unknown) => void   (Function) (Identifier)
 
   yield 3
-> ^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^: any   (Error) (ExpressionStatement)
 
 async function* g6() {
 >               ^^: () => AsyncGenerator<"foo" | 1 | 2 | 3, "err" | "bar", unknown>   (Function) (Identifier)
 
   yield "foo"
-> ^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
   await new Promise(resolve => setTimeout(resolve, 1000))
 > ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (Unknown) (ExpressionStatement)
@@ -92,10 +92,10 @@ async function* g6() {
 >                                         ^^^^^^^: (value: unknown) => void   (Function) (Identifier)
 
   yield 1
-> ^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^: any   (Error) (ExpressionStatement)
 
     yield 2
->   ^^^^^^^: any   (Any) (ExpressionStatement)
+>   ^^^^^^^: any   (Error) (ExpressionStatement)
 
   } catch (e) {
 >          ^: unknown   (Unknown) (Identifier)
@@ -113,4 +113,4 @@ async function* g6() {
 >                 ^: unknown   (Unknown) (Identifier)
 
   yield 3
-> ^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^: any   (Error) (ExpressionStatement)

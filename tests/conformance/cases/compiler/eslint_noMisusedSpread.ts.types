@@ -47,7 +47,8 @@ declare const userName: string;
 >             ^^^^^^^^: string   (String) (Identifier)
 
 const characters = [...userName];
->     ^^^^^^^^^^: string[]   (Array) (Identifier)
+>     ^^^^^^^^^^: any[]   (Array) (Identifier)
+        expected: string[]
 
 const characters = [...userName];
 >                      ^^^^^^^^: string   (String) (Identifier)
@@ -119,7 +120,8 @@ declare const map: Map<string, number>;
 >                  ^^^: MapConstructor   (TypeReference) (Identifier)
 
 const mapObject = Object.fromEntries(map);
->     ^^^^^^^^^: { [k: string]: number; }   (Object) (Identifier)
+>     ^^^^^^^^^: { [k: string]: any; }   (Object) (Identifier)
+       expected: { [k: string]: number; }
 
 const mapObject = Object.fromEntries(map);
 >                 ^^^^^^: ObjectConstructor   (TypeReference) (Identifier)

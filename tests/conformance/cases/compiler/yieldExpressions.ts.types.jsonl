@@ -1,20 +1,20 @@
 {"path":"compiler/yieldExpressions.ts","start":11,"end":26,"text":"_innerGenerator","nodeType":"Identifier","type":{"name":"Function","display":"() => Generator<number, \"inner\", boolean>"}}
 {"path":"compiler/yieldExpressions.ts","start":30,"end":39,"text":"Generator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
 {"path":"compiler/yieldExpressions.ts","start":30,"end":39,"text":"Generator","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
-{"path":"compiler/yieldExpressions.ts","start":76,"end":82,"text":"_input","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"compiler/yieldExpressions.ts","start":76,"end":82,"text":"_input","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
 {"path":"compiler/yieldExpressions.ts","start":125,"end":140,"text":"_typedGenerator","nodeType":"Identifier","type":{"name":"Function","display":"() => Generator<number, string, boolean>"}}
 {"path":"compiler/yieldExpressions.ts","start":144,"end":153,"text":"Generator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
 {"path":"compiler/yieldExpressions.ts","start":144,"end":153,"text":"Generator","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
-{"path":"compiler/yieldExpressions.ts","start":189,"end":195,"text":"_input","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
-{"path":"compiler/yieldExpressions.ts","start":215,"end":225,"text":"_bareInput","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
-{"path":"compiler/yieldExpressions.ts","start":243,"end":259,"text":"_delegatedReturn","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"inner\""}}
+{"path":"compiler/yieldExpressions.ts","start":189,"end":195,"text":"_input","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/yieldExpressions.ts","start":215,"end":225,"text":"_bareInput","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
+{"path":"compiler/yieldExpressions.ts","start":243,"end":259,"text":"_delegatedReturn","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
 {"path":"compiler/yieldExpressions.ts","start":269,"end":284,"text":"_innerGenerator","nodeType":"Identifier","type":{"name":"Function","display":"() => Generator<number, \"inner\", boolean>"}}
-{"path":"compiler/yieldExpressions.ts","start":296,"end":308,"text":"_arrayReturn","nodeType":"Identifier","type":{"name":"Undefined","display":"undefined"}}
+{"path":"compiler/yieldExpressions.ts","start":296,"end":308,"text":"_arrayReturn","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
 {"path":"compiler/yieldExpressions.ts","start":362,"end":377,"text":"_asyncGenerator","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncGenerator<string, void, Date>"}}
 {"path":"compiler/yieldExpressions.ts","start":381,"end":395,"text":"AsyncGenerator","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
 {"path":"compiler/yieldExpressions.ts","start":381,"end":395,"text":"AsyncGenerator","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
 {"path":"compiler/yieldExpressions.ts","start":410,"end":414,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
 {"path":"compiler/yieldExpressions.ts","start":410,"end":414,"text":"Date","nodeType":"Identifier","type":{"name":"TypeReference","display":"DateConstructor"}}
-{"path":"compiler/yieldExpressions.ts","start":426,"end":432,"text":"_input","nodeType":"Identifier","type":{"name":"TypeReference","display":"Date"}}
+{"path":"compiler/yieldExpressions.ts","start":426,"end":432,"text":"_input","nodeType":"Identifier","type":{"name":"Error","display":"any"}}
 {"path":"compiler/yieldExpressions.ts","start":473,"end":490,"text":"_untypedGenerator","nodeType":"Identifier","type":{"name":"Function","display":"() => Generator<number, void, unknown>"}}
-{"path":"compiler/yieldExpressions.ts","start":503,"end":509,"text":"_input","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/yieldExpressions.ts","start":503,"end":509,"text":"_input","nodeType":"Identifier","type":{"name":"Error","display":"any"}}

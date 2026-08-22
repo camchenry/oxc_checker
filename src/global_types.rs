@@ -23,7 +23,6 @@ const NUMBER_TYPE_NAME: &str = "Number";
 const SYMBOL_TYPE_NAME: &str = "Symbol";
 const BIGINT_TYPE_NAME: &str = "BigInt";
 const REGEXP_TYPE_NAME: &str = "RegExp";
-const AWAITED_TYPE_NAME: &str = "Awaited";
 const NON_NULLABLE_TYPE_NAME: &str = "NonNullable";
 const EXTRACT_TYPE_NAME: &str = "Extract";
 const RECORD_TYPE_NAME: &str = "Record";
@@ -353,14 +352,6 @@ impl<'a, 'store> Checker<'a, 'store> {
 
     pub(crate) fn get_global_promise_type(&self, program_id: ProgramId) -> Ty<'a> {
         self.expect_global_type_reference(program_id, "Promise", std::iter::empty())
-    }
-
-    pub(crate) fn get_global_awaited_type(
-        &self,
-        program_id: ProgramId,
-        awaited_type: Ty<'a>,
-    ) -> Ty<'a> {
-        self.expect_global_type_reference(program_id, AWAITED_TYPE_NAME, [awaited_type])
     }
 
     pub(crate) fn get_global_non_nullable_type(

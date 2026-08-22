@@ -38,40 +38,46 @@ async function useStream<TQueryFnData>(
 >                      ^^^^^^^^: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (Function) (Identifier)
 
   for await (const chunk of stream) {
->                  ^^^^^: Awaited<TQueryFnData>   (TypeReference) (Identifier)
+>                  ^^^^^: any   (Any) (Identifier)
+                expected: Awaited<TQueryFnData>
 
   for await (const chunk of stream) {
 >                           ^^^^^^: AsyncIterable<TQueryFnData>   (TypeReference) (Identifier)
 
     chunk;
->   ^^^^^: Awaited<TQueryFnData>   (TypeReference) (Identifier)
+>   ^^^^^: any   (Any) (Identifier)
+ expected: Awaited<TQueryFnData>
 
     chunk;
->   ^^^^^^: Awaited<TQueryFnData>   (TypeReference) (ExpressionStatement)
+>   ^^^^^^: any   (Any) (ExpressionStatement)
+  expected: Awaited<TQueryFnData>
 
 async function* asyncGeneratorValues() {
 >               ^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (Function) (Identifier)
 
   yield 1;
-> ^^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^^: any   (Error) (ExpressionStatement)
 
   yield 2;
-> ^^^^^^^^: any   (Any) (ExpressionStatement)
+> ^^^^^^^^: any   (Error) (ExpressionStatement)
 
 async function consumeGenerator() {
 >              ^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)
 
   for await (const generatedValue of asyncGeneratorValues()) {
->                  ^^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
+>                  ^^^^^^^^^^^^^^: any   (Any) (Identifier)
+                         expected: 1 | 2
 
   for await (const generatedValue of asyncGeneratorValues()) {
 >                                    ^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (Function) (Identifier)
 
     generatedValue;
->   ^^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
+>   ^^^^^^^^^^^^^^: any   (Any) (Identifier)
+          expected: 1 | 2
 
     generatedValue;
->   ^^^^^^^^^^^^^^^: 1 | 2   (Union) (ExpressionStatement)
+>   ^^^^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+           expected: 1 | 2
 
 interface TextAsyncIterator {
 >         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -125,16 +131,19 @@ async function consumeStructuralStream() {
 >              ^^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)
 
   for await (const structuralChunk of structuralStream) {
->                  ^^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (Identifier)
+>                  ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+                          expected: "chunk"
 
   for await (const structuralChunk of structuralStream) {
 >                                     ^^^^^^^^^^^^^^^^: StructuralTextStream   (TypeReference) (Identifier)
 
     structuralChunk;
->   ^^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (Identifier)
+>   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+           expected: "chunk"
 
     structuralChunk;
->   ^^^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (ExpressionStatement)
+>   ^^^^^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+            expected: "chunk"
 
 interface InheritedTextStream extends AsyncIterable<"chunk"> {}
 >         ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -161,13 +170,16 @@ async function consumeInheritedStream() {
 >              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)
 
   for await (const inheritedChunk of inheritedStream) {
->                  ^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (Identifier)
+>                  ^^^^^^^^^^^^^^: any   (Any) (Identifier)
+                         expected: "chunk"
 
   for await (const inheritedChunk of inheritedStream) {
 >                                    ^^^^^^^^^^^^^^^: InheritedTextStream   (TypeReference) (Identifier)
 
     inheritedChunk;
->   ^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (Identifier)
+>   ^^^^^^^^^^^^^^: any   (Any) (Identifier)
+          expected: "chunk"
 
     inheritedChunk;
->   ^^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (ExpressionStatement)
+>   ^^^^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+           expected: "chunk"

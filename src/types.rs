@@ -1851,9 +1851,7 @@ impl<'a> CheckerArena<'a> {
         self.interned_types.errors.borrow_mut().insert(kind, ty);
         ty
     }
-}
 
-impl<'a> CheckerArena<'a> {
     pub fn object(self, properties: impl IntoIterator<Item = TyProperty<'a>>) -> Ty<'a> {
         self.object_with_signatures_and_index_infos(
             properties,

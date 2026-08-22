@@ -1,2 +1,3 @@
 target
 tests/conformance/node_modules
+tests/conformance/tsc-types/typescript_tsc_types.jsonl

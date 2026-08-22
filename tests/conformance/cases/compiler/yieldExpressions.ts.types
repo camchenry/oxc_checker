@@ -8,7 +8,8 @@ function* _innerGenerator(): Generator<number, "inner", boolean> {
 >                            ^^^^^^^^^: any   (Error) (Identifier)
 
   const _input = yield 0;
->       ^^^^^^: boolean   (Boolean) (Identifier)
+>       ^^^^^^: any   (Error) (Identifier)
+      expected: boolean
 
 function* _typedGenerator(): Generator<number, string, boolean> {
 >         ^^^^^^^^^^^^^^^: () => Generator<number, string, boolean>   (Function) (Identifier)
@@ -20,19 +21,23 @@ function* _typedGenerator(): Generator<number, string, boolean> {
 >                            ^^^^^^^^^: any   (Error) (Identifier)
 
   const _input = yield 1;
->       ^^^^^^: boolean   (Boolean) (Identifier)
+>       ^^^^^^: any   (Error) (Identifier)
+      expected: boolean
 
   const _bareInput = yield;
->       ^^^^^^^^^^: boolean   (Boolean) (Identifier)
+>       ^^^^^^^^^^: any   (Error) (Identifier)
+          expected: boolean
 
   const _delegatedReturn = yield* _innerGenerator();
->       ^^^^^^^^^^^^^^^^: "inner"   (StringLiteral) (Identifier)
+>       ^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
+                expected: "inner"
 
   const _delegatedReturn = yield* _innerGenerator();
 >                                 ^^^^^^^^^^^^^^^: () => Generator<number, "inner", boolean>   (Function) (Identifier)
 
   const _arrayReturn = yield* [1, 2];
->       ^^^^^^^^^^^^: undefined   (Undefined) (Identifier)
+>       ^^^^^^^^^^^^: any   (Error) (Identifier)
+            expected: undefined
 
 async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
 >               ^^^^^^^^^^^^^^^: () => AsyncGenerator<string, void, Date>   (Function) (Identifier)
@@ -50,10 +55,11 @@ async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
 >                                                               ^^^^: DateConstructor   (TypeReference) (Identifier)
 
   const _input = yield "value";
->       ^^^^^^: Date   (TypeReference) (Identifier)
+>       ^^^^^^: any   (Error) (Identifier)
+      expected: Date
 
 function* _untypedGenerator() {
 >         ^^^^^^^^^^^^^^^^^: () => Generator<number, void, unknown>   (Function) (Identifier)
 
   const _input = yield 1;
->       ^^^^^^: any   (Any) (Identifier)
+>       ^^^^^^: any   (Error) (Identifier)

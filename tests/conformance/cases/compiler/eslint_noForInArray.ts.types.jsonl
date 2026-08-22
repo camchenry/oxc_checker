@@ -15,12 +15,12 @@
 {"path":"compiler/eslint_noForInArray.ts::a.ts","start":127,"end":132,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
 {"path":"compiler/eslint_noForInArray.ts::a.ts","start":133,"end":134,"text":"i","nodeType":"Identifier","type":{"name":"String","display":"string"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":14,"end":19,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
-{"path":"compiler/eslint_noForInArray.ts::b.ts","start":43,"end":48,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":43,"end":48,"text":"value","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":52,"end":57,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":63,"end":70,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":63,"end":82,"text":"console.log(value);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":71,"end":74,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
-{"path":"compiler/eslint_noForInArray.ts::b.ts","start":75,"end":80,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":75,"end":80,"text":"value","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":95,"end":96,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":102,"end":103,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":106,"end":111,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
@@ -42,12 +42,12 @@
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":201,"end":204,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":205,"end":206,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":208,"end":213,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
-{"path":"compiler/eslint_noForInArray.ts::b.ts","start":233,"end":234,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
-{"path":"compiler/eslint_noForInArray.ts::b.ts","start":236,"end":241,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":233,"end":234,"text":"i","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":236,"end":241,"text":"value","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":246,"end":251,"text":"array","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":252,"end":259,"text":"entries","nodeType":"Identifier","type":{"name":"Function","display":"() => ArrayIterator<[number, string]>"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":267,"end":274,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":267,"end":289,"text":"console.log(i, value);","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
 {"path":"compiler/eslint_noForInArray.ts::b.ts","start":275,"end":278,"text":"log","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
-{"path":"compiler/eslint_noForInArray.ts::b.ts","start":279,"end":280,"text":"i","nodeType":"Identifier","type":{"name":"Number","display":"number"}}
-{"path":"compiler/eslint_noForInArray.ts::b.ts","start":282,"end":287,"text":"value","nodeType":"Identifier","type":{"name":"String","display":"string"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":279,"end":280,"text":"i","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
+{"path":"compiler/eslint_noForInArray.ts::b.ts","start":282,"end":287,"text":"value","nodeType":"Identifier","type":{"name":"Any","display":"any"}}

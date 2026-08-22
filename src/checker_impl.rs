@@ -18,7 +18,6 @@ use oxc_ast::{
         TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
         TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
         TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
-        YieldExpression,
     },
 };
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
@@ -53,7 +52,7 @@ use crate::{
         CheckerArena, IndexInfo, LabeledTupleElement, MappedModifier, Signature, SignatureKind,
         TupleElement, TupleReadonly, Ty, TyFunction, TyKind, TyMapped, TyObject, TyParameter,
         TyProperty, TyPropertyFlags, TyTypeParameter, TyTypePredicate, TyTypeQuery,
-        TyTypeReference, TypeErrorKind, TypeId, binding_pattern_to_parameter_name,
+        TyTypeReference, TypeErrorKind, binding_pattern_to_parameter_name,
         function_maximum_argument_count, function_minimum_argument_count,
         function_parameter_type_at_call_index, property_name_flags,
         return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
@@ -72,86 +71,6 @@ fn array_expression_element_span(element: &ArrayExpressionElement<'_>) -> Option
 pub const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 
 const GLOBAL_THIS_IDENT: Ident = static_ident!("globalThis");
-const SYMBOL_ITERATOR_PROPERTY_NAME: &str = "Symbol.iterator";
-const SYMBOL_ASYNC_ITERATOR_PROPERTY_NAME: &str = "Symbol.asyncIterator";
-
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-enum IterationResolverKind {
-    Sync,
-    Async,
-}
-
-impl IterationResolverKind {
-    fn property_name(self) -> &'static str {
-        match self {
-            Self::Sync => SYMBOL_ITERATOR_PROPERTY_NAME,
-            Self::Async => SYMBOL_ASYNC_ITERATOR_PROPERTY_NAME,
-        }
-    }
-}
-
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-enum IterationInterfaceResolutionKind {
-    IterableProperty,
-    Iterator,
-}
-
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-struct IterationInterfaceResolution {
-    kind: IterationInterfaceResolutionKind,
-    resolver: IterationResolverKind,
-    symbol: SymbolRef,
-    type_arguments: Vec<TypeId>,
-}
-
-impl IterationInterfaceResolution {
-    fn new(
-        kind: IterationInterfaceResolutionKind,
-        resolver: IterationResolverKind,
-        symbol: SymbolRef,
-        reference: &TyTypeReference<'_>,
-    ) -> Self {
-        Self {
-            kind,
-            resolver,
-            symbol,
-            type_arguments: reference.type_arguments.iter().map(|ty| ty.id()).collect(),
-        }
-    }
-}
-
-#[derive(Default)]
-struct IterationResolutionContext {
-    active_interfaces: FxHashSet<IterationInterfaceResolution>,
-}
-
-#[derive(Clone, Copy, Debug, Default)]
-struct IterationTypes<'a> {
-    yield_type: Option<Ty<'a>>,
-    return_type: Option<Ty<'a>>,
-    next_type: Option<Ty<'a>>,
-}
-
-impl IterationTypes<'_> {
-    fn has_types(self) -> bool {
-        self.yield_type.is_some() || self.return_type.is_some() || self.next_type.is_some()
-    }
-}
-
-#[derive(Clone, Copy, Debug)]
-struct IteratorResultStates {
-    can_yield: bool,
-    can_return: bool,
-}
-
-impl IteratorResultStates {
-    fn union(self, other: Self) -> Self {
-        Self {
-            can_yield: self.can_yield || other.can_yield,
-            can_return: self.can_return || other.can_return,
-        }
-    }
-}
 
 #[derive(Debug, Clone, Copy)]
 pub(crate) enum FunctionKind<'a> {
@@ -1297,8 +1216,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     _ => self.ty.number(),
                 }
             }
-            AstKind::YieldExpression(yield_expression) => {
-                self.get_type_of_yield_expression(program_id, yield_expression)
+            AstKind::YieldExpression(_) => {
+                // TODO: Implement yield expression support.
+                self.ty.error(TypeErrorKind::UnsupportedType)
             }
             AstKind::PrivateInExpression(_) => self.ty.boolean(),
             // TODO(correctness): Handle all of these cases.
@@ -9721,22 +9641,14 @@ impl<'a, 'store> Checker<'a, 'store> {
                     node_id,
                     context,
                 );
-                let mut resolution_context = IterationResolutionContext::default();
-                self.get_iteration_types_of_iterable(
-                    program_id,
-                    argument_type,
-                    IterationResolverKind::Sync,
-                    0,
-                    &mut resolution_context,
-                )
-                .yield_type
-                .or_else(|| argument_type.array_element_type(self.arena()))
-                .or_else(|| {
-                    argument_type
-                        .is_any_like(self.arena())
-                        .then_some(argument_type)
-                })
-                .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnsupportedType))
+                argument_type
+                    .array_element_type(self.arena())
+                    .or_else(|| {
+                        argument_type
+                            .is_any_like(self.arena())
+                            .then_some(argument_type)
+                    })
+                    .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnsupportedType))
             }
             ArrayExpressionElement::Elision(_) => self.ty.any(),
             _ => self.check_expression_with_context(
@@ -10447,22 +10359,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                     }
                     return Some(self.ty.string());
                 }
-                AstKind::ForOfStatement(for_of)
-                    if for_statement_left_contains_declarator(&for_of.left, declarator) =>
-                {
-                    let iterable_type = self.get_type_of_expression_with_node(
-                        program_id,
-                        &for_of.right,
-                        Some(ancestor_id),
-                        GetTypeFlags::NONE,
-                    );
-                    return self.get_iteration_element_type(
-                        program_id,
-                        ancestor_id,
-                        iterable_type,
-                        for_of.r#await,
-                    );
-                }
                 _ => {}
             }
         }
@@ -10915,60 +10811,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.get_awaited_type(program_id, ty)
     }
 
-    fn get_type_of_yield_expression(
-        &self,
-        program_id: ProgramId,
-        yield_expression: &'a YieldExpression<'a>,
-    ) -> Ty<'a> {
-        let Some(function) = self
-            .nodes(program_id)
-            .ancestors(yield_expression.node_id.get())
-            .find_map(|node| match node.kind() {
-                AstKind::Function(function) if function.generator => Some(function),
-                _ => None,
-            })
-        else {
-            return self.ty.error(TypeErrorKind::UnsupportedType);
-        };
-        let resolver = if function.r#async {
-            IterationResolverKind::Async
-        } else {
-            IterationResolverKind::Sync
-        };
-
-        if yield_expression.delegate {
-            let Some(argument) = yield_expression.argument.as_ref() else {
-                return self.ty.error(TypeErrorKind::UnsupportedType);
-            };
-            let argument_type = self.get_type_of_expression_with_node(
-                program_id,
-                argument,
-                None,
-                GetTypeFlags::NONE,
-            );
-            let mut context = IterationResolutionContext::default();
-            return self
-                .get_iteration_types_of_iterable(
-                    program_id,
-                    argument_type,
-                    resolver,
-                    0,
-                    &mut context,
-                )
-                .return_type
-                .unwrap_or_else(|| self.ty.undefined());
-        }
-
-        let Some(annotation) = function.return_type.as_deref() else {
-            return self.ty.any();
-        };
-        let return_type = self.get_type_from_ts_type_annotation(program_id, Some(annotation));
-        let mut context = IterationResolutionContext::default();
-        self.get_iteration_types_of_iterator(program_id, return_type, resolver, 0, &mut context)
-            .next_type
-            .unwrap_or_else(|| self.ty.any())
-    }
-
     fn get_awaited_type(&self, program_id: ProgramId, ty: Ty<'a>) -> Ty<'a> {
         match self.ty_kind(ty) {
             TyKind::Union(union) => self.ty.union(
@@ -11072,69 +10914,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         Some(member.property.name.as_str())
     }
 
-    // TODO(refactor)
-    fn well_known_symbol_property_name(
-        &self,
-        program_id: ProgramId,
-        key: &'a PropertyKey<'a>,
-    ) -> Option<&'static str> {
-        match self.global_symbol_property_name(program_id, key)? {
-            "iterator" => Some(SYMBOL_ITERATOR_PROPERTY_NAME),
-            "asyncIterator" => Some(SYMBOL_ASYNC_ITERATOR_PROPERTY_NAME),
-            _ => None,
-        }
-    }
-
-    // TODO(refactor): I think all of the this iteration resolution code needs a refactor. It seems a bit too
-    // specific/complex compared to what it could be.
-    fn get_iteration_element_type(
-        &self,
-        program_id: ProgramId,
-        node_id: NodeId,
-        iterable_type: Ty<'a>,
-        is_await: bool,
-    ) -> Option<Ty<'a>> {
-        let mut context = IterationResolutionContext::default();
-        let mut iteration_types = if is_await {
-            let async_types = self.get_iteration_types_of_iterable(
-                program_id,
-                iterable_type,
-                IterationResolverKind::Async,
-                0,
-                &mut context,
-            );
-            if async_types.has_types() {
-                async_types
-            } else {
-                self.get_iteration_types_of_iterable(
-                    program_id,
-                    iterable_type,
-                    IterationResolverKind::Sync,
-                    0,
-                    &mut context,
-                )
-            }
-        } else {
-            self.get_iteration_types_of_iterable(
-                program_id,
-                iterable_type,
-                IterationResolverKind::Sync,
-                0,
-                &mut context,
-            )
-        };
-
-        if is_await {
-            iteration_types.yield_type = iteration_types
-                .yield_type
-                .map(|ty| self.get_for_of_element_type(program_id, node_id, ty, true));
-            iteration_types.return_type = iteration_types
-                .return_type
-                .map(|ty| self.get_for_of_element_type(program_id, node_id, ty, true));
-        }
-        iteration_types.yield_type
-    }
-
     pub(crate) fn get_inference_argument_type(
         &self,
         program_id: ProgramId,
@@ -11158,494 +10937,9 @@ impl<'a, 'store> Checker<'a, 'store> {
             return argument_type;
         }
 
-        let mut context = IterationResolutionContext::default();
-        let iteration_types = self.get_iteration_types_of_iterable(
-            program_id,
-            argument_type,
-            IterationResolverKind::Sync,
-            0,
-            &mut context,
-        );
-        let Some(element_type) = iteration_types.yield_type else {
-            return argument_type;
-        };
-
-        self.ty.type_reference(reference.name, [element_type])
+        // TODO(correctness): type args
+        self.ty.type_reference(reference.name, [])
     }
-
-    fn get_iteration_types_of_iterable(
-        &self,
-        program_id: ProgramId,
-        iterable_type: Ty<'a>,
-        resolver: IterationResolverKind,
-        depth: usize,
-        context: &mut IterationResolutionContext,
-    ) -> IterationTypes<'a> {
-        if depth >= TYPE_EXPANSION_MAX_DEPTH {
-            return IterationTypes::default();
-        }
-
-        match self.ty_kind(iterable_type) {
-            TyKind::Any => IterationTypes {
-                yield_type: Some(self.ty.any()),
-                return_type: Some(self.ty.any()),
-                next_type: Some(self.ty.any()),
-            },
-            TyKind::Error(_) => IterationTypes {
-                yield_type: Some(iterable_type),
-                return_type: Some(iterable_type),
-                next_type: Some(iterable_type),
-            },
-            TyKind::Union(union) => self.combine_iteration_types(union.types.iter().map(|ty| {
-                self.get_iteration_types_of_iterable(program_id, *ty, resolver, depth + 1, context)
-            })),
-            TyKind::Array(array) if resolver == IterationResolverKind::Sync => IterationTypes {
-                yield_type: Some(array.element_type),
-                ..IterationTypes::default()
-            },
-            TyKind::Tuple(tuple) if resolver == IterationResolverKind::Sync => IterationTypes {
-                yield_type: Some(
-                    self.ty
-                        .union(tuple.elements.iter().map(super::types::TupleElement::ty)),
-                ),
-                ..IterationTypes::default()
-            },
-            _ if iterable_type.is_string_like(self.arena())
-                && resolver == IterationResolverKind::Sync =>
-            {
-                IterationTypes {
-                    yield_type: Some(self.ty.string()),
-                    ..IterationTypes::default()
-                }
-            }
-            _ => self.get_iteration_types_of_iterable_slow(
-                program_id,
-                iterable_type,
-                resolver,
-                depth + 1,
-                context,
-            ),
-        }
-    }
-
-    fn get_iteration_types_of_iterable_slow(
-        &self,
-        program_id: ProgramId,
-        iterable_type: Ty<'a>,
-        resolver: IterationResolverKind,
-        depth: usize,
-        context: &mut IterationResolutionContext,
-    ) -> IterationTypes<'a> {
-        let Some(method_type) = self.get_well_known_symbol_property_type(
-            program_id,
-            iterable_type,
-            resolver,
-            depth + 1,
-            context,
-        ) else {
-            return IterationTypes::default();
-        };
-
-        let iteration_types = self
-            .get_signatures_of_type_in_program(program_id, method_type, SignatureKind::Call)
-            .into_iter()
-            .filter(|signature| {
-                function_minimum_argument_count(self.arena(), signature.function(self.arena())) == 0
-            })
-            .map(|signature| {
-                self.get_iteration_types_of_iterator(
-                    program_id,
-                    signature.function(self.arena()).return_type,
-                    resolver,
-                    depth + 1,
-                    context,
-                )
-            });
-        self.combine_iteration_types(iteration_types)
-    }
-
-    fn get_iteration_types_of_iterator(
-        &self,
-        program_id: ProgramId,
-        iterator_type: Ty<'a>,
-        resolver: IterationResolverKind,
-        depth: usize,
-        context: &mut IterationResolutionContext,
-    ) -> IterationTypes<'a> {
-        if depth >= TYPE_EXPANSION_MAX_DEPTH {
-            return IterationTypes::default();
-        }
-
-        let active_interface = if let TyKind::TypeReference(reference) = self.ty_kind(iterator_type)
-        {
-            self.get_type_reference_symbol_and_declaration(program_id, reference)
-                .map(|(symbol, _)| {
-                    IterationInterfaceResolution::new(
-                        IterationInterfaceResolutionKind::Iterator,
-                        resolver,
-                        symbol,
-                        reference,
-                    )
-                })
-        } else {
-            None
-        };
-        if let Some(active_interface) = &active_interface
-            && !context.active_interfaces.insert(active_interface.clone())
-        {
-            return IterationTypes::default();
-        }
-
-        let iteration_types = self.get_iteration_types_of_iterator_worker(
-            program_id,
-            iterator_type,
-            resolver,
-            depth,
-            context,
-        );
-        if let Some(active_interface) = &active_interface {
-            context.active_interfaces.remove(active_interface);
-        }
-        iteration_types
-    }
-
-    fn get_iteration_types_of_iterator_worker(
-        &self,
-        program_id: ProgramId,
-        iterator_type: Ty<'a>,
-        resolver: IterationResolverKind,
-        depth: usize,
-        context: &mut IterationResolutionContext,
-    ) -> IterationTypes<'a> {
-        let Some(next_type) =
-            self.get_property_type_for_indexed_access(program_id, iterator_type, "next")
-        else {
-            let TyKind::TypeReference(reference) = self.ty_kind(iterator_type) else {
-                return IterationTypes::default();
-            };
-            return self.combine_iteration_types(
-                self.get_interface_heritage_types(program_id, reference)
-                    .into_iter()
-                    .map(|(heritage_program_id, heritage_type)| {
-                        self.get_iteration_types_of_iterator(
-                            heritage_program_id,
-                            heritage_type,
-                            resolver,
-                            depth + 1,
-                            context,
-                        )
-                    }),
-            );
-        };
-        let mut next_types = UnionAccumulator::new(self.arena());
-        let mut result_types = Vec::new();
-        for signature in
-            self.get_signatures_of_type_in_program(program_id, next_type, SignatureKind::Call)
-        {
-            if let Some(next_type) = function_parameter_type_at_call_index(
-                self.arena(),
-                signature.function(self.arena()),
-                0,
-            ) {
-                next_types.add(next_type);
-            }
-            let mut result_type = signature.function(self.arena()).return_type;
-            if resolver == IterationResolverKind::Async {
-                result_type = self.get_awaited_type(program_id, result_type);
-            }
-            result_types.push(self.get_iteration_types_of_iterator_result(
-                program_id,
-                result_type,
-                depth + 1,
-            ));
-        }
-        let mut iteration_types = self.combine_iteration_types(result_types);
-        iteration_types.next_type =
-            Some(next_types.try_build().unwrap_or_else(|| self.ty.unknown()));
-        iteration_types
-    }
-
-    fn get_iteration_types_of_iterator_result(
-        &self,
-        program_id: ProgramId,
-        result_type: Ty<'a>,
-        depth: usize,
-    ) -> IterationTypes<'a> {
-        if depth >= TYPE_EXPANSION_MAX_DEPTH {
-            return IterationTypes::default();
-        }
-        match self.ty_kind(result_type) {
-            TyKind::Any => IterationTypes {
-                yield_type: Some(self.ty.any()),
-                return_type: Some(self.ty.any()),
-                next_type: None,
-            },
-            TyKind::Error(_) => IterationTypes {
-                yield_type: Some(result_type),
-                return_type: Some(result_type),
-                next_type: None,
-            },
-            TyKind::Union(union) => {
-                self.combine_iteration_types(union.types.iter().map(|ty| {
-                    self.get_iteration_types_of_iterator_result(program_id, *ty, depth + 1)
-                }))
-            }
-            TyKind::TypeReference(_) => {
-                if let Some((expanded_program_id, expanded)) =
-                    self.get_expanded_type_alias_reference_type(program_id, result_type, depth + 1)
-                    && expanded != result_type
-                {
-                    return self.get_iteration_types_of_iterator_result(
-                        expanded_program_id,
-                        expanded,
-                        depth + 1,
-                    );
-                }
-                self.get_structural_iteration_types_of_iterator_result(program_id, result_type)
-            }
-            TyKind::Object(_) | TyKind::Intersection(_) => {
-                self.get_structural_iteration_types_of_iterator_result(program_id, result_type)
-            }
-            _ => IterationTypes::default(),
-        }
-    }
-
-    fn get_structural_iteration_types_of_iterator_result(
-        &self,
-        program_id: ProgramId,
-        result_type: Ty<'a>,
-    ) -> IterationTypes<'a> {
-        let done_type = self.get_property_type_for_indexed_access(program_id, result_type, "done");
-        let value_type = self
-            .get_property_type_for_indexed_access(program_id, result_type, "value")
-            .unwrap_or_else(|| self.ty.any());
-        let states = done_type.map_or(
-            IteratorResultStates {
-                can_yield: true,
-                can_return: false,
-            },
-            |done_type| self.iterator_result_done_states(done_type),
-        );
-        IterationTypes {
-            yield_type: states.can_yield.then_some(value_type),
-            return_type: states.can_return.then_some(value_type),
-            next_type: None,
-        }
-    }
-
-    fn iterator_result_done_states(&self, done_type: Ty<'a>) -> IteratorResultStates {
-        match self.ty_kind(done_type) {
-            TyKind::BooleanLiteral(false) | TyKind::Undefined => IteratorResultStates {
-                can_yield: true,
-                can_return: false,
-            },
-            TyKind::BooleanLiteral(true) => IteratorResultStates {
-                can_yield: false,
-                can_return: true,
-            },
-            TyKind::Union(union) => union.types.iter().fold(
-                IteratorResultStates {
-                    can_yield: false,
-                    can_return: false,
-                },
-                |states, ty| states.union(self.iterator_result_done_states(*ty)),
-            ),
-            TyKind::Never => IteratorResultStates {
-                can_yield: false,
-                can_return: false,
-            },
-            _ => IteratorResultStates {
-                can_yield: true,
-                can_return: true,
-            },
-        }
-    }
-
-    fn combine_iteration_types(
-        &self,
-        iteration_types: impl IntoIterator<Item = IterationTypes<'a>>,
-    ) -> IterationTypes<'a> {
-        let mut yield_types = UnionAccumulator::new(self.arena());
-        let mut return_types = UnionAccumulator::new(self.arena());
-        let mut next_types = UnionAccumulator::new(self.arena());
-        for iteration_types in iteration_types {
-            yield_types.extend(iteration_types.yield_type);
-            return_types.extend(iteration_types.return_type);
-            next_types.extend(iteration_types.next_type);
-        }
-        IterationTypes {
-            yield_type: yield_types.try_build(),
-            return_type: return_types.try_build(),
-            next_type: next_types.try_build(),
-        }
-    }
-
-    fn get_well_known_symbol_property_type(
-        &self,
-        program_id: ProgramId,
-        object_type: Ty<'a>,
-        resolver: IterationResolverKind,
-        depth: usize,
-        context: &mut IterationResolutionContext,
-    ) -> Option<Ty<'a>> {
-        if depth >= TYPE_EXPANSION_MAX_DEPTH {
-            return None;
-        }
-        match self.ty_kind(object_type) {
-            TyKind::Object(object) => object.properties.iter().find_map(|property| {
-                (property.computed && property.name == resolver.property_name())
-                    .then_some(property.ty)
-            }),
-            TyKind::Union(union) => {
-                let property_types = union
-                    .types
-                    .iter()
-                    .map(|ty| {
-                        self.get_well_known_symbol_property_type(
-                            program_id,
-                            *ty,
-                            resolver,
-                            depth + 1,
-                            context,
-                        )
-                    })
-                    .collect::<Option<Vec<_>>>()?;
-                Some(self.ty.union(property_types))
-            }
-            TyKind::Intersection(intersection) => intersection.types.iter().find_map(|ty| {
-                self.get_well_known_symbol_property_type(
-                    program_id,
-                    *ty,
-                    resolver,
-                    depth + 1,
-                    context,
-                )
-            }),
-            TyKind::TypeReference(reference) => self
-                .get_expanded_type_alias_reference_type(program_id, object_type, depth + 1)
-                .and_then(|(expanded_program_id, expanded)| {
-                    (expanded != object_type).then(|| {
-                        self.get_well_known_symbol_property_type(
-                            expanded_program_id,
-                            expanded,
-                            resolver,
-                            depth + 1,
-                            context,
-                        )
-                    })
-                })
-                .flatten()
-                .or_else(|| {
-                    self.get_well_known_symbol_property_type_of_interface(
-                        program_id,
-                        reference,
-                        resolver,
-                        depth + 1,
-                        context,
-                    )
-                }),
-            _ => None,
-        }
-    }
-
-    fn get_well_known_symbol_property_type_of_interface(
-        &self,
-        program_id: ProgramId,
-        reference: &TyTypeReference<'a>,
-        resolver: IterationResolverKind,
-        depth: usize,
-        context: &mut IterationResolutionContext,
-    ) -> Option<Ty<'a>> {
-        if depth >= TYPE_EXPANSION_MAX_DEPTH {
-            return None;
-        }
-        let (symbol, _) = self.get_type_reference_symbol_and_declaration(program_id, reference)?;
-        let active_interface = IterationInterfaceResolution::new(
-            IterationInterfaceResolutionKind::IterableProperty,
-            resolver,
-            symbol,
-            reference,
-        );
-        if !context.active_interfaces.insert(active_interface.clone()) {
-            return None;
-        }
-        let property_type = self.get_well_known_symbol_property_type_of_interface_worker(
-            program_id, reference, resolver, depth, context,
-        );
-        context.active_interfaces.remove(&active_interface);
-        property_type
-    }
-
-    fn get_well_known_symbol_property_type_of_interface_worker(
-        &self,
-        program_id: ProgramId,
-        reference: &TyTypeReference<'a>,
-        resolver: IterationResolverKind,
-        depth: usize,
-        context: &mut IterationResolutionContext,
-    ) -> Option<Ty<'a>> {
-        let declarations = self.interface_declarations_for_type_reference(program_id, reference);
-
-        let mut method_signatures = Vec::new();
-        for &(interface_program_id, interface) in &declarations {
-            let mapper = self
-                .type_parameter_substitutions_for_reference(
-                    interface_program_id,
-                    interface.type_parameters.as_deref(),
-                    reference,
-                )
-                .to_mapper(self.arena());
-            for signature in &interface.body.body {
-                match signature {
-                    TSSignature::TSPropertySignature(property)
-                        if !property.optional
-                            && self.well_known_symbol_property_name(
-                                interface_program_id,
-                                &property.key,
-                            ) == Some(resolver.property_name()) =>
-                    {
-                        let ty = self.get_type_from_ts_type_annotation(
-                            interface_program_id,
-                            property.type_annotation.as_deref(),
-                        );
-                        return Some(self.instantiate_type(ty, &mapper));
-                    }
-                    TSSignature::TSMethodSignature(method)
-                        if !method.optional
-                            && method.kind == TSMethodSignatureKind::Method
-                            && self.well_known_symbol_property_name(
-                                interface_program_id,
-                                &method.key,
-                            ) == Some(resolver.property_name()) =>
-                    {
-                        let signature =
-                            self.signature_from_ts_method_signature(interface_program_id, method);
-                        method_signatures.push(self.instantiate_signature(signature, &mapper));
-                    }
-                    _ => {}
-                }
-            }
-        }
-        if let Some(method_type) = self.type_from_method_signatures(method_signatures) {
-            return Some(method_type);
-        }
-
-        for (heritage_program_id, heritage_type) in
-            self.get_interface_heritage_types(program_id, reference)
-        {
-            if let Some(property_type) = self.get_well_known_symbol_property_type(
-                heritage_program_id,
-                heritage_type,
-                resolver,
-                depth + 1,
-                context,
-            ) {
-                return Some(property_type);
-            }
-        }
-        None
-    }
-
     fn get_interface_heritage_types(
         &self,
         program_id: ProgramId,
@@ -11718,26 +11012,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 },
             )
             .collect()
-    }
-
-    fn get_for_of_element_type(
-        &self,
-        program_id: ProgramId,
-        node_id: NodeId,
-        element_type: Ty<'a>,
-        is_await: bool,
-    ) -> Ty<'a> {
-        if !is_await {
-            return element_type;
-        }
-        let awaited_type = self.get_awaited_type(program_id, element_type);
-        if awaited_type != element_type {
-            return awaited_type;
-        }
-        if self.is_scoped_type_parameter_reference(program_id, node_id, element_type) {
-            return self.get_global_awaited_type(program_id, element_type);
-        }
-        element_type
     }
 
     pub(crate) fn get_type_parameter_constraint(

@@ -1,39 +1,39 @@
 {"path":"compiler/generators.ts","start":10,"end":12,"text":"g1","nodeType":"Identifier","type":{"name":"Function","display":"() => Generator<1 | \"foo\", void, unknown>"}}
-{"path":"compiler/generators.ts","start":19,"end":26,"text":"yield 1","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
-{"path":"compiler/generators.ts","start":29,"end":40,"text":"yield \"foo\"","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/generators.ts","start":19,"end":26,"text":"yield 1","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
+{"path":"compiler/generators.ts","start":29,"end":40,"text":"yield \"foo\"","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
 {"path":"compiler/generators.ts","start":54,"end":56,"text":"g2","nodeType":"Identifier","type":{"name":"Function","display":"() => Generator<never, string, unknown>"}}
 {"path":"compiler/generators.ts","start":89,"end":91,"text":"g3","nodeType":"Identifier","type":{"name":"Function","display":"() => Generator<string, void, unknown>"}}
-{"path":"compiler/generators.ts","start":98,"end":109,"text":"yield \"foo\"","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/generators.ts","start":98,"end":109,"text":"yield \"foo\"","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
 {"path":"compiler/generators.ts","start":129,"end":131,"text":"g4","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncGenerator<string, \"bar\" | undefined, unknown>"}}
 {"path":"compiler/generators.ts","start":142,"end":146,"text":"Math","nodeType":"Identifier","type":{"name":"TypeReference","display":"Math"}}
 {"path":"compiler/generators.ts","start":147,"end":153,"text":"random","nodeType":"Identifier","type":{"name":"Function","display":"() => number"}}
-{"path":"compiler/generators.ts","start":188,"end":199,"text":"yield \"foo\"","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/generators.ts","start":188,"end":199,"text":"yield \"foo\"","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
 {"path":"compiler/generators.ts","start":219,"end":221,"text":"g5","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncGenerator<\"foo\" | 1 | 3, string, unknown>"}}
-{"path":"compiler/generators.ts","start":228,"end":239,"text":"yield \"foo\"","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/generators.ts","start":228,"end":239,"text":"yield \"foo\"","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
 {"path":"compiler/generators.ts","start":242,"end":297,"text":"await new Promise(resolve => setTimeout(resolve, 1000))","nodeType":"ExpressionStatement","type":{"name":"Unknown","display":"unknown"}}
 {"path":"compiler/generators.ts","start":252,"end":259,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
 {"path":"compiler/generators.ts","start":260,"end":267,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => void"}}
 {"path":"compiler/generators.ts","start":271,"end":281,"text":"setTimeout","nodeType":"Identifier","type":{"name":"Function","display":"(handler: TimerHandler, timeout?: number, ...arguments: any[]) => number"}}
 {"path":"compiler/generators.ts","start":282,"end":289,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => void"}}
-{"path":"compiler/generators.ts","start":300,"end":307,"text":"yield 1","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/generators.ts","start":300,"end":307,"text":"yield 1","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
 {"path":"compiler/generators.ts","start":310,"end":365,"text":"await new Promise(resolve => setTimeout(resolve, 1000))","nodeType":"ExpressionStatement","type":{"name":"Unknown","display":"unknown"}}
 {"path":"compiler/generators.ts","start":320,"end":327,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
 {"path":"compiler/generators.ts","start":328,"end":335,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => void"}}
 {"path":"compiler/generators.ts","start":339,"end":349,"text":"setTimeout","nodeType":"Identifier","type":{"name":"Function","display":"(handler: TimerHandler, timeout?: number, ...arguments: any[]) => number"}}
 {"path":"compiler/generators.ts","start":350,"end":357,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => void"}}
-{"path":"compiler/generators.ts","start":368,"end":375,"text":"yield 3","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/generators.ts","start":368,"end":375,"text":"yield 3","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
 {"path":"compiler/generators.ts","start":411,"end":413,"text":"g6","nodeType":"Identifier","type":{"name":"Function","display":"() => AsyncGenerator<\"foo\" | 1 | 2 | 3, \"err\" | \"bar\", unknown>"}}
-{"path":"compiler/generators.ts","start":420,"end":431,"text":"yield \"foo\"","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/generators.ts","start":420,"end":431,"text":"yield \"foo\"","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
 {"path":"compiler/generators.ts","start":434,"end":489,"text":"await new Promise(resolve => setTimeout(resolve, 1000))","nodeType":"ExpressionStatement","type":{"name":"Unknown","display":"unknown"}}
 {"path":"compiler/generators.ts","start":444,"end":451,"text":"Promise","nodeType":"Identifier","type":{"name":"TypeReference","display":"PromiseConstructor"}}
 {"path":"compiler/generators.ts","start":452,"end":459,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => void"}}
 {"path":"compiler/generators.ts","start":463,"end":473,"text":"setTimeout","nodeType":"Identifier","type":{"name":"Function","display":"(handler: TimerHandler, timeout?: number, ...arguments: any[]) => number"}}
 {"path":"compiler/generators.ts","start":474,"end":481,"text":"resolve","nodeType":"Identifier","type":{"name":"Function","display":"(value: unknown) => void"}}
-{"path":"compiler/generators.ts","start":492,"end":499,"text":"yield 1","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
-{"path":"compiler/generators.ts","start":512,"end":519,"text":"yield 2","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/generators.ts","start":492,"end":499,"text":"yield 1","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
+{"path":"compiler/generators.ts","start":512,"end":519,"text":"yield 2","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
 {"path":"compiler/generators.ts","start":531,"end":532,"text":"e","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
 {"path":"compiler/generators.ts","start":540,"end":547,"text":"console","nodeType":"Identifier","type":{"name":"TypeReference","display":"Console"}}
 {"path":"compiler/generators.ts","start":540,"end":556,"text":"console.error(e)","nodeType":"ExpressionStatement","type":{"name":"Void","display":"void"}}
 {"path":"compiler/generators.ts","start":548,"end":553,"text":"error","nodeType":"Identifier","type":{"name":"Function","display":"(...data: any[]) => void"}}
 {"path":"compiler/generators.ts","start":554,"end":555,"text":"e","nodeType":"Identifier","type":{"name":"Unknown","display":"unknown"}}
-{"path":"compiler/generators.ts","start":580,"end":587,"text":"yield 3","nodeType":"ExpressionStatement","type":{"name":"Any","display":"any"}}
+{"path":"compiler/generators.ts","start":580,"end":587,"text":"yield 3","nodeType":"ExpressionStatement","type":{"name":"Error","display":"any"}}
