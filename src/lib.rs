@@ -15,6 +15,7 @@ mod infer;
 mod intrinsics;
 mod limits;
 mod mapper;
+mod printer;
 pub mod program;
 mod relations;
 mod type_facts;

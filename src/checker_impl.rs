@@ -45,6 +45,7 @@ use crate::{
         TS_TYPE_RESOLUTION_MAX_DEPTH, TYPE_EXPANSION_MAX_DEPTH, TYPE_INSTANTIATION_MAX_DEPTH,
     },
     mapper::{TypeMapper, TypeParameterSubstitutions},
+    printer::TypePrinter,
     program::{self, ProgramId},
     property_key_name_str, ts_type_name_to_str, ts_type_query_expr_name_to_str,
     type_facts::{TypeFacts, get_type_facts},
@@ -7858,9 +7859,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             .class_base_type_arguments(program_id, class)
             .into_iter()
             .map(|type_argument| {
-                let name = self
-                    .arena()
-                    .str(&type_argument.to_type_string(self.arena()));
+                let name = self.arena().str(&self.to_type_string(type_argument));
                 self.ty
                     .type_parameter_with_display_default(name, None, None, true)
             });
@@ -11157,8 +11156,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             return cached.clone();
         }
         let alias_chain_replacements = self.type_alias_chain_display_replacements(t, context);
-        let type_string = t.to_type_string_with_depth(
-            self.arena(),
+        let type_string = TypePrinter::new(self).to_type_string_with_depth(
+            t,
             &|ty| {
                 alias_chain_replacements
                     .get(&ty)

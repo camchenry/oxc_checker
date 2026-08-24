@@ -88,6 +88,10 @@ fn checker<'a, 'store>(ret: &'store ParseAndCheck<'a>) -> Checker<'a, 'store> {
     Checker::with_arena(&ret.store, ret.arena)
 }
 
+fn type_string<'a>(ret: &ParseAndCheck<'a>, ty: Ty<'a>) -> String {
+    checker(ret).to_type_string(ty)
+}
+
 fn get_global_symbol_type<'a>(ret: &ParseAndCheck<'a>, name: &str) -> Ty<'a> {
     let checker = checker(ret);
     let scoping = ret
@@ -234,11 +238,10 @@ fn get_ts_method_signature_types(ret: &ParseAndCheck<'_>, name: &str) -> Vec<Str
             AstKind::TSMethodSignature(method)
                 if property_key_name_str(&method.key) == Some(name) =>
             {
-                Some(
-                    checker
-                        .get_type_at_location(NodeRef::new(ret.program_id, node_id))
-                        .to_type_string(ret.arena),
-                )
+                Some(type_string(
+                    ret,
+                    checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)),
+                ))
             }
             _ => None,
         })
@@ -255,11 +258,10 @@ fn get_ts_property_signature_types(ret: &ParseAndCheck<'_>, name: &str) -> Vec<S
             AstKind::TSPropertySignature(property)
                 if property_key_name_str(&property.key) == Some(name) =>
             {
-                Some(
-                    checker
-                        .get_type_at_location(NodeRef::new(ret.program_id, node_id))
-                        .to_type_string(ret.arena),
-                )
+                Some(type_string(
+                    ret,
+                    checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)),
+                ))
             }
             _ => None,
         })
@@ -419,9 +421,7 @@ fn default_lib_provides_global_type_symbols() {
             .get_value_symbol_for_name(ret.program_id, name)
             .unwrap_or_else(|| panic!("expected default lib to provide global value `{name}`"));
         assert_eq!(
-            checker
-                .get_type_of_symbol(value_symbol)
-                .to_type_string(checker.arena),
+            type_string(&ret, checker.get_type_of_symbol(value_symbol)),
             constructor_type
         );
     }
@@ -468,9 +468,7 @@ fn interface_symbol_has_named_declared_type() {
     assert_eq!(checker.get_type_at_location(interface_node), Ty::any());
     assert_eq!(checker.get_type_at_location(identifier_node), Ty::any());
     assert_eq!(
-        checker
-            .get_declared_type_of_symbol(symbol)
-            .to_type_string(checker.arena),
+        type_string(&ret, checker.get_declared_type_of_symbol(symbol)),
         "Box<T>"
     );
 }
@@ -507,13 +505,14 @@ fn type_alias_binding_location_uses_type_meaning_for_merged_symbol() {
         .expect("expected type alias binding identifier");
 
     assert_eq!(
-        checker
-            .get_type_at_location(NodeRef::new(ret.program_id, alias_name_node))
-            .to_type_string(ret.arena),
+        type_string(
+            &ret,
+            checker.get_type_at_location(NodeRef::new(ret.program_id, alias_name_node)),
+        ),
         "((value: string) => number) | { accept(value: string): number; }"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "nodeFilterValue").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "nodeFilterValue")),
         "{ readonly VALUE: 1; }"
     );
 }
@@ -574,7 +573,7 @@ fn checker_renders_transparent_default_lib_type_aliases() {
     let method_type = checker.get_type_at_location(method_node);
 
     assert!(checker.type_alias_metadata(array.element_type).is_some());
-    assert_eq!(ty.to_type_string(checker.arena), "Base64URLString[]");
+    assert_eq!(type_string(&ret, ty), "Base64URLString[]");
     assert_eq!(checker.type_to_string(ty, node), "string[]");
     assert_eq!(
         checker.type_to_string(method_type, method_node),
@@ -807,9 +806,9 @@ fn global_symbol_table_resolves_other_root_script_declarations() {
             .is_some()
     );
     assert_eq!(
-        checker
-            .get_type_of_symbol(SymbolRef::new(program_id, value_symbol_id))
-            .to_type_string(checker.arena),
+        checker.to_type_string(
+            checker.get_type_of_symbol(SymbolRef::new(program_id, value_symbol_id))
+        ),
         "Shared"
     );
 }
@@ -827,12 +826,12 @@ fn window_and_global_this_expose_global_function_overloads() {
     );
     let type_strings = get_static_member_expression_types(&ret, "postMessage")
         .into_iter()
-        .map(|ty| ty.to_type_string(ret.arena))
+        .map(|ty| type_string(&ret, ty))
         .collect::<Vec<_>>();
     let expected = "{ (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }";
 
     assert_eq!(
-        get_global_symbol_type(&ret, "bare").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "bare")),
         expected
     );
     assert_eq!(
@@ -878,13 +877,13 @@ fn global_this_exposes_script_var_but_not_lexical_bindings() {
         excluded.error_kind(arena),
         Some(TypeErrorKind::UnresolvedMember)
     );
-    assert_eq!(excluded.to_type_string(arena), "any");
+    assert_eq!(type_string(&ret, excluded), "any");
     assert_eq!(
-        get_global_symbol_type(&ret, "selfReference").to_type_string(arena),
+        type_string(&ret, get_global_symbol_type(&ret, "selfReference")),
         "typeof globalThis",
     );
     assert_eq!(
-        get_type_alias_type(&ret, "GlobalKeys").to_type_string(arena),
+        type_string(&ret, get_type_alias_type(&ret, "GlobalKeys")),
         "keyof typeof globalThis",
     );
     assert_type_eq(
@@ -903,7 +902,7 @@ fn global_this_exposes_script_var_but_not_lexical_bindings() {
         &Ty::number(),
     );
     assert_eq!(
-        get_type_alias_type(&ret, "MappedSelfReference").to_type_string(arena),
+        type_string(&ret, get_type_alias_type(&ret, "MappedSelfReference")),
         "typeof globalThis",
     );
 
@@ -958,7 +957,7 @@ fn global_this_excludes_module_scoped_variables() {
         leaked.error_kind(ret.arena),
         Some(TypeErrorKind::UnresolvedMember)
     );
-    assert_eq!(leaked.to_type_string(ret.arena), "any");
+    assert_eq!(type_string(&ret, leaked), "any");
 }
 
 #[test]
@@ -1015,9 +1014,7 @@ fn global_type_reference_locations_resolve_symbols() {
         let symbol = checker
             .get_symbol_at_location(NodeRef::new(ret.program_id, node_id))
             .unwrap_or_else(|| panic!("expected symbol for type reference `{name}`"));
-        checker
-            .get_type_of_symbol(symbol)
-            .to_type_string(checker.arena)
+        type_string(&ret, checker.get_type_of_symbol(symbol))
     };
 
     assert_eq!(type_reference_type("Array"), "ArrayConstructor");
@@ -1065,7 +1062,7 @@ fn enum_member_types_are_canonical_across_locations() {
         union
             .types
             .iter()
-            .map(|ty| ty.to_type_string(ret.arena))
+            .map(|ty| type_string(&ret, *ty))
             .collect::<Vec<_>>(),
         ["E.A", "E.B"]
     );
@@ -1091,8 +1088,8 @@ fn same_named_enum_members_in_different_scopes_are_distinct() {
     let member_types = get_static_member_expression_types(&ret, "A");
     assert_eq!(member_types.len(), 2);
     assert_ne!(member_types[0], member_types[1]);
-    assert_eq!(member_types[0].to_type_string(ret.arena), "E.A");
-    assert_eq!(member_types[1].to_type_string(ret.arena), "E.A");
+    assert_eq!(type_string(&ret, member_types[0]), "E.A");
+    assert_eq!(type_string(&ret, member_types[1]), "E.A");
     let checker = checker(&ret);
     assert!(!checker.is_assignable_to(member_types[0], member_types[1]));
     assert!(!checker.is_assignable_to(member_types[1], member_types[0]));
@@ -1199,14 +1196,14 @@ fn flow_predicate_narrowing_expands_fully_implicit_defaults_for_values() {
     assert_eq!(
         get_identifier_reference_types(&ret, "value")
             .into_iter()
-            .map(|ty| ty.to_type_string(ret.arena))
+            .map(|ty| type_string(&ret, ty))
             .collect::<Vec<_>>(),
         vec!["unknown".to_string(), "Action<string>".to_string()]
     );
     assert_eq!(
         get_identifier_reference_types(&ret, "baseValue")
             .into_iter()
-            .map(|ty| ty.to_type_string(ret.arena))
+            .map(|ty| type_string(&ret, ty))
             .collect::<Vec<_>>(),
         vec!["unknown".to_string(), "Base<unknown, string>".to_string()]
     );
@@ -1228,7 +1225,7 @@ fn flow_does_not_index_condition_reference_in_global_symbol_program() {
     assert_eq!(
         get_identifier_reference_types(&ret, "Array")
             .into_iter()
-            .map(|ty| ty.to_type_string(ret.arena))
+            .map(|ty| type_string(&ret, ty))
             .collect::<Vec<_>>(),
         vec!["ArrayConstructor".to_string()]
     );
@@ -1273,13 +1270,13 @@ fn conditional_template_uses_declared_literal_in_unreachable_arm() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "msg").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "msg")),
         "\"something\" | \"arg = something\""
     );
     assert_eq!(
         get_identifier_reference_types(&ret, "arg")
             .into_iter()
-            .map(|ty| ty.to_type_string(ret.arena))
+            .map(|ty| type_string(&ret, ty))
             .collect::<Vec<_>>(),
         vec![
             "\"something\"".to_string(),
@@ -1301,7 +1298,7 @@ fn conditional_template_does_not_fold_flow_narrowed_mutable_value() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "msg").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "msg")),
         "string"
     );
 }
@@ -1319,13 +1316,13 @@ fn flow_narrows_undefined_equality_conditional_expression_arms() {
     );
 
     assert_eq!(
-        get_first_symbol_type(&ret, "value").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "value")),
         "TData | (TData & ({} | null))"
     );
     assert_eq!(
         get_identifier_reference_types(&ret, "previous")
             .into_iter()
-            .map(|ty| ty.to_type_string(ret.arena))
+            .map(|ty| type_string(&ret, ty))
             .collect::<Vec<_>>(),
         vec![
             "TData | undefined".to_string(),
@@ -1487,7 +1484,7 @@ fn flow_merges_loop_carried_assignments_from_pre_loop_default() {
 
     let reference_types = get_identifier_reference_types(&ret, "value");
     assert_eq!(reference_types.len(), 3);
-    assert_eq!(reference_types[1].to_type_string(ret.arena), "number");
+    assert_eq!(type_string(&ret, reference_types[1]), "number");
 }
 
 #[test]
@@ -1529,7 +1526,7 @@ fn structural_property_lookup_stops_on_unchanged_conditional_expansion() {
     let reference_types = get_identifier_reference_types(&ret, "array");
     assert_eq!(reference_types.len(), 1);
     assert_eq!(
-        reference_types[0].to_type_string(ret.arena),
+        type_string(&ret, reference_types[0]),
         "Extract<M[K], ArrayLike<any>>"
     );
 }
@@ -1789,7 +1786,7 @@ fn error_types_are_distinct_but_any_like() {
     assert!(error.is_error(arena));
     assert_eq!(error.error_kind(arena), Some(TypeErrorKind::UnresolvedType));
     assert_ne!(error, Ty::any());
-    assert_eq!(error.to_type_string(arena), "any");
+    assert_eq!(type_string(&ret, error), "any");
     assert_eq!(error.enum_variant_name(arena), "TyError");
     assert!(checker.is_assignable_to(error, Ty::number()));
     assert!(checker.is_assignable_to(Ty::number(), error));
@@ -1810,7 +1807,7 @@ fn unresolved_symbols_produce_error_types() {
         value_type.error_kind(arena),
         Some(TypeErrorKind::UnresolvedSymbol)
     );
-    assert_eq!(value_type.to_type_string(arena), "any");
+    assert_eq!(type_string(&ret, value_type), "any");
 }
 
 #[test]
@@ -1909,24 +1906,35 @@ fn destructured_parameters_preserve_pattern_and_property_types() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "streamedQuery").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "streamedQuery")),
         "<TQueryFnData, TData>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData>) => TData"
     );
     assert_eq!(
-        get_symbol_type_in_function(&ret, "streamedQuery", "streamFn").to_type_string(ret.arena),
+        type_string(
+            &ret,
+            get_symbol_type_in_function(&ret, "streamedQuery", "streamFn")
+        ),
         "(context: TQueryFnData) => TQueryFnData"
     );
     assert_eq!(
-        get_symbol_type_in_function(&ret, "streamedQuery", "refetchMode").to_type_string(ret.arena),
+        type_string(
+            &ret,
+            get_symbol_type_in_function(&ret, "streamedQuery", "refetchMode")
+        ),
         "\"append\" | \"reset\" | \"replace\""
     );
     assert_eq!(
-        get_symbol_type_in_function(&ret, "streamedQuery", "reducer").to_type_string(ret.arena),
+        type_string(
+            &ret,
+            get_symbol_type_in_function(&ret, "streamedQuery", "reducer")
+        ),
         "(acc: TData, chunk: TQueryFnData) => TData"
     );
     assert_eq!(
-        get_symbol_type_in_function(&ret, "streamedQuery", "initialValue")
-            .to_type_string(ret.arena),
+        type_string(
+            &ret,
+            get_symbol_type_in_function(&ret, "streamedQuery", "initialValue"),
+        ),
         "TData"
     );
     assert_type_eq(
@@ -2002,7 +2010,7 @@ fn object_literal_call_argument_contextually_types_callback_property_parameters(
     );
     assert_type_eq(arena, &get_first_symbol_type(&ret, "todo"), &todo_type);
     assert_eq!(
-        get_object_property_types(&ret, "reducer")[0].to_type_string(ret.arena),
+        type_string(&ret, get_object_property_types(&ret, "reducer")[0]),
         "(data: InfiniteData<Todo, number>, todo: Todo) => { pages: Todo[]; pageParams: number[]; }"
     );
     assert!(contains_type(
@@ -2044,11 +2052,14 @@ fn declared_function_type_parameters_expand_conditional_alias_annotations() {
     );
 
     assert_eq!(
-        get_first_symbol_type(&ret, "context").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "context")),
         "{ queryKey: TQueryKey; pageParam?: unknown; }"
     );
     assert_eq!(
-        get_symbol_type_in_function(&ret, "useParams", "streamFn").to_type_string(ret.arena),
+        type_string(
+            &ret,
+            get_symbol_type_in_function(&ret, "useParams", "streamFn")
+        ),
         "(context: { queryKey: TQueryKey; pageParam?: unknown; }) => void"
     );
 }
@@ -2078,11 +2089,11 @@ fn printing_type_arguments() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "box").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "box")),
         "<T>(value: T) => Box<T>"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "from").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "from")),
         "<T>(iterable: Iterable<T>): Array<T>"
     )
 }
@@ -2150,19 +2161,19 @@ fn streamed_query_style_aliases_render_at_use_sites() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "streamedQuery").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "streamedQuery")),
         "<TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "QueryMeta").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "QueryMeta")),
         "{ [x: string]: unknown; }"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "InferDataFromTag").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "InferDataFromTag")),
         "TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "TaggedTodoData").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "TaggedTodoData")),
         "Todo[]"
     );
     assert_eq!(
@@ -2174,11 +2185,11 @@ fn streamed_query_style_aliases_render_at_use_sites() {
     );
     assert_eq!(get_global_symbol_type(&ret, "pageParam"), Ty::number());
     assert_eq!(
-        get_first_symbol_type(&ret, "signalLessContext").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "signalLessContext")),
         "OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, \"signal\">"
     );
     assert_eq!(
-        get_first_symbol_type(&ret, "meta").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "meta")),
         "Record<string, unknown> | undefined"
     );
 }
@@ -2196,15 +2207,15 @@ fn unique_symbol_types_and_type_queries_render() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "dataTagSymbol").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "dataTagSymbol")),
         "unique symbol"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "aliasValue").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "aliasValue")),
         "typeof dataTagSymbol"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "tagged").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "tagged")),
         "{ [dataTagSymbol]: any; }"
     );
 
@@ -2217,7 +2228,7 @@ fn unique_symbol_types_and_type_queries_render() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "UnsetMarker").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "UnsetMarker")),
         "unique symbol"
     );
 }
@@ -2330,7 +2341,7 @@ fn tuple_spreads_are_limited_to_ten_thousand_elements() {
             ty.error_kind(ret.arena),
             Some(TypeErrorKind::TupleSizeExceeded)
         );
-        assert_eq!(ty.to_type_string(ret.arena), "any");
+        assert_eq!(type_string(&ret, ty), "any");
     }
 
     let tuple_9999 = ret
@@ -2351,7 +2362,7 @@ fn tuple_spreads_are_limited_to_ten_thousand_elements() {
         oversized.error_kind(ret.arena),
         Some(TypeErrorKind::TupleSizeExceeded)
     );
-    assert_eq!(oversized.to_type_string(ret.arena), "any");
+    assert_eq!(type_string(&ret, oversized), "any");
 }
 
 #[test]
@@ -2388,43 +2399,43 @@ fn conditional_infer_extracts_template_literal_segments() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "Whole").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Whole")),
         "\"user\""
     );
     assert_eq!(
-        get_type_alias_type(&ret, "Split").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Split")),
         "[\"user\", \"name\"]"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "LeadingEmpty").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "LeadingEmpty")),
         "[\"\", \"property\"]"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "Adjacent").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Adjacent")),
         "[\"a\", \"bc\"]"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "NoMatch").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "NoMatch")),
         "\"no\""
     );
     assert_eq!(
-        get_type_alias_type(&ret, "Tupleify").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Tupleify")),
         "T extends `${infer K}.${infer R}` ? [K, ...Tupleify<R>] : [T]"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "TupleMatch").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "TupleMatch")),
         "[\"user\", \"address\", \"city\"]"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "NestedTuple").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "NestedTuple")),
         "\"yes\""
     );
     assert_eq!(
-        get_type_alias_type(&ret, "NestedAlias").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "NestedAlias")),
         "{ name: string; }"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "Formats").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Formats")),
         "\"pkcs8\" | \"raw\" | \"spki\""
     );
 }
@@ -2441,7 +2452,7 @@ fn conditional_infer_return_type_of_generic_function_falls_back_to_unknown() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "Value").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Value")),
         "unknown"
     );
 }
@@ -2462,7 +2473,7 @@ fn conditional_infer_return_type_from_callable_interface() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "Value").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Value")),
         "{ value: number; }"
     );
 }
@@ -2483,11 +2494,11 @@ fn conditional_tuple_index_reduces_redux_at_least_ts35_pattern() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "Value").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Value")),
         "\"yes\""
     );
     assert_eq!(
-        get_type_alias_type(&ret, "Deferred").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Deferred")),
         "unknown extends T ? IsAny<T, \"no\", \"yes\"> : \"no\""
     );
 }
@@ -2561,10 +2572,7 @@ fn recursive_type_instantiation_depth_produces_error_type() {
 
     let small_type = get_type_alias_type(&ret, "Small");
     let TyKind::Tuple(small) = ret.arena.ty_kind(small_type) else {
-        panic!(
-            "expected a tuple, got {}",
-            small_type.to_type_string(ret.arena)
-        );
+        panic!("expected a tuple, got {}", type_string(&ret, small_type));
     };
     assert_eq!(small.elements.len(), 4);
     let value = get_type_alias_type(&ret, "Value");
@@ -2572,7 +2580,7 @@ fn recursive_type_instantiation_depth_produces_error_type() {
         value.error_kind(ret.arena),
         Some(TypeErrorKind::TypeInstantiationDepthExceeded)
     );
-    assert_eq!(value.to_type_string(ret.arena), "any");
+    assert_eq!(type_string(&ret, value), "any");
 }
 
 #[test]
@@ -2594,10 +2602,7 @@ fn recursive_conditional_inference_defers_unresolved_active_aliases() {
 
     let ty = get_type_alias_type(&ret, "Generic");
     assert_ne!(ty, Ty::any());
-    assert!(
-        ty.to_type_string(ret.arena)
-            .contains("ParseManyWhitespace<R0>")
-    );
+    assert!(type_string(&ret, ty).contains("ParseManyWhitespace<R0>"));
 }
 
 #[test]
@@ -2617,7 +2622,7 @@ fn recursive_tuple_rest_aliases_are_preserved_while_active() {
     let TyKind::Tuple(tuple) = ret.arena.ty_kind(promised) else {
         panic!(
             "expected an empty tuple, got {}",
-            promised.to_type_string(ret.arena)
+            type_string(&ret, promised)
         );
     };
     assert!(tuple.elements.is_empty());
@@ -2637,7 +2642,7 @@ fn type_alias_declarations_expand_top_level_alias_references() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "OmitKeyof").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "OmitKeyof")),
         "{ [P in Exclude<keyof TObject, TKey>]: TObject[P]; }"
     );
 }
@@ -2657,7 +2662,7 @@ fn template_literal_type_resolves_qualified_enum_member() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "Value").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Value")),
         "\"A\""
     );
 }
@@ -2686,23 +2691,23 @@ fn type_alias_union_constituents_match_typescript_alias_display_rules() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "PrimitiveAliases").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "PrimitiveAliases")),
         "string"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "LiteralAliasWithPrimitive").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "LiteralAliasWithPrimitive")),
         "string"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "LiteralAliases").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "LiteralAliases")),
         "1 | 2"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "NamedUnionAlias").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "NamedUnionAlias")),
         "BooleanLogicExpression | \"true\" | \"false\""
     );
     assert_eq!(
-        get_type_alias_type(&ret, "ObjectAlias").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "ObjectAlias")),
         "ObjAlias | string"
     );
 }
@@ -2718,7 +2723,7 @@ fn type_literal_property_signatures_preserve_optional_modifier() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "Params").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Params")),
         "{ refetchMode?: \"append\" | \"reset\"; }"
     );
 }
@@ -2799,7 +2804,7 @@ fn optional_mapped_type_aliases_include_undefined_and_drop_empty_intersection() 
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "OptionalFlat").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "OptionalFlat")),
         "{ [K in keyof O]?: O[K] | undefined; }"
     );
     assert_eq!(
@@ -2840,23 +2845,23 @@ fn indexed_access_resolves_mapped_type_property_templates() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "Deferred").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Deferred")),
         "\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "DeferredWrapped").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "DeferredWrapped")),
         "\"requireExactProps\" extends keyof Options ? Wrapper<Options[keyof Options & \"requireExactProps\"]> : false"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "Concrete").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Concrete")),
         "true"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "Outer").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Outer")),
         "(\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false) extends true ? \"yes\" : \"no\""
     );
     assert_eq!(
-        get_type_alias_type(&ret, "OuterViaParameter").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "OuterViaParameter")),
         "(\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false) extends true ? \"yes\" : \"no\""
     );
 }
@@ -2987,7 +2992,7 @@ fn get_type_at_location_checks_direct_expressions() {
         &expression_types["numeric"],
         &arena(&ret).number_literal(42.0, "42", NumberBase::Decimal),
     );
-    assert_eq!(expression_types["bigint"].to_type_string(ret.arena), "1n");
+    assert_eq!(type_string(&ret, expression_types["bigint"]), "1n");
     assert_eq!(
         expression_types["string"],
         arena(&ret).string_literal("hello")
@@ -3045,12 +3050,11 @@ fn bigint_literal_types_store_parsed_value_and_source_metadata() {
 #[test]
 fn type_strings_render_string_literals_with_double_quotes() {
     let allocator = Allocator::default();
-    let arena = CheckerArena::new(&allocator);
+    let ret = parse_and_check_source(&allocator, "");
+    let arena = arena(&ret);
 
     assert_eq!(
-        arena
-            .string_literal("expects a string literal")
-            .to_type_string(arena),
+        type_string(&ret, arena.string_literal("expects a string literal")),
         "\"expects a string literal\""
     );
 }
@@ -3079,7 +3083,7 @@ fn declaration_display_handles_defaulted_type_arguments() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "declarations").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "declarations")),
         "{ view: BufferView; maybeView?: BufferView; stream: Stream; iterable: LocalIterable<string>; explicitIterable: LocalIterable<string, any, any>; float: Float32Array<ArrayBufferLike>; values: number[] | Float32Array<ArrayBufferLike>; }"
     );
 }
@@ -3165,11 +3169,11 @@ fn generic_function_infers_from_keyof_and_indexed_access_shapes() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "target").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "target")),
         "Box<number>"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "object").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "object")),
         "Box<number>"
     );
 }
@@ -3189,7 +3193,7 @@ fn generic_function_detects_same_shape_mapped_type_inference() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "unwrapped").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "unwrapped")),
         "Box<number>"
     );
 }
@@ -3270,7 +3274,7 @@ fn instantiated_interface_method_type_parameters_render_as_arguments() {
             &ret,
             "independentDefault",
         ))
-        .map(|ty| ty.to_type_string(ret.arena))
+        .map(|ty| type_string(&ret, ty))
         .collect::<Vec<_>>();
     assert_eq!(
         method_types,
@@ -3438,7 +3442,7 @@ fn type_query_alias_instantiation_resolves_intersections() {
     let arena = arena(&ret);
 
     assert_eq!(
-        get_global_symbol_type(&ret, "Err").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "Err")),
         "typeof ErrImpl & (<T>() => T)"
     );
     assert_type_eq(
@@ -3574,11 +3578,11 @@ fn structural_sync_iterable_supplies_for_of_and_for_await_element_types() {
     );
 
     assert_eq!(
-        get_first_symbol_type(&ret, "syncValue").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "syncValue")),
         "1 | 2"
     );
     assert_eq!(
-        get_first_symbol_type(&ret, "asyncValue").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "asyncValue")),
         "1 | 2"
     );
 }
@@ -3671,7 +3675,7 @@ fn structural_type_literal_iterable_discriminates_yield_results() {
     );
 
     assert_eq!(
-        get_first_symbol_type(&ret, "value").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "value")),
         "\"item\""
     );
     assert_eq!(get_first_symbol_type(&ret, "character"), Ty::string());
@@ -3694,7 +3698,7 @@ fn spreads_materialize_interface_members_and_iterable_elements() {
     "#,
     );
 
-    let spread_promise = get_first_symbol_type(&ret, "spreadPromise").to_type_string(ret.arena);
+    let spread_promise = type_string(&ret, get_first_symbol_type(&ret, "spreadPromise"));
     assert!(spread_promise.contains("then<TResult1, TResult2>"));
     assert!(spread_promise.contains("[Symbol.toStringTag]: string"));
     assert!(
@@ -3703,21 +3707,21 @@ fn spreads_materialize_interface_members_and_iterable_elements() {
         "{spread_promise}"
     );
     assert!(spread_promise.find("[Symbol.toStringTag]") < spread_promise.find("finally(onfinally"));
-    let spread_map = get_first_symbol_type(&ret, "spreadMap").to_type_string(ret.arena);
+    let spread_map = type_string(&ret, get_first_symbol_type(&ret, "spreadMap"));
     assert!(spread_map.contains("set(key: string, value: number): Map<string, number>"));
     assert!(spread_map.contains("[Symbol.iterator](): MapIterator<[string, number]>"));
     assert!(spread_map.find("[Symbol.iterator]") < spread_map.find("entries()"));
     assert!(spread_map.find("values()") < spread_map.find("[Symbol.toStringTag]"));
     assert_eq!(
-        get_first_symbol_type(&ret, "mapObject").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "mapObject")),
         "{ [k: string]: number; }"
     );
     assert_eq!(
-        get_first_symbol_type(&ret, "getObjectSpread").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "getObjectSpread")),
         "{ [x: string]: string; }"
     );
     assert_eq!(
-        get_first_symbol_type(&ret, "characters").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "characters")),
         "string[]"
     );
 
@@ -3731,7 +3735,10 @@ fn spreads_materialize_interface_members_and_iterable_elements() {
     "#,
     );
     assert_eq!(
-        get_first_symbol_type(&shadowed_ret, "spreadPromise").to_type_string(shadowed_ret.arena),
+        type_string(
+            &shadowed_ret,
+            get_first_symbol_type(&shadowed_ret, "spreadPromise"),
+        ),
         "{ own: number; }"
     );
 
@@ -3743,8 +3750,10 @@ fn spreads_materialize_interface_members_and_iterable_elements() {
     const spreadMap = { ...map };
     "#,
     );
-    let spread_map =
-        get_first_symbol_type(&augmented_ret, "spreadMap").to_type_string(augmented_ret.arena);
+    let spread_map = type_string(
+        &augmented_ret,
+        get_first_symbol_type(&augmented_ret, "spreadMap"),
+    );
     assert!(spread_map.contains("own: string"));
     assert!(spread_map.contains("clear(): void"));
 }
@@ -3771,11 +3780,11 @@ fn spreads_materialize_class_instance_fields() {
     );
 
     assert_eq!(
-        get_first_symbol_type(&ret, "instanceSpread").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "instanceSpread")),
         "{ value: number; }"
     );
     assert_eq!(
-        get_first_symbol_type(&ret, "genericInstanceSpread").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "genericInstanceSpread")),
         "{ value: string; }"
     );
 }
@@ -3800,7 +3809,7 @@ fn invalid_object_spreads_produce_error_types() {
             ty.error_kind(ret.arena),
             Some(TypeErrorKind::UnsupportedType)
         );
-        assert_eq!(ty.to_type_string(ret.arena), "any");
+        assert_eq!(type_string(&ret, ty), "any");
     }
 }
 
@@ -3850,11 +3859,11 @@ fn promise_constructor_contextually_types_executor_parameters() {
         &arena.type_reference("Promise", [Ty::unknown()]),
     );
     assert_eq!(
-        get_first_symbol_type(&ret, "resolve").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "resolve")),
         "(value: unknown) => void"
     );
     assert_eq!(
-        get_first_symbol_type(&ret, "reject").to_type_string(ret.arena),
+        type_string(&ret, get_first_symbol_type(&ret, "reject")),
         "(reason?: any) => void"
     );
 }
@@ -3891,7 +3900,7 @@ fn promise_then_and_catch_infer_callback_returns_through_nullable_callback_types
     let arena = arena(&ret);
 
     assert_eq!(
-        get_global_symbol_type(&ret, "thenMethod").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "thenMethod")),
         "<TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>"
     );
     assert_type_eq(
@@ -3905,7 +3914,7 @@ fn promise_then_and_catch_infer_callback_returns_through_nullable_callback_types
         &arena.type_reference("Promise", [Ty::string()]),
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "catchMethod").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "catchMethod")),
         "<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>"
     );
     assert_type_eq(
@@ -3927,7 +3936,7 @@ fn user_defined_awaited_alias_is_evaluated_normally() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "Value").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Value")),
         "{ value: Promise<number>; }"
     );
 }
@@ -3970,53 +3979,52 @@ fn awaited_primitive_types() {
     "#,
     );
 
+    assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T1")), "number");
+    assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T2")), "void");
     assert_eq!(
-        get_type_alias_type(&ret, "T1").to_type_string(ret.arena),
-        "number"
-    );
-    assert_eq!(
-        get_type_alias_type(&ret, "T2").to_type_string(ret.arena),
-        "void"
-    );
-    assert_eq!(
-        get_global_symbol_type(&ret, "arrayOfPromises").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "arrayOfPromises")),
         "Promise<number>[]"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "all").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "all")),
         "Promise<void[]>"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "allTuple").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "allTuple")),
         "Promise<[number, string]>"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "readonlyCopyOfTuple").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "readonlyCopyOfTuple")),
         "readonly [number, string]"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "mutableCopyOfTuple").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "mutableCopyOfTuple")),
         "[number, string]"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "optionalCopyOfTuple").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "optionalCopyOfTuple")),
         "[(number | undefined)?, (string | undefined)?]"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "requiredCopyOfTuple").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "requiredCopyOfTuple")),
         "[number, string]"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "requiredCopyOfOptionalUndefined").to_type_string(ret.arena),
+        type_string(
+            &ret,
+            get_global_symbol_type(&ret, "requiredCopyOfOptionalUndefined")
+        ),
         "[never]"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "requiredCopyOfOptionalUnionUndefined")
-            .to_type_string(ret.arena),
+        type_string(
+            &ret,
+            get_global_symbol_type(&ret, "requiredCopyOfOptionalUnionUndefined"),
+        ),
         "[number]"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "constructedAll").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "constructedAll")),
         "Promise<[number, string]>"
     );
 }
@@ -4039,7 +4047,7 @@ fn awaited_conditional_alias_shape_resolves_nullish_branch() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "Nullish").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Nullish")),
         "null | undefined"
     );
 }
@@ -4059,7 +4067,7 @@ fn awaited_conditional_alias_extracts_thenable_callback_value() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "StructuralThenable").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "StructuralThenable")),
         "string"
     );
 }
@@ -4082,7 +4090,7 @@ fn awaited_conditional_alias_recursively_unwraps_simple_thenable_value() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "StructuralThenable").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "StructuralThenable")),
         "string"
     );
 }
@@ -4106,11 +4114,11 @@ fn awaited_conditional_alias_shape_resolves_non_thenable_false_branch() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "Primitive").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "Primitive")),
         "number"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "PlainObject").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "PlainObject")),
         "{ value: string; }"
     );
 }
@@ -4138,19 +4146,19 @@ fn awaited_conditional_alias_shape_matches_lib_thenables() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "StructuralThenable").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "StructuralThenable")),
         "string"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "NestedStructuralThenable").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "NestedStructuralThenable")),
         "number"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "PromiseValue").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "PromiseValue")),
         "string"
     );
     assert_eq!(
-        get_type_alias_type(&ret, "NestedPromiseValue").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "NestedPromiseValue")),
         "number"
     );
 }
@@ -4173,7 +4181,7 @@ fn awaited_conditional_alias_shape_rejects_non_callable_then_argument() {
     );
 
     assert_eq!(
-        get_type_alias_type(&ret, "NonCallableThenArgument").to_type_string(ret.arena),
+        type_string(&ret, get_type_alias_type(&ret, "NonCallableThenArgument")),
         "never"
     );
 }
@@ -4209,7 +4217,7 @@ fn global_script_function_declarations_merge_across_programs() {
     };
 
     assert_eq!(
-        get_global_symbol_type(&ret, "returnsPromise").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "returnsPromise")),
         "{ (): Promise<string>; (): Promise<string>; (): Promise<string>; }"
     );
 }
@@ -4282,11 +4290,11 @@ fn generic_function_defaults_render_and_apply_when_not_inferred() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "fn").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "fn")),
         "<T = A>(x: T) => T"
     );
     assert_eq!(
-        get_global_symbol_type(&ret, "foo").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "foo")),
         "<T = A>(x?: T) => T"
     );
     assert_type_eq(
@@ -4325,7 +4333,7 @@ fn keyof_constraints_and_indexed_access_types_render() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "source").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "source")),
         "{ <K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any): void; }"
     );
 }
@@ -4401,7 +4409,7 @@ fn primitive_and_object_members_use_global_interfaces() {
         regex_lowercase.error_kind(ret.arena),
         Some(TypeErrorKind::UnresolvedMember)
     );
-    assert_eq!(regex_lowercase.to_type_string(ret.arena), "any");
+    assert_eq!(type_string(&ret, regex_lowercase), "any");
 }
 
 #[test]
@@ -4436,7 +4444,7 @@ fn member_expression_types() {
         rec_value2.error_kind(ret.arena),
         Some(TypeErrorKind::UnresolvedMember)
     );
-    assert_eq!(rec_value2.to_type_string(ret.arena), "any");
+    assert_eq!(type_string(&ret, rec_value2), "any");
 }
 
 #[test]
@@ -4512,7 +4520,7 @@ fn rest_function_parameters_render_in_signatures() {
     );
 
     assert_eq!(
-        get_global_symbol_type(&ret, "foo").to_type_string(ret.arena),
+        type_string(&ret, get_global_symbol_type(&ret, "foo")),
         "(a: string, b?: string, c?: number, ...d: number[]) => void"
     );
     let ty = get_global_symbol_type(&ret, "foo");
