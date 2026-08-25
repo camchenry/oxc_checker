@@ -17,7 +17,7 @@ use rustc_hash::{FxHashMap, FxHashSet};
 
 use crate::{
     checker::{Checker, NodeRef, SymbolRef},
-    checker_impl::GetTypeFlags,
+    checker_impl::CheckMode,
     flow_graph::{self, ArrayMutationKind, BranchEffect},
     program::ProgramId,
     type_set::UnionAccumulator,
@@ -306,7 +306,7 @@ fn evolving_array_change<'a>(
                             program_id,
                             argument,
                             Some(call_id),
-                            GetTypeFlags::NONE,
+                            CheckMode::NONE,
                         )
                     }),
             );
@@ -321,7 +321,7 @@ fn evolving_array_change<'a>(
                     program_id,
                     &assignment.right,
                     Some(assignment_id),
-                    GetTypeFlags::CONTEXT_FREE,
+                    CheckMode::CONTEXT_FREE,
                 ),
             ))
         }
@@ -333,7 +333,7 @@ fn evolving_array_change<'a>(
                 program_id,
                 &assignment.right,
                 Some(assignment_id),
-                GetTypeFlags::CONTEXT_FREE,
+                CheckMode::CONTEXT_FREE,
             );
             match checker.ty_kind(assigned_type) {
                 TyKind::Array(array) => Some(EvolvingArrayChange::Reset(array.element_type)),
@@ -986,9 +986,9 @@ fn assigned_type_for_write<'a>(
     if let AstKind::VariableDeclarator(declarator) = checker.nodes(program_id).kind(write_node_id) {
         return declarator.init.as_ref().map(|initializer| {
             let flags = if declarator.kind == oxc_ast::ast::VariableDeclarationKind::Const {
-                GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS
+                CheckMode::CONTEXT_FREE | CheckMode::PRESERVE_LITERALS
             } else {
-                GetTypeFlags::CONTEXT_FREE
+                CheckMode::CONTEXT_FREE
             };
             checker.get_type_of_expression_with_node(
                 program_id,
@@ -1012,7 +1012,7 @@ fn assigned_type_for_write<'a>(
         program_id,
         &assignment.right,
         Some(assignment_id),
-        GetTypeFlags::CONTEXT_FREE,
+        CheckMode::CONTEXT_FREE,
     ))
 }
 
@@ -1159,7 +1159,7 @@ fn loop_write_type<'a>(
                         program_id,
                         &assignment.right,
                         Some(parent_id),
-                        GetTypeFlags::CONTEXT_FREE,
+                        CheckMode::CONTEXT_FREE,
                     );
                     if checker.is_assignable_to(seed_type, checker.ty.number())
                         && checker.is_assignable_to(right, checker.ty.number())

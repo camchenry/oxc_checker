@@ -211,41 +211,35 @@ impl<'a> BindingPatternKind<'a> {
     }
 }
 
-// TODO: Consolidate this with `CheckMode`?
 bitflags! {
-    /// Flags for changing behavior when getting the types of expressions or nodes.
+    /// Flags that control how expressions and nodes are checked.
     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-    pub(crate) struct GetTypeFlags: u8 {
+    pub(crate) struct CheckMode: u8 {
+        /// No specialized checking behavior.
         const NONE = 0;
         /// Indicates that when literals are encountered, they should be preserved instead of widened
         /// to a more general type. For example: prefer `123` over `number`, `"foo"` over `string`.
         const PRESERVE_LITERALS = 1 << 0;
         /// Indicates expression typing should avoid flow-sensitive/contextual recursive queries.
         const CONTEXT_FREE = 1 << 1;
-    }
-}
-
-impl GetTypeFlags {
-    pub fn preserve_literals(&self) -> bool {
-        self.contains(GetTypeFlags::PRESERVE_LITERALS)
-    }
-
-    pub fn context_free(&self) -> bool {
-        self.contains(GetTypeFlags::CONTEXT_FREE)
-    }
-}
-
-bitflags! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-    struct CheckMode: u8 {
-        const NONE = 0;
-        const CONTEXTUAL = 1 << 0;
-        const FORCE_TUPLE = 1 << 1;
-        const CONST_CONTEXT = 1 << 2;
+        /// Indicates that an expression is being checked against a contextual type.
+        const CONTEXTUAL = 1 << 2;
+        /// Indicates that an array literal should be inferred as a tuple.
+        const FORCE_TUPLE = 1 << 3;
+        /// Indicates that an expression is being checked in a `const` context.
+        const CONST_CONTEXT = 1 << 4;
     }
 }
 
 impl CheckMode {
+    pub fn preserve_literals(&self) -> bool {
+        self.contains(Self::PRESERVE_LITERALS)
+    }
+
+    pub fn context_free(&self) -> bool {
+        self.contains(Self::CONTEXT_FREE)
+    }
+
     fn force_tuple(self) -> bool {
         self.contains(Self::FORCE_TUPLE)
     }
@@ -257,37 +251,26 @@ impl CheckMode {
 
 #[derive(Debug, Clone, Copy)]
 struct ExpressionCheckContext<'a> {
-    flags: GetTypeFlags,
     contextual_type: Option<Ty<'a>>,
     check_mode: CheckMode,
 }
 
 impl<'a> ExpressionCheckContext<'a> {
-    fn new(flags: GetTypeFlags) -> Self {
+    fn new(check_mode: CheckMode) -> Self {
         Self {
-            flags,
-            contextual_type: None,
-            check_mode: CheckMode::NONE,
-        }
-    }
-
-    fn new_in_check_mode(flags: GetTypeFlags, check_mode: CheckMode) -> Self {
-        Self {
-            flags,
             contextual_type: None,
             check_mode,
         }
     }
 
-    fn with_flags(self, flags: GetTypeFlags) -> Self {
-        Self { flags, ..self }
+    fn with_mode(self, check_mode: CheckMode) -> Self {
+        Self { check_mode, ..self }
     }
 
     fn with_contextual_type(self, contextual_type: Ty<'a>, check_mode: CheckMode) -> Self {
         Self {
             contextual_type: Some(contextual_type),
             check_mode: self.check_mode | check_mode,
-            ..self
         }
     }
 
@@ -885,7 +868,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         expression: &'a Expression<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Ty<'a> {
         self.check_expression_with_context(
             program_id,
@@ -902,7 +885,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         node_id: Option<NodeId>,
         context: ExpressionCheckContext<'a>,
     ) -> Ty<'a> {
-        let flags = context.flags;
+        let flags = context.check_mode;
         match expression {
             AstKind::IdentifierReference(identifier) => {
                 let symbol = self
@@ -964,7 +947,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         program_id,
                         &unary_expression.argument,
                         node_id,
-                        flags | GetTypeFlags::PRESERVE_LITERALS,
+                        flags | CheckMode::PRESERVE_LITERALS,
                     );
                     match get_type_facts(self.arena(), argument_type) {
                         TypeFacts::TRUTHY => self.ty.boolean_false(),
@@ -1058,9 +1041,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 if is_const_type_reference(&assertion.type_annotation) =>
             {
                 let const_context = context
-                    .with_flags(
-                        flags | GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS,
-                    )
+                    .with_mode(flags | CheckMode::CONTEXT_FREE | CheckMode::PRESERVE_LITERALS)
                     .with_check_mode(CheckMode::CONST_CONTEXT | CheckMode::FORCE_TUPLE);
                 self.check_expression_with_context(
                     program_id,
@@ -1106,9 +1087,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.get_type_from_ts_type(program_id, &satisfies_expr.type_annotation);
                 let target_type = self.expand_type(program_id, target_type, 0);
                 let satisfies_context = context
-                    .with_flags(
-                        flags | GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS,
-                    )
+                    .with_mode(flags | CheckMode::CONTEXT_FREE | CheckMode::PRESERVE_LITERALS)
                     .with_contextual_type(target_type, CheckMode::CONTEXTUAL);
                 self.check_expression_with_context(
                     program_id,
@@ -1166,7 +1145,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                                     program_id,
                                     e,
                                     node_id,
-                                    GetTypeFlags::NONE,
+                                    CheckMode::NONE,
                                 )
                             }),
                         )
@@ -1214,7 +1193,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     program_id,
                     &update.argument,
                     node_id,
-                    flags | GetTypeFlags::CONTEXT_FREE,
+                    flags | CheckMode::CONTEXT_FREE,
                 );
                 let target_type = self.expand_type(program_id, target_type, 0);
                 match self.ty_kind(target_type) {
@@ -1422,7 +1401,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         binary_expression: &'a BinaryExpression<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Ty<'a> {
         let left = self.get_type_of_expression_with_node(
             program_id,
@@ -1473,14 +1452,14 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         assignment_expression: &'a AssignmentExpression<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Ty<'a> {
         let left = if let Some(target) = assignment_expression.left.as_simple_assignment_target() {
             self.get_type_of_simple_assignment_target(
                 program_id,
                 target,
                 node_id,
-                flags | GetTypeFlags::CONTEXT_FREE,
+                flags | CheckMode::CONTEXT_FREE,
             )
         } else {
             self.ty.error(TypeErrorKind::UnsupportedType)
@@ -1489,7 +1468,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             program_id,
             &assignment_expression.right,
             node_id,
-            flags | GetTypeFlags::PRESERVE_LITERALS,
+            flags | CheckMode::PRESERVE_LITERALS,
         );
         match assignment_expression.operator {
             AssignmentOperator::Assign => right,
@@ -1526,7 +1505,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         logical: &'a LogicalExpression<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Ty<'a> {
         let left = self.get_type_of_expression_with_node(program_id, &logical.left, node_id, flags);
         let right =
@@ -1546,7 +1525,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         target: &'a SimpleAssignmentTarget<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Ty<'a> {
         match target {
             SimpleAssignmentTarget::AssignmentTargetIdentifier(identifier) => {
@@ -1667,7 +1646,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     program_id,
                     expression,
                     node_id,
-                    GetTypeFlags::CONTEXT_FREE | GetTypeFlags::PRESERVE_LITERALS,
+                    CheckMode::CONTEXT_FREE | CheckMode::PRESERVE_LITERALS,
                 );
                 // TODO: Just use `template_substitution_static_value` directly here?
                 value.push_str(
@@ -1913,13 +1892,13 @@ impl<'a, 'store> Checker<'a, 'store> {
             program_id,
             &conditional.consequent,
             node_id,
-            GetTypeFlags::PRESERVE_LITERALS,
+            CheckMode::PRESERVE_LITERALS,
         );
         let alternate = self.get_type_of_expression_with_node(
             program_id,
             &conditional.alternate,
             node_id,
-            GetTypeFlags::PRESERVE_LITERALS,
+            CheckMode::PRESERVE_LITERALS,
         );
 
         self.ty.union([consequent, alternate])
@@ -2440,7 +2419,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                                 program_id,
                                 expr,
                                 None,
-                                GetTypeFlags::NONE,
+                                CheckMode::NONE,
                             )
                         });
                         self.get_template_literal_type(program_id, quasis, expressions)
@@ -5166,7 +5145,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             program_id,
             super_class,
             Some(class.node_id.get()),
-            GetTypeFlags::NONE,
+            CheckMode::NONE,
         );
         let TyKind::TypeQuery(query) = self.ty_kind(super_type) else {
             return None;
@@ -5187,9 +5166,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         node_id: Option<NodeId>,
         context: ExpressionCheckContext<'a>,
     ) -> Ty<'a> {
-        let mut spread_flags = context.flags;
+        let mut spread_flags = context.check_mode;
         if !context.check_mode.const_context() {
-            spread_flags.remove(GetTypeFlags::PRESERVE_LITERALS);
+            spread_flags.remove(CheckMode::PRESERVE_LITERALS);
         }
 
         // TODO(perf): pre-allocate
@@ -5210,17 +5189,16 @@ impl<'a, 'store> Checker<'a, 'store> {
                             0,
                         )
                     });
-                    let mut flags = context.flags;
+                    let mut flags = context.check_mode;
                     if !context.check_mode.const_context()
                         && contextual_type
                             .is_none_or(|ty| !type_contains_literal_type(self.arena(), ty, 0))
                     {
-                        flags.remove(GetTypeFlags::PRESERVE_LITERALS);
+                        flags.remove(CheckMode::PRESERVE_LITERALS);
                     }
                     let property_context = ExpressionCheckContext {
-                        flags,
                         contextual_type,
-                        check_mode: context.check_mode,
+                        check_mode: flags,
                     };
                     let ty = self.check_expression_with_context(
                         program_id,
@@ -5644,7 +5622,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         member: &'a StaticMemberExpression<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Ty<'a> {
         let object_type =
             self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
@@ -5730,7 +5708,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         member: &'a PrivateFieldExpression<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Ty<'a> {
         let object_type =
             self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
@@ -5896,7 +5874,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         member: &'a ComputedMemberExpression<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Ty<'a> {
         let object_type =
             self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
@@ -5905,7 +5883,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             program_id,
             &member.expression,
             node_id,
-            flags | GetTypeFlags::PRESERVE_LITERALS,
+            flags | CheckMode::PRESERVE_LITERALS,
         );
         let lookup_key_type = self.expand_type_for_index_lookup(program_id, key_type, 0);
         let indexed_access_resolution =
@@ -6178,7 +6156,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         call_expression: &'a CallExpression<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Ty<'a> {
         let callee_type = self.get_type_of_expression_with_node(
             program_id,
@@ -6245,7 +6223,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             program_id,
             &tagged_template.tag,
             node_id,
-            GetTypeFlags::NONE,
+            CheckMode::NONE,
         );
         let candidates =
             self.get_signatures_of_type_in_program(program_id, tag_type, SignatureKind::Call);
@@ -6348,9 +6326,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 let parameter_type = self.get_call_parameter_type_at(function, argument_index);
                 let flags =
                     if parameter_type.is_some_and(|ty| self.could_contain_type_variables(ty)) {
-                        GetTypeFlags::PRESERVE_LITERALS
+                        CheckMode::PRESERVE_LITERALS
                     } else {
-                        GetTypeFlags::NONE
+                        CheckMode::NONE
                     };
                 let argument_type =
                     self.get_type_of_expression_with_node(program_id, expression, node_id, flags);
@@ -6391,7 +6369,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             std::iter::once(None).chain(tagged_template.quasi.expressions.iter().map(Some)),
             node_id,
             substitutions,
-            GetTypeFlags::NONE,
+            CheckMode::NONE,
         )
     }
 
@@ -6761,7 +6739,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         call_kind: CallKind<'a>,
         node_id: Option<NodeId>,
         require_applicable: bool,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Option<ResolvedSignatureCandidate<'a>> {
         let function = signature.function(self.arena());
         let inference = self.infer_call_kind_type_parameter_resolution(
@@ -6802,7 +6780,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             program_id,
             &call_expression.callee,
             Some(call_expression.node_id.get()),
-            GetTypeFlags::CONTEXT_FREE,
+            CheckMode::CONTEXT_FREE,
         );
         self.get_signatures_of_type(callee_type, SignatureKind::Call)
             .into_iter()
@@ -6813,7 +6791,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     CallKind::Call(call_expression),
                     Some(call_expression.node_id.get()),
                     true,
-                    GetTypeFlags::CONTEXT_FREE,
+                    CheckMode::CONTEXT_FREE,
                 )
             })
             .find_map(|candidate| {
@@ -6911,7 +6889,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         call_kind: CallKind<'a>,
         node_id: Option<NodeId>,
         substitutions: &TypeParameterSubstitutions<'a>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> bool {
         let type_arguments = call_kind.type_arguments();
         let type_argument_count =
@@ -6958,7 +6936,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         &self,
         program_id: ProgramId,
         new_expression: &'a NewExpression<'a>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Ty<'a> {
         let Expression::Identifier(identifier) = &new_expression.callee else {
             return self.ty.error(TypeErrorKind::UnsupportedType);
@@ -7040,7 +7018,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     CallKind::New(new_expression),
                     None,
                     true,
-                    GetTypeFlags::NONE,
+                    CheckMode::NONE,
                 )
             })
             .collect::<Vec<_>>();
@@ -7054,7 +7032,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         CallKind::New(new_expression),
                         None,
                         false,
-                        GetTypeFlags::NONE,
+                        CheckMode::NONE,
                     )
                 })
             })
@@ -7068,7 +7046,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         arguments: impl Iterator<Item = Option<&'a Expression<'a>>>,
         node_id: Option<NodeId>,
         substitutions: &TypeParameterSubstitutions<'a>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> bool {
         let mapper = substitutions.to_mapper(self.arena());
         for (index, argument) in arguments.enumerate() {
@@ -7080,9 +7058,9 @@ impl<'a, 'store> Checker<'a, 'store> {
             };
             let flags = flags
                 | if self.should_preserve_argument_literals_for_parameter_type(parameter_type) {
-                    GetTypeFlags::PRESERVE_LITERALS
+                    CheckMode::PRESERVE_LITERALS
                 } else {
-                    GetTypeFlags::NONE
+                    CheckMode::NONE
                 };
             let parameter_type = self.instantiate_type(parameter_type, &mapper);
             let argument_type = self.get_type_of_call_argument_for_parameter(
@@ -8154,7 +8132,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                             program_id,
                             value,
                             node_id,
-                            GetTypeFlags::NONE,
+                            CheckMode::NONE,
                         )
                     },
                 )
@@ -8462,7 +8440,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             program_id,
             call_kind.callee(),
             Some(node_id),
-            GetTypeFlags::NONE,
+            CheckMode::NONE,
         );
         let signature = self
             .get_signatures_of_type_in_program(program_id, callee_type, call_kind.signature_kind())
@@ -8633,7 +8611,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     program_id,
                     &property.value,
                     None,
-                    GetTypeFlags::NONE,
+                    CheckMode::NONE,
                 );
                 Some(TyProperty {
                     name,
@@ -8698,10 +8676,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     program_id,
                     array,
                     None,
-                    ExpressionCheckContext::new_in_check_mode(
-                        GetTypeFlags::NONE,
-                        CheckMode::FORCE_TUPLE,
-                    ),
+                    ExpressionCheckContext::new(CheckMode::FORCE_TUPLE),
                 )
             },
         )?;
@@ -8739,7 +8714,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             program_id,
             &call_expression.callee,
             Some(node_id),
-            GetTypeFlags::NONE,
+            CheckMode::NONE,
         );
         let callee_signature = self
             .get_signatures_of_type_in_program(program_id, callee_type, SignatureKind::Call)
@@ -8760,9 +8735,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     let parameter_type = self.get_call_parameter_type_at(callee_function, index);
                     let flags =
                         if parameter_type.is_some_and(|ty| self.could_contain_type_variables(ty)) {
-                            GetTypeFlags::PRESERVE_LITERALS
+                            CheckMode::PRESERVE_LITERALS
                         } else {
-                            GetTypeFlags::NONE
+                            CheckMode::NONE
                         };
                     self.get_type_of_expression_with_node(
                         program_id,
@@ -8789,7 +8764,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         argument: &'a Expression<'a>,
         node_id: Option<NodeId>,
         parameter_type: Ty<'a>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> Ty<'a> {
         let contextual_type =
             self.get_apparent_contextual_parameter_type(program_id, parameter_type);
@@ -8806,7 +8781,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 program_id,
                 array,
                 node_id,
-                ExpressionCheckContext::new_in_check_mode(flags, CheckMode::FORCE_TUPLE),
+                ExpressionCheckContext::new(flags | CheckMode::FORCE_TUPLE),
             );
         }
 
@@ -9197,7 +9172,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     program_id,
                     &assignment.expression,
                     Some(node_id),
-                    GetTypeFlags::PRESERVE_LITERALS,
+                    CheckMode::PRESERVE_LITERALS,
                 ))
             })
     }
@@ -9316,7 +9291,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                             program_id,
                             expression,
                             Some(declaration.node_id()),
-                            GetTypeFlags::PRESERVE_LITERALS,
+                            CheckMode::PRESERVE_LITERALS,
                         );
                         return Some(self.ty.property(property_name, ty));
                     }
@@ -9607,16 +9582,15 @@ impl<'a, 'store> Checker<'a, 'store> {
         context: ExpressionCheckContext<'a>,
         contextual_type: Option<Ty<'a>>,
     ) -> ExpressionCheckContext<'a> {
-        let mut flags = context.flags | GetTypeFlags::CONTEXT_FREE;
+        let mut flags = context.check_mode | CheckMode::CONTEXT_FREE;
         if !context.check_mode.const_context()
             && contextual_type.is_none_or(|ty| !type_contains_literal_type(self.arena(), ty, 0))
         {
-            flags.remove(GetTypeFlags::PRESERVE_LITERALS);
+            flags.remove(CheckMode::PRESERVE_LITERALS);
         }
         ExpressionCheckContext {
-            flags,
             contextual_type,
-            check_mode: context.check_mode,
+            check_mode: flags,
         }
     }
 
@@ -9627,7 +9601,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         node_id: Option<NodeId>,
         context: ExpressionCheckContext<'a>,
     ) -> Ty<'a> {
-        let flags = context.flags;
+        let flags = context.check_mode;
         match element {
             ArrayExpressionElement::SpreadElement(spread) => {
                 let argument_type = self.check_expression_with_context(
@@ -9650,7 +9624,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 program_id,
                 AstKind::from_expression(element.to_expression()),
                 node_id,
-                context.with_flags(flags),
+                context.with_mode(flags),
             ),
         }
     }
@@ -10160,7 +10134,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 program_id,
                 right,
                 Some(assignment.node_id.get()),
-                GetTypeFlags::NONE,
+                CheckMode::NONE,
             );
             if let Some(existing) = properties.iter_mut().find(|property| property.name == name) {
                 existing.ty = ty;
@@ -10286,9 +10260,9 @@ impl<'a, 'store> Checker<'a, 'store> {
             let flags = if declarator.kind == VariableDeclarationKind::Const
                 && !self.is_in_exported_declaration(program_id, declaration)
             {
-                GetTypeFlags::PRESERVE_LITERALS
+                CheckMode::PRESERVE_LITERALS
             } else {
-                GetTypeFlags::NONE
+                CheckMode::NONE
             };
             let ty = self.get_type_of_expression_with_node(
                 program_id,
@@ -10342,7 +10316,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         program_id,
                         &for_in.right,
                         Some(ancestor_id),
-                        GetTypeFlags::NONE,
+                        CheckMode::NONE,
                     );
                     if self.is_scoped_type_parameter_reference(program_id, ancestor_id, object_type)
                     {
@@ -10801,7 +10775,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             program_id,
             &await_expr.argument,
             node_id,
-            GetTypeFlags::PRESERVE_LITERALS,
+            CheckMode::PRESERVE_LITERALS,
         );
         self.get_awaited_type(program_id, ty)
     }
@@ -11494,21 +11468,21 @@ impl<'a> Checker<'a, '_> {
                 node.program_id,
                 expression_kind,
                 Some(node.node_id),
-                ExpressionCheckContext::new(GetTypeFlags::PRESERVE_LITERALS),
+                ExpressionCheckContext::new(CheckMode::PRESERVE_LITERALS),
             ),
             expression_kind @ AstKind::Function(function) if function.is_expression() => self
                 .check_expression_with_context(
                     node.program_id,
                     expression_kind,
                     Some(node.node_id),
-                    ExpressionCheckContext::new(GetTypeFlags::PRESERVE_LITERALS),
+                    ExpressionCheckContext::new(CheckMode::PRESERVE_LITERALS),
                 ),
             expression_kind @ AstKind::Class(class) if class.is_expression() => self
                 .check_expression_with_context(
                     node.program_id,
                     expression_kind,
                     Some(node.node_id),
-                    ExpressionCheckContext::new(GetTypeFlags::PRESERVE_LITERALS),
+                    ExpressionCheckContext::new(CheckMode::PRESERVE_LITERALS),
                 ),
             AstKind::Directive(directive) => self.ty.string_literal(&directive.expression.value),
             AstKind::BindingIdentifier(identifier) => {
@@ -11700,9 +11674,9 @@ impl<'a> Checker<'a, '_> {
                     || contextual_type
                         .is_some_and(|ty| type_contains_literal_type(self.arena(), ty, 0))
                 {
-                    GetTypeFlags::PRESERVE_LITERALS
+                    CheckMode::PRESERVE_LITERALS
                 } else {
-                    GetTypeFlags::NONE
+                    CheckMode::NONE
                 };
                 let mut context = ExpressionCheckContext::new(flags);
                 if let Some(contextual_type) = contextual_type {
@@ -11723,7 +11697,7 @@ impl<'a> Checker<'a, '_> {
                 node.program_id,
                 &expr.expression,
                 Some(node.node_id),
-                GetTypeFlags::PRESERVE_LITERALS,
+                CheckMode::PRESERVE_LITERALS,
             ),
             AstKind::MethodDefinition(method) => {
                 let class = self

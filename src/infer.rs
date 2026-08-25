@@ -17,7 +17,7 @@ use std::cell::RefCell;
 
 use crate::{
     checker::Checker,
-    checker_impl::{CallKind, FunctionKind, GetTypeFlags},
+    checker_impl::{CallKind, CheckMode, FunctionKind},
     limits::{CONDITIONAL_INFER_MATCH_MAX_DEPTH, CONDITIONAL_TYPE_MAX_DEPTH},
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
@@ -1350,7 +1350,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         function: &'a TyFunction<'a>,
         call_kind: CallKind<'a>,
         node_id: Option<NodeId>,
-        flags: GetTypeFlags,
+        flags: CheckMode,
     ) -> InferenceResolution<'a> {
         let argument_types = call_kind
             .arguments()
@@ -1362,9 +1362,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     function_parameter_type_at_call_index(self.arena(), function, index)?;
                 let flags = flags
                     | if self.could_contain_type_variables(parameter_type) {
-                        GetTypeFlags::PRESERVE_LITERALS
+                        CheckMode::PRESERVE_LITERALS
                     } else {
-                        GetTypeFlags::NONE
+                        CheckMode::NONE
                     };
                 let contextual_type =
                     self.inference_contextual_parameter_type(function, parameter_type);
@@ -1466,12 +1466,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         let return_type = if let FunctionKind::ArrowFunction(arrow_function) = function
             && let Some(expression) = arrow_function.get_expression()
         {
-            self.get_type_of_expression_with_node(
-                program_id,
-                expression,
-                node_id,
-                GetTypeFlags::NONE,
-            )
+            self.get_type_of_expression_with_node(program_id, expression, node_id, CheckMode::NONE)
         } else {
             let body = match function {
                 FunctionKind::Function(f) => f.body.as_deref(),
@@ -1490,9 +1485,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 Ty::Void
             } else {
                 let flags = if expressions.return_expressions.len() > 1 || has_implicit_return {
-                    GetTypeFlags::PRESERVE_LITERALS
+                    CheckMode::PRESERVE_LITERALS
                 } else {
-                    GetTypeFlags::NONE
+                    CheckMode::NONE
                 };
                 self.ty.union(
                     expressions
@@ -1511,9 +1506,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 Ty::Never
             } else {
                 let flags = if expressions.yield_expressions.len() > 1 {
-                    GetTypeFlags::PRESERVE_LITERALS
+                    CheckMode::PRESERVE_LITERALS
                 } else {
-                    GetTypeFlags::NONE
+                    CheckMode::NONE
                 };
                 self.ty
                     .union(expressions.yield_expressions.into_iter().map(|argument| {
