@@ -4622,19 +4622,27 @@ impl<'a, 'store> Checker<'a, 'store> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
         let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
         let explicit_type_argument_count = type_arguments.len();
-        let target = self
-            .get_type_symbol_and_declaration_for_name(program_id, name)
-            .map(|(symbol, _)| symbol);
+        let Some((symbol, declaration)) =
+            self.get_type_symbol_and_declaration_for_name(program_id, name)
+        else {
+            return self.type_reference_with_display_type_argument_count(
+                program_id,
+                name,
+                type_arguments.iter().copied(),
+                explicit_type_argument_count,
+            );
+        };
 
         let implicit_display_type_argument_count =
             self.fill_default_type_arguments(program_id, name, &mut type_arguments);
         let should_display_implicit_defaults = !self.hide_implicit_type_argument_display.get()
-            && (target
-                .and_then(|symbol| self.store.entry(symbol.program_id))
+            && (self
+                .store
+                .entry(symbol.program_id)
                 .is_some_and(program::ProgramEntry::is_lib)
                 || (explicit_type_argument_count > 0
                     && implicit_display_type_argument_count > 0
-                    && target.is_some_and(|symbol| symbol.program_id == program_id)));
+                    && symbol.program_id == program_id));
 
         if let Some(array_type) =
             self.get_global_array_type_reference_type(program_id, name, type_arguments.as_slice())
@@ -4642,9 +4650,11 @@ impl<'a, 'store> Checker<'a, 'store> {
             return array_type;
         }
 
-        if let Some(alias_type) =
-            self.get_expanded_type_query_alias_reference(program_id, name, &type_arguments)
-        {
+        if let Some(alias_type) = self.get_expanded_type_query_alias_declaration(
+            symbol.program_id,
+            declaration,
+            &type_arguments,
+        ) {
             return alias_type;
         }
 
@@ -4930,23 +4940,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         Some(self.ty.object_with_signatures(properties, signatures))
-    }
-
-    // TODO(inline)
-    /// Expand references to aliases whose underlying type is a `typeof` query.
-    fn get_expanded_type_query_alias_reference(
-        &self,
-        program_id: ProgramId,
-        type_name: &str,
-        type_arguments: &[Ty<'a>],
-    ) -> Option<Ty<'a>> {
-        let (symbol, declaration) =
-            self.get_type_symbol_and_declaration_for_name(program_id, type_name)?;
-        self.get_expanded_type_query_alias_declaration(
-            symbol.program_id,
-            declaration,
-            type_arguments,
-        )
     }
 
     /// Resolve a type-query alias declaration and substitute the alias type arguments.
