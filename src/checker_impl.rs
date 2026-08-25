@@ -52,13 +52,12 @@ use crate::{
     type_set::UnionAccumulator,
     types::{
         CheckerArena, IndexInfo, LabeledTupleElement, MappedModifier, Signature, SignatureKind,
-        TupleElement, TupleReadonly, Ty, TyFunction, TyKind, TyMapped, TyObject, TyParameter,
-        TyProperty, TyPropertyFlags, TyTypeParameter, TyTypePredicate, TyTypeQuery,
-        TyTypeReference, TypeErrorKind, binding_pattern_to_parameter_name,
-        function_maximum_argument_count, function_minimum_argument_count,
-        function_parameter_type_at_call_index, property_name_flags,
-        return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
-        visit_type,
+        TupleElement, TupleReadonly, Ty, TyFunction, TyKind, TyMapped, TyParameter, TyProperty,
+        TyPropertyFlags, TyTypeParameter, TyTypePredicate, TyTypeQuery, TyTypeReference,
+        TypeErrorKind, binding_pattern_to_parameter_name, function_maximum_argument_count,
+        function_minimum_argument_count, function_parameter_type_at_call_index,
+        property_name_flags, return_type_and_type_predicate_from_annotation_with_resolver,
+        type_predicate_return_type, visit_type,
     },
 };
 
@@ -5904,9 +5903,16 @@ impl<'a, 'store> Checker<'a, 'store> {
                 }
             }
             TyKind::Object(object) => {
-                return self.get_property_type_of_global_function_augmented_object_type(
+                return self.get_property_type_of_global_function_augmented_type(
                     program_id,
-                    object,
+                    object
+                        .signatures()
+                        .iter()
+                        .any(|signature| signature.kind == SignatureKind::Call),
+                    object
+                        .signatures()
+                        .iter()
+                        .any(|signature| signature.kind == SignatureKind::Construct),
                     property_name,
                 );
             }
@@ -5967,27 +5973,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.get_property_type_of_global_interface_reference(
             program_id,
             interface_type?,
-            property_name,
-        )
-    }
-
-    // TODO(inline)
-    fn get_property_type_of_global_function_augmented_object_type(
-        &self,
-        program_id: ProgramId,
-        object: &TyObject<'a>,
-        property_name: &str,
-    ) -> Option<Ty<'a>> {
-        self.get_property_type_of_global_function_augmented_type(
-            program_id,
-            object
-                .signatures()
-                .iter()
-                .any(|signature| signature.kind == SignatureKind::Call),
-            object
-                .signatures()
-                .iter()
-                .any(|signature| signature.kind == SignatureKind::Construct),
             property_name,
         )
     }
