@@ -6505,10 +6505,11 @@ impl<'a, 'store> Checker<'a, 'store> {
             TSSignature::TSConstructSignatureDeclaration(signature)
                 if expected_kind == SignatureKind::Construct =>
             {
-                self.signature_from_function_parts(
+                self.signature_from_function_parts_with_this(
                     program_id,
                     SignatureKind::Construct,
                     signature.type_parameters.as_deref(),
+                    None,
                     signature.params.as_ref(),
                     signature.return_type.as_deref(),
                 )
@@ -6563,25 +6564,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             method.this_param.as_deref(),
             method.params.as_ref(),
             method.return_type.as_deref(),
-        )
-    }
-
-    // TODO(inline)
-    fn signature_from_function_parts(
-        &self,
-        program_id: ProgramId,
-        kind: SignatureKind,
-        type_parameters: Option<&'a oxc_ast::ast::TSTypeParameterDeclaration<'a>>,
-        parameters: &'a FormalParameters<'a>,
-        return_type: Option<&'a TSTypeAnnotation<'a>>,
-    ) -> Signature<'a> {
-        self.signature_from_function_parts_with_this(
-            program_id,
-            kind,
-            type_parameters,
-            None,
-            parameters,
-            return_type,
         )
     }
 
