@@ -3499,7 +3499,6 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         let ty = self.instantiate_type(mapped.template, &mapper);
         let ty = self.expand_type(program_id, ty, depth + 1);
-        let ty = self.expand_deferred_conditional_branches_at_use(program_id, ty, depth + 1);
         Some(
             if matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus) {
                 ty.or_undefined(self.arena())
@@ -3528,72 +3527,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             _ => self.instantiate_type(name_type, mapper),
         };
         self.expand_type(program_id, name_type, depth + 1)
-    }
-
-    // TODO(inline)?: we are just handling one type here, feels like it should probably be a flag on `expand_type` instead
-    fn expand_deferred_conditional_branches_at_use(
-        &self,
-        program_id: ProgramId,
-        ty: Ty<'a>,
-        depth: usize,
-    ) -> Ty<'a> {
-        if depth >= TYPE_EXPANSION_MAX_DEPTH {
-            return ty;
-        }
-
-        match self.ty_kind(ty) {
-            TyKind::Conditional(conditional) => self.ty.conditional(
-                self.expand_deferred_conditional_branch_at_use(
-                    program_id,
-                    conditional.check_type,
-                    depth + 1,
-                ),
-                self.expand_deferred_conditional_branch_at_use(
-                    program_id,
-                    conditional.extends_type,
-                    depth + 1,
-                ),
-                self.expand_deferred_conditional_branch_at_use(
-                    program_id,
-                    conditional.true_type,
-                    depth + 1,
-                ),
-                self.expand_deferred_conditional_branch_at_use(
-                    program_id,
-                    conditional.false_type,
-                    depth + 1,
-                ),
-                conditional.is_distributive,
-            ),
-            _ => ty,
-        }
-    }
-
-    fn expand_deferred_conditional_branch_at_use(
-        &self,
-        program_id: ProgramId,
-        ty: Ty<'a>,
-        depth: usize,
-    ) -> Ty<'a> {
-        if depth >= TYPE_EXPANSION_MAX_DEPTH {
-            return ty;
-        }
-
-        match self.ty_kind(ty) {
-            TyKind::TypeReference(reference) => {
-                let type_arguments = reference
-                    .type_arguments
-                    .iter()
-                    .map(|ty| self.expand_type_for_index_lookup(program_id, *ty, depth + 1))
-                    .collect::<Vec<_>>();
-                self.rebuild_type_reference_with_display_type_argument_count(
-                    ty,
-                    type_arguments,
-                    reference.display_type_argument_count,
-                )
-            }
-            _ => self.expand_type_for_index_lookup(program_id, ty, depth + 1),
-        }
     }
 
     pub(super) fn expand_type(&self, program_id: ProgramId, ty: Ty<'a>, depth: usize) -> Ty<'a> {
@@ -3894,7 +3827,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             };
             let ty = self.instantiate_type(mapped.template, &mapper);
             let ty = self.expand_type(program_id, ty, depth + 1);
-            let ty = self.expand_deferred_conditional_branches_at_use(program_id, ty, depth + 1);
             expanded.push(TyProperty {
                 name: property_name,
                 flags: property.flags,
@@ -3960,7 +3892,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             };
             let ty = self.instantiate_type(mapped.template, &mapper);
             let ty = self.expand_type(program_id, ty, depth + 1);
-            let ty = self.expand_deferred_conditional_branches_at_use(program_id, ty, depth + 1);
             let source_property = source_properties.as_ref().and_then(|properties| {
                 properties
                     .iter()

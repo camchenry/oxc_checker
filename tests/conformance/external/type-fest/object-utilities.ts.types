@@ -173,7 +173,8 @@ type DefaultExceptOptions = {
 > ^^^^^^^^^^^^^^^^^: false   (BooleanLiteral) (Identifier)
 
 export type Except<
->           ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+>           ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options["requireExactProps" & keyof Options]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+          expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 
   ObjectType,
 > ^^^^^^^^^^: any   (Any) (Identifier)
@@ -278,7 +279,8 @@ type _Except<
 >                  ^^^^^^^^: any   (Any) (Identifier)
 
 import type { Except } from './except'
->             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+>             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options["requireExactProps" & keyof Options]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+            expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 
 import type { HomomorphicPick } from './internal/index'
 >             ^^^^^^^^^^^^^^^: { [Key in Keys]: BaseType[Key]; }   (Mapped) (Identifier)
@@ -305,10 +307,12 @@ export type SetRequired<BaseType, Keys extends keyof BaseType> = Simplify<
 >                                                                ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (Mapped) (Identifier)
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options["requireExactProps" & keyof Options]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options["requireExactProps" & keyof Options]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 
   Except<BaseType, Keys> & Required<HomomorphicPick<BaseType, Keys>>
 >        ^^^^^^^^: any   (Any) (Identifier)
@@ -389,7 +393,8 @@ export type KeysOfUnion<ObjectType> = keyof UnionToIntersection<
 >                                           ^^^^^^^^^^: any   (Any) (Identifier)
 
 import type { Except } from '../source/except'
->             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+>             ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options["requireExactProps" & keyof Options]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+            expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 
 import type { KeysOfUnion } from '../source/keys-of-union'
 >             ^^^^^^^^^^^: keyof UnionToIntersection<ObjectType extends unknown ? Record<keyof ObjectType, never> : never>   (Keyof) (Identifier)
@@ -426,10 +431,12 @@ type PublicUser = Except<User, 'email'>
        expected: { id: string; name?: string; profile: { avatarUrl?: string; flags: string[]; }; }
 
 type PublicUser = Except<User, 'email'>
->                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+>                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options["requireExactProps" & keyof Options]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+                expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 
 type PublicUser = Except<User, 'email'>
->                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+>                 ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options["requireExactProps" & keyof Options]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+                expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 
 type PublicUser = Except<User, 'email'>
 >                        ^^^^: any   (Any) (Identifier)
@@ -439,10 +446,12 @@ type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
              expected: { id: string; name?: string; profile: { avatarUrl?: string; flags: string[]; }; } & Partial<Record<"email", never>>
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+>                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options["requireExactProps" & keyof Options]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+                      expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
->                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+>                       ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options["requireExactProps" & keyof Options]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+                      expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 
 type StrictPublicUser = Except<User, 'email', { requireExactProps: true }>
 >                              ^^^^: any   (Any) (Identifier)
@@ -474,10 +483,12 @@ type UserPreview = Simplify<
 >                  ^^^^^^^^: { [KeyType in keyof T]: T[KeyType]; }   (Mapped) (Identifier)
 
   Except<ContactableUser, 'profile'> & { displayName: string }
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options["requireExactProps" & keyof Options]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 
   Except<ContactableUser, 'profile'> & { displayName: string }
-> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+> ^^^^^^: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options["requireExactProps" & keyof Options]> : false) extends true ? Partial<Record<KeysType, never>> : {})   (Intersection) (Identifier)
+expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (("requireExactProps" extends keyof Options ? NonNullable<Options[keyof Options & "requireExactProps"]> : false) extends true ? Partial<Record<KeysType, never>> : {})
 
   Except<ContactableUser, 'profile'> & { displayName: string }
 >        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
