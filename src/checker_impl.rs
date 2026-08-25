@@ -11726,6 +11726,7 @@ impl<'a> Checker<'a, '_> {
     }
 
     pub fn get_type_of_symbol(&self, sym: SymbolRef) -> Ty<'a> {
+        // todo(perf): quick-to-compute types
         if let Some(ty) = self.cached_symbol_type(&self.value_type_cache, sym) {
             return ty;
         }
