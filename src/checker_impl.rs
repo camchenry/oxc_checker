@@ -6030,7 +6030,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.get_property_type_of_interface_type(program_id, reference, property_name)
     }
 
-    // TODO(inline): try keeping track of this in the checker state instead of traversing ancestors every time.
     fn is_in_contextually_typed_initializer(&self, program_id: ProgramId, node_id: NodeId) -> bool {
         self.nodes(program_id)
             .ancestors(node_id)
@@ -6041,8 +6040,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             })
     }
 
-    // TODO(inline): also, is this necessary? maybe there's a simpler way to use the context mode / checker state to just
-    // keep track of this automatically.
     fn is_in_const_context(&self, program_id: ProgramId, node_id: NodeId) -> bool {
         for ancestor in self.nodes(program_id).ancestors(node_id) {
             match ancestor.kind() {
@@ -6386,13 +6383,13 @@ impl<'a, 'store> Checker<'a, 'store> {
             .map(|ty| self.instantiate_type(ty, candidate.inference.mapper()))
     }
 
-    // TODO(inline)
     fn get_signatures_of_type_in_program(
         &self,
         program_id: ProgramId,
         ty: Ty<'a>,
         kind: SignatureKind,
     ) -> Vec<Signature<'a>> {
+        // todo(perf): fast-path for 1 signature case?
         let signatures = self.get_signatures_of_type(ty, kind);
         if !signatures.is_empty() {
             return signatures;
@@ -11577,9 +11574,8 @@ impl<'a> Checker<'a, '_> {
                     node.node_id,
                     property.value.span(),
                 );
-                let flags = if in_const_context
-                    || (matches!(property.value, Expression::BooleanLiteral(_))
-                        && self.is_in_contextually_typed_initializer(node.program_id, node.node_id))
+                let flags = if (matches!(property.value, Expression::BooleanLiteral(_))
+                    && self.is_in_contextually_typed_initializer(node.program_id, node.node_id))
                     || contextual_type
                         .is_some_and(|ty| type_contains_literal_type(self.arena(), ty, 0))
                 {
@@ -11592,8 +11588,11 @@ impl<'a> Checker<'a, '_> {
                     context = context.with_contextual_type(contextual_type, CheckMode::CONTEXTUAL);
                 }
                 if in_const_context {
-                    context =
-                        context.with_check_mode(CheckMode::CONST_CONTEXT | CheckMode::FORCE_TUPLE);
+                    context = context.with_check_mode(
+                        CheckMode::CONST_CONTEXT
+                            | CheckMode::FORCE_TUPLE
+                            | CheckMode::PRESERVE_LITERALS,
+                    );
                 }
                 self.check_expression_with_context(
                     node.program_id,
