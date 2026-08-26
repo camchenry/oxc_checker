@@ -7991,13 +7991,14 @@ impl<'a, 'store> Checker<'a, 'store> {
     }
 
     /// Resolve the type of a method definition on a class.
-    /// Getters can turn into non-function types, but generally this returns a function type.
+    /// Accessors (getters/setters) can turn into non-function types, but generally this returns a function type.
     fn get_type_of_method_definition(
         &self,
         program_id: ProgramId,
         method: &'a MethodDefinition<'a>,
         class_node_id: NodeId,
     ) -> Ty<'a> {
+        // TODO: Find a way with types to avoid debug assert here
         debug_assert!(matches!(
             self.semantic(program_id).nodes().kind(class_node_id),
             AstKind::Class(_),
@@ -8009,15 +8010,32 @@ impl<'a, 'store> Checker<'a, 'store> {
             Some(class_node_id),
         );
 
-        // For getters, the function type like `() => X` should just collapse into `X` to hide the fact that it's
-        // actually a functional call (since it's just accessed like a property)
-        if matches!(method.kind, MethodDefinitionKind::Get)
-            && let TyKind::Function(func) = self.ty_kind(inferred_method_type)
-        {
-            return func.return_type;
-        }
+        match method.kind {
+            // For getters: `() => T` collapses into `T` to hide the fact that it's actually a function call
+            MethodDefinitionKind::Get
+                if let TyKind::Function(func) = self.ty_kind(inferred_method_type) =>
+            {
+                func.return_type
+            }
+            // For setters: `(value: T) => void` collapses into `T`. If `T` is not annotated, then it must be inferred
+            // from the type of the getter.
+            MethodDefinitionKind::Set
+                if let TyKind::Function(func) = self.ty_kind(inferred_method_type) =>
+            {
+                // Try to return the given type, if possible
+                if let Some(param) = func.parameters.first()
+                    && !param.ty.is_any()
+                {
+                    return param.ty;
+                }
 
-        inferred_method_type
+                // TODO(correctness): Get the type from the getter. It may be inherited,
+                // so that adds to the complexity.
+
+                self.ty.any()
+            }
+            _ => inferred_method_type,
+        }
     }
 
     /// Resolve a class field's declared or inferred type.
