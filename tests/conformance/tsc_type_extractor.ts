@@ -8,6 +8,7 @@ import { Worker, isMainThread, parentPort, workerData } from "node:worker_thread
 import {
   API,
   NodeBuilderFlags,
+  ObjectFlags,
   SymbolFlags,
   TypeFlags,
   type Checker,
@@ -466,6 +467,21 @@ function errorRecord(recordPath: string, text: string, display: string): TypeRec
 }
 
 function typeName(type: TypeScriptType): string {
+  if (type.isTupleType()) {
+    return "Tuple";
+  }
+  if (type.isTypeReference()) {
+    return "TypeReference";
+  }
+  if (type.isObjectType()) {
+    if (type.objectFlags & ObjectFlags.Mapped) {
+      return "Mapped";
+    }
+    if (type.getCallSignatures().length > 0) {
+      return "Function";
+    }
+  }
+
   const names: Array<[TypeFlags, string]> = [
     [TypeFlags.StringLiteral, "StringLiteral"],
     [TypeFlags.NumberLiteral, "NumberLiteral"],

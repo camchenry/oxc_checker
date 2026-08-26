@@ -579,7 +579,8 @@ fn assignment_mismatches_have_separate_totals_and_no_file_summary() {
     assert_eq!(stats.mismatched_assignments, 1);
     assert!(report.contains("assign: matched=0 mismatched=1 total=1"));
     assert!(report.contains(":1 `source` should be assignable to :1 `target`"));
-    assert!(report.contains("      source: 1\n      target: number\n"));
+    assert!(report.contains("      source: 1    (NumberLiteral)\n"));
+    assert!(report.contains("      target: number    (Number)\n"));
     assert!(!report.contains("typescript source:"));
     assert!(!report.contains("      expected: true\n      actual:   false\n"));
     let file_header = report
@@ -611,17 +612,29 @@ fn assignment_mismatches_keep_distinct_typescript_and_oxc_pairs() {
             target_start: 20,
             target_text: "target".to_string(),
             should_be_assignable: true,
-            tsc_source_type: "string".to_string(),
-            tsc_target_type: "string".to_string(),
-            oxc_source_type: "string".to_string(),
-            oxc_target_type: r#""literal""#.to_string(),
+            tsc_source_type: TypeRecordType {
+                name: "String".to_string(),
+                display: "string".to_string(),
+            },
+            tsc_target_type: TypeRecordType {
+                name: "String".to_string(),
+                display: "string".to_string(),
+            },
+            oxc_source_type: TypeRecordType {
+                name: "String".to_string(),
+                display: "string".to_string(),
+            },
+            oxc_target_type: TypeRecordType {
+                name: "StringLiteral".to_string(),
+                display: r#""literal""#.to_string(),
+            },
         },
     );
 
-    assert!(snapshot.contains("      typescript source: string\n"));
-    assert!(snapshot.contains("      typescript target: string\n"));
-    assert!(snapshot.contains("      oxc source:        string\n"));
-    assert!(snapshot.contains("      oxc target:        \"literal\"\n"));
+    assert!(snapshot.contains("      typescript source: string    (String)\n"));
+    assert!(snapshot.contains("      typescript target: string    (String)\n"));
+    assert!(snapshot.contains("      oxc source: string    (String)\n"));
+    assert!(snapshot.contains("      oxc target: \"literal\"    (StringLiteral)\n"));
 }
 
 #[test]

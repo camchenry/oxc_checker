@@ -688,10 +688,10 @@ enum ComparisonError {
         target_start: u32,
         target_text: String,
         should_be_assignable: bool,
-        tsc_source_type: String,
-        tsc_target_type: String,
-        oxc_source_type: String,
-        oxc_target_type: String,
+        tsc_source_type: TypeRecordType,
+        tsc_target_type: TypeRecordType,
+        oxc_source_type: TypeRecordType,
+        oxc_target_type: TypeRecordType,
     },
 }
 
@@ -2683,10 +2683,8 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
                 if actual == Some(*expected) {
                     matched_assignments += 1;
                 } else {
-                    let type_display = |types: &TypeRecordMap, key: &TypeRecordKey| {
-                        types
-                            .get(key)
-                            .map_or_else(|| "<missing>".to_string(), |ty| ty.display.clone())
+                    let record_type = |types: &TypeRecordMap, key: &TypeRecordKey| {
+                        types.get(key).cloned().unwrap_or_else(missing_type_record)
                     };
                     errors.push(ComparisonError::AssignabilityMismatch {
                         start: source.start,
@@ -2694,13 +2692,13 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
                         target_start: target.start,
                         target_text: target.text.clone(),
                         should_be_assignable: *expected,
-                        tsc_source_type: type_display(tsc_by_key, source),
-                        tsc_target_type: type_display(tsc_by_key, target),
-                        oxc_source_type: assignability_type_display(
+                        tsc_source_type: record_type(tsc_by_key, source),
+                        tsc_target_type: record_type(tsc_by_key, target),
+                        oxc_source_type: assignability_record_type(
                             tsc_by_key.get(source),
                             oxc_by_key.get(source),
                         ),
-                        oxc_target_type: assignability_type_display(
+                        oxc_target_type: assignability_record_type(
                             tsc_by_key.get(target),
                             oxc_by_key.get(target),
                         ),
@@ -2718,16 +2716,23 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
         .collect()
 }
 
-fn assignability_type_display(
+fn missing_type_record() -> TypeRecordType {
+    TypeRecordType {
+        name: "Missing".to_string(),
+        display: "<missing>".to_string(),
+    }
+}
+
+fn assignability_record_type(
     expected: Option<&TypeRecordType>,
     actual: Option<&TypeRecordType>,
-) -> String {
+) -> TypeRecordType {
     match (expected, actual) {
         (Some(expected), Some(actual)) if is_more_specific_primitive_type(expected, actual) => {
-            expected.display.clone()
+            expected.clone()
         }
-        (_, Some(actual)) => actual.display.clone(),
-        _ => "<missing>".to_string(),
+        (_, Some(actual)) => actual.clone(),
+        _ => missing_type_record(),
     }
 }
 
@@ -3623,16 +3628,20 @@ fn write_snapshot_error(
                 "  - {source_location} `{text}` {expectation} assignable to {target_location} `{target_text}`\n",
             ));
             if tsc_source_type == oxc_source_type && tsc_target_type == oxc_target_type {
-                snapshot.push_str(&format!("      source: {tsc_source_type}\n"));
-                snapshot.push_str(&format!("      target: {tsc_target_type}\n"));
+                write_assignability_type(snapshot, "source", tsc_source_type);
+                write_assignability_type(snapshot, "target", tsc_target_type);
             } else {
-                snapshot.push_str(&format!("      typescript source: {tsc_source_type}\n"));
-                snapshot.push_str(&format!("      typescript target: {tsc_target_type}\n"));
-                snapshot.push_str(&format!("      oxc source:        {oxc_source_type}\n"));
-                snapshot.push_str(&format!("      oxc target:        {oxc_target_type}\n"));
+                write_assignability_type(snapshot, "typescript source", tsc_source_type);
+                write_assignability_type(snapshot, "typescript target", tsc_target_type);
+                write_assignability_type(snapshot, "oxc source", oxc_source_type);
+                write_assignability_type(snapshot, "oxc target", oxc_target_type);
             }
         }
     }
+}
+
+fn write_assignability_type(snapshot: &mut String, label: &str, ty: &TypeRecordType) {
+    snapshot.push_str(&format!("      {label}: {}    ({})\n", ty.display, ty.name));
 }
 
 #[cfg(test)]
