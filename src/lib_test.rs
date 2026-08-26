@@ -1575,6 +1575,92 @@ fn flow_applies_nested_branch_effects_in_order() {
 }
 
 #[test]
+fn flow_stops_at_control_flow_graph_depth_limit() {
+    let allocator = Allocator::default();
+    let mut source = String::from("declare const value: string | undefined;\n");
+    for _ in 0..=crate::limits::CONTROL_FLOW_GRAPH_MAX_DEPTH {
+        source.push_str("if (value) {\n");
+    }
+    source.push_str("value;\n");
+    for _ in 0..=crate::limits::CONTROL_FLOW_GRAPH_MAX_DEPTH {
+        source.push_str("}\n");
+    }
+    let ret = parse_and_check_source(&allocator, &source);
+    let checker = checker(&ret);
+    let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+    let node_id = semantic
+        .nodes()
+        .iter_enumerated()
+        .filter_map(|(node_id, node)| match node.kind() {
+            AstKind::IdentifierReference(identifier) if identifier.name == Ident::from("value") => {
+                Some(node_id)
+            }
+            _ => None,
+        })
+        .last()
+        .unwrap();
+
+    let ty = checker.get_type_at_location(NodeRef::new(ret.program_id, node_id));
+
+    assert_eq!(
+        ty.error_kind(ret.arena),
+        Some(TypeErrorKind::ControlFlowGraphDepthExceeded),
+    );
+}
+
+#[test]
+fn evolving_array_disables_flow_analysis_at_depth_limit() {
+    let allocator = Allocator::default();
+    let mut source = String::from("const data = [];\n");
+    for _ in 0..crate::limits::CONTROL_FLOW_GRAPH_MAX_DEPTH {
+        source.push_str("data[0] = 0;\n");
+    }
+    source.push_str("data[0] = 0;\ndata;\n");
+    let ret = parse_and_check_source(&allocator, &source);
+    let reference_types = get_identifier_reference_types(&ret, "data");
+
+    assert!(
+        reference_types[reference_types.len() - 3]
+            .array_element_type(ret.arena)
+            .is_some()
+    );
+    assert_eq!(
+        reference_types[reference_types.len() - 2].error_kind(ret.arena),
+        Some(TypeErrorKind::ControlFlowGraphDepthExceeded),
+    );
+    assert_eq!(
+        reference_types.last().unwrap().error_kind(ret.arena),
+        Some(TypeErrorKind::ControlFlowGraphDepthExceeded),
+    );
+}
+
+#[test]
+fn flow_depth_limit_only_disables_the_containing_function() {
+    let allocator = Allocator::default();
+    let mut source = String::from("function inner() {\nconst data = [];\n");
+    for _ in 0..crate::limits::CONTROL_FLOW_GRAPH_MAX_DEPTH {
+        source.push_str("data[0] = 0;\n");
+    }
+    source.push_str("data[0] = 0;\ndata;\n}\nconst outer = [];\nouter[0] = 0;\nouter;\n");
+    let ret = parse_and_check_source(&allocator, &source);
+
+    let inner_types = get_identifier_reference_types(&ret, "data");
+    assert_eq!(
+        inner_types.last().unwrap().error_kind(ret.arena),
+        Some(TypeErrorKind::ControlFlowGraphDepthExceeded),
+    );
+    let outer_types = get_identifier_reference_types(&ret, "outer");
+    assert!(outer_types.iter().all(|ty| !ty.is_error(ret.arena)));
+    assert!(
+        outer_types
+            .last()
+            .unwrap()
+            .array_element_type(ret.arena)
+            .is_some()
+    );
+}
+
+#[test]
 fn flow_narrows_logical_expression_rhs() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

@@ -480,6 +480,7 @@ pub struct Ty<'a> {
 pub enum TypeErrorKind {
     TypeInstantiationDepthExceeded,
     TypeResolutionDepthExceeded,
+    ControlFlowGraphDepthExceeded,
     ConditionalTypeDepthExceeded,
     TypeAliasResolutionDepthExceeded,
     UnresolvedImport,

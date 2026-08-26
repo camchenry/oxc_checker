@@ -21,6 +21,7 @@ use crate::{
     flow_graph::{self, ArrayMutationKind, BranchEffect},
     program::ProgramId,
     type_set::UnionAccumulator,
+    types::TypeErrorKind,
     types::{TupleElement, Ty, TyKind, TyTypePredicate},
 };
 
@@ -71,9 +72,19 @@ pub(crate) fn get_flow_type_of_reference<'a>(
     if symbol.program_id != node.program_id {
         return base_type;
     }
+    if flow_graph::flow_analysis_disabled(checker, node) {
+        return checker
+            .ty
+            .error(TypeErrorKind::ControlFlowGraphDepthExceeded);
+    }
 
     let mut narrowed_type =
         evolving_array_flow_type(checker, node, symbol, base_type).unwrap_or(base_type);
+    if flow_graph::flow_analysis_disabled(checker, node) {
+        return checker
+            .ty
+            .error(TypeErrorKind::ControlFlowGraphDepthExceeded);
+    }
     for effect in flow_graph::branch_effects(checker, node) {
         let Some(condition) = branch_effect_condition(checker, node.program_id, effect) else {
             continue;
@@ -100,6 +111,11 @@ pub(crate) fn get_flow_type_of_reference<'a>(
             continue;
         }
         narrowed_type = candidate_type;
+    }
+    if flow_graph::flow_analysis_disabled(checker, node) {
+        return checker
+            .ty
+            .error(TypeErrorKind::ControlFlowGraphDepthExceeded);
     }
 
     assignment_flow_type(checker, node, symbol, narrowed_type).unwrap_or(narrowed_type)
@@ -134,6 +150,13 @@ fn evolving_array_flow_type<'a>(
         || checker.node_kind(node).span().start <= declarator.span.start
     {
         return None;
+    }
+    if flow_graph::evolving_array_flow_depth_exceeded(checker, node, symbol.symbol_id) {
+        return Some(
+            checker
+                .ty
+                .error(TypeErrorKind::ControlFlowGraphDepthExceeded),
+        );
     }
     if is_evolving_array_operation_target(checker, node) {
         return Some(checker.ty.array(checker.ty.any()));

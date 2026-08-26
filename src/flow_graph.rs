@@ -12,7 +12,10 @@ use oxc_syntax::operator::LogicalOperator;
 use rustc_hash::{FxHashMap, FxHashSet};
 use smallvec::SmallVec;
 
-use crate::checker::{Checker, NodeRef};
+use crate::{
+    checker::{Checker, NodeRef},
+    limits::CONTROL_FLOW_GRAPH_MAX_DEPTH,
+};
 
 /// A condition outcome known to hold while evaluating a branch-local node.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -59,6 +62,8 @@ pub(crate) struct ProgramFlowGraph {
     effects_by_node: FxHashMap<NodeId, Box<[BranchEffect]>>,
     writes_by_symbol: FxHashMap<SymbolId, Box<[WriteEvent]>>,
     array_mutations_by_symbol: FxHashMap<SymbolId, Box<[ArrayMutationEvent]>>,
+    array_mutation_spans_by_container: FxHashMap<(SymbolId, BlockNodeId), Box<[Span]>>,
+    disabled_containers: FxHashSet<BlockNodeId>,
     dominators_by_entry: FxHashMap<BlockNodeId, Dominators<BlockNodeId>>,
 }
 
@@ -98,6 +103,38 @@ impl ProgramFlowGraph {
         self.array_mutations_by_symbol
             .insert(symbol_id, mutations.to_vec().into_boxed_slice());
     }
+}
+
+pub(crate) fn flow_analysis_disabled(checker: &Checker<'_, '_>, node: NodeRef) -> bool {
+    let Some(container) = flow_container_for_node(checker, node) else {
+        return false;
+    };
+    checker
+        .flow_graph_cache
+        .borrow()
+        .get(&node.program_id)
+        .is_some_and(|graph| graph.disabled_containers.contains(&container))
+}
+
+fn disable_flow_analysis(checker: &Checker<'_, '_>, node: NodeRef) {
+    let Some(container) = flow_container_for_node(checker, node) else {
+        return;
+    };
+    checker
+        .flow_graph_cache
+        .borrow_mut()
+        .entry(node.program_id)
+        .or_default()
+        .disabled_containers
+        .insert(container);
+}
+
+fn flow_container_for_node(checker: &Checker<'_, '_>, node: NodeRef) -> Option<BlockNodeId> {
+    let cfg = checker.semantic(node.program_id).cfg()?;
+    Some(flow_container_entry(
+        cfg,
+        checker.nodes(node.program_id).cfg_id(node.node_id),
+    ))
 }
 
 /// Return enclosing branch effects in outermost-to-innermost evaluation order.
@@ -214,6 +251,54 @@ pub(crate) fn array_mutations(
         .or_default()
         .cache_array_mutations(symbol_id, &mutations);
     mutations
+}
+
+pub(crate) fn evolving_array_flow_depth_exceeded(
+    checker: &Checker<'_, '_>,
+    node: NodeRef,
+    symbol_id: SymbolId,
+) -> bool {
+    let Some(container) = flow_container_for_node(checker, node) else {
+        return false;
+    };
+    if checker
+        .flow_graph_cache
+        .borrow()
+        .get(&node.program_id)
+        .and_then(|graph| graph.cached_array_mutations(symbol_id))
+        .is_none()
+    {
+        array_mutations(checker, node.program_id, symbol_id);
+    }
+
+    let cfg = checker.semantic(node.program_id).cfg().unwrap();
+    let query_start = checker
+        .nodes(node.program_id)
+        .kind(node.node_id)
+        .span()
+        .start;
+    let mut cache = checker.flow_graph_cache.borrow_mut();
+    let graph = cache.entry(node.program_id).or_default();
+    let key = (symbol_id, container);
+    if !graph.array_mutation_spans_by_container.contains_key(&key) {
+        let spans = graph
+            .cached_array_mutations(symbol_id)
+            .unwrap_or_default()
+            .iter()
+            .filter(|mutation| flow_container_entry(cfg, mutation.block_id) == container)
+            .map(|mutation| mutation.span)
+            .collect::<Vec<_>>()
+            .into_boxed_slice();
+        graph.array_mutation_spans_by_container.insert(key, spans);
+    }
+    let spans = &graph.array_mutation_spans_by_container[&key];
+    let preceding_mutations = spans.partition_point(|span| span.end <= query_start);
+    let exceeded = preceding_mutations >= CONTROL_FLOW_GRAPH_MAX_DEPTH;
+    drop(cache);
+    if exceeded {
+        disable_flow_analysis(checker, node);
+    }
+    exceeded
 }
 
 fn array_mutation_for_reference(
@@ -444,6 +529,10 @@ fn collect_branch_effects(checker: &Checker<'_, '_>, node: NodeRef) -> SmallVec<
         };
 
         if let Some(assume_true) = assume_true {
+            if effects.len() == CONTROL_FLOW_GRAPH_MAX_DEPTH {
+                disable_flow_analysis(checker, node);
+                return SmallVec::new();
+            }
             let branch_block = nodes.cfg_id(branch_root);
             if cfg.is_reachable(branch_block, query_block) {
                 effects.push(BranchEffect {

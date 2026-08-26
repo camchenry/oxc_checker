@@ -33,3 +33,6 @@ pub(crate) const TYPE_VISIT_MAX_DEPTH: usize = 256;
 /// Maximum tuple length produced by spreading tuple types before falling back
 /// to `any`, matching TypeScript's tuple normalization limit.
 pub(crate) const TUPLE_SPREAD_MAX_LENGTH: usize = 10_000;
+
+/// Maximum depth for resolving control flow graphs, matching TypeScript's limit.
+pub(crate) const CONTROL_FLOW_GRAPH_MAX_DEPTH: usize = 2_000;
