@@ -1,7 +1,8 @@
-use oxc_ast::AstKind;
+use oxc_ast::{AstKind, ast::Expression};
 use oxc_cfg::{
     BlockNodeId, EdgeType,
     graph::{
+        Direction,
         algo::dominators::{Dominators, simple_fast},
         visit::EdgeRef,
     },
@@ -13,7 +14,7 @@ use rustc_hash::{FxHashMap, FxHashSet};
 use smallvec::SmallVec;
 
 use crate::{
-    checker::{Checker, NodeRef},
+    checker::{Checker, NodeRef, SymbolRef},
     limits::CONTROL_FLOW_GRAPH_MAX_DEPTH,
     program::ProgramId,
 };
@@ -174,18 +175,9 @@ impl Checker<'_, '_> {
                 }
             })
             .collect::<SmallVec<[WriteEvent; 4]>>();
-        if let Some((declaration_id, declarator)) = self
-            .variable_declarator_for_symbol(crate::checker::SymbolRef::new(program_id, symbol_id))
-            && declarator.init.as_ref().is_some_and(|initializer| {
-                matches!(
-                    initializer,
-                    oxc_ast::ast::Expression::BooleanLiteral(_)
-                        | oxc_ast::ast::Expression::NullLiteral(_)
-                        | oxc_ast::ast::Expression::NumericLiteral(_)
-                        | oxc_ast::ast::Expression::StringLiteral(_)
-                        | oxc_ast::ast::Expression::BigIntLiteral(_)
-                )
-            })
+        if let Some((declaration_id, declarator)) =
+            self.variable_declarator_for_symbol(SymbolRef::new(program_id, symbol_id))
+            && declarator.init.as_ref().is_some_and(Expression::is_literal)
         {
             writes.push(WriteEvent {
                 node_id: declaration_id,
@@ -308,7 +300,7 @@ impl Checker<'_, '_> {
         {
             let assignment_id = nodes.parent_id(parent_id);
             if let AstKind::AssignmentExpression(assignment) = nodes.kind(assignment_id)
-                && assignment.operator == oxc_syntax::operator::AssignmentOperator::Assign
+                && assignment.operator.is_assign()
                 && assignment.left.span() == member.span
             {
                 return Some(ArrayMutationEvent {
@@ -320,7 +312,7 @@ impl Checker<'_, '_> {
         }
 
         if let AstKind::AssignmentExpression(assignment) = nodes.kind(parent_id)
-            && assignment.operator == oxc_syntax::operator::AssignmentOperator::Assign
+            && assignment.operator.is_assign()
             && assignment.left.span() == reference_span
         {
             return Some(ArrayMutationEvent {
@@ -423,7 +415,7 @@ pub(crate) fn flow_container_entry(
                 cfg.is_reachable(*candidate, block)
                     && cfg
                         .graph()
-                        .edges_directed(*candidate, oxc_cfg::graph::Direction::Incoming)
+                        .edges_directed(*candidate, Direction::Incoming)
                         .all(|edge| {
                             !matches!(
                                 edge.weight(),
