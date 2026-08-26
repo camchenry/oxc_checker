@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/cases
 files: passed=87 failed=87 panicked=0 total=174 pass_percentage=50.00%
 types: matched=3648 mismatched=55 total=3703 match_percentage=98.51%
-assign: matched=87979 mismatched=3474 total=91453 match_percentage=96.20%
+assign: matched=87989 mismatched=3464 total=91453 match_percentage=96.21%
 
 PASS tests/conformance/cases/compiler/abstractIdentifierNameStrict.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/arrayTypes.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00%
@@ -7847,33 +7847,15 @@ FAIL tests/conformance/cases/compiler/eslint_noMixedEnums.ts::c.ts matched_types
 PASS tests/conformance/cases/compiler/eslint_noRedundantTypeConstituents.ts::a.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/eslint_noRedundantTypeConstituents.ts::b.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts matched_types=20 mismatched_types=0 total_types=20 match_percentage=100.00%
-  - a.ts:20 `intersectionWithString` should be assignable to a.ts:10 `stringWithBoolean`
-      source: string & { _brand: 'test-brand'; }
-      target: string
-  - a.ts:20 `intersectionWithString` should be assignable to a.ts:21 `wrappedIntersection`
-      source: string & { _brand: 'test-brand'; }
-      target: string
   - a.ts:20 `intersectionWithString` should be assignable to a.ts:22 `IntersectionWithString`
       source: string & { _brand: 'test-brand'; }
       target: string & { _brand: 'test-brand'; }
-  - a.ts:21 `intersectionWithString` should be assignable to a.ts:10 `stringWithBoolean`
-      source: string & { _brand: 'test-brand'; }
-      target: string
-  - a.ts:21 `intersectionWithString` should be assignable to a.ts:21 `wrappedIntersection`
-      source: string & { _brand: 'test-brand'; }
-      target: string
   - a.ts:21 `intersectionWithString` should be assignable to a.ts:22 `IntersectionWithString`
       source: string & { _brand: 'test-brand'; }
       target: string & { _brand: 'test-brand'; }
-  - a.ts:22 `IntersectionWithString` should be assignable to a.ts:10 `stringWithBoolean`
-      source: string & { _brand: 'test-brand'; }
-      target: string
   - a.ts:22 `IntersectionWithString` should be assignable to a.ts:20 `intersectionWithString`
       source: string & { _brand: 'test-brand'; }
       target: string & { _brand: 'test-brand'; }
-  - a.ts:22 `IntersectionWithString` should be assignable to a.ts:21 `wrappedIntersection`
-      source: string & { _brand: 'test-brand'; }
-      target: string
   - a.ts:22 `IntersectionWithString` should be assignable to a.ts:21 `intersectionWithString`
       source: string & { _brand: 'test-brand'; }
       target: string & { _brand: 'test-brand'; }
@@ -8496,24 +8478,12 @@ FAIL tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::b.t
   - b.ts:3 `arg` should be assignable to b.ts:6 `stringWithKindProp`
       source: "foo"
       target: string & { _kind?: 'MyString'; }
-  - b.ts:5 `stringWithKindProp` should be assignable to b.ts:3 `msg2`
-      source: string & { _kind?: 'MyString'; }
-      target: string
-  - b.ts:5 `stringWithKindProp` should be assignable to b.ts:6 `msg3`
-      source: string & { _kind?: 'MyString'; }
-      target: string
   - b.ts:6 `msg3` should be assignable to b.ts:5 `stringWithKindProp`
       source: string
       target: string & { _kind?: 'MyString'; }
   - b.ts:6 `msg3` should be assignable to b.ts:6 `stringWithKindProp`
       source: string
       target: string & { _kind?: 'MyString'; }
-  - b.ts:6 `stringWithKindProp` should be assignable to b.ts:3 `msg2`
-      source: string & { _kind?: 'MyString'; }
-      target: string
-  - b.ts:6 `stringWithKindProp` should be assignable to b.ts:6 `msg3`
-      source: string & { _kind?: 'MyString'; }
-      target: string
 PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::c.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::d.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::e.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%

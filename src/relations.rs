@@ -99,7 +99,10 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         let next_depth = depth + 1;
 
-        match (self.ty_kind(source), self.ty_kind(target)) {
+        let source_kind = self.ty_kind(source);
+        let target_kind = self.ty_kind(target);
+
+        match (source_kind, target_kind) {
             // `never` is not assignable to any type
             (TyKind::Never, _) => true,
             // Nothing is assignable to `never`
@@ -148,6 +151,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .types
                 .iter()
                 .all(|ty| self.is_assignable_to_at_depth(target, *ty, next_depth)),
+            (TyKind::Intersection(intersection), other) if other.is_primitive() => {
+                // allow branded types to be assignable to their base type
+                intersection
+                    .types
+                    .iter()
+                    .any(|ty| self.is_assignable_to_at_depth(*ty, target, next_depth))
+            }
             (TyKind::Object(_), TyKind::Intersection(intersection)) => intersection
                 .types
                 .iter()
@@ -595,6 +605,16 @@ mod tests {
                 TypeBuilder::new(arena).property("b", Ty::String)
             ]),
         ));
+
+        // Branded types
+        let string_brand = arena.intersection([
+            Ty::String,
+            arena.object([
+                TypeBuilder::new(arena).property("__brand", arena.string_literal("brand"))
+            ]),
+        ]);
+        // `string & { __brand: "brand" }` is assignable to `string`
+        assert!(is_assignable_to(string_brand, Ty::String));
     }
 
     #[test]

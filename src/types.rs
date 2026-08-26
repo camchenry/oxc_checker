@@ -598,6 +598,22 @@ pub enum TyKind<'a> {
     Mapped(&'a TyMapped<'a>),
 }
 
+impl<'a> TyKind<'a> {
+    pub fn is_primitive(&self) -> bool {
+        matches!(
+            self,
+            Self::None
+                | Self::Number
+                | Self::String
+                | Self::Boolean
+                | Self::Bigint
+                | Self::Symbol
+                | Self::Undefined
+                | Self::Null
+        )
+    }
+}
+
 #[derive(Debug, PartialEq, Eq)]
 pub struct TyObject<'a> {
     pub properties: &'a [TyProperty<'a>],
