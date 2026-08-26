@@ -673,6 +673,7 @@ enum ComparisonError {
         text: String,
         target_start: u32,
         target_text: String,
+        should_be_assignable: bool,
         source_type: String,
         target_type: String,
     },
@@ -2653,6 +2654,7 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
                         text: source.text.clone(),
                         target_start: target.start,
                         target_text: target.text.clone(),
+                        should_be_assignable: *expected,
                         source_type,
                         target_type,
                     });
@@ -3430,6 +3432,19 @@ fn case_snapshot_location(
     format!("{}:{}", case_snapshot_path(suite, path), line)
 }
 
+fn assignability_snapshot_location(
+    suite: &ConformanceSuite,
+    path: &str,
+    line_starts: &mut Option<Vec<u32>>,
+    start: u32,
+) -> String {
+    let line = line_number_for_offset(suite, path, line_starts, start);
+    path.split_once("::").map_or_else(
+        || format!(":{line}"),
+        |(_, source_file_name)| format!("{source_file_name}:{line}"),
+    )
+}
+
 fn line_number_for_offset(
     suite: &ConformanceSuite,
     path: &str,
@@ -3530,13 +3545,20 @@ fn write_snapshot_error(
             text,
             target_start,
             target_text,
+            should_be_assignable,
             source_type,
             target_type,
         } => {
-            let source_location = case_snapshot_location(suite, path, line_starts, *start);
-            let target_location = case_snapshot_location(suite, path, line_starts, *target_start);
+            let source_location = assignability_snapshot_location(suite, path, line_starts, *start);
+            let target_location =
+                assignability_snapshot_location(suite, path, line_starts, *target_start);
+            let expectation = if *should_be_assignable {
+                "should be"
+            } else {
+                "should not be"
+            };
             snapshot.push_str(&format!(
-                "  - {source_location} `{text}` assignability to {target_location} `{target_text}` mismatch\n",
+                "  - {source_location} `{text}` {expectation} assignable to {target_location} `{target_text}`\n",
             ));
             snapshot.push_str(&format!("      source: {source_type}\n"));
             snapshot.push_str(&format!("      target: {target_type}\n"));

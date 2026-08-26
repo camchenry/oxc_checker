@@ -537,7 +537,7 @@ fn assignment_mismatches_have_separate_totals_and_no_file_summary() {
     assert_eq!(stats.matched_assignments, 0);
     assert_eq!(stats.mismatched_assignments, 1);
     assert!(report.contains("assign: matched=0 mismatched=1 total=1"));
-    assert!(report.contains("`source` assignability to tests/conformance/cases/compiler/basicPrimitives.ts:1 `target` mismatch"));
+    assert!(report.contains(":1 `source` should be assignable to :1 `target`"));
     assert!(report.contains("      source: 1\n      target: number\n"));
     assert!(!report.contains("      expected: true\n      actual:   false\n"));
     let file_header = report
@@ -545,6 +545,14 @@ fn assignment_mismatches_have_separate_totals_and_no_file_summary() {
         .find(|line| line.starts_with("FAIL "))
         .unwrap();
     assert!(!file_header.contains("matched_assignments"));
+}
+
+#[test]
+fn assignment_locations_use_virtual_file_names() {
+    assert_eq!(
+        assignability_snapshot_location(&CASES_SUITE, "compiler/example.ts::c.ts", &mut None, 0,),
+        "c.ts:1"
+    );
 }
 
 #[test]
