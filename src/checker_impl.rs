@@ -37,8 +37,7 @@ use crate::{
         TypeAliasMetadata, TypeAliasResolution, TypeParameterResolution, TypeStringCacheKey,
         TypeStringContext,
     },
-    flow, for_statement_left_contains_declarator, index_signature_key_types,
-    index_type_to_property_name,
+    for_statement_left_contains_declarator, index_signature_key_types, index_type_to_property_name,
     infer::{InferenceResolution, ts_type_contains_infer},
     is_empty_object_intersection,
     limits::{
@@ -897,8 +896,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     if flags.context_free() {
                         return base_type;
                     }
-                    return flow::get_flow_type_of_reference(
-                        self,
+                    return self.get_flow_type_of_reference(
                         NodeRef::new(program_id, identifier.node_id()),
                         symbol,
                         base_type,
@@ -5599,7 +5597,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         } else {
             self.get_apparent_type(program_id, ty, 0)
         };
-        let ty = flow::get_flow_type_of_static_member_reference(self, program_id, member, ty);
+        let ty = self.get_flow_type_of_static_member_reference(program_id, member, ty);
         if in_chain {
             ty.or_undefined(self.arena())
         } else {
@@ -6838,8 +6836,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 if flags.context_free() {
                     base_type
                 } else {
-                    flow::get_flow_type_of_reference(
-                        self,
+                    self.get_flow_type_of_reference(
                         NodeRef::new(program_id, identifier.node_id()),
                         symbol,
                         base_type,
@@ -9368,8 +9365,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         match array_expression.elements.len() {
-            0 => self.ty.array(flow::empty_array_literal_element_type(
-                self,
+            0 => self.ty.array(self.empty_array_literal_element_type(
                 program_id,
                 array_expression,
                 node_id,
