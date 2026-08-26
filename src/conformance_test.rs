@@ -319,6 +319,7 @@ fn type_output_renders_line_span_and_type() {
             name: "String".to_string(),
             display: "string".to_string(),
         },
+        assignability: Vec::new(),
     };
     let mut output = String::new();
 
@@ -343,6 +344,7 @@ fn type_output_renders_mismatch_expected_type_on_separate_line() {
             name: "String".to_string(),
             display: "string".to_string(),
         },
+        assignability: Vec::new(),
     };
     let mut mismatches = TypeRecordMap::new();
     mismatches.insert(
@@ -402,7 +404,7 @@ fn type_repr_equivalence_ignores_union_order() {
 
 #[test]
 fn type_record_json_shape_is_strict_and_round_trips() {
-    let json = r#"{"path":"compiler/example.ts","start":4,"end":9,"text":"value","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"foo\""}}"#;
+    let json = r#"{"path":"compiler/example.ts","start":4,"end":9,"text":"value","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"foo\""},"assignability":[{"target":{"start":10,"end":16,"text":"target"},"assignable":true}]}"#;
     let record = parse_records(json, "test record").unwrap().remove(0);
 
     assert_eq!(record.node_type, "Identifier");
@@ -451,6 +453,7 @@ fn compare_records_counts_union_order_only_differences_as_matches() {
             name: "Object".to_string(),
             display: "<T, U = B | T>(value: A | B) => B | A".to_string(),
         },
+        assignability: Vec::new(),
     };
     let actual = TypeRecord {
         r#type: TypeRecordType {
@@ -465,6 +468,83 @@ fn compare_records_counts_union_order_only_differences_as_matches() {
     assert_eq!(results.len(), 1);
     assert_eq!(results[0].matched_types, 1);
     assert!(results[0].errors.is_empty());
+}
+
+#[test]
+fn assignability_pairs_are_exhaustive_through_one_hundred_types() {
+    assert_eq!(assignability_pairs(0), Vec::new());
+    assert_eq!(assignability_pairs(2), vec![(0, 0), (0, 1), (1, 0), (1, 1)]);
+    assert_eq!(assignability_pairs(100).len(), 10_000);
+}
+
+#[test]
+fn assignability_pairs_sample_large_files_directionally() {
+    let pairs = assignability_pairs(101);
+
+    assert_eq!(pairs.len(), 404);
+    assert_eq!(&pairs[..4], &[(0, 0), (0, 1), (0, 50), (0, 100)]);
+    assert!(pairs.contains(&(1, 0)));
+}
+
+#[test]
+fn assignment_mismatches_have_separate_totals_and_no_file_summary() {
+    let target = TypeRecordKey {
+        start: 10,
+        end: 16,
+        text: "target".to_string(),
+    };
+    let expected = TypeRecord {
+        path: Arc::from("compiler/basicPrimitives.ts"),
+        start: 0,
+        end: 6,
+        text: "source".to_string(),
+        node_type: "Identifier".to_string(),
+        r#type: TypeRecordType {
+            name: "NumberLiteral".to_string(),
+            display: "1".to_string(),
+        },
+        assignability: vec![AssignabilityRecord {
+            target: target.clone(),
+            assignable: true,
+        }],
+    };
+    let expected_target = TypeRecord {
+        path: Arc::clone(&expected.path),
+        start: target.start,
+        end: target.end,
+        text: target.text.clone(),
+        node_type: "Identifier".to_string(),
+        r#type: TypeRecordType {
+            name: "Number".to_string(),
+            display: "number".to_string(),
+        },
+        assignability: Vec::new(),
+    };
+    let actual = TypeRecord {
+        assignability: vec![AssignabilityRecord {
+            target,
+            assignable: false,
+        }],
+        ..expected.clone()
+    };
+    let actual_target = expected_target.clone();
+    let results = compare_records(&[expected, expected_target], &[actual, actual_target]);
+    let stats = ComparisonStats::from_results(&results, 0);
+    let report = format_type_record_report(&CASES_SUITE, &stats, &results);
+
+    assert_eq!(stats.matched_types, 2);
+    assert_eq!(stats.mismatched_types, 0);
+    assert_eq!(stats.matched_assignments, 0);
+    assert_eq!(stats.mismatched_assignments, 1);
+    assert!(report.contains("assign: matched=0 mismatched=1 total=1"));
+    assert!(report.contains("`source` assignability to tests/conformance/cases/compiler/basicPrimitives.ts:1 `target` mismatch"));
+    assert!(report.contains("      source: 1\n      target: number\n"));
+    assert!(!report.contains("      expected: true\n      actual:   false\n"));
+    let file_header = report
+        .lines()
+        .find(|line| line.starts_with("FAIL "))
+        .unwrap();
+    assert!(!file_header.contains("matched_assignments"));
 }
 
 #[test]
@@ -513,6 +593,7 @@ fn panicked_fixture_is_excluded_from_record_comparison() {
         Path::new("vendor/TypeScript/tests/cases/compiler/ClassDeclaration26.ts"),
         source_text,
         &allocator,
+        None,
         None,
     );
 

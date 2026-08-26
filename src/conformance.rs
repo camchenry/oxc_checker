@@ -123,6 +123,7 @@ struct TypeRecord {
     text: String,
     node_type: String,
     r#type: TypeRecordType,
+    assignability: Vec<AssignabilityRecord>,
 }
 
 impl TypeRecord {
@@ -153,8 +154,16 @@ impl TypeRecord {
                 name: ty_name.strip_prefix("Ty").unwrap_or(ty_name).to_string(),
                 display,
             },
+            assignability: Vec::new(),
         }
     }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+struct AssignabilityRecord {
+    target: TypeRecordKey,
+    assignable: bool,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -164,11 +173,17 @@ struct TypeRecordType {
     display: String,
 }
 
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(deny_unknown_fields)]
 struct TypeRecordKey {
     start: u32,
     end: u32,
     text: String,
+}
+
+struct CapturedTypeRecord<'a> {
+    record: TypeRecord,
+    ty: Ty<'a>,
 }
 
 type TypeRecordMap = BTreeMap<TypeRecordKey, TypeRecordType>;
@@ -176,6 +191,7 @@ type TypeRecordMap = BTreeMap<TypeRecordKey, TypeRecordType>;
 struct FileResult {
     path: Arc<str>,
     matched_types: usize,
+    matched_assignments: usize,
     errors: Vec<ComparisonError>,
 }
 
@@ -191,7 +207,17 @@ impl FileResult {
     }
 
     fn mismatched_types(&self) -> usize {
-        self.errors.len()
+        self.errors
+            .iter()
+            .filter(|error| !matches!(error, ComparisonError::AssignabilityMismatch { .. }))
+            .count()
+    }
+
+    fn mismatched_assignments(&self) -> usize {
+        self.errors
+            .iter()
+            .filter(|error| matches!(error, ComparisonError::AssignabilityMismatch { .. }))
+            .count()
     }
 
     fn total_types(&self) -> usize {
@@ -211,6 +237,9 @@ struct ComparisonStats {
     matched_types: usize,
     mismatched_types: usize,
     total_types: usize,
+    matched_assignments: usize,
+    mismatched_assignments: usize,
+    total_assignments: usize,
 }
 
 impl ComparisonStats {
@@ -221,6 +250,12 @@ impl ComparisonStats {
         let matched_types = results.iter().map(|result| result.matched_types).sum();
         let mismatched_types = results.iter().map(FileResult::mismatched_types).sum();
         let total_types = matched_types + mismatched_types;
+        let matched_assignments = results
+            .iter()
+            .map(|result| result.matched_assignments)
+            .sum();
+        let mismatched_assignments = results.iter().map(FileResult::mismatched_assignments).sum();
+        let total_assignments = matched_assignments + mismatched_assignments;
 
         Self {
             passed_files,
@@ -230,6 +265,9 @@ impl ComparisonStats {
             matched_types,
             mismatched_types,
             total_types,
+            matched_assignments,
+            mismatched_assignments,
+            total_assignments,
         }
     }
 
@@ -241,9 +279,13 @@ impl ComparisonStats {
         percentage(self.matched_types, self.total_types)
     }
 
+    fn assignment_match_percentage(&self) -> f64 {
+        percentage(self.matched_assignments, self.total_assignments)
+    }
+
     fn summary(&self) -> String {
         format!(
-            "files: {} passed, {} failed, {} panicked, {} total ({:.2}%)\ntypes: {} matched, {} mismatched, {} total ({:.2}%)",
+            "files: {} passed, {} failed, {} panicked, {} total ({:.2}%)\ntypes: {} matched, {} mismatched, {} total ({:.2}%)\nassign: {} matched, {} mismatched, {} total ({:.2}%)",
             self.passed_files,
             self.failed_files,
             self.panicked_files,
@@ -252,7 +294,11 @@ impl ComparisonStats {
             self.matched_types,
             self.mismatched_types,
             self.total_types,
-            self.type_match_percentage()
+            self.type_match_percentage(),
+            self.matched_assignments,
+            self.mismatched_assignments,
+            self.total_assignments,
+            self.assignment_match_percentage()
         )
     }
 }
@@ -622,6 +668,14 @@ enum ComparisonError {
         text: String,
         actual: String,
     },
+    AssignabilityMismatch {
+        start: u32,
+        text: String,
+        target_start: u32,
+        target_text: String,
+        source_type: String,
+        target_type: String,
+    },
 }
 
 #[cfg(feature = "conformance-tsc")]
@@ -983,7 +1037,8 @@ fn run_single_file_conformance(case_path: &Path, refresh_tsc: bool) -> Conforman
     } else {
         read_tsc_records_for_case(&repo_root, suite, &cases_root, case_path)?
     };
-    let collected = collect_oxc_records_for_case(&cases_root, case_path)?;
+    let assignments = assignments_by_file(&tsc_records);
+    let collected = collect_oxc_records_for_case(&cases_root, case_path, &assignments)?;
     let tsc_records = filter_panicked_records(tsc_records, &collected.panicked_paths);
     let oxc_records = filter_panicked_records(collected.records, &collected.panicked_paths);
     let results = compare_records(&tsc_records, &oxc_records);
@@ -1052,9 +1107,10 @@ fn run_type_record_conformance(
 
     ensure_cases_root(suite, &cases_root)?;
 
-    let collected = collect_oxc_records(suite, &cases_root, shared);
-    let tsc_records =
-        filter_panicked_records(read_records(&tsc_types_path)?, &collected.panicked_paths);
+    let tsc_records = read_records(&tsc_types_path)?;
+    let assignments = assignments_by_file(&tsc_records);
+    let collected = collect_oxc_records(suite, &cases_root, shared, &assignments);
+    let tsc_records = filter_panicked_records(tsc_records, &collected.panicked_paths);
     let oxc_records = filter_panicked_records(collected.records, &collected.panicked_paths);
     write_type_outputs(suite, &cases_root, &oxc_records, &tsc_records);
     let results = compare_records(&tsc_records, &oxc_records);
@@ -1223,6 +1279,7 @@ fn collect_oxc_records(
     suite: &ConformanceSuite,
     cases_root: &Path,
     shared: Option<&SharedConformanceCollection>,
+    assignments: &BTreeMap<Arc<str>, AssignabilityMap>,
 ) -> OxcRecordCollection {
     let paths = discover_compiler_cases(suite, cases_root);
     let total_paths = paths.len();
@@ -1300,6 +1357,7 @@ fn collect_oxc_records(
                         &ready_file.source_text,
                         &allocator,
                         Some(&prepared_programs),
+                        Some(assignments),
                     );
                     batch_collection.records.extend(collection.records);
                     batch_collection
@@ -1469,6 +1527,7 @@ fn truncate_progress_text(text: &str, width: usize) -> String {
 fn collect_oxc_records_for_case(
     cases_root: &Path,
     case_path: &Path,
+    assignments: &BTreeMap<Arc<str>, AssignabilityMap>,
 ) -> ConformanceResult<OxcRecordCollection> {
     let source_text = read_to_string_simd_utf8(case_path).map_err(|err| {
         ConformanceError::new(format!(
@@ -1483,6 +1542,7 @@ fn collect_oxc_records_for_case(
         &source_text,
         &allocator,
         None,
+        Some(assignments),
     );
     collection.records.sort_by(|left, right| {
         left.path
@@ -1521,8 +1581,15 @@ fn collect_oxc_records_from_source(
     source_text: &str,
 ) -> Vec<TypeRecord> {
     let allocator = Allocator::default();
-    collect_oxc_records_from_source_with_programs(cases_root, path, source_text, &allocator, None)
-        .records
+    collect_oxc_records_from_source_with_programs(
+        cases_root,
+        path,
+        source_text,
+        &allocator,
+        None,
+        None,
+    )
+    .records
 }
 
 fn panicked_record_path(
@@ -1547,6 +1614,7 @@ fn collect_oxc_records_from_source_with_programs<'a>(
     source_text: &str,
     allocator: &'a Allocator,
     prepared_programs: Option<&'a program::PreparedProgramSet<'a>>,
+    assignments: Option<&BTreeMap<Arc<str>, AssignabilityMap>>,
 ) -> OxcRecordCollection {
     let relative_path = relative_path(cases_root, path);
     let compiler_case = parse_compiler_test_case(source_text, &relative_path);
@@ -1571,15 +1639,17 @@ fn collect_oxc_records_from_source_with_programs<'a>(
             else {
                 continue;
             };
+            let record_path = record_path(
+                &relative_path,
+                source_file,
+                compiler_case.has_explicit_files,
+            );
             collection.records.extend(actual_identifier_records(
                 &checker,
                 program_id,
-                &record_path(
-                    &relative_path,
-                    source_file,
-                    compiler_case.has_explicit_files,
-                ),
+                &record_path,
                 &source_file.source_text,
+                assignments.and_then(|by_file| by_file.get(record_path.as_str())),
             ));
         }
         return collection;
@@ -1609,15 +1679,17 @@ fn collect_oxc_records_from_source_with_programs<'a>(
             continue;
         };
         let checker = Checker::new(&parsed.store);
+        let record_path = record_path(
+            &relative_path,
+            source_file,
+            compiler_case.has_explicit_files,
+        );
         collection.records.extend(actual_identifier_records(
             &checker,
             program_id,
-            &record_path(
-                &relative_path,
-                source_file,
-                compiler_case.has_explicit_files,
-            ),
+            &record_path,
             &source_file.source_text,
+            assignments.and_then(|by_file| by_file.get(record_path.as_str())),
         ));
     }
 
@@ -1883,6 +1955,7 @@ fn actual_identifier_records<'a>(
     program_id: ProgramId,
     path: &str,
     source_text: &str,
+    expected_assignments: Option<&AssignabilityMap>,
 ) -> Vec<TypeRecord> {
     let entry = checker.store.entry(program_id).unwrap();
     let path = Arc::<str>::from(path);
@@ -1923,7 +1996,58 @@ fn actual_identifier_records<'a>(
         entry,
         &path,
     ));
+    records.sort_by_key(|captured| captured.record.key());
+    let record_indices = records
+        .iter()
+        .enumerate()
+        .map(|(index, captured)| (captured.record.key(), index))
+        .collect::<BTreeMap<_, _>>();
+    let assignment_pairs = expected_assignments.map_or_else(
+        || {
+            assignability_pairs(records.len())
+                .into_iter()
+                .map(|(source, target)| {
+                    (records[source].record.key(), records[target].record.key())
+                })
+                .collect::<Vec<_>>()
+        },
+        |assignments| assignments.keys().cloned().collect(),
+    );
+    for (source, target) in assignment_pairs {
+        let Some(&source_index) = record_indices.get(&source) else {
+            continue;
+        };
+        let Some(&target_index) = record_indices.get(&target) else {
+            continue;
+        };
+        let assignable =
+            checker.is_assignable_to(records[source_index].ty, records[target_index].ty);
+        records[source_index]
+            .record
+            .assignability
+            .push(AssignabilityRecord { target, assignable });
+    }
     records
+        .into_iter()
+        .map(|captured| captured.record)
+        .collect()
+}
+
+fn assignability_pairs(type_count: usize) -> Vec<(usize, usize)> {
+    if type_count <= 100 {
+        return (0..type_count)
+            .flat_map(|source| (0..type_count).map(move |target| (source, target)))
+            .collect();
+    }
+
+    let offsets = [0, 1, type_count / 2, type_count - 1];
+    (0..type_count)
+        .flat_map(|source| {
+            offsets
+                .into_iter()
+                .map(move |offset| (source, (source + offset) % type_count))
+        })
+        .collect()
 }
 
 #[derive(Default)]
@@ -1978,13 +2102,13 @@ fn binding_pattern_identifier<'a>(
 fn actual_binding_property_records<'a>(
     checker: &Checker<'a, '_>,
     arena: CheckerArena<'a>,
-    existing_records: &[TypeRecord],
+    existing_records: &[CapturedTypeRecord<'a>],
     entry: &program::ProgramEntry<'a>,
     path: &Arc<str>,
-) -> Vec<TypeRecord> {
+) -> Vec<CapturedTypeRecord<'a>> {
     let existing_keys = existing_records
         .iter()
-        .map(TypeRecord::key)
+        .map(|captured| captured.record.key())
         .collect::<BTreeSet<_>>();
     let mut collector = BindingPropertyCollector::default();
     collector.visit_program(entry.program());
@@ -2005,15 +2129,18 @@ fn actual_binding_property_records<'a>(
             if ty.is_none() {
                 return None;
             }
-            Some(TypeRecord::new_oxc(
-                Arc::clone(path),
-                key.start,
-                key.end,
-                key.text,
-                "Identifier",
-                ty.enum_variant_name(arena),
-                sanitize_owned(checker.type_to_string(ty, node_ref)),
-            ))
+            Some(CapturedTypeRecord {
+                record: TypeRecord::new_oxc(
+                    Arc::clone(path),
+                    key.start,
+                    key.end,
+                    key.text,
+                    "Identifier",
+                    ty.enum_variant_name(arena),
+                    sanitize_owned(checker.type_to_string(ty, node_ref)),
+                ),
+                ty,
+            })
         })
         .collect()
 }
@@ -2038,13 +2165,13 @@ impl<'a> Visit<'a> for MetaPropertyCollector {
 fn actual_meta_property_records<'a>(
     checker: &Checker<'a, '_>,
     arena: CheckerArena<'a>,
-    existing_records: &[TypeRecord],
+    existing_records: &[CapturedTypeRecord<'a>],
     entry: &program::ProgramEntry<'a>,
     path: &Arc<str>,
-) -> Vec<TypeRecord> {
+) -> Vec<CapturedTypeRecord<'a>> {
     let existing_keys = existing_records
         .iter()
-        .map(TypeRecord::key)
+        .map(|captured| captured.record.key())
         .collect::<BTreeSet<_>>();
     let mut collector = MetaPropertyCollector::default();
     collector.visit_program(entry.program());
@@ -2068,15 +2195,18 @@ fn actual_meta_property_records<'a>(
             }
             let ty_variant = ty.enum_variant_name(arena);
             let ty_repr = checker.type_to_string(ty, node_ref);
-            Some(TypeRecord::new_oxc(
-                Arc::clone(path),
-                span.start,
-                span.end,
-                name.to_string(),
-                "Identifier",
-                ty_variant,
-                sanitize_owned(ty_repr),
-            ))
+            Some(CapturedTypeRecord {
+                record: TypeRecord::new_oxc(
+                    Arc::clone(path),
+                    span.start,
+                    span.end,
+                    name.to_string(),
+                    "Identifier",
+                    ty_variant,
+                    sanitize_owned(ty_repr),
+                ),
+                ty,
+            })
         })
         .collect()
 }
@@ -2084,14 +2214,14 @@ fn actual_meta_property_records<'a>(
 fn actual_export_specifier_records<'a>(
     checker: &Checker<'a, '_>,
     arena: CheckerArena<'a>,
-    existing_records: &[TypeRecord],
+    existing_records: &[CapturedTypeRecord<'a>],
     entry: &program::ProgramEntry<'a>,
     path: &Arc<str>,
-) -> Vec<TypeRecord> {
+) -> Vec<CapturedTypeRecord<'a>> {
     let program_id = entry.id();
     let existing_keys = existing_records
         .iter()
-        .map(TypeRecord::key)
+        .map(|captured| captured.record.key())
         .collect::<BTreeSet<_>>();
     entry
         .module_record()
@@ -2116,15 +2246,18 @@ fn actual_export_specifier_records<'a>(
             }
             let ty_variant = ty.enum_variant_name(arena);
             let ty_repr = checker.type_to_string(ty, node_ref);
-            Some(TypeRecord::new_oxc(
-                Arc::clone(path),
-                key.start,
-                key.end,
-                key.text,
-                "ExportSpecifier",
-                ty_variant,
-                sanitize_owned(ty_repr),
-            ))
+            Some(CapturedTypeRecord {
+                record: TypeRecord::new_oxc(
+                    Arc::clone(path),
+                    key.start,
+                    key.end,
+                    key.text,
+                    "ExportSpecifier",
+                    ty_variant,
+                    sanitize_owned(ty_repr),
+                ),
+                ty,
+            })
         })
         .collect()
 }
@@ -2159,7 +2292,7 @@ fn actual_identifier_record<'a>(
     source_text: &str,
     node_id: NodeId,
     kind: AstKind<'a>,
-) -> Option<TypeRecord> {
+) -> Option<CapturedTypeRecord<'a>> {
     let program_id = entry.id();
     let node_ref = NodeRef::new(program_id, node_id);
     let (span, text, ty): (Span, Cow<'_, str>, Ty<'_>) = match kind {
@@ -2380,15 +2513,18 @@ fn actual_identifier_record<'a>(
     };
     let ty_repr = checker.type_to_string(ty, node_ref);
 
-    Some(TypeRecord::new_oxc(
-        Arc::clone(path),
-        span.start,
-        span.end,
-        sanitize_cow(text),
-        node_type,
-        ty_variant,
-        sanitize_owned(ty_repr),
-    ))
+    Some(CapturedTypeRecord {
+        record: TypeRecord::new_oxc(
+            Arc::clone(path),
+            span.start,
+            span.end,
+            sanitize_cow(text),
+            node_type,
+            ty_variant,
+            sanitize_owned(ty_repr),
+        ),
+        ty,
+    })
 }
 
 fn identifier_property_key_span_and_text<'a>(key: &'a PropertyKey<'a>) -> Option<(Span, &'a str)> {
@@ -2444,6 +2580,8 @@ fn ts_type_name_span_and_text<'a>(name: &'a TSTypeName<'a>) -> Option<(Span, Cow
 fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Vec<FileResult> {
     let tsc_by_file = records_by_file(tsc_records);
     let oxc_by_file = records_by_file(oxc_records);
+    let tsc_assignments_by_file = assignments_by_file(tsc_records);
+    let oxc_assignments_by_file = assignments_by_file(oxc_records);
     let mut files = BTreeSet::new();
 
     files.extend(tsc_by_file.keys().cloned());
@@ -2454,6 +2592,7 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
         .map(|path| {
             let mut errors = Vec::new();
             let mut matched_types = 0;
+            let mut matched_assignments = 0;
             let empty = TypeRecordMap::new();
             let tsc_by_key = tsc_by_file.get(&path).unwrap_or(&empty);
             let oxc_by_key = oxc_by_file.get(&path).unwrap_or(&empty);
@@ -2487,13 +2626,66 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
                 }
             }
 
+            let empty_assignments = BTreeMap::new();
+            let tsc_assignments = tsc_assignments_by_file
+                .get(&path)
+                .unwrap_or(&empty_assignments);
+            let oxc_assignments = oxc_assignments_by_file
+                .get(&path)
+                .unwrap_or(&empty_assignments);
+            for ((source, target), expected) in tsc_assignments {
+                let actual = oxc_assignments
+                    .get(&(source.clone(), target.clone()))
+                    .copied();
+                if actual == Some(*expected) {
+                    matched_assignments += 1;
+                } else {
+                    let source_type = oxc_by_key
+                        .get(source)
+                        .or_else(|| tsc_by_key.get(source))
+                        .map_or_else(|| "<missing>".to_string(), |ty| ty.display.clone());
+                    let target_type = oxc_by_key
+                        .get(target)
+                        .or_else(|| tsc_by_key.get(target))
+                        .map_or_else(|| "<missing>".to_string(), |ty| ty.display.clone());
+                    errors.push(ComparisonError::AssignabilityMismatch {
+                        start: source.start,
+                        text: source.text.clone(),
+                        target_start: target.start,
+                        target_text: target.text.clone(),
+                        source_type,
+                        target_type,
+                    });
+                }
+            }
+
             FileResult {
                 path,
                 matched_types,
+                matched_assignments,
                 errors,
             }
         })
         .collect()
+}
+
+type AssignabilityMap = BTreeMap<(TypeRecordKey, TypeRecordKey), bool>;
+
+fn assignments_by_file(records: &[TypeRecord]) -> BTreeMap<Arc<str>, AssignabilityMap> {
+    let mut by_file = BTreeMap::new();
+    for record in records {
+        let source = record.key();
+        let assignments = by_file
+            .entry(Arc::clone(&record.path))
+            .or_insert_with(BTreeMap::new);
+        for assignment in &record.assignability {
+            assignments.insert(
+                (source.clone(), assignment.target.clone()),
+                assignment.assignable,
+            );
+        }
+    }
+    by_file
 }
 
 fn type_records_are_compatible(expected: &TypeRecordType, actual: &TypeRecordType) -> bool {
@@ -3181,11 +3373,18 @@ fn format_type_record_report(
         stats.file_pass_percentage()
     ));
     snapshot.push_str(&format!(
-        "types: matched={} mismatched={} total={} match_percentage={:.2}%\n\n",
+        "types: matched={} mismatched={} total={} match_percentage={:.2}%\n",
         stats.matched_types,
         stats.mismatched_types,
         stats.total_types,
         stats.type_match_percentage()
+    ));
+    snapshot.push_str(&format!(
+        "assign: matched={} mismatched={} total={} match_percentage={:.2}%\n\n",
+        stats.matched_assignments,
+        stats.mismatched_assignments,
+        stats.total_assignments,
+        stats.assignment_match_percentage()
     ));
 
     for result in results {
@@ -3325,6 +3524,22 @@ fn write_snapshot_error(
             ));
             snapshot.push_str("      expected: <missing>\n");
             snapshot.push_str(&format!("      actual:   {actual}\n"));
+        }
+        ComparisonError::AssignabilityMismatch {
+            start,
+            text,
+            target_start,
+            target_text,
+            source_type,
+            target_type,
+        } => {
+            let source_location = case_snapshot_location(suite, path, line_starts, *start);
+            let target_location = case_snapshot_location(suite, path, line_starts, *target_start);
+            snapshot.push_str(&format!(
+                "  - {source_location} `{text}` assignability to {target_location} `{target_text}` mismatch\n",
+            ));
+            snapshot.push_str(&format!("      source: {source_type}\n"));
+            snapshot.push_str(&format!("      target: {target_type}\n"));
         }
     }
 }

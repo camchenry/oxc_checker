@@ -79,6 +79,23 @@ interface TypeRecord {
     name: string;
     display: string;
   };
+  assignability: AssignabilityRecord[];
+}
+
+interface AssignabilityRecord {
+  target: TypeRecordKey;
+  assignable: boolean;
+}
+
+interface TypeRecordKey {
+  start: number;
+  end: number;
+  text: string;
+}
+
+interface CapturedTypeRecord {
+  record: TypeRecord;
+  type: TypeScriptType;
 }
 
 interface CliArgs {
@@ -444,6 +461,7 @@ function errorRecord(recordPath: string, text: string, display: string): TypeRec
     text,
     nodeType: "Program",
     type: { name: "Error", display },
+    assignability: [],
   };
 }
 
@@ -504,7 +522,7 @@ function recordForNode(
   relativePath: string,
   node: TypeScriptNode,
   byteOffsets: Uint32Array,
-): string | undefined {
+): CapturedTypeRecord | undefined {
   const start = byteOffsets[node.getStart(sourceFile, false)];
   const end = byteOffsets[node.getEnd()];
   if (start === undefined || end === undefined) {
@@ -515,14 +533,18 @@ function recordForNode(
     const type = checker.getTypeAtLocation(node.expression);
     const typeText = typeToString(checker, type, node);
     const text = sanitize(node.getText(sourceFile));
-    return JSON.stringify({
-      path: relativePath,
-      start,
-      end,
-      text,
-      nodeType: "ExpressionStatement",
-      type: { name: typeName(type), display: sanitize(typeText) },
-    } satisfies TypeRecord);
+    return {
+      type,
+      record: {
+        path: relativePath,
+        start,
+        end,
+        text,
+        nodeType: "ExpressionStatement",
+        type: { name: typeName(type), display: sanitize(typeText) },
+        assignability: [],
+      },
+    };
   }
 
   if (!isIdentifier(node)) {
@@ -536,17 +558,21 @@ function recordForNode(
   }
 
   const text = sanitize(node.getText(sourceFile));
-  return JSON.stringify({
-    path: relativePath,
-    start,
-    end,
-    text,
-    nodeType: "Identifier",
-    type: {
-      name: typeName(typeInfo.type),
-      display: sanitize(typeToString(checker, typeInfo.type, node, typeInfo.flags)),
+  return {
+    type: typeInfo.type,
+    record: {
+      path: relativePath,
+      start,
+      end,
+      text,
+      nodeType: "Identifier",
+      type: {
+        name: typeName(typeInfo.type),
+        display: sanitize(typeToString(checker, typeInfo.type, node, typeInfo.flags)),
+      },
+      assignability: [],
     },
-  } satisfies TypeRecord);
+  };
 }
 
 function typeInfoForIdentifier(
@@ -594,7 +620,7 @@ function collectRecords(
   sourceFile: TypeScriptSourceFile,
   relativePath: string,
 ): string[] {
-  const records: string[] = [];
+  const records: CapturedTypeRecord[] = [];
   const byteOffsets = utf16ToUtf8ByteOffsets(sourceFile.text);
   const stack: TypeScriptNode[] = [sourceFile];
   while (stack.length > 0) {
@@ -602,7 +628,7 @@ function collectRecords(
     if (!node) {
       continue;
     }
-    let record: string | undefined;
+    let record: CapturedTypeRecord | undefined;
     try {
       record = recordForNode(checker, sourceFile, relativePath, node, byteOffsets);
     } catch (error) {
@@ -622,7 +648,42 @@ function collectRecords(
       stack.push(children[index]);
     }
   }
-  return records;
+  records.sort((left, right) => compareRecordKeys(left.record, right.record));
+  for (const [sourceIndex, targetIndex] of assignabilityPairs(records.length)) {
+    const source = records[sourceIndex];
+    const target = records[targetIndex];
+    source.record.assignability.push({
+      target: recordKey(target.record),
+      assignable: checker.isTypeAssignableTo(source.type, target.type),
+    });
+  }
+  return records.map(({ record }) => JSON.stringify(record));
+}
+
+function compareRecordKeys(left: TypeRecordKey, right: TypeRecordKey): number {
+  return left.start - right.start || left.end - right.end || left.text.localeCompare(right.text);
+}
+
+function recordKey(record: TypeRecord): TypeRecordKey {
+  return { start: record.start, end: record.end, text: record.text };
+}
+
+function assignabilityPairs(typeCount: number): Array<[number, number]> {
+  if (typeCount <= 100) {
+    return Array.from({ length: typeCount * typeCount }, (_, pairIndex) => [
+      Math.floor(pairIndex / typeCount),
+      pairIndex % typeCount,
+    ]);
+  }
+
+  const pairs: Array<[number, number]> = [];
+  const offsets = [0, 1, Math.floor(typeCount / 2), typeCount - 1];
+  for (let source = 0; source < typeCount; source += 1) {
+    for (const offset of offsets) {
+      pairs.push([source, (source + offset) % typeCount]);
+    }
+  }
+  return pairs;
 }
 
 function collectTaskRecords(api: API, task: CompilerTask, closeProject?: string): string[] {

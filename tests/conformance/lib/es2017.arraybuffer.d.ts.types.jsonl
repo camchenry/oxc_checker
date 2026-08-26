@@ -1,4 +1,4 @@
-{"path":"es2017.arraybuffer.d.ts","start":10,"end":32,"text":"ArrayBufferConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
-{"path":"es2017.arraybuffer.d.ts","start":10,"end":32,"text":"ArrayBufferConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
-{"path":"es2017.arraybuffer.d.ts","start":47,"end":58,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
-{"path":"es2017.arraybuffer.d.ts","start":47,"end":58,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"}}
+{"path":"es2017.arraybuffer.d.ts","start":10,"end":32,"text":"ArrayBufferConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"},"assignability":[]}
+{"path":"es2017.arraybuffer.d.ts","start":10,"end":32,"text":"ArrayBufferConstructor","nodeType":"Identifier","type":{"name":"Any","display":"any"},"assignability":[{"target":{"start":10,"end":32,"text":"ArrayBufferConstructor"},"assignable":true},{"target":{"start":47,"end":58,"text":"ArrayBuffer"},"assignable":true}]}
+{"path":"es2017.arraybuffer.d.ts","start":47,"end":58,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"},"assignability":[]}
+{"path":"es2017.arraybuffer.d.ts","start":47,"end":58,"text":"ArrayBuffer","nodeType":"Identifier","type":{"name":"TypeReference","display":"ArrayBufferConstructor"},"assignability":[{"target":{"start":10,"end":32,"text":"ArrayBufferConstructor"},"assignable":true},{"target":{"start":47,"end":58,"text":"ArrayBuffer"},"assignable":true}]}

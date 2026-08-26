@@ -1,3 +1,3 @@
-{"path":"es2024.regexp.d.ts","start":10,"end":16,"text":"RegExp","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
-{"path":"es2024.regexp.d.ts","start":10,"end":16,"text":"RegExp","nodeType":"Identifier","type":{"name":"Any","display":"any"}}
-{"path":"es2024.regexp.d.ts","start":196,"end":207,"text":"unicodeSets","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"}}
+{"path":"es2024.regexp.d.ts","start":10,"end":16,"text":"RegExp","nodeType":"Identifier","type":{"name":"Any","display":"any"},"assignability":[]}
+{"path":"es2024.regexp.d.ts","start":10,"end":16,"text":"RegExp","nodeType":"Identifier","type":{"name":"Any","display":"any"},"assignability":[{"target":{"start":10,"end":16,"text":"RegExp"},"assignable":true},{"target":{"start":196,"end":207,"text":"unicodeSets"},"assignable":true}]}
+{"path":"es2024.regexp.d.ts","start":196,"end":207,"text":"unicodeSets","nodeType":"Identifier","type":{"name":"Boolean","display":"boolean"},"assignability":[{"target":{"start":10,"end":16,"text":"RegExp"},"assignable":true},{"target":{"start":196,"end":207,"text":"unicodeSets"},"assignable":true}]}

@@ -1,2 +1,2 @@
-{"path":"webworker.importscripts.d.ts","start":148,"end":161,"text":"importScripts","nodeType":"Identifier","type":{"name":"Function","display":"(...urls: string[]) => void"}}
-{"path":"webworker.importscripts.d.ts","start":165,"end":169,"text":"urls","nodeType":"Identifier","type":{"name":"Array","display":"string[]"}}
+{"path":"webworker.importscripts.d.ts","start":148,"end":161,"text":"importScripts","nodeType":"Identifier","type":{"name":"Function","display":"(...urls: string[]) => void"},"assignability":[{"target":{"start":148,"end":161,"text":"importScripts"},"assignable":true},{"target":{"start":165,"end":169,"text":"urls"},"assignable":false}]}
+{"path":"webworker.importscripts.d.ts","start":165,"end":169,"text":"urls","nodeType":"Identifier","type":{"name":"Array","display":"string[]"},"assignability":[{"target":{"start":148,"end":161,"text":"importScripts"},"assignable":false},{"target":{"start":165,"end":169,"text":"urls"},"assignable":true}]}
