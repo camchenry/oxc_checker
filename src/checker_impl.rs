@@ -20,6 +20,7 @@ use oxc_ast::{
         TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
     },
 };
+use oxc_cfg::ControlFlowGraph;
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
@@ -316,6 +317,14 @@ impl<'a, 'store> Checker<'a, 'store> {
     #[inline]
     pub fn node_kind(&self, node: NodeRef) -> AstKind<'a> {
         self.nodes(node.program_id).kind(node.node_id)
+    }
+
+    #[inline]
+    #[expect(clippy::expect_used)]
+    pub fn cfg(&self, program_id: ProgramId) -> &ControlFlowGraph {
+        self.semantic(program_id)
+            .cfg()
+            .expect("Control flow graph should be built before type checking")
     }
 
     #[inline]

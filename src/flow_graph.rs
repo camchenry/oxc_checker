@@ -107,9 +107,7 @@ impl ProgramFlowGraph {
 
 impl Checker<'_, '_> {
     pub(crate) fn flow_analysis_disabled(&self, node: NodeRef) -> bool {
-        let Some(container) = self.flow_container_for_node(node) else {
-            return false;
-        };
+        let container = self.flow_container_for_node(node);
         self.flow_graph_cache
             .borrow()
             .get(&node.program_id)
@@ -117,9 +115,7 @@ impl Checker<'_, '_> {
     }
 
     fn disable_flow_analysis(&self, node: NodeRef) {
-        let Some(container) = self.flow_container_for_node(node) else {
-            return;
-        };
+        let container = self.flow_container_for_node(node);
         self.flow_graph_cache
             .borrow_mut()
             .entry(node.program_id)
@@ -128,12 +124,11 @@ impl Checker<'_, '_> {
             .insert(container);
     }
 
-    fn flow_container_for_node(&self, node: NodeRef) -> Option<BlockNodeId> {
-        let cfg = self.semantic(node.program_id).cfg()?;
-        Some(flow_container_entry(
-            cfg,
+    fn flow_container_for_node(&self, node: NodeRef) -> BlockNodeId {
+        flow_container_entry(
+            self.cfg(node.program_id),
             self.nodes(node.program_id).cfg_id(node.node_id),
-        ))
+        )
     }
 
     /// Return enclosing branch effects in outermost-to-innermost evaluation order.
@@ -251,9 +246,7 @@ impl Checker<'_, '_> {
         node: NodeRef,
         symbol_id: SymbolId,
     ) -> bool {
-        let Some(container) = self.flow_container_for_node(node) else {
-            return false;
-        };
+        let container = self.flow_container_for_node(node);
         if self
             .flow_graph_cache
             .borrow()
@@ -264,7 +257,7 @@ impl Checker<'_, '_> {
             self.array_mutations(node.program_id, symbol_id);
         }
 
-        let cfg = self.semantic(node.program_id).cfg().unwrap();
+        let cfg = self.cfg(node.program_id);
         let query_start = self.nodes(node.program_id).kind(node.node_id).span().start;
         let mut cache = self.flow_graph_cache.borrow_mut();
         let graph = cache.entry(node.program_id).or_default();
@@ -372,7 +365,7 @@ impl Checker<'_, '_> {
             });
         }
 
-        let cfg = self.semantic(node.program_id).cfg()?;
+        let cfg = self.cfg(node.program_id);
         let is_in_loop = cfg.graph().edge_references().any(|edge| {
             matches!(edge.weight(), EdgeType::Backedge)
                 && cfg.is_reachable(edge.target(), query_block)
@@ -408,7 +401,7 @@ impl Checker<'_, '_> {
         program_id: crate::program::ProgramId,
         block: BlockNodeId,
     ) -> Option<FxHashSet<BlockNodeId>> {
-        let cfg = self.semantic(program_id).cfg()?;
+        let cfg = self.cfg(program_id);
         let entry = flow_container_entry(cfg, block);
         let mut cache = self.flow_graph_cache.borrow_mut();
         cache
@@ -466,9 +459,7 @@ impl Checker<'_, '_> {
 
     fn collect_branch_effects(&self, node: NodeRef) -> SmallVec<[BranchEffect; 4]> {
         let nodes = self.nodes(node.program_id);
-        let Some(cfg) = self.semantic(node.program_id).cfg() else {
-            return SmallVec::new();
-        };
+        let cfg = self.cfg(node.program_id);
         let query_block = nodes.cfg_id(node.node_id);
         let mut effects = SmallVec::new();
         let mut branch_root = node.node_id;

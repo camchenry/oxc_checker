@@ -1570,9 +1570,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         };
 
         let function_block = nodes.cfg_id(function_node_id);
-        let Some(cfg) = self.semantic(program_id).cfg() else {
-            return false;
-        };
+        let cfg = self.cfg(program_id);
 
         let mut pending = vec![function_block];
         let mut visited = FxHashSet::default();

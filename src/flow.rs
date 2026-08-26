@@ -67,9 +67,6 @@ impl<'a> Checker<'a, '_> {
         symbol: SymbolRef,
         base_type: Ty<'a>,
     ) -> Ty<'a> {
-        if self.semantic(node.program_id).cfg().is_none() {
-            return base_type;
-        }
         if symbol.program_id != node.program_id {
             return base_type;
         }
@@ -208,7 +205,7 @@ impl<'a> Checker<'a, '_> {
         const MAX_FLOW_UPDATES: usize = 10_000;
 
         let nodes = self.nodes(node.program_id);
-        let cfg = self.semantic(node.program_id).cfg()?;
+        let cfg = self.cfg(node.program_id);
         let query_block = nodes.cfg_id(node.node_id);
         let entry = flow_graph::flow_container_entry(cfg, query_block);
 
@@ -962,9 +959,7 @@ impl<'a> Checker<'a, '_> {
         let query_span = self.node_kind(node).span();
         let branch_span = self.nodes(node.program_id).kind(effect.branch_root).span();
         let nodes = self.nodes(symbol.program_id);
-        let Some(cfg) = self.semantic(symbol.program_id).cfg() else {
-            return false;
-        };
+        let cfg = self.cfg(symbol.program_id);
         let branch_block = nodes.cfg_id(effect.branch_root);
         let query_block = nodes.cfg_id(node.node_id);
 
