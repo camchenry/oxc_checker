@@ -15,6 +15,7 @@ use smallvec::SmallVec;
 use crate::{
     checker::{Checker, NodeRef},
     limits::CONTROL_FLOW_GRAPH_MAX_DEPTH,
+    program::ProgramId,
 };
 
 /// A condition outcome known to hold while evaluating a branch-local node.
@@ -107,7 +108,7 @@ impl ProgramFlowGraph {
 
 impl Checker<'_, '_> {
     pub(crate) fn flow_analysis_disabled(&self, node: NodeRef) -> bool {
-        let container = self.flow_container_for_node(node);
+        let container = flow_container_entry(self.cfg(node.program_id), self.cfg_id(node));
         self.flow_graph_cache
             .borrow()
             .get(&node.program_id)
@@ -115,20 +116,14 @@ impl Checker<'_, '_> {
     }
 
     fn disable_flow_analysis(&self, node: NodeRef) {
-        let container = self.flow_container_for_node(node);
+        let container = flow_container_entry(self.cfg(node.program_id), self.cfg_id(node));
+
         self.flow_graph_cache
             .borrow_mut()
             .entry(node.program_id)
             .or_default()
             .disabled_containers
             .insert(container);
-    }
-
-    fn flow_container_for_node(&self, node: NodeRef) -> BlockNodeId {
-        flow_container_entry(
-            self.cfg(node.program_id),
-            self.nodes(node.program_id).cfg_id(node.node_id),
-        )
     }
 
     /// Return enclosing branch effects in outermost-to-innermost evaluation order.
@@ -154,7 +149,7 @@ impl Checker<'_, '_> {
     /// Return symbol writes in source order, collecting their CFG locations once per checker.
     pub(crate) fn symbol_writes(
         &self,
-        program_id: crate::program::ProgramId,
+        program_id: ProgramId,
         symbol_id: SymbolId,
     ) -> SmallVec<[WriteEvent; 4]> {
         if let Some(writes) = self
@@ -166,7 +161,6 @@ impl Checker<'_, '_> {
             return writes.iter().copied().collect();
         }
 
-        let nodes = self.nodes(program_id);
         let mut writes = self
             .semantic(program_id)
             .symbol_references(symbol_id)
@@ -175,7 +169,7 @@ impl Checker<'_, '_> {
                 let node_id = reference.node_id();
                 WriteEvent {
                     node_id,
-                    block_id: nodes.cfg_id(node_id),
+                    block_id: self.cfg_id_in_program(program_id, node_id),
                     span: self.write_effect_span(program_id, node_id),
                 }
             })
@@ -195,7 +189,7 @@ impl Checker<'_, '_> {
         {
             writes.push(WriteEvent {
                 node_id: declaration_id,
-                block_id: nodes.cfg_id(declaration_id),
+                block_id: self.cfg_id_in_program(program_id, declaration_id),
                 span: declarator.span,
             });
         }
@@ -212,7 +206,7 @@ impl Checker<'_, '_> {
     /// Return evolving-array mutations in source order, collecting their syntax once per checker.
     pub(crate) fn array_mutations(
         &self,
-        program_id: crate::program::ProgramId,
+        program_id: ProgramId,
         symbol_id: SymbolId,
     ) -> SmallVec<[ArrayMutationEvent; 4]> {
         if let Some(mutations) = self
@@ -246,7 +240,7 @@ impl Checker<'_, '_> {
         node: NodeRef,
         symbol_id: SymbolId,
     ) -> bool {
-        let container = self.flow_container_for_node(node);
+        let container = flow_container_entry(self.cfg(node.program_id), self.cfg_id(node));
         if self
             .flow_graph_cache
             .borrow()
@@ -285,7 +279,7 @@ impl Checker<'_, '_> {
 
     fn array_mutation_for_reference(
         &self,
-        program_id: crate::program::ProgramId,
+        program_id: ProgramId,
         reference_id: NodeId,
     ) -> Option<ArrayMutationEvent> {
         let nodes = self.nodes(program_id);
@@ -347,7 +341,7 @@ impl Checker<'_, '_> {
     ) -> Option<AssignmentFlow> {
         let nodes = self.nodes(node.program_id);
         let query_span = nodes.kind(node.node_id).span();
-        let query_block = nodes.cfg_id(node.node_id);
+        let query_block = self.cfg_id(node);
         let writes = self.symbol_writes(node.program_id, symbol_id);
         if writes.is_empty() {
             return None;
@@ -398,7 +392,7 @@ impl Checker<'_, '_> {
 
     fn dominating_blocks(
         &self,
-        program_id: crate::program::ProgramId,
+        program_id: ProgramId,
         block: BlockNodeId,
     ) -> Option<FxHashSet<BlockNodeId>> {
         let cfg = self.cfg(program_id);
@@ -445,7 +439,7 @@ pub(crate) fn flow_container_entry(
 }
 
 impl Checker<'_, '_> {
-    fn write_effect_span(&self, program_id: crate::program::ProgramId, node_id: NodeId) -> Span {
+    fn write_effect_span(&self, program_id: ProgramId, node_id: NodeId) -> Span {
         let nodes = self.nodes(program_id);
         let node_span = nodes.kind(node_id).span();
         let parent_id = nodes.parent_id(node_id);
@@ -460,7 +454,7 @@ impl Checker<'_, '_> {
     fn collect_branch_effects(&self, node: NodeRef) -> SmallVec<[BranchEffect; 4]> {
         let nodes = self.nodes(node.program_id);
         let cfg = self.cfg(node.program_id);
-        let query_block = nodes.cfg_id(node.node_id);
+        let query_block = self.cfg_id(node);
         let mut effects = SmallVec::new();
         let mut branch_root = node.node_id;
 

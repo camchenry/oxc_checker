@@ -958,10 +958,9 @@ impl<'a> Checker<'a, '_> {
 
         let query_span = self.node_kind(node).span();
         let branch_span = self.nodes(node.program_id).kind(effect.branch_root).span();
-        let nodes = self.nodes(symbol.program_id);
         let cfg = self.cfg(symbol.program_id);
-        let branch_block = nodes.cfg_id(effect.branch_root);
-        let query_block = nodes.cfg_id(node.node_id);
+        let branch_block = self.cfg_id_in_program(symbol.program_id, effect.branch_root);
+        let query_block = self.cfg_id(node);
 
         self.symbol_writes(symbol.program_id, symbol.symbol_id)
             .into_iter()

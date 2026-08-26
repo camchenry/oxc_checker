@@ -20,7 +20,7 @@ use oxc_ast::{
         TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
     },
 };
-use oxc_cfg::ControlFlowGraph;
+use oxc_cfg::{BlockNodeId, ControlFlowGraph};
 use oxc_semantic::{AstNodes, NodeId, Semantic, SymbolId};
 use oxc_span::{GetSpan, Span};
 use oxc_str::{Ident, static_ident};
@@ -325,6 +325,17 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.semantic(program_id)
             .cfg()
             .expect("Control flow graph should be built before type checking")
+    }
+
+    #[inline]
+    pub fn cfg_id(&self, node: NodeRef) -> BlockNodeId {
+        self.nodes(node.program_id).cfg_id(node.node_id)
+    }
+
+    // Useful for when the node ID is already known and we don't want to incur the extra NodeRef creation
+    #[inline]
+    pub fn cfg_id_in_program(&self, program_id: ProgramId, node_id: NodeId) -> BlockNodeId {
+        self.nodes(program_id).cfg_id(node_id)
     }
 
     #[inline]
