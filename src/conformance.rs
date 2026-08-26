@@ -188,6 +188,20 @@ struct CapturedTypeRecord<'a> {
 
 type TypeRecordMap = BTreeMap<TypeRecordKey, TypeRecordType>;
 
+struct ConformanceExpectations {
+    assignments_by_file: BTreeMap<Arc<str>, AssignabilityMap>,
+    types_by_file: BTreeMap<Arc<str>, TypeRecordMap>,
+}
+
+impl ConformanceExpectations {
+    fn from_records(records: &[TypeRecord]) -> Self {
+        Self {
+            assignments_by_file: assignments_by_file(records),
+            types_by_file: records_by_file(records),
+        }
+    }
+}
+
 struct FileResult {
     path: Arc<str>,
     matched_types: usize,
@@ -674,8 +688,10 @@ enum ComparisonError {
         target_start: u32,
         target_text: String,
         should_be_assignable: bool,
-        source_type: String,
-        target_type: String,
+        tsc_source_type: String,
+        tsc_target_type: String,
+        oxc_source_type: String,
+        oxc_target_type: String,
     },
 }
 
@@ -1038,8 +1054,8 @@ fn run_single_file_conformance(case_path: &Path, refresh_tsc: bool) -> Conforman
     } else {
         read_tsc_records_for_case(&repo_root, suite, &cases_root, case_path)?
     };
-    let assignments = assignments_by_file(&tsc_records);
-    let collected = collect_oxc_records_for_case(&cases_root, case_path, &assignments)?;
+    let expectations = ConformanceExpectations::from_records(&tsc_records);
+    let collected = collect_oxc_records_for_case(&cases_root, case_path, &expectations)?;
     let tsc_records = filter_panicked_records(tsc_records, &collected.panicked_paths);
     let oxc_records = filter_panicked_records(collected.records, &collected.panicked_paths);
     let results = compare_records(&tsc_records, &oxc_records);
@@ -1109,8 +1125,8 @@ fn run_type_record_conformance(
     ensure_cases_root(suite, &cases_root)?;
 
     let tsc_records = read_records(&tsc_types_path)?;
-    let assignments = assignments_by_file(&tsc_records);
-    let collected = collect_oxc_records(suite, &cases_root, shared, &assignments);
+    let expectations = ConformanceExpectations::from_records(&tsc_records);
+    let collected = collect_oxc_records(suite, &cases_root, shared, &expectations);
     let tsc_records = filter_panicked_records(tsc_records, &collected.panicked_paths);
     let oxc_records = filter_panicked_records(collected.records, &collected.panicked_paths);
     write_type_outputs(suite, &cases_root, &oxc_records, &tsc_records);
@@ -1280,7 +1296,7 @@ fn collect_oxc_records(
     suite: &ConformanceSuite,
     cases_root: &Path,
     shared: Option<&SharedConformanceCollection>,
-    assignments: &BTreeMap<Arc<str>, AssignabilityMap>,
+    expectations: &ConformanceExpectations,
 ) -> OxcRecordCollection {
     let paths = discover_compiler_cases(suite, cases_root);
     let total_paths = paths.len();
@@ -1358,7 +1374,7 @@ fn collect_oxc_records(
                         &ready_file.source_text,
                         &allocator,
                         Some(&prepared_programs),
-                        Some(assignments),
+                        Some(expectations),
                     );
                     batch_collection.records.extend(collection.records);
                     batch_collection
@@ -1528,7 +1544,7 @@ fn truncate_progress_text(text: &str, width: usize) -> String {
 fn collect_oxc_records_for_case(
     cases_root: &Path,
     case_path: &Path,
-    assignments: &BTreeMap<Arc<str>, AssignabilityMap>,
+    expectations: &ConformanceExpectations,
 ) -> ConformanceResult<OxcRecordCollection> {
     let source_text = read_to_string_simd_utf8(case_path).map_err(|err| {
         ConformanceError::new(format!(
@@ -1543,7 +1559,7 @@ fn collect_oxc_records_for_case(
         &source_text,
         &allocator,
         None,
-        Some(assignments),
+        Some(expectations),
     );
     collection.records.sort_by(|left, right| {
         left.path
@@ -1615,7 +1631,7 @@ fn collect_oxc_records_from_source_with_programs<'a>(
     source_text: &str,
     allocator: &'a Allocator,
     prepared_programs: Option<&'a program::PreparedProgramSet<'a>>,
-    assignments: Option<&BTreeMap<Arc<str>, AssignabilityMap>>,
+    expectations: Option<&ConformanceExpectations>,
 ) -> OxcRecordCollection {
     let relative_path = relative_path(cases_root, path);
     let compiler_case = parse_compiler_test_case(source_text, &relative_path);
@@ -1650,7 +1666,11 @@ fn collect_oxc_records_from_source_with_programs<'a>(
                 program_id,
                 &record_path,
                 &source_file.source_text,
-                assignments.and_then(|by_file| by_file.get(record_path.as_str())),
+                expectations.and_then(|expectations| {
+                    expectations.assignments_by_file.get(record_path.as_str())
+                }),
+                expectations
+                    .and_then(|expectations| expectations.types_by_file.get(record_path.as_str())),
             ));
         }
         return collection;
@@ -1690,7 +1710,11 @@ fn collect_oxc_records_from_source_with_programs<'a>(
             program_id,
             &record_path,
             &source_file.source_text,
-            assignments.and_then(|by_file| by_file.get(record_path.as_str())),
+            expectations.and_then(|expectations| {
+                expectations.assignments_by_file.get(record_path.as_str())
+            }),
+            expectations
+                .and_then(|expectations| expectations.types_by_file.get(record_path.as_str())),
         ));
     }
 
@@ -1957,6 +1981,7 @@ fn actual_identifier_records<'a>(
     path: &str,
     source_text: &str,
     expected_assignments: Option<&AssignabilityMap>,
+    expected_types: Option<&TypeRecordMap>,
 ) -> Vec<TypeRecord> {
     let entry = checker.store.entry(program_id).unwrap();
     let path = Arc::<str>::from(path);
@@ -2021,8 +2046,9 @@ fn actual_identifier_records<'a>(
         let Some(&target_index) = record_indices.get(&target) else {
             continue;
         };
-        let assignable =
-            checker.is_assignable_to(records[source_index].ty, records[target_index].ty);
+        let source_type = assignability_type(&records[source_index], expected_types);
+        let target_type = assignability_type(&records[target_index], expected_types);
+        let assignable = checker.is_assignable_to(source_type, target_type);
         records[source_index]
             .record
             .assignability
@@ -2032,6 +2058,22 @@ fn actual_identifier_records<'a>(
         .into_iter()
         .map(|captured| captured.record)
         .collect()
+}
+
+fn assignability_type<'a>(
+    captured: &CapturedTypeRecord<'a>,
+    expected_types: Option<&TypeRecordMap>,
+) -> Ty<'a> {
+    let Some(expected) = expected_types.and_then(|types| types.get(&captured.record.key())) else {
+        return captured.ty;
+    };
+    match (expected.name.as_str(), captured.record.r#type.name.as_str()) {
+        ("String", "StringLiteral") => Ty::string(),
+        ("Number", "NumberLiteral") => Ty::number(),
+        ("Boolean", "BooleanLiteral") => Ty::boolean(),
+        ("BigInt", "BigIntLiteral") => Ty::bigint(),
+        _ => captured.ty,
+    }
 }
 
 fn assignability_pairs(type_count: usize) -> Vec<(usize, usize)> {
@@ -2641,22 +2683,27 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
                 if actual == Some(*expected) {
                     matched_assignments += 1;
                 } else {
-                    let source_type = oxc_by_key
-                        .get(source)
-                        .or_else(|| tsc_by_key.get(source))
-                        .map_or_else(|| "<missing>".to_string(), |ty| ty.display.clone());
-                    let target_type = oxc_by_key
-                        .get(target)
-                        .or_else(|| tsc_by_key.get(target))
-                        .map_or_else(|| "<missing>".to_string(), |ty| ty.display.clone());
+                    let type_display = |types: &TypeRecordMap, key: &TypeRecordKey| {
+                        types
+                            .get(key)
+                            .map_or_else(|| "<missing>".to_string(), |ty| ty.display.clone())
+                    };
                     errors.push(ComparisonError::AssignabilityMismatch {
                         start: source.start,
                         text: source.text.clone(),
                         target_start: target.start,
                         target_text: target.text.clone(),
                         should_be_assignable: *expected,
-                        source_type,
-                        target_type,
+                        tsc_source_type: type_display(tsc_by_key, source),
+                        tsc_target_type: type_display(tsc_by_key, target),
+                        oxc_source_type: assignability_type_display(
+                            tsc_by_key.get(source),
+                            oxc_by_key.get(source),
+                        ),
+                        oxc_target_type: assignability_type_display(
+                            tsc_by_key.get(target),
+                            oxc_by_key.get(target),
+                        ),
                     });
                 }
             }
@@ -2669,6 +2716,19 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
             }
         })
         .collect()
+}
+
+fn assignability_type_display(
+    expected: Option<&TypeRecordType>,
+    actual: Option<&TypeRecordType>,
+) -> String {
+    match (expected, actual) {
+        (Some(expected), Some(actual)) if is_more_specific_primitive_type(expected, actual) => {
+            expected.display.clone()
+        }
+        (_, Some(actual)) => actual.display.clone(),
+        _ => "<missing>".to_string(),
+    }
 }
 
 type AssignabilityMap = BTreeMap<(TypeRecordKey, TypeRecordKey), bool>;
@@ -3546,8 +3606,10 @@ fn write_snapshot_error(
             target_start,
             target_text,
             should_be_assignable,
-            source_type,
-            target_type,
+            tsc_source_type,
+            tsc_target_type,
+            oxc_source_type,
+            oxc_target_type,
         } => {
             let source_location = assignability_snapshot_location(suite, path, line_starts, *start);
             let target_location =
@@ -3560,8 +3622,15 @@ fn write_snapshot_error(
             snapshot.push_str(&format!(
                 "  - {source_location} `{text}` {expectation} assignable to {target_location} `{target_text}`\n",
             ));
-            snapshot.push_str(&format!("      source: {source_type}\n"));
-            snapshot.push_str(&format!("      target: {target_type}\n"));
+            if tsc_source_type == oxc_source_type && tsc_target_type == oxc_target_type {
+                snapshot.push_str(&format!("      source: {tsc_source_type}\n"));
+                snapshot.push_str(&format!("      target: {tsc_target_type}\n"));
+            } else {
+                snapshot.push_str(&format!("      typescript source: {tsc_source_type}\n"));
+                snapshot.push_str(&format!("      typescript target: {tsc_target_type}\n"));
+                snapshot.push_str(&format!("      oxc source:        {oxc_source_type}\n"));
+                snapshot.push_str(&format!("      oxc target:        {oxc_target_type}\n"));
+            }
         }
     }
 }

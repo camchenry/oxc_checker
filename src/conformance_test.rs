@@ -442,6 +442,41 @@ fn literal_type_is_compatible_with_expected_primitive() {
 }
 
 #[test]
+fn assignability_uses_expected_primitive_instead_of_oxc_literal() {
+    let allocator = Allocator::default();
+    let arena = CheckerArena::new(&allocator);
+    let literal = TypeBuilder::new(arena).string_literal("arg = true");
+    let captured = CapturedTypeRecord {
+        record: TypeRecord {
+            path: Arc::from("compiler/example.ts::d.ts"),
+            start: 24,
+            end: 28,
+            text: "msg1".to_string(),
+            node_type: "Identifier".to_string(),
+            r#type: TypeRecordType {
+                name: "StringLiteral".to_string(),
+                display: r#""arg = true""#.to_string(),
+            },
+            assignability: Vec::new(),
+        },
+        ty: literal,
+    };
+    let expected_types = TypeRecordMap::from([(
+        captured.record.key(),
+        TypeRecordType {
+            name: "String".to_string(),
+            display: "string".to_string(),
+        },
+    )]);
+
+    assert_ne!(literal, Ty::string());
+    assert_eq!(
+        assignability_type(&captured, Some(&expected_types)),
+        Ty::string()
+    );
+}
+
+#[test]
 fn compare_records_counts_union_order_only_differences_as_matches() {
     let expected = TypeRecord {
         path: Arc::from("compiler/unionOrder.ts"),
@@ -527,7 +562,13 @@ fn assignment_mismatches_have_separate_totals_and_no_file_summary() {
         }],
         ..expected.clone()
     };
-    let actual_target = expected_target.clone();
+    let actual_target = TypeRecord {
+        r#type: TypeRecordType {
+            name: "NumberLiteral".to_string(),
+            display: "1".to_string(),
+        },
+        ..expected_target.clone()
+    };
     let results = compare_records(&[expected, expected_target], &[actual, actual_target]);
     let stats = ComparisonStats::from_results(&results, 0);
     let report = format_type_record_report(&CASES_SUITE, &stats, &results);
@@ -539,6 +580,7 @@ fn assignment_mismatches_have_separate_totals_and_no_file_summary() {
     assert!(report.contains("assign: matched=0 mismatched=1 total=1"));
     assert!(report.contains(":1 `source` should be assignable to :1 `target`"));
     assert!(report.contains("      source: 1\n      target: number\n"));
+    assert!(!report.contains("typescript source:"));
     assert!(!report.contains("      expected: true\n      actual:   false\n"));
     let file_header = report
         .lines()
@@ -553,6 +595,33 @@ fn assignment_locations_use_virtual_file_names() {
         assignability_snapshot_location(&CASES_SUITE, "compiler/example.ts::c.ts", &mut None, 0,),
         "c.ts:1"
     );
+}
+
+#[test]
+fn assignment_mismatches_keep_distinct_typescript_and_oxc_pairs() {
+    let mut snapshot = String::new();
+    write_snapshot_error(
+        &mut snapshot,
+        &CASES_SUITE,
+        "compiler/example.ts::d.ts",
+        &mut None,
+        &ComparisonError::AssignabilityMismatch {
+            start: 10,
+            text: "source".to_string(),
+            target_start: 20,
+            target_text: "target".to_string(),
+            should_be_assignable: true,
+            tsc_source_type: "string".to_string(),
+            tsc_target_type: "string".to_string(),
+            oxc_source_type: "string".to_string(),
+            oxc_target_type: r#""literal""#.to_string(),
+        },
+    );
+
+    assert!(snapshot.contains("      typescript source: string\n"));
+    assert!(snapshot.contains("      typescript target: string\n"));
+    assert!(snapshot.contains("      oxc source:        string\n"));
+    assert!(snapshot.contains("      oxc target:        \"literal\"\n"));
 }
 
 #[test]
