@@ -4617,7 +4617,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
-    fn register_type_alias_metadata(&self, reference_program_id: ProgramId, ty: Ty<'a>) {
+    pub(crate) fn register_type_alias_metadata(&self, reference_program_id: ProgramId, ty: Ty<'a>) {
         let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
             return;
         };

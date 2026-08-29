@@ -3,7 +3,7 @@
 # Cases root: src/lib
 files: passed=14 failed=65 panicked=0 total=79 pass_percentage=17.72%
 types: matched=60158 mismatched=662 total=60820 match_percentage=98.91%
-assign: matched=313492 mismatched=11482 total=324974 match_percentage=96.47%
+assign: matched=313494 mismatched=11480 total=324974 match_percentage=96.47%
 
 FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45%
   - src/lib/decorators.d.ts:20 `DecoratorMetadata` type mismatch
@@ -24180,9 +24180,6 @@ FAIL src/lib/es2019.array.d.ts matched_types=70 mismatched_types=2 total_types=7
       typescript target: ArrayConstructor    (Function)
       oxc source: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>    (Function)
       oxc target: any    (Any)
-  - :19 `this` should be assignable to :20 `thisArg`
-      source: This    (TypeParameter)
-      target: This | undefined    (Union)
   - :19 `this` should not be assignable to :35 `Array`
       typescript source: This    (TypeParameter)
       typescript target: ArrayConstructor    (Function)
@@ -24338,9 +24335,6 @@ FAIL src/lib/es2019.array.d.ts matched_types=70 mismatched_types=2 total_types=7
       typescript target: ArrayConstructor    (Function)
       oxc source: This    (TypeParameter)
       oxc target: any    (Any)
-  - :47 `this` should be assignable to :48 `thisArg`
-      source: This    (TypeParameter)
-      target: This | undefined    (Union)
   - :47 `value` should not be assignable to :35 `Array`
       typescript source: T    (TypeParameter)
       typescript target: ArrayConstructor    (Function)

@@ -2,6 +2,7 @@ use crate::{
     TupleElement, TyProperty,
     checker::Checker,
     limits::ASSIGNABILITY_MAX_DEPTH,
+    mapper::TypeMapper,
     type_predicate_kinds_match,
     types::{Ty, TyKind},
 };
@@ -113,6 +114,12 @@ impl<'a, 'store> Checker<'a, 'store> {
             (_, TyKind::Unknown) => true,
             // Unlike `any`, `unknown` is not assignable to any type (except for `any`)
             (TyKind::Unknown, _) => false,
+            (TyKind::Union(source_union), _) => source_union.types.iter().all(|source_type| {
+                self.is_assignable_to_at_depth(*source_type, target, next_depth)
+            }),
+            (_, TyKind::Union(target_union)) => target_union.types.iter().any(|target_type| {
+                self.is_assignable_to_at_depth(source, *target_type, next_depth)
+            }),
             (TyKind::TypeParameter(source), TyKind::TypeParameter(target)) => source == target,
             (TyKind::TypeParameter(source), _) => {
                 source.constraint_type.is_some_and(|constraint| {
@@ -147,18 +154,16 @@ impl<'a, 'store> Checker<'a, 'store> {
             (TyKind::ModuleNamespace(source), TyKind::ModuleNamespace(target)) => {
                 self.properties_assignable_to(&source.properties, &target.properties, next_depth)
             }
-            (TyKind::Union(source_union), _) => source_union.types.iter().all(|source_type| {
-                self.is_assignable_to_at_depth(*source_type, target, next_depth)
-            }),
-            (_, TyKind::Union(target_union)) => target_union.types.iter().any(|target_type| {
-                self.is_assignable_to_at_depth(source, *target_type, next_depth)
-            }),
             (TyKind::Intersection(intersection), TyKind::Object(_)) => intersection
                 .types
                 .iter()
                 .all(|ty| self.is_assignable_to_at_depth(target, *ty, next_depth)),
+            (TyKind::Intersection(intersection), TyKind::TypeParameter(_)) => intersection
+                .types
+                .iter()
+                .any(|ty| self.is_assignable_to_at_depth(*ty, target, next_depth)),
             (TyKind::Intersection(intersection), other) if other.is_primitive() => {
-                // allow branded types to be assignable to their base type
+                // Allow branded types to be assignable to their base type.
                 intersection
                     .types
                     .iter()
@@ -169,12 +174,47 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .iter()
                 .all(|ty| self.is_assignable_to_at_depth(source, *ty, next_depth)),
             (TyKind::Function(source), TyKind::Function(target)) => {
+                let source_mapper = if source.type_parameters.is_empty()
+                    || target.type_parameters.is_empty()
+                {
+                    TypeMapper::Empty
+                } else {
+                    if source.type_parameters.len() != target.type_parameters.len() {
+                        return false;
+                    }
+                    let mapper = TypeMapper::from_type_parameters_and_arguments(
+                        self.arena(),
+                        source.type_parameters.iter().copied(),
+                        target
+                            .type_parameters
+                            .iter()
+                            .map(|parameter| self.arena().type_parameter_type(*parameter)),
+                    );
+                    if !source
+                        .type_parameters
+                        .iter()
+                        .zip(&target.type_parameters)
+                        .all(|(source, target)| {
+                            match (source.constraint_type, target.constraint_type) {
+                                (Some(source), Some(target)) => self.arena().is_type_identical_to(
+                                    self.instantiate_type(source, &mapper),
+                                    target,
+                                ),
+                                (None, None) => true,
+                                _ => false,
+                            }
+                        })
+                    {
+                        return false;
+                    }
+                    mapper
+                };
                 source.parameters.len() == target.parameters.len()
                     && source.parameters.iter().zip(target.parameters.iter()).all(
                         |(source_parameter, target_parameter)| {
                             self.is_assignable_to_at_depth(
                                 target_parameter.ty,
-                                source_parameter.ty,
+                                self.instantiate_type(source_parameter.ty, &source_mapper),
                                 next_depth,
                             )
                         },
@@ -189,7 +229,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                                     ) {
                                         (Some(source_type), Some(target_type)) => self
                                             .is_assignable_to_at_depth(
-                                                source_type,
+                                                self.instantiate_type(source_type, &source_mapper),
                                                 target_type,
                                                 next_depth,
                                             ),
@@ -199,7 +239,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                             })
                         }
                         None => self.is_assignable_to_at_depth(
-                            source.return_type,
+                            self.instantiate_type(source.return_type, &source_mapper),
                             target.return_type,
                             next_depth,
                         ),

@@ -1957,6 +1957,33 @@ fn assignability_handles_complex_types() {
 }
 
 #[test]
+fn generic_function_assignability_renames_type_parameters() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(&allocator, "");
+    let checker = checker(&ret);
+    let arena = arena(&ret);
+    let source_parameter = Ty::type_parameter("T", None, None);
+    let source_parameter_type = arena.type_parameter_type(source_parameter);
+    let source = arena.function(
+        [source_parameter],
+        [Ty::parameter(
+            "value",
+            arena.union([source_parameter_type, Ty::Null, Ty::Undefined]),
+        )],
+        arena.intersection([source_parameter_type, arena.object([])]),
+    );
+    let target_parameter = Ty::type_parameter("U", None, None);
+    let target_parameter_type = arena.type_parameter_type(target_parameter);
+    let target = arena.function(
+        [target_parameter],
+        [Ty::parameter("value", target_parameter_type)],
+        target_parameter_type,
+    );
+
+    assert!(checker.is_assignable_to(source, target));
+}
+
+#[test]
 fn destructured_parameters_preserve_pattern_and_property_types() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

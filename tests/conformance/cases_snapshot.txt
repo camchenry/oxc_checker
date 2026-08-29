@@ -3,73 +3,13 @@
 # Cases root: tests/conformance/cases
 files: passed=93 failed=81 panicked=0 total=174 pass_percentage=53.45%
 types: matched=3648 mismatched=55 total=3703 match_percentage=98.51%
-assign: matched=88281 mismatched=3172 total=91453 match_percentage=96.53%
+assign: matched=88319 mismatched=3134 total=91453 match_percentage=96.57%
 
 PASS tests/conformance/cases/compiler/abstractIdentifierNameStrict.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/arrayTypes.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/assignmentExpressions.ts matched_types=47 mismatched_types=0 total_types=47 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/basicClassProperties.ts matched_types=60 mismatched_types=0 total_types=60 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/basicFunctionGenericInference.ts matched_types=58 mismatched_types=0 total_types=58 match_percentage=100.00%
-  - :16 `foo3` should be assignable to :1 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
-  - :16 `foo3` should be assignable to :6 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
-  - :16 `foo3` should be assignable to :7 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
-  - :20 `foo3` should be assignable to :1 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
-  - :20 `foo3` should be assignable to :6 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
-  - :20 `foo3` should be assignable to :7 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
-  - :21 `foo3` should be assignable to :1 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
-  - :21 `foo3` should be assignable to :6 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
-  - :21 `foo3` should be assignable to :7 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
-  - :22 `foo3` should be assignable to :1 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
-  - :22 `foo3` should be assignable to :6 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
-  - :22 `foo3` should be assignable to :7 `foo`
-      typescript source: <T>(x: T | undefined | null) => NonNullable<T>    (Function)
-      typescript target: <T>(x: T) => T    (Function)
-      oxc source: <T>(x: T | null | undefined) => NonNullable<T>    (Function)
-      oxc target: <T>(x: T) => T    (Function)
   - :24 `defaultOnlyReadU` should be assignable to :1 `foo`
       source: <T = string, U = T>() => U    (Function)
       target: <T>(x: T) => T    (Function)
@@ -4189,11 +4129,6 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::a.ts matched
       typescript target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>    (Function)
       oxc source: <T = never>(reason?: any) => Promise<T>    (Function)
       oxc target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>    (Function)
-  - a.ts:9 `reject` should be assignable to a.ts:9 `catch`
-      typescript source: <T = never>(reason?: any) => Promise<T>    (Function)
-      typescript target: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>    (Function)
-      oxc source: <T = never>(reason?: any) => Promise<T>    (Function)
-      oxc target: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>    (Function)
   - a.ts:9 `reject` should be assignable to a.ts:11 `finally`
       source: <T = never>(reason?: any) => Promise<T>    (Function)
       target: (onfinally?: (() => void) | undefined | null) => Promise<never>    (Function)
@@ -4217,16 +4152,6 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::a.ts matched
       typescript target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>    (Function)
       oxc source: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>    (Function)
       oxc target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>    (Function)
-  - a.ts:9 `catch` should be assignable to a.ts:9 `reject`
-      typescript source: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>    (Function)
-      typescript target: <T = never>(reason?: any) => Promise<T>    (Function)
-      oxc source: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>    (Function)
-      oxc target: <T = never>(reason?: any) => Promise<T>    (Function)
-  - a.ts:9 `catch` should be assignable to a.ts:11 `reject`
-      typescript source: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>    (Function)
-      typescript target: <T = never>(reason?: any) => Promise<T>    (Function)
-      oxc source: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>    (Function)
-      oxc target: <T = never>(reason?: any) => Promise<T>    (Function)
   - a.ts:11 `Promise.reject('value').finally();` should be assignable to a.ts:1 `promise`
       source: Promise<never>    (TypeReference)
       target: Promise<unknown>    (TypeReference)
@@ -4262,11 +4187,6 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::a.ts matched
       typescript target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>    (Function)
       oxc source: <T = never>(reason?: any) => Promise<T>    (Function)
       oxc target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>    (Function)
-  - a.ts:11 `reject` should be assignable to a.ts:9 `catch`
-      typescript source: <T = never>(reason?: any) => Promise<T>    (Function)
-      typescript target: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>    (Function)
-      oxc source: <T = never>(reason?: any) => Promise<T>    (Function)
-      oxc target: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>    (Function)
   - a.ts:11 `reject` should be assignable to a.ts:11 `finally`
       source: <T = never>(reason?: any) => Promise<T>    (Function)
       target: (onfinally?: (() => void) | undefined | null) => Promise<never>    (Function)
@@ -4374,11 +4294,6 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts matched
       typescript target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>    (Function)
       oxc source: <T = never>(reason?: any) => Promise<T>    (Function)
       oxc target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>    (Function)
-  - b.ts:15 `reject` should be assignable to b.ts:15 `catch`
-      typescript source: <T = never>(reason?: any) => Promise<T>    (Function)
-      typescript target: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>    (Function)
-      oxc source: <T = never>(reason?: any) => Promise<T>    (Function)
-      oxc target: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>    (Function)
   - b.ts:15 `reject` should be assignable to b.ts:17 `finally`
       source: <T = never>(reason?: any) => Promise<T>    (Function)
       target: (onfinally?: (() => void) | undefined | null) => Promise<never>    (Function)
@@ -4412,16 +4327,6 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts matched
       typescript target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>    (Function)
       oxc source: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>    (Function)
       oxc target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>    (Function)
-  - b.ts:15 `catch` should be assignable to b.ts:15 `reject`
-      typescript source: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>    (Function)
-      typescript target: <T = never>(reason?: any) => Promise<T>    (Function)
-      oxc source: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>    (Function)
-      oxc target: <T = never>(reason?: any) => Promise<T>    (Function)
-  - b.ts:15 `catch` should be assignable to b.ts:17 `reject`
-      typescript source: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>    (Function)
-      typescript target: <T = never>(reason?: any) => Promise<T>    (Function)
-      oxc source: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>    (Function)
-      oxc target: <T = never>(reason?: any) => Promise<T>    (Function)
   - b.ts:17 `reject` should be assignable to b.ts:1 `resolve`
       source: <T = never>(reason?: any) => Promise<T>    (Function)
       target: (value: unknown) => void    (Function)
@@ -4445,11 +4350,6 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts matched
       typescript target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>    (Function)
       oxc source: <T = never>(reason?: any) => Promise<T>    (Function)
       oxc target: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>    (Function)
-  - b.ts:17 `reject` should be assignable to b.ts:15 `catch`
-      typescript source: <T = never>(reason?: any) => Promise<T>    (Function)
-      typescript target: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined) => Promise<TResult>    (Function)
-      oxc source: <T = never>(reason?: any) => Promise<T>    (Function)
-      oxc target: <TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null) => Promise<TResult>    (Function)
   - b.ts:17 `reject` should be assignable to b.ts:17 `finally`
       source: <T = never>(reason?: any) => Promise<T>    (Function)
       target: (onfinally?: (() => void) | undefined | null) => Promise<never>    (Function)
@@ -14100,63 +14000,9 @@ FAIL tests/conformance/cases/compiler/typePredicates.ts matched_types=54 mismatc
       target: MethodSignatureCoverage<T>    (TypeReference)
 PASS tests/conformance/cases/compiler/unaryExpressions.ts matched_types=42 mismatched_types=0 total_types=42 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/unionIntersectionInference.ts matched_types=45 mismatched_types=0 total_types=45 match_percentage=100.00%
-  - :2 `maybe` should be assignable to :8 `extra`
-      source: <T>(value: T | undefined) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :2 `maybe` should be assignable to :15 `extra`
-      source: <T>(value: T | undefined) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :3 `nullable` should be assignable to :8 `extra`
-      source: <T>(value: T | null) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :3 `nullable` should be assignable to :15 `extra`
-      source: <T>(value: T | null) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :4 `falsy` should be assignable to :8 `extra`
-      source: <T>(value: T | false) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :4 `falsy` should be assignable to :15 `extra`
-      source: <T>(value: T | false) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :5 `unwrapPromise` should be assignable to :8 `extra`
-      source: <T>(value: Promise<T> | T) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :5 `unwrapPromise` should be assignable to :15 `extra`
-      source: <T>(value: Promise<T> | T) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
   - :7 `intersectionSource` should be assignable to :15 `extraValue`
       source: string[] & { extra: number; }    (Intersection)
       target: { extra: number; }    (Object)
-  - :10 `maybe` should be assignable to :8 `extra`
-      source: <T>(value: T | undefined) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :10 `maybe` should be assignable to :15 `extra`
-      source: <T>(value: T | undefined) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :11 `nullable` should be assignable to :8 `extra`
-      source: <T>(value: T | null) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :11 `nullable` should be assignable to :15 `extra`
-      source: <T>(value: T | null) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :12 `falsy` should be assignable to :8 `extra`
-      source: <T>(value: T | false) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :12 `falsy` should be assignable to :15 `extra`
-      source: <T>(value: T | false) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :13 `unwrapPromise` should be assignable to :8 `extra`
-      source: <T>(value: Promise<T> | T) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :13 `unwrapPromise` should be assignable to :15 `extra`
-      source: <T>(value: Promise<T> | T) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :14 `unwrapPromise` should be assignable to :8 `extra`
-      source: <T>(value: Promise<T> | T) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
-  - :14 `unwrapPromise` should be assignable to :15 `extra`
-      source: <T>(value: Promise<T> | T) => T    (Function)
-      target: <T>(value: string[] & T) => T    (Function)
   - :15 `intersectionSource` should be assignable to :15 `extraValue`
       source: string[] & { extra: number; }    (Intersection)
       target: { extra: number; }    (Object)

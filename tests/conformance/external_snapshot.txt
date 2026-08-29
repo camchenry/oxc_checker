@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/external
 files: passed=12 failed=29 panicked=0 total=41 pass_percentage=29.27%
 types: matched=2168 mismatched=330 total=2498 match_percentage=86.79%
-assign: matched=56153 mismatched=12521 total=68674 match_percentage=81.77%
+assign: matched=56154 mismatched=12520 total=68674 match_percentage=81.77%
 
 FAIL tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts matched_types=192 mismatched_types=2 total_types=194 match_percentage=98.97%
   - tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts:11 `PathImpl` type mismatch
@@ -34934,11 +34934,6 @@ FAIL tests/conformance/external/tanstack-query/query-core-streamed-query.ts::pac
       typescript target: Awaited<TQueryFnData>    (Conditional)
       oxc source: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }    (Object)
       oxc target: any    (Any)
-  - packages/query-core/src/streamedQuery.ts:69 `previous` should be assignable to packages/query-core/src/streamedQuery.ts:69 `initialValue`
-      typescript source: TData & ({} | null)    (Union)
-      typescript target: TData    (TypeParameter)
-      oxc source: TData & ({} | null)    (Intersection)
-      oxc target: TData    (TypeParameter)
   - packages/query-core/src/streamedQuery.ts:69 `previous` should not be assignable to packages/query-core/src/streamedQuery.ts:69 `chunk`
       typescript source: TData & ({} | null)    (Union)
       typescript target: Awaited<TQueryFnData>    (Conditional)

@@ -359,7 +359,10 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         target_type: Ty<'a>,
     ) -> Ty<'a> {
-        self.expect_global_type_reference(program_id, NON_NULLABLE_TYPE_NAME, [target_type])
+        let ty =
+            self.expect_global_type_reference(program_id, NON_NULLABLE_TYPE_NAME, [target_type]);
+        self.register_type_alias_metadata(program_id, ty);
+        ty
     }
 
     pub(crate) fn get_global_extract_type(
