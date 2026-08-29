@@ -4861,6 +4861,50 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    pub(crate) fn get_class_instance_type_for_reference(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> Option<Ty<'a>> {
+        let (symbol, _) = self.get_type_reference_symbol_and_declaration(program_id, reference)?;
+        let (_, class) = self.get_class_for_symbol(symbol)?;
+        let substitutions = self.type_parameter_substitutions_for_reference(
+            symbol.program_id,
+            class.type_parameters.as_deref(),
+            reference,
+        );
+        Some(self.instantiate_type(
+            self.get_type_of_class_instance(symbol.program_id, class),
+            &substitutions.to_mapper(self.arena()),
+        ))
+    }
+
+    pub(crate) fn class_reference_has_private_instance_members(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+    ) -> bool {
+        let Some((symbol, _)) =
+            self.get_type_reference_symbol_and_declaration(program_id, reference)
+        else {
+            return false;
+        };
+        self.get_class_for_symbol(symbol).is_some_and(|(_, class)| {
+            class.body.body.iter().any(|element| match element {
+                ClassElement::MethodDefinition(method) => {
+                    !method.r#static && matches!(method.key, PropertyKey::PrivateIdentifier(_))
+                }
+                ClassElement::PropertyDefinition(property) => {
+                    !property.r#static && matches!(property.key, PropertyKey::PrivateIdentifier(_))
+                }
+                ClassElement::AccessorProperty(property) => {
+                    !property.r#static && matches!(property.key, PropertyKey::PrivateIdentifier(_))
+                }
+                _ => false,
+            })
+        })
+    }
+
     fn apparent_interface_type_for_conditional_match(
         &self,
         program_id: ProgramId,
@@ -5876,7 +5920,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
-    fn get_property_type_of_global_interface_type(
+    pub(crate) fn get_property_type_of_global_interface_type(
         &self,
         program_id: ProgramId,
         object_type: Ty<'a>,
@@ -5961,6 +6005,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                     program_id,
                     true,
                     false,
+                    property_name,
+                );
+            }
+            TyKind::Class(class) => {
+                return self.get_property_type_of_global_interface_type(
+                    program_id,
+                    class.constructor_type,
                     property_name,
                 );
             }
@@ -7782,41 +7833,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         include_value_properties: bool,
     ) -> Ty<'a> {
         let class_node_id = class.node_id.get();
-        let instance_type = self
-            .arena()
-            .object(class.body.body.iter().filter_map(|element| match element {
-                ClassElement::MethodDefinition(method)
-                    if !method.r#static && method.kind != MethodDefinitionKind::Constructor =>
-                {
-                    let name = property_key_name_str(&method.key)?;
-                    Some(TyProperty {
-                        name,
-                        flags: property_name_flags(&method.key),
-                        computed: false,
-                        optional: false,
-                        method: true,
-                        readonly: false,
-                        ty: self.get_type_of_method_definition(program_id, method, class_node_id),
-                    })
-                }
-                ClassElement::PropertyDefinition(property) if !property.r#static => {
-                    let name = property_key_name_str(&property.key)?;
-                    Some(TyProperty {
-                        name,
-                        flags: property_name_flags(&property.key),
-                        ty: self.get_type_of_property_definition(
-                            program_id,
-                            property,
-                            Some(class_node_id),
-                        ),
-                        computed: false,
-                        optional: property.optional,
-                        method: false,
-                        readonly: property.readonly,
-                    })
-                }
-                _ => None,
-            }));
+        let instance_type = self.get_type_of_class_instance(program_id, class);
         let constructor_parameters = class.body.body.iter().find_map(|element| {
             let ClassElement::MethodDefinition(method) = element else {
                 return None;
@@ -7893,6 +7910,44 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         self.ty
             .object_from_slices(properties, signatures, &[], false)
+    }
+
+    fn get_type_of_class_instance(&self, program_id: ProgramId, class: &'a Class<'a>) -> Ty<'a> {
+        let class_node_id = class.node_id.get();
+        self.arena()
+            .object(class.body.body.iter().filter_map(|element| match element {
+                ClassElement::MethodDefinition(method)
+                    if !method.r#static && method.kind != MethodDefinitionKind::Constructor =>
+                {
+                    let name = property_key_name_str(&method.key)?;
+                    Some(TyProperty {
+                        name,
+                        flags: property_name_flags(&method.key),
+                        computed: false,
+                        optional: false,
+                        method: true,
+                        readonly: false,
+                        ty: self.get_type_of_method_definition(program_id, method, class_node_id),
+                    })
+                }
+                ClassElement::PropertyDefinition(property) if !property.r#static => {
+                    let name = property_key_name_str(&property.key)?;
+                    Some(TyProperty {
+                        name,
+                        flags: property_name_flags(&property.key),
+                        ty: self.get_type_of_property_definition(
+                            program_id,
+                            property,
+                            Some(class_node_id),
+                        ),
+                        computed: false,
+                        optional: property.optional,
+                        method: false,
+                        readonly: property.readonly,
+                    })
+                }
+                _ => None,
+            }))
     }
 
     // TODO(refactor): move to impl on class

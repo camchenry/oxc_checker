@@ -207,6 +207,38 @@ impl<'a, 'store> Checker<'a, 'store> {
                         next_depth,
                     )
             }
+            (TyKind::Class(_) | TyKind::Function(_), TyKind::TypeReference(reference)) => {
+                reference.target.is_some_and(|symbol| {
+                    if self
+                        .class_reference_has_private_instance_members(symbol.program_id, reference)
+                    {
+                        return false;
+                    }
+                    self.get_class_instance_type_for_reference(symbol.program_id, reference)
+                        .is_some_and(|instance_type| {
+                            let TyKind::Object(instance) = self.ty_kind(instance_type) else {
+                                return false;
+                            };
+                            self.type_properties_assignable_to(
+                                symbol.program_id,
+                                source,
+                                instance.properties,
+                                next_depth,
+                            )
+                        })
+                })
+            }
+            (TyKind::Class(source), TyKind::Class(target)) => self.is_assignable_to_at_depth(
+                source.constructor_type,
+                target.constructor_type,
+                next_depth,
+            ),
+            (TyKind::Class(source), _) => {
+                self.is_assignable_to_at_depth(source.constructor_type, target, next_depth)
+            }
+            (_, TyKind::Class(target)) => {
+                self.is_assignable_to_at_depth(source, target.constructor_type, next_depth)
+            }
             (TyKind::TypeQuery(source), TyKind::TypeQuery(target)) => {
                 source.name == target.name
                     && self.type_arguments_assignable_to(
@@ -436,6 +468,29 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.is_assignable_to_at_depth(*source_argument, *target_argument, depth)
                 },
             )
+    }
+
+    fn type_properties_assignable_to(
+        &self,
+        program_id: crate::program::ProgramId,
+        source: Ty<'a>,
+        target_properties: &[TyProperty<'a>],
+        depth: usize,
+    ) -> bool {
+        target_properties.iter().all(|target_property| {
+            let source_type = self
+                .property_type_for_relation(source, target_property.name, depth)
+                .or_else(|| {
+                    self.get_property_type_of_global_interface_type(
+                        program_id,
+                        source,
+                        target_property.name,
+                    )
+                });
+            source_type.map_or(target_property.optional, |source_type| {
+                self.is_assignable_to_at_depth(source_type, target_property.ty, depth)
+            })
+        })
     }
 
     fn properties_assignable_to(
