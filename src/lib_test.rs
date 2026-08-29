@@ -3545,6 +3545,41 @@ fn type_query_alias_instantiation_resolves_intersections() {
 }
 
 #[test]
+fn classes_use_class_types_in_value_queries() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+    class C {
+        static value = 1;
+        instance = "value";
+    }
+    const ctor = C;
+    const instance = new C();
+    type Ctor = typeof C;
+    "#,
+    );
+    let class_type = get_global_symbol_type(&ret, "C");
+    let constructor_value_type = get_global_symbol_type(&ret, "ctor");
+    let constructor_alias_type = get_global_symbol_type(&ret, "Ctor");
+
+    assert_eq!(class_type.enum_variant_name(ret.arena), "TyClass");
+    assert_eq!(
+        constructor_value_type.enum_variant_name(ret.arena),
+        "TyClass"
+    );
+    assert_eq!(
+        constructor_alias_type.enum_variant_name(ret.arena),
+        "TyClass"
+    );
+    assert_eq!(type_string(&ret, class_type), "typeof C");
+    assert_eq!(
+        type_string(&ret, get_global_symbol_type(&ret, "instance")),
+        "C"
+    );
+}
+
+#[test]
 fn function_return_inference_visits_body_statements() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

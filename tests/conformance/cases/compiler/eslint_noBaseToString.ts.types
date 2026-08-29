@@ -2,13 +2,13 @@
 >^^^^^^^^: string   (String) (ExpressionStatement)
 
 class MyClass {}
->     ^^^^^^^: typeof MyClass   (TypeQuery) (Identifier)
+>     ^^^^^^^: typeof MyClass   (Class) (Identifier)
 
 const value = new MyClass();
 >     ^^^^^: MyClass   (TypeReference) (Identifier)
 
 const value = new MyClass();
->                 ^^^^^^^: typeof MyClass   (TypeQuery) (Identifier)
+>                 ^^^^^^^: typeof MyClass   (Class) (Identifier)
 
 value + '';
 >^^^^^: MyClass   (TypeReference) (Identifier)
@@ -44,7 +44,7 @@ String({});
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 [{}, new MyClass()].join('');
->        ^^^^^^^: typeof MyClass   (TypeQuery) (Identifier)
+>        ^^^^^^^: typeof MyClass   (Class) (Identifier)
 
 [{}, new MyClass()].join('');
 >                   ^^^^: (separator?: string) => string   (Function) (Identifier)
@@ -77,7 +77,7 @@ String(42);
 >          ^^^^^^^^^^^^^^: () => string   (Function) (Identifier)
 
 class CustomToString {
->     ^^^^^^^^^^^^^^: typeof CustomToString   (TypeQuery) (Identifier)
+>     ^^^^^^^^^^^^^^: typeof CustomToString   (Class) (Identifier)
 
   toString() {
 > ^^^^^^^^: () => string   (Function) (Identifier)
@@ -86,7 +86,7 @@ class CustomToString {
 >^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
 `Value: ${new CustomToString()}`;
->             ^^^^^^^^^^^^^^: typeof CustomToString   (TypeQuery) (Identifier)
+>             ^^^^^^^^^^^^^^: typeof CustomToString   (Class) (Identifier)
 
 const literalWithToString = {
 >     ^^^^^^^^^^^^^^^^^^^: { toString: () => string; }   (Object) (Identifier)

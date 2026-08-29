@@ -248,7 +248,7 @@ declare var WSH: typeof WScript;
 >                       ^^^^^^^: { Echo(s: any): void; StdErr: TextStreamWriter; StdOut: TextStreamWriter; Arguments: { length: number; Item(n: number): string; }; ScriptFullName: string; Quit(exitCode?: number): number; BuildVersion: number; FullName: string; Interactive: boolean; Name: string; Path: string; ScriptName: string; StdIn: TextStreamReader; Version: string; ConnectObject(objEventSource: any, strPrefix: string): void; CreateObject(strProgID: string, strPrefix?: string): any; DisconnectObject(obj: any): void; GetObject(strPathname: string, strProgID?: string, strPrefix?: string): any; Sleep(intTime: number): void; }   (Object) (Identifier)
 
 declare class SafeArray<T = any> {
->             ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
+>             ^^^^^^^^^: typeof SafeArray   (Class) (Identifier)
                expected: { new <T = any>(): { SafeArray_typekey: SafeArray<T>; }; }
 
 declare class SafeArray<T = any> {
@@ -258,10 +258,10 @@ declare class SafeArray<T = any> {
 >           ^^^^^^^^^^^^^^^^^: SafeArray<T>   (TypeReference) (Identifier)
 
     private SafeArray_typekey: SafeArray<T>;
->                              ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
+>                              ^^^^^^^^^: typeof SafeArray   (Class) (Identifier)
 
     private SafeArray_typekey: SafeArray<T>;
->                              ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
+>                              ^^^^^^^^^: typeof SafeArray   (Class) (Identifier)
 
     private SafeArray_typekey: SafeArray<T>;
 >                                        ^: any   (Any) (Identifier)
@@ -303,10 +303,10 @@ interface EnumeratorConstructor {
 >                 ^^^^^^^^^: SafeArray<T>   (TypeReference) (Identifier)
 
     new <T = any>(safearray: SafeArray<T>): Enumerator<T>;
->                            ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
+>                            ^^^^^^^^^: typeof SafeArray   (Class) (Identifier)
 
     new <T = any>(safearray: SafeArray<T>): Enumerator<T>;
->                            ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
+>                            ^^^^^^^^^: typeof SafeArray   (Class) (Identifier)
 
     new <T = any>(safearray: SafeArray<T>): Enumerator<T>;
 >                                      ^: any   (Any) (Identifier)
@@ -423,10 +423,10 @@ interface VBArrayConstructor {
 >                 ^^^^^^^^^: SafeArray<T>   (TypeReference) (Identifier)
 
     new <T = any>(safeArray: SafeArray<T>): VBArray<T>;
->                            ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
+>                            ^^^^^^^^^: typeof SafeArray   (Class) (Identifier)
 
     new <T = any>(safeArray: SafeArray<T>): VBArray<T>;
->                            ^^^^^^^^^: typeof SafeArray   (TypeQuery) (Identifier)
+>                            ^^^^^^^^^: typeof SafeArray   (Class) (Identifier)
 
     new <T = any>(safeArray: SafeArray<T>): VBArray<T>;
 >                                      ^: any   (Any) (Identifier)
@@ -450,17 +450,17 @@ declare var VBArray: VBArrayConstructor;
 >                    ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare class VarDate {
->             ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
+>             ^^^^^^^: typeof VarDate   (Class) (Identifier)
              expected: { new (): { VarDate_typekey: VarDate; }; }
 
     private VarDate_typekey: VarDate;
 >           ^^^^^^^^^^^^^^^: VarDate   (TypeReference) (Identifier)
 
     private VarDate_typekey: VarDate;
->                            ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
+>                            ^^^^^^^: typeof VarDate   (Class) (Identifier)
 
     private VarDate_typekey: VarDate;
->                            ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
+>                            ^^^^^^^: typeof VarDate   (Class) (Identifier)
 
 interface DateConstructor {
 >         ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -472,10 +472,10 @@ interface DateConstructor {
 >        ^^: VarDate   (TypeReference) (Identifier)
 
     new (vd: VarDate): Date;
->            ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
+>            ^^^^^^^: typeof VarDate   (Class) (Identifier)
 
     new (vd: VarDate): Date;
->            ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
+>            ^^^^^^^: typeof VarDate   (Class) (Identifier)
 
     new (vd: VarDate): Date;
 >                      ^^^^: any   (Any) (Identifier)
@@ -497,7 +497,7 @@ interface Date {
 >   ^^^^^^^^^^: () => VarDate   (Function) (Identifier)
 
     getVarDate: () => VarDate;
->                     ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
+>                     ^^^^^^^: typeof VarDate   (Class) (Identifier)
 
     getVarDate: () => VarDate;
->                     ^^^^^^^: typeof VarDate   (TypeQuery) (Identifier)
+>                     ^^^^^^^: typeof VarDate   (Class) (Identifier)

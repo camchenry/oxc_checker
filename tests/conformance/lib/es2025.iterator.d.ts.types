@@ -1,5 +1,5 @@
 declare abstract class Iterator<T, TResult = undefined, TNext = unknown> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
->                      ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>                      ^^^^^^^^: typeof Iterator   (Class) (Identifier)
 
 declare abstract class Iterator<T, TResult = undefined, TNext = unknown> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
 >                               ^: any   (Any) (Identifier)
@@ -32,10 +32,10 @@ declare abstract class Iterator<T, TResult = undefined, TNext = unknown> { // es
 >                                                   ^^^^^^^: any   (Any) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->         ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>         ^^^^^^^^: typeof Iterator   (Class) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->         ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>         ^^^^^^^^: typeof Iterator   (Class) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
 >                  ^: any   (Any) (Identifier)
@@ -62,10 +62,10 @@ interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResu
 >                                                                                   ^^^^^: any   (Any) (Identifier)
 
 type IteratorObjectConstructor = typeof Iterator;
->    ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>    ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (Class) (Identifier)
 
 type IteratorObjectConstructor = typeof Iterator;
->                                       ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>                                       ^^^^^^^^: typeof Iterator   (Class) (Identifier)
 
     interface IteratorObject<T, TReturn, TNext> {
 >             ^^^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -248,11 +248,11 @@ type IteratorObjectConstructor = typeof Iterator;
 >                                       ^^^^^: number   (Number) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                                         ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>                                                         ^^^^^^^^: typeof Iterator   (Class) (Identifier)
                                                           expected: IteratorConstructor
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                                                         ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>                                                         ^^^^^^^^: typeof Iterator   (Class) (Identifier)
                                                           expected: IteratorConstructor
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
@@ -493,11 +493,11 @@ type IteratorObjectConstructor = typeof Iterator;
 >             ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     interface IteratorConstructor extends IteratorObjectConstructor {
->                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (Class) (Identifier)
                                                            expected: any
 
     interface IteratorConstructor extends IteratorObjectConstructor {
->                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof Iterator   (Class) (Identifier)
                                                            expected: any
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
@@ -511,11 +511,11 @@ type IteratorObjectConstructor = typeof Iterator;
 >               ^^^^^: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>   (Union) (Identifier)
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->                      ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>                      ^^^^^^^^: typeof Iterator   (Class) (Identifier)
                        expected: IteratorConstructor
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;
->                      ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>                      ^^^^^^^^: typeof Iterator   (Class) (Identifier)
                        expected: IteratorConstructor
 
         from<T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>;

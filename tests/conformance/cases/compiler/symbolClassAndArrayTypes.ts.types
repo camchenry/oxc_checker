@@ -1,11 +1,11 @@
 class Item {
->     ^^^^: typeof Item   (TypeQuery) (Identifier)
+>     ^^^^: typeof Item   (Class) (Identifier)
 
   name: string = "item";
 > ^^^^: string   (String) (Identifier)
 
 class Example {
->     ^^^^^^^: typeof Example   (TypeQuery) (Identifier)
+>     ^^^^^^^: typeof Example   (Class) (Identifier)
 
   ready: boolean = false;
 > ^^^^^: boolean   (Boolean) (Identifier)
@@ -17,13 +17,13 @@ class Example {
 > ^^^^: Item   (TypeReference) (Identifier)
 
   item: Item = new Item();
->       ^^^^: typeof Item   (TypeQuery) (Identifier)
+>       ^^^^: typeof Item   (Class) (Identifier)
 
   item: Item = new Item();
->       ^^^^: typeof Item   (TypeQuery) (Identifier)
+>       ^^^^: typeof Item   (Class) (Identifier)
 
   item: Item = new Item();
->                  ^^^^: typeof Item   (TypeQuery) (Identifier)
+>                  ^^^^: typeof Item   (Class) (Identifier)
 
   static enabled: boolean = true;
 >        ^^^^^^^: boolean   (Boolean) (Identifier)
@@ -53,7 +53,7 @@ class Example {
 >        ^^^^^^^^^^: () => boolean   (Function) (Identifier)
 
   static getEnabled() { return Example.enabled; }
->                              ^^^^^^^: typeof Example   (TypeQuery) (Identifier)
+>                              ^^^^^^^: typeof Example   (Class) (Identifier)
 
   static getEnabled() { return Example.enabled; }
 >                                      ^^^^^^^: boolean   (Boolean) (Identifier)
@@ -62,7 +62,7 @@ const instance = new Example();
 >     ^^^^^^^^: Example   (TypeReference) (Identifier)
 
 const instance = new Example();
->                    ^^^^^^^: typeof Example   (TypeQuery) (Identifier)
+>                    ^^^^^^^: typeof Example   (Class) (Identifier)
 
 const ready = instance.ready;
 >     ^^^^^: boolean   (Boolean) (Identifier)
@@ -125,7 +125,7 @@ const enabled = Example.enabled;
 >     ^^^^^^^: boolean   (Boolean) (Identifier)
 
 const enabled = Example.enabled;
->               ^^^^^^^: typeof Example   (TypeQuery) (Identifier)
+>               ^^^^^^^: typeof Example   (Class) (Identifier)
 
 const enabled = Example.enabled;
 >                       ^^^^^^^: boolean   (Boolean) (Identifier)
@@ -134,28 +134,28 @@ const enabledFromMethod = Example.getEnabled();
 >     ^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const enabledFromMethod = Example.getEnabled();
->                         ^^^^^^^: typeof Example   (TypeQuery) (Identifier)
+>                         ^^^^^^^: typeof Example   (Class) (Identifier)
 
 const enabledFromMethod = Example.getEnabled();
 >                                 ^^^^^^^^^^: () => boolean   (Function) (Identifier)
 
 class Ship { isSunk: boolean = false; }
->     ^^^^: typeof Ship   (TypeQuery) (Identifier)
+>     ^^^^: typeof Ship   (Class) (Identifier)
 
 class Ship { isSunk: boolean = false; }
 >            ^^^^^^: boolean   (Boolean) (Identifier)
 
 class Board {
->     ^^^^^: typeof Board   (TypeQuery) (Identifier)
+>     ^^^^^: typeof Board   (Class) (Identifier)
 
   ships: Ship[] = [];
 > ^^^^^: Ship[]   (Array) (Identifier)
 
   ships: Ship[] = [];
->        ^^^^: typeof Ship   (TypeQuery) (Identifier)
+>        ^^^^: typeof Ship   (Class) (Identifier)
 
   ships: Ship[] = [];
->        ^^^^: typeof Ship   (TypeQuery) (Identifier)
+>        ^^^^: typeof Ship   (Class) (Identifier)
 
   allShipsSunk() {
 > ^^^^^^^^^^^^: () => boolean   (Function) (Identifier)
@@ -179,7 +179,7 @@ const board = new Board();
 >     ^^^^^: Board   (TypeReference) (Identifier)
 
 const board = new Board();
->                 ^^^^^: typeof Board   (TypeQuery) (Identifier)
+>                 ^^^^^: typeof Board   (Class) (Identifier)
 
 const sunk = board.allShipsSunk();
 >     ^^^^: boolean   (Boolean) (Identifier)
@@ -218,7 +218,7 @@ const lengths = ["a", "bb", "ccc"].map(value => value.length);
 >                                                     ^^^^^^: number   (Number) (Identifier)
 
 abstract class DestructuredBase {
->              ^^^^^^^^^^^^^^^^: typeof DestructuredBase   (TypeQuery) (Identifier)
+>              ^^^^^^^^^^^^^^^^: typeof DestructuredBase   (Class) (Identifier)
 
   abstract value: string;
 >          ^^^^^: string   (String) (Identifier)

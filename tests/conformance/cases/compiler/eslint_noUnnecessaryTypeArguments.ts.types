@@ -26,7 +26,7 @@ g<string, string>();
 >^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 class C<T = number> {}
->     ^: typeof C   (TypeQuery) (Identifier)
+>     ^: typeof C   (Class) (Identifier)
 
 class C<T = number> {}
 >       ^: any   (Any) (Identifier)
@@ -35,13 +35,13 @@ new C<number>();
 >^^^^^^^^^^^^^^^^: C<number>   (TypeReference) (ExpressionStatement)
 
 new C<number>();
->   ^: typeof C   (TypeQuery) (Identifier)
+>   ^: typeof C   (Class) (Identifier)
 
 class D extends C<number> {}
->     ^: typeof D   (TypeQuery) (Identifier)
+>     ^: typeof D   (Class) (Identifier)
 
 class D extends C<number> {}
->               ^: typeof C   (TypeQuery) (Identifier)
+>               ^: typeof C   (Class) (Identifier)
 
 interface I<T = number> {}
 >         ^: any   (Any) (Identifier)
@@ -53,7 +53,7 @@ interface I<T = number> {}
 >           ^: any   (Any) (Identifier)
 
 class Impl implements I<number> {}
->     ^^^^: typeof Impl   (TypeQuery) (Identifier)
+>     ^^^^: typeof Impl   (Class) (Identifier)
 
 class Impl implements I<number> {}
 >                     ^: any   (Any) (Identifier)
@@ -101,7 +101,7 @@ g<number, number>();
 >^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
 class C<T = number> {}
->     ^: typeof C   (TypeQuery) (Identifier)
+>     ^: typeof C   (Class) (Identifier)
 
 class C<T = number> {}
 >       ^: any   (Any) (Identifier)
@@ -110,25 +110,25 @@ new C();
 >^^^^^^^^: C<number>   (TypeReference) (ExpressionStatement)
 
 new C();
->   ^: typeof C   (TypeQuery) (Identifier)
+>   ^: typeof C   (Class) (Identifier)
 
 new C<string>();
 >^^^^^^^^^^^^^^^^: C<string>   (TypeReference) (ExpressionStatement)
 
 new C<string>();
->   ^: typeof C   (TypeQuery) (Identifier)
+>   ^: typeof C   (Class) (Identifier)
 
 class D extends C {}
->     ^: typeof D   (TypeQuery) (Identifier)
+>     ^: typeof D   (Class) (Identifier)
 
 class D extends C {}
->               ^: typeof C   (TypeQuery) (Identifier)
+>               ^: typeof C   (Class) (Identifier)
 
 class D extends C<string> {}
 >     ^: { new <string>(): {}; }   (Object) (Identifier)
 
 class D extends C<string> {}
->               ^: typeof C   (TypeQuery) (Identifier)
+>               ^: typeof C   (Class) (Identifier)
 
 interface I<T = number> {}
 >         ^: any   (Any) (Identifier)
@@ -140,7 +140,7 @@ interface I<T = number> {}
 >           ^: any   (Any) (Identifier)
 
 class Impl implements I<string> {}
->     ^^^^: typeof Impl   (TypeQuery) (Identifier)
+>     ^^^^: typeof Impl   (Class) (Identifier)
 
 class Impl implements I<string> {}
 >                     ^: any   (Any) (Identifier)

@@ -3,7 +3,7 @@
 # Cases root: src/lib
 files: passed=12 failed=67 panicked=0 total=79 pass_percentage=15.19%
 types: matched=60137 mismatched=683 total=60820 match_percentage=98.88%
-assign: matched=313458 mismatched=11516 total=324974 match_percentage=96.46%
+assign: matched=313456 mismatched=11518 total=324974 match_percentage=96.46%
 
 FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45%
   - src/lib/decorators.d.ts:20 `DecoratorMetadata` type mismatch
@@ -40137,127 +40137,127 @@ FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_t
   - :7 `Iterator` should not be assignable to :7 `keys`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { (): Iterator<T>; (): Iterator<T>; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { (): Iterator<T>; (): Iterator<T>; }    (Object)
   - :7 `Iterator` should not be assignable to :11 `has`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { (value: T): boolean; (value: T): boolean; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { (value: T): boolean; (value: T): boolean; }    (Object)
   - :7 `Iterator` should not be assignable to :18 `Set`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: SetConstructor    (Object)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: any    (Any)
   - :7 `Iterator` should not be assignable to :22 `union`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }    (Object)
   - :7 `Iterator` should not be assignable to :22 `Set`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: SetConstructor    (Object)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: any    (Any)
   - :7 `Iterator` should not be assignable to :26 `intersection`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { <U>(other: ReadonlySetLike<U>): Set<T & U>; <U>(other: ReadonlySetLike<U>): Set<T & U>; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { <U>(other: ReadonlySetLike<U>): Set<T & U>; <U>(other: ReadonlySetLike<U>): Set<T & U>; }    (Object)
   - :7 `Iterator` should not be assignable to :26 `Set`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: SetConstructor    (Object)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: any    (Any)
   - :7 `Iterator` should not be assignable to :30 `difference`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { <U>(other: ReadonlySetLike<U>): Set<T>; <U>(other: ReadonlySetLike<U>): Set<T>; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { <U>(other: ReadonlySetLike<U>): Set<T>; <U>(other: ReadonlySetLike<U>): Set<T>; }    (Object)
   - :7 `Iterator` should not be assignable to :30 `Set`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: SetConstructor    (Object)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: any    (Any)
   - :7 `Iterator` should not be assignable to :34 `symmetricDifference`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }    (Object)
   - :7 `Iterator` should not be assignable to :34 `Set`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: SetConstructor    (Object)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: any    (Any)
   - :7 `Iterator` should not be assignable to :38 `isSubsetOf`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Object)
   - :7 `Iterator` should not be assignable to :42 `isSupersetOf`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Object)
   - :7 `Iterator` should not be assignable to :46 `isDisjointFrom`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Object)
   - :7 `Iterator` should not be assignable to :53 `union`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }    (Object)
   - :7 `Iterator` should not be assignable to :53 `Set`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: SetConstructor    (Object)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: any    (Any)
   - :7 `Iterator` should not be assignable to :57 `intersection`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { <U>(other: ReadonlySetLike<U>): Set<T & U>; <U>(other: ReadonlySetLike<U>): Set<T & U>; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { <U>(other: ReadonlySetLike<U>): Set<T & U>; <U>(other: ReadonlySetLike<U>): Set<T & U>; }    (Object)
   - :7 `Iterator` should not be assignable to :57 `Set`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: SetConstructor    (Object)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: any    (Any)
   - :7 `Iterator` should not be assignable to :61 `difference`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { <U>(other: ReadonlySetLike<U>): Set<T>; <U>(other: ReadonlySetLike<U>): Set<T>; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { <U>(other: ReadonlySetLike<U>): Set<T>; <U>(other: ReadonlySetLike<U>): Set<T>; }    (Object)
   - :7 `Iterator` should not be assignable to :61 `Set`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: SetConstructor    (Object)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: any    (Any)
   - :7 `Iterator` should not be assignable to :65 `symmetricDifference`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }    (Object)
   - :7 `Iterator` should not be assignable to :65 `Set`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: SetConstructor    (Object)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: any    (Any)
   - :7 `Iterator` should not be assignable to :69 `isSubsetOf`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Object)
   - :7 `Iterator` should not be assignable to :73 `isSupersetOf`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Object)
   - :7 `Iterator` should not be assignable to :77 `isDisjointFrom`
       typescript source: IteratorConstructor    (TypeReference)
       typescript target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Function)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Object)
   - :11 `has` should not be assignable to :7 `keys`
       typescript source: { (value: T): boolean; (value: T): boolean; }    (Function)
@@ -40478,7 +40478,7 @@ FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_t
       typescript source: SetConstructor    (Object)
       typescript target: IteratorConstructor    (TypeReference)
       oxc source: any    (Any)
-      oxc target: typeof Iterator    (TypeQuery)
+      oxc target: typeof Iterator    (Class)
   - :18 `Set` should not be assignable to :11 `has`
       typescript source: SetConstructor    (Object)
       typescript target: { (value: T): boolean; (value: T): boolean; }    (Function)
@@ -40794,7 +40794,7 @@ FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_t
       typescript source: SetConstructor    (Object)
       typescript target: IteratorConstructor    (TypeReference)
       oxc source: any    (Any)
-      oxc target: typeof Iterator    (TypeQuery)
+      oxc target: typeof Iterator    (Class)
   - :22 `Set` should not be assignable to :11 `has`
       typescript source: SetConstructor    (Object)
       typescript target: { (value: T): boolean; (value: T): boolean; }    (Function)
@@ -41110,7 +41110,7 @@ FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_t
       typescript source: SetConstructor    (Object)
       typescript target: IteratorConstructor    (TypeReference)
       oxc source: any    (Any)
-      oxc target: typeof Iterator    (TypeQuery)
+      oxc target: typeof Iterator    (Class)
   - :26 `Set` should not be assignable to :11 `has`
       typescript source: SetConstructor    (Object)
       typescript target: { (value: T): boolean; (value: T): boolean; }    (Function)
@@ -41431,7 +41431,7 @@ FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_t
       typescript source: SetConstructor    (Object)
       typescript target: IteratorConstructor    (TypeReference)
       oxc source: any    (Any)
-      oxc target: typeof Iterator    (TypeQuery)
+      oxc target: typeof Iterator    (Class)
   - :30 `Set` should not be assignable to :11 `has`
       typescript source: SetConstructor    (Object)
       typescript target: { (value: T): boolean; (value: T): boolean; }    (Function)
@@ -41747,7 +41747,7 @@ FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_t
       typescript source: SetConstructor    (Object)
       typescript target: IteratorConstructor    (TypeReference)
       oxc source: any    (Any)
-      oxc target: typeof Iterator    (TypeQuery)
+      oxc target: typeof Iterator    (Class)
   - :34 `Set` should not be assignable to :11 `has`
       typescript source: SetConstructor    (Object)
       typescript target: { (value: T): boolean; (value: T): boolean; }    (Function)
@@ -42483,7 +42483,7 @@ FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_t
       typescript source: SetConstructor    (Object)
       typescript target: IteratorConstructor    (TypeReference)
       oxc source: any    (Any)
-      oxc target: typeof Iterator    (TypeQuery)
+      oxc target: typeof Iterator    (Class)
   - :53 `Set` should not be assignable to :11 `has`
       typescript source: SetConstructor    (Object)
       typescript target: { (value: T): boolean; (value: T): boolean; }    (Function)
@@ -42799,7 +42799,7 @@ FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_t
       typescript source: SetConstructor    (Object)
       typescript target: IteratorConstructor    (TypeReference)
       oxc source: any    (Any)
-      oxc target: typeof Iterator    (TypeQuery)
+      oxc target: typeof Iterator    (Class)
   - :57 `Set` should not be assignable to :11 `has`
       typescript source: SetConstructor    (Object)
       typescript target: { (value: T): boolean; (value: T): boolean; }    (Function)
@@ -43120,7 +43120,7 @@ FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_t
       typescript source: SetConstructor    (Object)
       typescript target: IteratorConstructor    (TypeReference)
       oxc source: any    (Any)
-      oxc target: typeof Iterator    (TypeQuery)
+      oxc target: typeof Iterator    (Class)
   - :61 `Set` should not be assignable to :11 `has`
       typescript source: SetConstructor    (Object)
       typescript target: { (value: T): boolean; (value: T): boolean; }    (Function)
@@ -43436,7 +43436,7 @@ FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_t
       typescript source: SetConstructor    (Object)
       typescript target: IteratorConstructor    (TypeReference)
       oxc source: any    (Any)
-      oxc target: typeof Iterator    (TypeQuery)
+      oxc target: typeof Iterator    (Class)
   - :65 `Set` should not be assignable to :11 `has`
       typescript source: SetConstructor    (Object)
       typescript target: { (value: T): boolean; (value: T): boolean; }    (Function)
@@ -44301,13 +44301,13 @@ FAIL src/lib/es2025.iterator.d.ts matched_types=139 mismatched_types=20 total_ty
   - :18 `Iterator` should not be assignable to :20 `global`
       typescript source: typeof Iterator    (Object)
       typescript target: typeof global    (Object)
-      oxc source: typeof Iterator    (TypeQuery)
+      oxc source: typeof Iterator    (Class)
       oxc target: <missing>    (Missing)
   - :20 `global` should not be assignable to :18 `Iterator`
       typescript source: typeof global    (Object)
       typescript target: typeof Iterator    (Object)
       oxc source: <missing>    (Missing)
-      oxc target: typeof Iterator    (TypeQuery)
+      oxc target: typeof Iterator    (Class)
   - :20 `global` should be assignable to :20 `global`
       typescript source: typeof global    (Object)
       typescript target: typeof global    (Object)
@@ -44328,16 +44328,26 @@ FAIL src/lib/es2025.iterator.d.ts matched_types=139 mismatched_types=20 total_ty
       typescript target: typeof global    (Object)
       oxc source: any    (Any)
       oxc target: <missing>    (Missing)
-  - :77 `reduce` should not be assignable to :18 `IteratorObjectConstructor`
-      typescript source: { (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T; <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T; (callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T; <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U; }    (Function)
-      typescript target: typeof Iterator    (Object)
-      oxc source: <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U) => U    (Function)
-      oxc target: typeof Iterator    (TypeQuery)
   - :77 `callbackfn` should not be assignable to :20 `global`
       typescript source: (previousValue: U, currentValue: T, currentIndex: number) => U    (Function)
       typescript target: typeof global    (Object)
       oxc source: (previousValue: U, currentValue: T, currentIndex: number) => U    (Function)
       oxc target: <missing>    (Missing)
+  - :120 `IteratorObjectConstructor` should be assignable to :62 `flatMap`
+      typescript source: any    (Any)
+      typescript target: { <U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>; <U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>; }    (Function)
+      oxc source: typeof Iterator    (Class)
+      oxc target: <U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>) => IteratorObject<U, undefined, unknown>    (Function)
+  - :120 `IteratorObjectConstructor` should be assignable to :126 `from`
+      typescript source: any    (Any)
+      typescript target: { <T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>; <T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>; }    (Function)
+      oxc source: typeof Iterator    (Class)
+      oxc target: <T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>) => IteratorObject<T, undefined, unknown>    (Function)
+  - :126 `from` should be assignable to :120 `IteratorObjectConstructor`
+      typescript source: { <T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>; <T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>): IteratorObject<T, undefined, unknown>; }    (Function)
+      typescript target: any    (Any)
+      oxc source: <T>(value: Iterator<T, unknown, undefined> | Iterable<T, unknown, undefined>) => IteratorObject<T, undefined, unknown>    (Function)
+      oxc target: typeof Iterator    (Class)
 PASS src/lib/es2025.promise.d.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00%
 PASS src/lib/es2025.regexp.d.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%
 FAIL src/lib/es5.d.ts matched_types=3399 mismatched_types=36 total_types=3435 match_percentage=98.95%
@@ -50082,7 +50092,7 @@ FAIL src/lib/scripthost.d.ts matched_types=132 mismatched_types=4 total_types=13
   - :211 `SafeArray` should not be assignable to :12 `WriteLine`
       typescript source: typeof SafeArray    (Object)
       typescript target: { (s: string): void; (s: string): void; }    (Function)
-      oxc source: typeof SafeArray    (TypeQuery)
+      oxc source: typeof SafeArray    (Class)
       oxc target: { (s: string): void; (s: string): void; }    (Object)
   - :222 `atEnd` should not be assignable to :227 `item`
       typescript source: { (): boolean; (): boolean; }    (Function)
@@ -50117,13 +50127,13 @@ FAIL src/lib/scripthost.d.ts matched_types=132 mismatched_types=4 total_types=13
   - :299 `VarDate` should not be assignable to :299 `Date`
       typescript source: typeof VarDate    (Object)
       typescript target: DateConstructor    (Function)
-      oxc source: typeof VarDate    (TypeQuery)
+      oxc source: typeof VarDate    (Class)
       oxc target: any    (Any)
   - :299 `Date` should not be assignable to :299 `VarDate`
       typescript source: DateConstructor    (Function)
       typescript target: typeof VarDate    (Object)
       oxc source: any    (Any)
-      oxc target: typeof VarDate    (TypeQuery)
+      oxc target: typeof VarDate    (Class)
   - :302 `Date` should not be assignable to :192 `strPathname`
       typescript source: DateConstructor    (Function)
       typescript target: string    (String)

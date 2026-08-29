@@ -40233,42 +40233,42 @@ FAIL tests/conformance/external/zod/object-inference.ts::src/v3/external.ts matc
   - src/v3/external.ts:1 `ZodBoolean` should not be assignable to src/v3/external.ts:2 `ZodRawShape`
       typescript source: typeof ZodBoolean    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodBoolean    (TypeQuery)
+      oxc source: typeof ZodBoolean    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:1 `ZodBoolean` should not be assignable to src/v3/external.ts:8 `ZodRawShape`
       typescript source: typeof ZodBoolean    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodBoolean    (TypeQuery)
+      oxc source: typeof ZodBoolean    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:1 `ZodNumber` should not be assignable to src/v3/external.ts:2 `ZodRawShape`
       typescript source: typeof ZodNumber    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodNumber    (TypeQuery)
+      oxc source: typeof ZodNumber    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:1 `ZodNumber` should not be assignable to src/v3/external.ts:8 `ZodRawShape`
       typescript source: typeof ZodNumber    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodNumber    (TypeQuery)
+      oxc source: typeof ZodNumber    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:1 `ZodObject` should not be assignable to src/v3/external.ts:2 `ZodRawShape`
       typescript source: typeof ZodObject    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodObject    (TypeQuery)
+      oxc source: typeof ZodObject    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:1 `ZodObject` should not be assignable to src/v3/external.ts:8 `ZodRawShape`
       typescript source: typeof ZodObject    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodObject    (TypeQuery)
+      oxc source: typeof ZodObject    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:1 `ZodString` should not be assignable to src/v3/external.ts:2 `ZodRawShape`
       typescript source: typeof ZodString    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodString    (TypeQuery)
+      oxc source: typeof ZodString    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:1 `ZodString` should not be assignable to src/v3/external.ts:8 `ZodRawShape`
       typescript source: typeof ZodString    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodString    (TypeQuery)
+      oxc source: typeof ZodString    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:4 `z` should not be assignable to src/v3/external.ts:2 `ZodRawShape`
       typescript source: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }    (Object)
@@ -40283,32 +40283,32 @@ FAIL tests/conformance/external/zod/object-inference.ts::src/v3/external.ts matc
   - src/v3/external.ts:5 `ZodString` should not be assignable to src/v3/external.ts:2 `ZodRawShape`
       typescript source: typeof ZodString    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodString    (TypeQuery)
+      oxc source: typeof ZodString    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:5 `ZodString` should not be assignable to src/v3/external.ts:8 `ZodRawShape`
       typescript source: typeof ZodString    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodString    (TypeQuery)
+      oxc source: typeof ZodString    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:6 `ZodNumber` should not be assignable to src/v3/external.ts:2 `ZodRawShape`
       typescript source: typeof ZodNumber    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodNumber    (TypeQuery)
+      oxc source: typeof ZodNumber    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:6 `ZodNumber` should not be assignable to src/v3/external.ts:8 `ZodRawShape`
       typescript source: typeof ZodNumber    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodNumber    (TypeQuery)
+      oxc source: typeof ZodNumber    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:7 `ZodBoolean` should not be assignable to src/v3/external.ts:2 `ZodRawShape`
       typescript source: typeof ZodBoolean    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodBoolean    (TypeQuery)
+      oxc source: typeof ZodBoolean    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:7 `ZodBoolean` should not be assignable to src/v3/external.ts:8 `ZodRawShape`
       typescript source: typeof ZodBoolean    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodBoolean    (TypeQuery)
+      oxc source: typeof ZodBoolean    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:8 `shape` should be assignable to src/v3/external.ts:2 `ZodRawShape`
       typescript source: Shape    (TypeParameter)
@@ -40323,12 +40323,12 @@ FAIL tests/conformance/external/zod/object-inference.ts::src/v3/external.ts matc
   - src/v3/external.ts:8 `ZodObject` should not be assignable to src/v3/external.ts:2 `ZodRawShape`
       typescript source: typeof ZodObject    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodObject    (TypeQuery)
+      oxc source: typeof ZodObject    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:8 `ZodObject` should not be assignable to src/v3/external.ts:8 `ZodRawShape`
       typescript source: typeof ZodObject    (Object)
       typescript target: { [x: string]: ZodTypeAny; }    (Mapped)
-      oxc source: typeof ZodObject    (TypeQuery)
+      oxc source: typeof ZodObject    (Class)
       oxc target: { [x: string]: ZodType<any, any>; }    (Object)
   - src/v3/external.ts:8 `shape` should be assignable to src/v3/external.ts:2 `ZodRawShape`
       typescript source: Shape    (TypeParameter)
@@ -40379,17 +40379,17 @@ FAIL tests/conformance/external/zod/object-inference.ts::src/v3/types.ts matched
   - src/v3/types.ts:24 `ZodType` should not be assignable to src/v3/types.ts:72 `super()`
       typescript source: typeof ZodType    (Object)
       typescript target: void    (Void)
-      oxc source: typeof ZodType    (TypeQuery)
+      oxc source: typeof ZodType    (Class)
       oxc target: any    (Error)
   - src/v3/types.ts:30 `ZodBoolean` should not be assignable to src/v3/types.ts:75 `out`
       typescript source: typeof ZodBoolean    (Object)
       typescript target: Record<string, unknown>    (Mapped)
-      oxc source: typeof ZodBoolean    (TypeQuery)
+      oxc source: typeof ZodBoolean    (Class)
       oxc target: Record<string, unknown>    (TypeReference)
   - src/v3/types.ts:36 `ZodType` should not be assignable to src/v3/types.ts:77 `parse`
       typescript source: typeof ZodType    (Object)
       typescript target: (data: unknown) => any    (Function)
-      oxc source: typeof ZodType    (TypeQuery)
+      oxc source: typeof ZodType    (Class)
       oxc target: any    (Error)
   - src/v3/types.ts:41 `super()` should not be assignable to src/v3/types.ts:43 `parse`
       typescript source: void    (Void)
@@ -40458,7 +40458,7 @@ FAIL tests/conformance/external/zod/object-inference.ts::src/v3/types.ts matched
       typescript source: void    (Void)
       typescript target: typeof ZodNumber    (Object)
       oxc source: any    (Error)
-      oxc target: typeof ZodNumber    (TypeQuery)
+      oxc target: typeof ZodNumber    (Class)
   - src/v3/types.ts:72 `super()` should not be assignable to src/v3/types.ts:74 `parse`
       typescript source: void    (Void)
       typescript target: (data: unknown) => objectOutputType<Shape>    (Function)

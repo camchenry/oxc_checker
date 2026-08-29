@@ -516,7 +516,7 @@ const callableApply = callableWithProperty.apply;
 >                                          ^^^^^: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }   (Object) (Identifier)
 
 class Counter {
->     ^^^^^^^: typeof Counter   (TypeQuery) (Identifier)
+>     ^^^^^^^: typeof Counter   (Class) (Identifier)
 
   static label = "counter";
 >        ^^^^^: string   (String) (Identifier)
@@ -525,7 +525,7 @@ class Counter {
 >        ^^^^^^: () => Counter   (Function) (Identifier)
 
     return new Counter(0);
->              ^^^^^^^: typeof Counter   (TypeQuery) (Identifier)
+>              ^^^^^^^: typeof Counter   (Class) (Identifier)
 
   constructor(public value: number) {}
 >                    ^^^^^: number   (Number) (Identifier)
@@ -549,7 +549,7 @@ const counter = new Counter(1);
 >     ^^^^^^^: Counter   (TypeReference) (Identifier)
 
 const counter = new Counter(1);
->                   ^^^^^^^: typeof Counter   (TypeQuery) (Identifier)
+>                   ^^^^^^^: typeof Counter   (Class) (Identifier)
 
 const counterValue = counter.value;
 >     ^^^^^^^^^^^^: number   (Number) (Identifier)
@@ -591,7 +591,7 @@ const counterStaticLabel = Counter.label;
 >     ^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const counterStaticLabel = Counter.label;
->                          ^^^^^^^: typeof Counter   (TypeQuery) (Identifier)
+>                          ^^^^^^^: typeof Counter   (Class) (Identifier)
 
 const counterStaticLabel = Counter.label;
 >                                  ^^^^^: string   (String) (Identifier)
@@ -600,7 +600,7 @@ const counterStaticFactory = Counter.create;
 >     ^^^^^^^^^^^^^^^^^^^^: () => Counter   (Function) (Identifier)
 
 const counterStaticFactory = Counter.create;
->                            ^^^^^^^: typeof Counter   (TypeQuery) (Identifier)
+>                            ^^^^^^^: typeof Counter   (Class) (Identifier)
 
 const counterStaticFactory = Counter.create;
 >                                    ^^^^^^: () => Counter   (Function) (Identifier)
@@ -609,16 +609,16 @@ const counterStaticResult = Counter.create();
 >     ^^^^^^^^^^^^^^^^^^^: Counter   (TypeReference) (Identifier)
 
 const counterStaticResult = Counter.create();
->                           ^^^^^^^: typeof Counter   (TypeQuery) (Identifier)
+>                           ^^^^^^^: typeof Counter   (Class) (Identifier)
 
 const counterStaticResult = Counter.create();
 >                                   ^^^^^^: () => Counter   (Function) (Identifier)
 
 class DerivedCounter extends Counter {
->     ^^^^^^^^^^^^^^: typeof DerivedCounter   (TypeQuery) (Identifier)
+>     ^^^^^^^^^^^^^^: typeof DerivedCounter   (Class) (Identifier)
 
 class DerivedCounter extends Counter {
->                            ^^^^^^^: typeof Counter   (TypeQuery) (Identifier)
+>                            ^^^^^^^: typeof Counter   (Class) (Identifier)
 
   readSuperIncrement() {
 > ^^^^^^^^^^^^^^^^^^: () => number   (Function) (Identifier)
@@ -630,7 +630,7 @@ const derived = new DerivedCounter(5);
 >     ^^^^^^^: DerivedCounter   (TypeReference) (Identifier)
 
 const derived = new DerivedCounter(5);
->                   ^^^^^^^^^^^^^^: typeof DerivedCounter   (TypeQuery) (Identifier)
+>                   ^^^^^^^^^^^^^^: typeof DerivedCounter   (Class) (Identifier)
 
 const derivedSuperResult = derived.readSuperIncrement();
 >     ^^^^^^^^^^^^^^^^^^: number   (Number) (Identifier)

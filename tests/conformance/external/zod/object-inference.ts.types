@@ -23,7 +23,7 @@ export type output<T extends ZodTypeAny> = T['_output']
 >                                          ^: any   (Any) (Identifier)
 
 export abstract class ZodType<Output = any, Input = Output> {
->                     ^^^^^^^: typeof ZodType   (TypeQuery) (Identifier)
+>                     ^^^^^^^: typeof ZodType   (Class) (Identifier)
 
 export abstract class ZodType<Output = any, Input = Output> {
 >                             ^^^^^^: any   (Any) (Identifier)
@@ -59,40 +59,40 @@ export abstract class ZodType<Output = any, Input = Output> {
 > ^^^^^^^^: () => ZodOptional<this>   (Function) (Identifier)
 
   optional(): ZodOptional<this> {
->             ^^^^^^^^^^^: typeof ZodOptional   (TypeQuery) (Identifier)
+>             ^^^^^^^^^^^: typeof ZodOptional   (Class) (Identifier)
 
   optional(): ZodOptional<this> {
->             ^^^^^^^^^^^: typeof ZodOptional   (TypeQuery) (Identifier)
+>             ^^^^^^^^^^^: typeof ZodOptional   (Class) (Identifier)
 
     return new ZodOptional(this)
->              ^^^^^^^^^^^: typeof ZodOptional   (TypeQuery) (Identifier)
+>              ^^^^^^^^^^^: typeof ZodOptional   (Class) (Identifier)
 
   array(): ZodArray<this> {
 > ^^^^^: () => ZodArray<this>   (Function) (Identifier)
 
   array(): ZodArray<this> {
->          ^^^^^^^^: typeof ZodArray   (TypeQuery) (Identifier)
+>          ^^^^^^^^: typeof ZodArray   (Class) (Identifier)
 
   array(): ZodArray<this> {
->          ^^^^^^^^: typeof ZodArray   (TypeQuery) (Identifier)
+>          ^^^^^^^^: typeof ZodArray   (Class) (Identifier)
 
     return new ZodArray(this)
->              ^^^^^^^^: typeof ZodArray   (TypeQuery) (Identifier)
+>              ^^^^^^^^: typeof ZodArray   (Class) (Identifier)
 
 export type ZodTypeAny = ZodType<any, any>
 >           ^^^^^^^^^^: ZodType<any, any>   (TypeReference) (Identifier)
 
 export type ZodTypeAny = ZodType<any, any>
->                        ^^^^^^^: typeof ZodType   (TypeQuery) (Identifier)
+>                        ^^^^^^^: typeof ZodType   (Class) (Identifier)
 
 export type ZodTypeAny = ZodType<any, any>
->                        ^^^^^^^: typeof ZodType   (TypeQuery) (Identifier)
+>                        ^^^^^^^: typeof ZodType   (Class) (Identifier)
 
 export class ZodString extends ZodType<string> {
->            ^^^^^^^^^: typeof ZodString   (TypeQuery) (Identifier)
+>            ^^^^^^^^^: typeof ZodString   (Class) (Identifier)
 
 export class ZodString extends ZodType<string> {
->                              ^^^^^^^: typeof ZodType   (TypeQuery) (Identifier)
+>                              ^^^^^^^: typeof ZodType   (Class) (Identifier)
 
   parse(data: unknown): string {
 > ^^^^^: (data: unknown) => string   (Function) (Identifier)
@@ -107,10 +107,10 @@ export class ZodString extends ZodType<string> {
 >                 ^^^^: unknown   (Unknown) (Identifier)
 
 export class ZodNumber extends ZodType<number> {
->            ^^^^^^^^^: typeof ZodNumber   (TypeQuery) (Identifier)
+>            ^^^^^^^^^: typeof ZodNumber   (Class) (Identifier)
 
 export class ZodNumber extends ZodType<number> {
->                              ^^^^^^^: typeof ZodType   (TypeQuery) (Identifier)
+>                              ^^^^^^^: typeof ZodType   (Class) (Identifier)
 
   parse(data: unknown): number {
 > ^^^^^: (data: unknown) => number   (Function) (Identifier)
@@ -125,10 +125,10 @@ export class ZodNumber extends ZodType<number> {
 >                 ^^^^: unknown   (Unknown) (Identifier)
 
 export class ZodBoolean extends ZodType<boolean> {
->            ^^^^^^^^^^: typeof ZodBoolean   (TypeQuery) (Identifier)
+>            ^^^^^^^^^^: typeof ZodBoolean   (Class) (Identifier)
 
 export class ZodBoolean extends ZodType<boolean> {
->                               ^^^^^^^: typeof ZodType   (TypeQuery) (Identifier)
+>                               ^^^^^^^: typeof ZodType   (Class) (Identifier)
 
   parse(data: unknown): boolean {
 > ^^^^^: (data: unknown) => boolean   (Function) (Identifier)
@@ -143,7 +143,7 @@ export class ZodBoolean extends ZodType<boolean> {
 >                  ^^^^: unknown   (Unknown) (Identifier)
 
 export class ZodOptional<T extends ZodTypeAny> extends ZodType<
->            ^^^^^^^^^^^: typeof ZodOptional   (TypeQuery) (Identifier)
+>            ^^^^^^^^^^^: typeof ZodOptional   (Class) (Identifier)
 
 export class ZodOptional<T extends ZodTypeAny> extends ZodType<
 >                        ^: any   (Any) (Identifier)
@@ -152,7 +152,7 @@ export class ZodOptional<T extends ZodTypeAny> extends ZodType<
 >                                  ^^^^^^^^^^: any   (Any) (Identifier)
 
 export class ZodOptional<T extends ZodTypeAny> extends ZodType<
->                                                      ^^^^^^^: typeof ZodType   (TypeQuery) (Identifier)
+>                                                      ^^^^^^^: typeof ZodType   (Class) (Identifier)
 
   output<T> | undefined,
 > ^^^^^^: any   (Any) (Identifier)
@@ -209,7 +209,7 @@ export class ZodOptional<T extends ZodTypeAny> extends ZodType<
                                                              expected: {} | null
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
->            ^^^^^^^^: typeof ZodArray   (TypeQuery) (Identifier)
+>            ^^^^^^^^: typeof ZodArray   (Class) (Identifier)
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
 >                     ^: any   (Any) (Identifier)
@@ -218,7 +218,7 @@ export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T
 >                               ^^^^^^^^^^: any   (Any) (Identifier)
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
->                                                   ^^^^^^^: typeof ZodType   (TypeQuery) (Identifier)
+>                                                   ^^^^^^^: typeof ZodType   (Class) (Identifier)
 
 export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T>[]> {
 >                                                           ^^^^^^: any   (Any) (Identifier)
@@ -335,7 +335,7 @@ export type objectInputType<Shape extends ZodRawShape> = {
 >                                   ^^^: any   (Any) (Identifier)
 
 export class ZodObject<Shape extends ZodRawShape> extends ZodType<
->            ^^^^^^^^^: typeof ZodObject   (TypeQuery) (Identifier)
+>            ^^^^^^^^^: typeof ZodObject   (Class) (Identifier)
 
 export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >                      ^^^^^: any   (Any) (Identifier)
@@ -344,7 +344,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >                                    ^^^^^^^^^^^: any   (Any) (Identifier)
 
 export class ZodObject<Shape extends ZodRawShape> extends ZodType<
->                                                         ^^^^^^^: typeof ZodType   (TypeQuery) (Identifier)
+>                                                         ^^^^^^^: typeof ZodType   (Class) (Identifier)
 
   objectOutputType<Shape>,
 > ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -455,10 +455,10 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
 >         ^^^^: any   (Any) (Identifier)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
->    ^^^^^^^^^: typeof ZodObject   (TypeQuery) (Identifier)
+>    ^^^^^^^^^: typeof ZodObject   (Class) (Identifier)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
->    ^^^^^^^^^: typeof ZodObject   (TypeQuery) (Identifier)
+>    ^^^^^^^^^: typeof ZodObject   (Class) (Identifier)
 
   ): ZodObject<Pick<Shape, keyof Mask & keyof Shape>> {
 >              ^^^^: any   (Any) (Identifier)
@@ -524,22 +524,22 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
 >                                                                    ^^^^^: any   (Any) (Identifier)
 
     return new ZodObject(out)
->              ^^^^^^^^^: typeof ZodObject   (TypeQuery) (Identifier)
+>              ^^^^^^^^^: typeof ZodObject   (Class) (Identifier)
 
     return new ZodObject(out)
 >                        ^^^: Pick<Shape, keyof Mask & keyof Shape>   (TypeReference) (Identifier)
 
 import { ZodBoolean, ZodNumber, ZodObject, ZodString } from './types'
->        ^^^^^^^^^^: typeof ZodBoolean   (TypeQuery) (Identifier)
+>        ^^^^^^^^^^: typeof ZodBoolean   (Class) (Identifier)
 
 import { ZodBoolean, ZodNumber, ZodObject, ZodString } from './types'
->                    ^^^^^^^^^: typeof ZodNumber   (TypeQuery) (Identifier)
+>                    ^^^^^^^^^: typeof ZodNumber   (Class) (Identifier)
 
 import { ZodBoolean, ZodNumber, ZodObject, ZodString } from './types'
->                               ^^^^^^^^^: typeof ZodObject   (TypeQuery) (Identifier)
+>                               ^^^^^^^^^: typeof ZodObject   (Class) (Identifier)
 
 import { ZodBoolean, ZodNumber, ZodObject, ZodString } from './types'
->                                          ^^^^^^^^^: typeof ZodString   (TypeQuery) (Identifier)
+>                                          ^^^^^^^^^: typeof ZodString   (Class) (Identifier)
 
 import type { ZodRawShape } from './types'
 >             ^^^^^^^^^^^: { [x: string]: ZodType<any, any>; }   (Object) (Identifier)
@@ -553,19 +553,19 @@ export const z = {
 > ^^^^^^: () => ZodString   (Function) (Identifier)
 
   string: () => new ZodString(),
->                   ^^^^^^^^^: typeof ZodString   (TypeQuery) (Identifier)
+>                   ^^^^^^^^^: typeof ZodString   (Class) (Identifier)
 
   number: () => new ZodNumber(),
 > ^^^^^^: () => ZodNumber   (Function) (Identifier)
 
   number: () => new ZodNumber(),
->                   ^^^^^^^^^: typeof ZodNumber   (TypeQuery) (Identifier)
+>                   ^^^^^^^^^: typeof ZodNumber   (Class) (Identifier)
 
   boolean: () => new ZodBoolean(),
 > ^^^^^^^: () => ZodBoolean   (Function) (Identifier)
 
   boolean: () => new ZodBoolean(),
->                    ^^^^^^^^^^: typeof ZodBoolean   (TypeQuery) (Identifier)
+>                    ^^^^^^^^^^: typeof ZodBoolean   (Class) (Identifier)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
 > ^^^^^^: <Shape extends ZodRawShape>(shape: Shape) => ZodObject   (Function) (Identifier)
@@ -589,7 +589,7 @@ expected: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>
 >                                            ^^^^^: any   (Any) (Identifier)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
->                                                          ^^^^^^^^^: typeof ZodObject   (TypeQuery) (Identifier)
+>                                                          ^^^^^^^^^: typeof ZodObject   (Class) (Identifier)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
 >                                                                    ^^^^^: Shape   (TypeReference) (Identifier)

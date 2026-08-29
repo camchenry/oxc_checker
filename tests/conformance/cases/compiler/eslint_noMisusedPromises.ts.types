@@ -149,7 +149,7 @@ interface MySyncInterface {
 > ^^^^^^^^: () => void   (Function) (Identifier)
 
 class MyClass implements MySyncInterface {
->     ^^^^^^^: typeof MyClass   (TypeQuery) (Identifier)
+>     ^^^^^^^: typeof MyClass   (Class) (Identifier)
 
 class MyClass implements MySyncInterface {
 >                        ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -286,7 +286,7 @@ interface MyAsyncInterface {
 >             ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
 
 class MyClass implements MyAsyncInterface {
->     ^^^^^^^: typeof MyClass   (TypeQuery) (Identifier)
+>     ^^^^^^^: typeof MyClass   (Class) (Identifier)
 
 class MyClass implements MyAsyncInterface {
 >                        ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)

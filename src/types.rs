@@ -579,6 +579,8 @@ pub enum TyKind<'a> {
     ModuleNamespace(&'a TyModuleNamespace<'a>),
     Function(&'a TyFunction<'a>),
     TypeReference(&'a TyTypeReference<'a>),
+    /// Value side of a class declaration or expression.
+    Class(&'a TyClass<'a>),
     /// `typeof X` / `typeof X<U>` query against a value-side symbol.
     TypeQuery(&'a TyTypeQuery<'a>),
     StringLiteral(&'a TyStringLiteral<'a>),
@@ -939,6 +941,12 @@ impl PartialEq for TyTypeReference<'_> {
 }
 
 #[derive(Debug, PartialEq, Eq)]
+pub struct TyClass<'a> {
+    pub name: &'a str,
+    pub constructor_type: Ty<'a>,
+}
+
+#[derive(Debug, PartialEq, Eq)]
 pub struct TyTypeQuery<'a> {
     /// Display name of the queried entity (e.g. `"Foo"`, `"Foo.Bar"`, `"this"`).
     pub name: &'a str,
@@ -1286,6 +1294,10 @@ impl<'a> TypeIdentity<'a> {
                 left.has_identical_target(right)
                     && self.types_are_identical(&left.type_arguments, &right.type_arguments)
             }
+            (TyKind::Class(left), TyKind::Class(right)) => {
+                left.name == right.name
+                    && self.compare(left.constructor_type, right.constructor_type)
+            }
             (TyKind::TypeQuery(left), TyKind::TypeQuery(right)) => {
                 left.name == right.name
                     && self.compare(left.resolved, right.resolved)
@@ -1575,6 +1587,9 @@ fn visit_type_at_depth<'a>(
             for ty in &reference.type_arguments {
                 visit_type_at_depth(arena, *ty, f, visited, next_depth);
             }
+        }
+        TyKind::Class(class) => {
+            visit_type_at_depth(arena, class.constructor_type, f, visited, next_depth);
         }
         TyKind::TypeQuery(query) => {
             visit_type_at_depth(arena, query.resolved, f, visited, next_depth);
@@ -2108,6 +2123,13 @@ impl<'a> CheckerArena<'a> {
         })))
     }
 
+    pub fn class(self, name: &'a str, constructor_type: Ty<'a>) -> Ty<'a> {
+        self.alloc_type(TyKind::Class(self.alloc(TyClass {
+            name,
+            constructor_type,
+        })))
+    }
+
     pub fn string_literal(self, value: &'a str) -> Ty<'a> {
         if let Some(ty) = self.interned_types.strings.borrow().get(value) {
             return *ty;
@@ -2479,6 +2501,7 @@ impl<'a> Ty<'a> {
             TyKind::GlobalThis => "TyGlobalThis",
             TyKind::Function(_) => "TyFunction",
             TyKind::TypeReference(_) => "TyTypeReference",
+            TyKind::Class(_) => "TyClass",
             TyKind::TypeQuery(_) => "TyTypeQuery",
             TyKind::StringLiteral(_) => "TyStringLiteral",
             TyKind::NumberLiteral(_) => "TyNumberLiteral",

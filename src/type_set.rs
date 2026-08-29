@@ -300,6 +300,7 @@ fn is_empty_object_intersection_identity_target<'a>(arena: CheckerArena<'a>, ty:
         | TyKind::TemplateLiteral(_)
         | TyKind::ModuleNamespace(_)
         | TyKind::Function(_)
+        | TyKind::Class(_)
         | TyKind::TypeQuery(_)
         | TyKind::Array(_)
         | TyKind::Tuple(_)

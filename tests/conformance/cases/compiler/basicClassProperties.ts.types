@@ -1,11 +1,11 @@
 class ClassPropertyItem {
->     ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TypeQuery) (Identifier)
+>     ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (Class) (Identifier)
 
   name: string = "item";
 > ^^^^: string   (String) (Identifier)
 
 class ClassPropertyExample {
->     ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
+>     ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (Class) (Identifier)
 
   ready: boolean = false;
 > ^^^^^: boolean   (Boolean) (Identifier)
@@ -17,13 +17,13 @@ class ClassPropertyExample {
 > ^^^^: ClassPropertyItem   (TypeReference) (Identifier)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TypeQuery) (Identifier)
+>       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (Class) (Identifier)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TypeQuery) (Identifier)
+>       ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (Class) (Identifier)
 
   item: ClassPropertyItem = new ClassPropertyItem();
->                               ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (TypeQuery) (Identifier)
+>                               ^^^^^^^^^^^^^^^^^: typeof ClassPropertyItem   (Class) (Identifier)
 
   static enabled: boolean = true;
 >        ^^^^^^^: boolean   (Boolean) (Identifier)
@@ -53,7 +53,7 @@ class ClassPropertyExample {
 >        ^^^^^^^^^^: () => boolean   (Function) (Identifier)
 
     return ClassPropertyExample.enabled;
->          ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
+>          ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (Class) (Identifier)
 
     return ClassPropertyExample.enabled;
 >                               ^^^^^^^: boolean   (Boolean) (Identifier)
@@ -62,7 +62,7 @@ const _classPropertyInstance = new ClassPropertyExample();
 >     ^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyInstance = new ClassPropertyExample();
->                                  ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
+>                                  ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (Class) (Identifier)
 
 const _classPropertyReady = _classPropertyInstance.ready;
 >     ^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
@@ -125,7 +125,7 @@ const _classPropertyEnabled = ClassPropertyExample.enabled;
 >     ^^^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyEnabled = ClassPropertyExample.enabled;
->                             ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
+>                             ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (Class) (Identifier)
 
 const _classPropertyEnabled = ClassPropertyExample.enabled;
 >                                                  ^^^^^^^: boolean   (Boolean) (Identifier)
@@ -134,7 +134,7 @@ const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
->                                       ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
+>                                       ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (Class) (Identifier)
 
 const _classPropertyEnabledFromMethod = ClassPropertyExample.getEnabled();
 >                                                            ^^^^^^^^^^: () => boolean   (Function) (Identifier)
@@ -143,7 +143,7 @@ const _classPropertyPrototype = ClassPropertyExample.prototype;
 >     ^^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyPrototype = ClassPropertyExample.prototype;
->                               ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
+>                               ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (Class) (Identifier)
 
 const _classPropertyPrototype = ClassPropertyExample.prototype;
 >                                                    ^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
@@ -152,7 +152,7 @@ const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
->                                    ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
+>                                    ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (Class) (Identifier)
 
 const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
 >                                                         ^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
@@ -161,16 +161,16 @@ const _classPropertyPrototypeReady = ClassPropertyExample.prototype.ready;
 >                                                                   ^^^^^: boolean   (Boolean) (Identifier)
 
 const _ClassPropertyConstructor = ClassPropertyExample;
->     ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (Class) (Identifier)
 
 const _ClassPropertyConstructor = ClassPropertyExample;
->                                 ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
+>                                 ^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (Class) (Identifier)
 
 const _classPropertyAliasedEnabled = _ClassPropertyConstructor.enabled;
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _classPropertyAliasedEnabled = _ClassPropertyConstructor.enabled;
->                                    ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
+>                                    ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (Class) (Identifier)
 
 const _classPropertyAliasedEnabled = _ClassPropertyConstructor.enabled;
 >                                                              ^^^^^^^: boolean   (Boolean) (Identifier)
@@ -179,4 +179,4 @@ const _classPropertyAliasedInstance = new _ClassPropertyConstructor();
 >     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: ClassPropertyExample   (TypeReference) (Identifier)
 
 const _classPropertyAliasedInstance = new _ClassPropertyConstructor();
->                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (TypeQuery) (Identifier)
+>                                         ^^^^^^^^^^^^^^^^^^^^^^^^^: typeof ClassPropertyExample   (Class) (Identifier)

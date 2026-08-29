@@ -58,6 +58,7 @@ pub(crate) fn get_type_facts<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> TypeFac
         | TyKind::PrimitiveObject
         | TyKind::ModuleNamespace(_)
         | TyKind::Function(_)
+        | TyKind::Class(_)
         | TyKind::Array(_)
         | TyKind::Tuple(_)
         | TyKind::GlobalThis

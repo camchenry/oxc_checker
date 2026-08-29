@@ -224,6 +224,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                     format!("{}<{type_arguments}>", reference.name)
                 }
             }
+            TyKind::Class(class) => format!("typeof {}", class.name),
             TyKind::TypeQuery(query) => {
                 if query.type_arguments.is_empty() {
                     format!("typeof {}", query.name)

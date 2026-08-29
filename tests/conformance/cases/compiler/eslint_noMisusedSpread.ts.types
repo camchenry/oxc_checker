@@ -54,7 +54,7 @@ const characters = [...userName];
 >                      ^^^^^^^^: string   (String) (Identifier)
 
 declare class Box {
->             ^^^: typeof Box   (TypeQuery) (Identifier)
+>             ^^^: typeof Box   (Class) (Identifier)
 
   value: number;
 > ^^^^^: number   (Number) (Identifier)
@@ -63,16 +63,16 @@ const boxSpread = { ...Box };
 >     ^^^^^^^^^: {}   (Object) (Identifier)
 
 const boxSpread = { ...Box };
->                      ^^^: typeof Box   (TypeQuery) (Identifier)
+>                      ^^^: typeof Box   (Class) (Identifier)
 
 declare const instance: Box;
 >             ^^^^^^^^: Box   (TypeReference) (Identifier)
 
 declare const instance: Box;
->                       ^^^: typeof Box   (TypeQuery) (Identifier)
+>                       ^^^: typeof Box   (Class) (Identifier)
 
 declare const instance: Box;
->                       ^^^: typeof Box   (TypeQuery) (Identifier)
+>                       ^^^: typeof Box   (Class) (Identifier)
 
 const instanceSpread = { ...instance };
 >     ^^^^^^^^^^^^^^: { value: number; }   (Object) (Identifier)

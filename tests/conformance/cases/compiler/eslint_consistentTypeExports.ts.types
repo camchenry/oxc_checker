@@ -8,7 +8,7 @@ interface ButtonProps {
 > ^^^^^^^: () => void   (Function) (Identifier)
 
 class Button implements ButtonProps {
->     ^^^^^^: typeof Button   (TypeQuery) (Identifier)
+>     ^^^^^^: typeof Button   (Class) (Identifier)
 
 class Button implements ButtonProps {
 >                       ^^^^^^^^^^^: any   (Any) (Identifier)
@@ -26,10 +26,10 @@ class Button implements ButtonProps {
 >                         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
 export { Button, ButtonProps };
->        ^^^^^^: typeof Button   (TypeQuery) (Identifier)
+>        ^^^^^^: typeof Button   (Class) (Identifier)
 
 export { Button, ButtonProps };
->        ^^^^^^: typeof Button   (TypeQuery) (Identifier)
+>        ^^^^^^: typeof Button   (Class) (Identifier)
 
 export { Button, ButtonProps };
 >                ^^^^^^^^^^^: any   (Any) (Identifier)
@@ -47,7 +47,7 @@ interface ButtonProps {
 > ^^^^^^^: () => void   (Function) (Identifier)
 
 class Button implements ButtonProps {
->     ^^^^^^: typeof Button   (TypeQuery) (Identifier)
+>     ^^^^^^: typeof Button   (Class) (Identifier)
 
 class Button implements ButtonProps {
 >                       ^^^^^^^^^^^: any   (Any) (Identifier)
@@ -65,10 +65,10 @@ class Button implements ButtonProps {
 >                         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
 export { Button };
->        ^^^^^^: typeof Button   (TypeQuery) (Identifier)
+>        ^^^^^^: typeof Button   (Class) (Identifier)
 
 export { Button };
->        ^^^^^^: typeof Button   (TypeQuery) (Identifier)
+>        ^^^^^^: typeof Button   (Class) (Identifier)
 
 export type { ButtonProps };
 >             ^^^^^^^^^^^: any   (Any) (Identifier)

@@ -1117,7 +1117,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 } else if self.could_contain_type_variables(source)
                     || matches!(
                         self.ty_kind(source),
-                        TyKind::TypeReference(_) | TyKind::TypeQuery(_)
+                        TyKind::TypeReference(_) | TyKind::Class(_) | TyKind::TypeQuery(_)
                     )
                     || (self.could_contain_type_variables(target)
                         && !matches!(
@@ -1855,6 +1855,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                 context,
                 variance,
                 priority,
+            ),
+            (_, TyKind::Class(argument_class)) => self.infer_types_with_variance(
+                parameter_type,
+                argument_class.constructor_type,
+                context,
+                variance,
+                priority.structural(),
             ),
             (_, TyKind::TypeQuery(argument_query)) => self.infer_types_with_variance(
                 parameter_type,

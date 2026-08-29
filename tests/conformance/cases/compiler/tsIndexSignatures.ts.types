@@ -1,5 +1,5 @@
 class A {
->     ^: typeof A   (TypeQuery) (Identifier)
+>     ^: typeof A   (Class) (Identifier)
 
   [key: string]: string;
 >  ^^^: string   (String) (Identifier)

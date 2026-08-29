@@ -1,17 +1,17 @@
 class C<T = number> {}
->     ^: typeof C   (TypeQuery) (Identifier)
+>     ^: typeof C   (Class) (Identifier)
 
 class C<T = number> {}
 >       ^: any   (Any) (Identifier)
 
 class D extends C {}
->     ^: typeof D   (TypeQuery) (Identifier)
+>     ^: typeof D   (Class) (Identifier)
 
 class D extends C {}
->               ^: typeof C   (TypeQuery) (Identifier)
+>               ^: typeof C   (Class) (Identifier)
 
 class D extends C<string> {}
 >     ^: { new <string>(): {}; }   (Object) (Identifier)
 
 class D extends C<string> {}
->               ^: typeof C   (TypeQuery) (Identifier)
+>               ^: typeof C   (Class) (Identifier)

@@ -12,62 +12,62 @@ FAIL tests/conformance/cases/compiler/basicClassProperties.ts matched_types=60 m
   - :1 `ClassPropertyItem` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyItem    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyItem    (TypeQuery)
+      oxc source: typeof ClassPropertyItem    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :1 `ClassPropertyItem` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyItem    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyItem    (TypeQuery)
+      oxc source: typeof ClassPropertyItem    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :1 `ClassPropertyItem` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyItem    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyItem    (TypeQuery)
+      oxc source: typeof ClassPropertyItem    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :5 `ClassPropertyExample` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :5 `ClassPropertyExample` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :5 `ClassPropertyExample` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :8 `ClassPropertyItem` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyItem    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyItem    (TypeQuery)
+      oxc source: typeof ClassPropertyItem    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :8 `ClassPropertyItem` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyItem    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyItem    (TypeQuery)
+      oxc source: typeof ClassPropertyItem    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :8 `ClassPropertyItem` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyItem    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyItem    (TypeQuery)
+      oxc source: typeof ClassPropertyItem    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :8 `ClassPropertyItem` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyItem    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyItem    (TypeQuery)
+      oxc source: typeof ClassPropertyItem    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :8 `ClassPropertyItem` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyItem    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyItem    (TypeQuery)
+      oxc source: typeof ClassPropertyItem    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :8 `ClassPropertyItem` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyItem    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyItem    (TypeQuery)
+      oxc source: typeof ClassPropertyItem    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :11 `getReady` should be assignable to :8 `item`
       source: () => boolean    (Function)
@@ -108,32 +108,32 @@ FAIL tests/conformance/cases/compiler/basicClassProperties.ts matched_types=60 m
   - :24 `ClassPropertyExample` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :24 `ClassPropertyExample` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :24 `ClassPropertyExample` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :28 `ClassPropertyExample` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :28 `ClassPropertyExample` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :28 `ClassPropertyExample` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :32 `getReady` should be assignable to :8 `item`
       source: () => boolean    (Function)
@@ -165,32 +165,32 @@ FAIL tests/conformance/cases/compiler/basicClassProperties.ts matched_types=60 m
   - :35 `ClassPropertyExample` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :35 `ClassPropertyExample` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :35 `ClassPropertyExample` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :36 `ClassPropertyExample` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :36 `ClassPropertyExample` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :36 `ClassPropertyExample` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :36 `getEnabled` should be assignable to :8 `item`
       source: () => boolean    (Function)
@@ -204,92 +204,92 @@ FAIL tests/conformance/cases/compiler/basicClassProperties.ts matched_types=60 m
   - :37 `ClassPropertyExample` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :37 `ClassPropertyExample` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :37 `ClassPropertyExample` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :38 `ClassPropertyExample` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :38 `ClassPropertyExample` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :38 `ClassPropertyExample` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :39 `_ClassPropertyConstructor` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :39 `_ClassPropertyConstructor` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :39 `_ClassPropertyConstructor` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :39 `ClassPropertyExample` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :39 `ClassPropertyExample` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :39 `ClassPropertyExample` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :40 `_ClassPropertyConstructor` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :40 `_ClassPropertyConstructor` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :40 `_ClassPropertyConstructor` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :41 `_ClassPropertyConstructor` should be assignable to :8 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :41 `_ClassPropertyConstructor` should be assignable to :20 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
   - :41 `_ClassPropertyConstructor` should be assignable to :31 `item`
       typescript source: typeof ClassPropertyExample    (Object)
       typescript target: ClassPropertyItem    (TypeReference)
-      oxc source: typeof ClassPropertyExample    (TypeQuery)
+      oxc source: typeof ClassPropertyExample    (Class)
       oxc target: ClassPropertyItem    (TypeReference)
 FAIL tests/conformance/cases/compiler/basicFunctionGenericInference.ts matched_types=58 mismatched_types=0 total_types=58 match_percentage=100.00%
   - :1 `x` should not be assignable to :9 `x`
@@ -1026,53 +1026,53 @@ FAIL tests/conformance/cases/compiler/duplicateClassDeclarationLocation.ts match
   - :1 `C` should be assignable to :2 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
-      oxc source: typeof C    (TypeQuery)
-      oxc target: typeof D    (TypeQuery)
+      oxc source: typeof C    (Class)
+      oxc target: typeof D    (Class)
   - :2 `D` should be assignable to :1 `C`
       typescript source: typeof D    (Object)
       typescript target: typeof C    (Object)
-      oxc source: typeof D    (TypeQuery)
-      oxc target: typeof C    (TypeQuery)
+      oxc source: typeof D    (Class)
+      oxc target: typeof C    (Class)
   - :2 `D` should be assignable to :2 `C`
       typescript source: typeof D    (Object)
       typescript target: typeof C    (Object)
-      oxc source: typeof D    (TypeQuery)
-      oxc target: typeof C    (TypeQuery)
+      oxc source: typeof D    (Class)
+      oxc target: typeof C    (Class)
   - :2 `D` should be assignable to :3 `C`
       typescript source: typeof D    (Object)
       typescript target: typeof C    (Object)
-      oxc source: typeof D    (TypeQuery)
-      oxc target: typeof C    (TypeQuery)
+      oxc source: typeof D    (Class)
+      oxc target: typeof C    (Class)
   - :2 `C` should be assignable to :2 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
-      oxc source: typeof C    (TypeQuery)
-      oxc target: typeof D    (TypeQuery)
+      oxc source: typeof C    (Class)
+      oxc target: typeof D    (Class)
   - :3 `D` should be assignable to :1 `C`
       typescript source: { new <string>(): {}; }    (Object)
       typescript target: typeof C    (Object)
       oxc source: { new <string>(): {}; }    (Object)
-      oxc target: typeof C    (TypeQuery)
+      oxc target: typeof C    (Class)
   - :3 `D` should be assignable to :2 `D`
       typescript source: { new <string>(): {}; }    (Object)
       typescript target: typeof D    (Object)
       oxc source: { new <string>(): {}; }    (Object)
-      oxc target: typeof D    (TypeQuery)
+      oxc target: typeof D    (Class)
   - :3 `D` should be assignable to :2 `C`
       typescript source: { new <string>(): {}; }    (Object)
       typescript target: typeof C    (Object)
       oxc source: { new <string>(): {}; }    (Object)
-      oxc target: typeof C    (TypeQuery)
+      oxc target: typeof C    (Class)
   - :3 `D` should be assignable to :3 `C`
       typescript source: { new <string>(): {}; }    (Object)
       typescript target: typeof C    (Object)
       oxc source: { new <string>(): {}; }    (Object)
-      oxc target: typeof C    (TypeQuery)
+      oxc target: typeof C    (Class)
   - :3 `C` should be assignable to :2 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
-      oxc source: typeof C    (TypeQuery)
-      oxc target: typeof D    (TypeQuery)
+      oxc source: typeof C    (Class)
+      oxc target: typeof D    (Class)
 PASS tests/conformance/cases/compiler/emptyObjectIntersectionAlias.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/enumArrayInference.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/eslint_awaitThenable.ts::a.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
@@ -4300,32 +4300,32 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::a.ts matched_typ
   - a.ts:4 `MyClass` should be assignable to a.ts:5 `value`
       typescript source: typeof MyClass    (Object)
       typescript target: MyClass    (TypeReference)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: MyClass    (TypeReference)
   - a.ts:4 `MyClass` should be assignable to a.ts:6 `value`
       typescript source: typeof MyClass    (Object)
       typescript target: MyClass    (TypeReference)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: MyClass    (TypeReference)
   - a.ts:4 `MyClass` should be assignable to a.ts:9 `value`
       typescript source: typeof MyClass    (Object)
       typescript target: MyClass    (TypeReference)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: MyClass    (TypeReference)
   - a.ts:5 `MyClass` should be assignable to a.ts:5 `value`
       typescript source: typeof MyClass    (Object)
       typescript target: MyClass    (TypeReference)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: MyClass    (TypeReference)
   - a.ts:5 `MyClass` should be assignable to a.ts:6 `value`
       typescript source: typeof MyClass    (Object)
       typescript target: MyClass    (TypeReference)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: MyClass    (TypeReference)
   - a.ts:5 `MyClass` should be assignable to a.ts:9 `value`
       typescript source: typeof MyClass    (Object)
       typescript target: MyClass    (TypeReference)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: MyClass    (TypeReference)
   - a.ts:6 `value + '';` should be assignable to a.ts:5 `value`
       source: string    (String)
@@ -4349,7 +4349,7 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::a.ts matched_typ
       typescript source: StringConstructor    (Function)
       typescript target: typeof MyClass    (Object)
       oxc source: StringConstructor    (TypeReference)
-      oxc target: typeof MyClass    (TypeQuery)
+      oxc target: typeof MyClass    (Class)
   - a.ts:10 `String` should be assignable to a.ts:5 `value`
       typescript source: StringConstructor    (Function)
       typescript target: MyClass    (TypeReference)
@@ -4359,7 +4359,7 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::a.ts matched_typ
       typescript source: StringConstructor    (Function)
       typescript target: typeof MyClass    (Object)
       oxc source: StringConstructor    (TypeReference)
-      oxc target: typeof MyClass    (TypeQuery)
+      oxc target: typeof MyClass    (Class)
   - a.ts:10 `String` should be assignable to a.ts:6 `value`
       typescript source: StringConstructor    (Function)
       typescript target: MyClass    (TypeReference)
@@ -4384,7 +4384,7 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::a.ts matched_typ
       typescript source: StringConstructor    (Function)
       typescript target: typeof MyClass    (Object)
       oxc source: StringConstructor    (TypeReference)
-      oxc target: typeof MyClass    (TypeQuery)
+      oxc target: typeof MyClass    (Class)
   - a.ts:10 `String` should be assignable to a.ts:15 `join`
       typescript source: StringConstructor    (Function)
       typescript target: (separator?: string) => string    (Function)
@@ -4453,17 +4453,17 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::a.ts matched_typ
   - a.ts:15 `MyClass` should be assignable to a.ts:5 `value`
       typescript source: typeof MyClass    (Object)
       typescript target: MyClass    (TypeReference)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: MyClass    (TypeReference)
   - a.ts:15 `MyClass` should be assignable to a.ts:6 `value`
       typescript source: typeof MyClass    (Object)
       typescript target: MyClass    (TypeReference)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: MyClass    (TypeReference)
   - a.ts:15 `MyClass` should be assignable to a.ts:9 `value`
       typescript source: typeof MyClass    (Object)
       typescript target: MyClass    (TypeReference)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: MyClass    (TypeReference)
   - a.ts:15 `join` should be assignable to a.ts:5 `value`
       source: (separator?: string) => string    (Function)
@@ -4525,7 +4525,7 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::b.ts matched_typ
       typescript source: StringConstructor    (Function)
       typescript target: typeof CustomToString    (Object)
       oxc source: StringConstructor    (TypeReference)
-      oxc target: typeof CustomToString    (TypeQuery)
+      oxc target: typeof CustomToString    (Class)
   - b.ts:6 `String` should be assignable to b.ts:11 `toString`
       typescript source: StringConstructor    (Function)
       typescript target: () => string    (Function)
@@ -4535,7 +4535,7 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::b.ts matched_typ
       typescript source: StringConstructor    (Function)
       typescript target: typeof CustomToString    (Object)
       oxc source: StringConstructor    (TypeReference)
-      oxc target: typeof CustomToString    (TypeQuery)
+      oxc target: typeof CustomToString    (Class)
   - b.ts:6 `String` should be assignable to b.ts:17 `literalWithToString`
       typescript source: StringConstructor    (Function)
       typescript target: { toString: () => string; }    (Object)
@@ -4572,12 +4572,12 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::b.ts matched_typ
   - b.ts:10 `CustomToString` should be assignable to b.ts:17 `literalWithToString`
       typescript source: typeof CustomToString    (Object)
       typescript target: { toString: () => string; }    (Object)
-      oxc source: typeof CustomToString    (TypeQuery)
+      oxc source: typeof CustomToString    (Class)
       oxc target: { toString: () => string; }    (Object)
   - b.ts:10 `CustomToString` should be assignable to b.ts:21 `literalWithToString`
       typescript source: typeof CustomToString    (Object)
       typescript target: { toString: () => string; }    (Object)
-      oxc source: typeof CustomToString    (TypeQuery)
+      oxc source: typeof CustomToString    (Class)
       oxc target: { toString: () => string; }    (Object)
   - b.ts:11 `toString` should be assignable to b.ts:17 `literalWithToString`
       source: () => string    (Function)
@@ -4594,12 +4594,12 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::b.ts matched_typ
   - b.ts:15 `CustomToString` should be assignable to b.ts:17 `literalWithToString`
       typescript source: typeof CustomToString    (Object)
       typescript target: { toString: () => string; }    (Object)
-      oxc source: typeof CustomToString    (TypeQuery)
+      oxc source: typeof CustomToString    (Class)
       oxc target: { toString: () => string; }    (Object)
   - b.ts:15 `CustomToString` should be assignable to b.ts:21 `literalWithToString`
       typescript source: typeof CustomToString    (Object)
       typescript target: { toString: () => string; }    (Object)
-      oxc source: typeof CustomToString    (TypeQuery)
+      oxc source: typeof CustomToString    (Class)
       oxc target: { toString: () => string; }    (Object)
   - b.ts:18 `toString` should be assignable to b.ts:17 `literalWithToString`
       source: () => string    (Function)
@@ -7403,7 +7403,7 @@ FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::c.ts matched_
   - c.ts:19 `MyClass` should not be assignable to c.ts:10 `addEventListener`
       typescript source: typeof MyClass    (Object)
       typescript target: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Function)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Object)
   - c.ts:20 `setThing` should be assignable to c.ts:1 `forEach`
       source: () => Promise<void>    (Function)
@@ -7547,7 +7547,7 @@ FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::d.ts matched_
       typescript source: number    (Number)
       typescript target: typeof MyClass    (Object)
       oxc source: any    (Any)
-      oxc target: typeof MyClass    (TypeQuery)
+      oxc target: typeof MyClass    (Class)
   - d.ts:2 `value` should not be assignable to d.ts:42 `setThing`
       typescript source: number    (Number)
       typescript target: () => Promise<void>    (Function)
@@ -7667,7 +7667,7 @@ FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::d.ts matched_
       typescript source: number    (Number)
       typescript target: typeof MyClass    (Object)
       oxc source: any    (Any)
-      oxc target: typeof MyClass    (TypeQuery)
+      oxc target: typeof MyClass    (Class)
   - d.ts:3 `value` should not be assignable to d.ts:42 `setThing`
       typescript source: number    (Number)
       typescript target: () => Promise<void>    (Function)
@@ -8056,22 +8056,22 @@ FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::d.ts matched_
   - d.ts:41 `MyClass` should not be assignable to d.ts:2 `value`
       typescript source: typeof MyClass    (Object)
       typescript target: number    (Number)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: any    (Any)
   - d.ts:41 `MyClass` should not be assignable to d.ts:3 `value`
       typescript source: typeof MyClass    (Object)
       typescript target: number    (Number)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: any    (Any)
   - d.ts:41 `MyClass` should not be assignable to d.ts:7 `all`
       typescript source: typeof MyClass    (Object)
       typescript target: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }    (Function)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }    (Object)
   - d.ts:41 `MyClass` should not be assignable to d.ts:23 `addEventListener`
       typescript source: typeof MyClass    (Object)
       typescript target: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Function)
-      oxc source: typeof MyClass    (TypeQuery)
+      oxc source: typeof MyClass    (Class)
       oxc target: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Object)
   - d.ts:42 `setThing` should not be assignable to d.ts:2 `value`
       typescript source: () => Promise<void>    (Function)
@@ -8583,53 +8583,53 @@ FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::c.ts
   - c.ts:1 `C` should be assignable to c.ts:2 `new C<number>();`
       typescript source: typeof C    (Object)
       typescript target: C<number>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<number>    (TypeReference)
   - c.ts:1 `C` should be assignable to c.ts:4 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
-      oxc source: typeof C    (TypeQuery)
-      oxc target: typeof D    (TypeQuery)
+      oxc source: typeof C    (Class)
+      oxc target: typeof D    (Class)
   - c.ts:2 `C` should be assignable to c.ts:2 `new C<number>();`
       typescript source: typeof C    (Object)
       typescript target: C<number>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<number>    (TypeReference)
   - c.ts:2 `C` should be assignable to c.ts:4 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
-      oxc source: typeof C    (TypeQuery)
-      oxc target: typeof D    (TypeQuery)
+      oxc source: typeof C    (Class)
+      oxc target: typeof D    (Class)
   - c.ts:4 `D` should be assignable to c.ts:1 `C`
       typescript source: typeof D    (Object)
       typescript target: typeof C    (Object)
-      oxc source: typeof D    (TypeQuery)
-      oxc target: typeof C    (TypeQuery)
+      oxc source: typeof D    (Class)
+      oxc target: typeof C    (Class)
   - c.ts:4 `D` should be assignable to c.ts:2 `new C<number>();`
       typescript source: typeof D    (Object)
       typescript target: C<number>    (TypeReference)
-      oxc source: typeof D    (TypeQuery)
+      oxc source: typeof D    (Class)
       oxc target: C<number>    (TypeReference)
   - c.ts:4 `D` should be assignable to c.ts:2 `C`
       typescript source: typeof D    (Object)
       typescript target: typeof C    (Object)
-      oxc source: typeof D    (TypeQuery)
-      oxc target: typeof C    (TypeQuery)
+      oxc source: typeof D    (Class)
+      oxc target: typeof C    (Class)
   - c.ts:4 `D` should be assignable to c.ts:4 `C`
       typescript source: typeof D    (Object)
       typescript target: typeof C    (Object)
-      oxc source: typeof D    (TypeQuery)
-      oxc target: typeof C    (TypeQuery)
+      oxc source: typeof D    (Class)
+      oxc target: typeof C    (Class)
   - c.ts:4 `C` should be assignable to c.ts:2 `new C<number>();`
       typescript source: typeof C    (Object)
       typescript target: C<number>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<number>    (TypeReference)
   - c.ts:4 `C` should be assignable to c.ts:4 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
-      oxc source: typeof C    (TypeQuery)
-      oxc target: typeof D    (TypeQuery)
+      oxc source: typeof C    (Class)
+      oxc target: typeof D    (Class)
 PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::d.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00%
@@ -8637,109 +8637,109 @@ FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts
   - g.ts:1 `C` should be assignable to g.ts:2 `new C();`
       typescript source: typeof C    (Object)
       typescript target: C<number>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<number>    (TypeReference)
   - g.ts:1 `C` should be assignable to g.ts:3 `new C<string>();`
       typescript source: typeof C    (Object)
       typescript target: C<string>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<string>    (TypeReference)
   - g.ts:1 `C` should be assignable to g.ts:5 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
-      oxc source: typeof C    (TypeQuery)
-      oxc target: typeof D    (TypeQuery)
+      oxc source: typeof C    (Class)
+      oxc target: typeof D    (Class)
   - g.ts:2 `new C();` should be assignable to g.ts:3 `new C<string>();`
       source: C<number>    (TypeReference)
       target: C<string>    (TypeReference)
   - g.ts:2 `C` should be assignable to g.ts:2 `new C();`
       typescript source: typeof C    (Object)
       typescript target: C<number>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<number>    (TypeReference)
   - g.ts:2 `C` should be assignable to g.ts:3 `new C<string>();`
       typescript source: typeof C    (Object)
       typescript target: C<string>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<string>    (TypeReference)
   - g.ts:2 `C` should be assignable to g.ts:5 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
-      oxc source: typeof C    (TypeQuery)
-      oxc target: typeof D    (TypeQuery)
+      oxc source: typeof C    (Class)
+      oxc target: typeof D    (Class)
   - g.ts:3 `new C<string>();` should be assignable to g.ts:2 `new C();`
       source: C<string>    (TypeReference)
       target: C<number>    (TypeReference)
   - g.ts:3 `C` should be assignable to g.ts:2 `new C();`
       typescript source: typeof C    (Object)
       typescript target: C<number>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<number>    (TypeReference)
   - g.ts:3 `C` should be assignable to g.ts:3 `new C<string>();`
       typescript source: typeof C    (Object)
       typescript target: C<string>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<string>    (TypeReference)
   - g.ts:3 `C` should be assignable to g.ts:5 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
-      oxc source: typeof C    (TypeQuery)
-      oxc target: typeof D    (TypeQuery)
+      oxc source: typeof C    (Class)
+      oxc target: typeof D    (Class)
   - g.ts:5 `D` should be assignable to g.ts:1 `C`
       typescript source: typeof D    (Object)
       typescript target: typeof C    (Object)
-      oxc source: typeof D    (TypeQuery)
-      oxc target: typeof C    (TypeQuery)
+      oxc source: typeof D    (Class)
+      oxc target: typeof C    (Class)
   - g.ts:5 `D` should be assignable to g.ts:2 `new C();`
       typescript source: typeof D    (Object)
       typescript target: C<number>    (TypeReference)
-      oxc source: typeof D    (TypeQuery)
+      oxc source: typeof D    (Class)
       oxc target: C<number>    (TypeReference)
   - g.ts:5 `D` should be assignable to g.ts:2 `C`
       typescript source: typeof D    (Object)
       typescript target: typeof C    (Object)
-      oxc source: typeof D    (TypeQuery)
-      oxc target: typeof C    (TypeQuery)
+      oxc source: typeof D    (Class)
+      oxc target: typeof C    (Class)
   - g.ts:5 `D` should be assignable to g.ts:3 `new C<string>();`
       typescript source: typeof D    (Object)
       typescript target: C<string>    (TypeReference)
-      oxc source: typeof D    (TypeQuery)
+      oxc source: typeof D    (Class)
       oxc target: C<string>    (TypeReference)
   - g.ts:5 `D` should be assignable to g.ts:3 `C`
       typescript source: typeof D    (Object)
       typescript target: typeof C    (Object)
-      oxc source: typeof D    (TypeQuery)
-      oxc target: typeof C    (TypeQuery)
+      oxc source: typeof D    (Class)
+      oxc target: typeof C    (Class)
   - g.ts:5 `D` should be assignable to g.ts:5 `C`
       typescript source: typeof D    (Object)
       typescript target: typeof C    (Object)
-      oxc source: typeof D    (TypeQuery)
-      oxc target: typeof C    (TypeQuery)
+      oxc source: typeof D    (Class)
+      oxc target: typeof C    (Class)
   - g.ts:5 `D` should be assignable to g.ts:6 `C`
       typescript source: typeof D    (Object)
       typescript target: typeof C    (Object)
-      oxc source: typeof D    (TypeQuery)
-      oxc target: typeof C    (TypeQuery)
+      oxc source: typeof D    (Class)
+      oxc target: typeof C    (Class)
   - g.ts:5 `C` should be assignable to g.ts:2 `new C();`
       typescript source: typeof C    (Object)
       typescript target: C<number>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<number>    (TypeReference)
   - g.ts:5 `C` should be assignable to g.ts:3 `new C<string>();`
       typescript source: typeof C    (Object)
       typescript target: C<string>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<string>    (TypeReference)
   - g.ts:5 `C` should be assignable to g.ts:5 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
-      oxc source: typeof C    (TypeQuery)
-      oxc target: typeof D    (TypeQuery)
+      oxc source: typeof C    (Class)
+      oxc target: typeof D    (Class)
   - g.ts:6 `D` should be assignable to g.ts:1 `C`
       typescript source: { new <string>(): {}; }    (Object)
       typescript target: typeof C    (Object)
       oxc source: { new <string>(): {}; }    (Object)
-      oxc target: typeof C    (TypeQuery)
+      oxc target: typeof C    (Class)
   - g.ts:6 `D` should be assignable to g.ts:2 `new C();`
       source: { new <string>(): {}; }    (Object)
       target: C<number>    (TypeReference)
@@ -8747,7 +8747,7 @@ FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts
       typescript source: { new <string>(): {}; }    (Object)
       typescript target: typeof C    (Object)
       oxc source: { new <string>(): {}; }    (Object)
-      oxc target: typeof C    (TypeQuery)
+      oxc target: typeof C    (Class)
   - g.ts:6 `D` should be assignable to g.ts:3 `new C<string>();`
       source: { new <string>(): {}; }    (Object)
       target: C<string>    (TypeReference)
@@ -8755,37 +8755,37 @@ FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts
       typescript source: { new <string>(): {}; }    (Object)
       typescript target: typeof C    (Object)
       oxc source: { new <string>(): {}; }    (Object)
-      oxc target: typeof C    (TypeQuery)
+      oxc target: typeof C    (Class)
   - g.ts:6 `D` should be assignable to g.ts:5 `D`
       typescript source: { new <string>(): {}; }    (Object)
       typescript target: typeof D    (Object)
       oxc source: { new <string>(): {}; }    (Object)
-      oxc target: typeof D    (TypeQuery)
+      oxc target: typeof D    (Class)
   - g.ts:6 `D` should be assignable to g.ts:5 `C`
       typescript source: { new <string>(): {}; }    (Object)
       typescript target: typeof C    (Object)
       oxc source: { new <string>(): {}; }    (Object)
-      oxc target: typeof C    (TypeQuery)
+      oxc target: typeof C    (Class)
   - g.ts:6 `D` should be assignable to g.ts:6 `C`
       typescript source: { new <string>(): {}; }    (Object)
       typescript target: typeof C    (Object)
       oxc source: { new <string>(): {}; }    (Object)
-      oxc target: typeof C    (TypeQuery)
+      oxc target: typeof C    (Class)
   - g.ts:6 `C` should be assignable to g.ts:2 `new C();`
       typescript source: typeof C    (Object)
       typescript target: C<number>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<number>    (TypeReference)
   - g.ts:6 `C` should be assignable to g.ts:3 `new C<string>();`
       typescript source: typeof C    (Object)
       typescript target: C<string>    (TypeReference)
-      oxc source: typeof C    (TypeQuery)
+      oxc source: typeof C    (Class)
       oxc target: C<string>    (TypeReference)
   - g.ts:6 `C` should be assignable to g.ts:5 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
-      oxc source: typeof C    (TypeQuery)
-      oxc target: typeof D    (TypeQuery)
+      oxc source: typeof C    (Class)
+      oxc target: typeof D    (Class)
 PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::h.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts matched_types=16 mismatched_types=0 total_types=16 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts matched_types=19 mismatched_types=0 total_types=19 match_percentage=100.00%
@@ -12687,13 +12687,13 @@ FAIL tests/conformance/cases/compiler/memberExpression.ts matched_types=262 mism
   - :117 `Counter` should not be assignable to :115 `apply`
       typescript source: typeof Counter    (Object)
       typescript target: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }    (Function)
-      oxc source: typeof Counter    (TypeQuery)
+      oxc source: typeof Counter    (Class)
       oxc target: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }    (Object)
   - :146 `DerivedCounter` should be assignable to :146 `Counter`
       typescript source: typeof DerivedCounter    (Object)
       typescript target: typeof Counter    (Object)
-      oxc source: typeof DerivedCounter    (TypeQuery)
-      oxc target: typeof Counter    (TypeQuery)
+      oxc source: typeof DerivedCounter    (Class)
+      oxc target: typeof Counter    (Class)
 PASS tests/conformance/cases/compiler/mergedInterfaceDeclarationLocation.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/metaProperty.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00%
   - :2 `moduleMeta` should not be assignable to :7 `baseTarget`
@@ -14826,62 +14826,62 @@ FAIL tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::classProperti
   - classProperties.ts:2 `Item` should be assignable to classProperties.ts:8 `item`
       typescript source: typeof Item    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Item    (TypeQuery)
+      oxc source: typeof Item    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:2 `Item` should be assignable to classProperties.ts:12 `item`
       typescript source: typeof Item    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Item    (TypeQuery)
+      oxc source: typeof Item    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:2 `Item` should be assignable to classProperties.ts:18 `item`
       typescript source: typeof Item    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Item    (TypeQuery)
+      oxc source: typeof Item    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:5 `Example` should be assignable to classProperties.ts:8 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:5 `Example` should be assignable to classProperties.ts:12 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:5 `Example` should be assignable to classProperties.ts:18 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:8 `Item` should be assignable to classProperties.ts:8 `item`
       typescript source: typeof Item    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Item    (TypeQuery)
+      oxc source: typeof Item    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:8 `Item` should be assignable to classProperties.ts:12 `item`
       typescript source: typeof Item    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Item    (TypeQuery)
+      oxc source: typeof Item    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:8 `Item` should be assignable to classProperties.ts:18 `item`
       typescript source: typeof Item    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Item    (TypeQuery)
+      oxc source: typeof Item    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:8 `Item` should be assignable to classProperties.ts:8 `item`
       typescript source: typeof Item    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Item    (TypeQuery)
+      oxc source: typeof Item    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:8 `Item` should be assignable to classProperties.ts:12 `item`
       typescript source: typeof Item    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Item    (TypeQuery)
+      oxc source: typeof Item    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:8 `Item` should be assignable to classProperties.ts:18 `item`
       typescript source: typeof Item    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Item    (TypeQuery)
+      oxc source: typeof Item    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:10 `getReady` should be assignable to classProperties.ts:8 `item`
       source: () => boolean    (Function)
@@ -14922,32 +14922,32 @@ FAIL tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::classProperti
   - classProperties.ts:13 `Example` should be assignable to classProperties.ts:8 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:13 `Example` should be assignable to classProperties.ts:12 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:13 `Example` should be assignable to classProperties.ts:18 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:15 `Example` should be assignable to classProperties.ts:8 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:15 `Example` should be assignable to classProperties.ts:12 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:15 `Example` should be assignable to classProperties.ts:18 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:19 `getReady` should be assignable to classProperties.ts:8 `item`
       source: () => boolean    (Function)
@@ -14979,32 +14979,32 @@ FAIL tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::classProperti
   - classProperties.ts:22 `Example` should be assignable to classProperties.ts:8 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:22 `Example` should be assignable to classProperties.ts:12 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:22 `Example` should be assignable to classProperties.ts:18 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:23 `Example` should be assignable to classProperties.ts:8 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:23 `Example` should be assignable to classProperties.ts:12 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:23 `Example` should be assignable to classProperties.ts:18 `item`
       typescript source: typeof Example    (Object)
       typescript target: Item    (TypeReference)
-      oxc source: typeof Example    (TypeQuery)
+      oxc source: typeof Example    (Class)
       oxc target: Item    (TypeReference)
   - classProperties.ts:23 `getEnabled` should be assignable to classProperties.ts:8 `item`
       source: () => boolean    (Function)
@@ -15020,22 +15020,22 @@ FAIL tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::every.ts matc
   - every.ts:2 `Ship` should not be assignable to every.ts:6 `every`
       typescript source: typeof Ship    (Object)
       typescript target: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }    (Function)
-      oxc source: typeof Ship    (TypeQuery)
+      oxc source: typeof Ship    (Class)
       oxc target: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }    (Object)
   - every.ts:3 `Board` should not be assignable to every.ts:6 `every`
       typescript source: typeof Board    (Object)
       typescript target: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }    (Function)
-      oxc source: typeof Board    (TypeQuery)
+      oxc source: typeof Board    (Class)
       oxc target: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }    (Object)
   - every.ts:4 `Ship` should not be assignable to every.ts:6 `every`
       typescript source: typeof Ship    (Object)
       typescript target: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }    (Function)
-      oxc source: typeof Ship    (TypeQuery)
+      oxc source: typeof Ship    (Class)
       oxc target: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }    (Object)
   - every.ts:9 `Board` should not be assignable to every.ts:6 `every`
       typescript source: typeof Board    (Object)
       typescript target: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }    (Function)
-      oxc source: typeof Board    (TypeQuery)
+      oxc source: typeof Board    (Class)
       oxc target: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }    (Object)
 PASS tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::stringMap.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/symbolFunctionInference.ts::arrow.ts matched_types=1 mismatched_types=0 total_types=1 match_percentage=100.00%
@@ -15293,12 +15293,12 @@ FAIL tests/conformance/cases/compiler/tsIndexSignatures.ts matched_types=13 mism
   - :1 `A` should not be assignable to :9 `C`
       typescript source: typeof A    (Object)
       typescript target: { [key: string]: string; }    (Object)
-      oxc source: typeof A    (TypeQuery)
+      oxc source: typeof A    (Class)
       oxc target: { [key: string]: string; }    (Object)
   - :1 `A` should not be assignable to :17 `Multi2`
       typescript source: typeof A    (Object)
       typescript target: { [key: string]: string; [key2: number]: string; [key3: symbol]: string; }    (Object)
-      oxc source: typeof A    (TypeQuery)
+      oxc source: typeof A    (Class)
       oxc target: { [key: string]: string; [key2: number]: string; [key3: symbol]: string; }    (Object)
   - :2 `key` should be assignable to :13 `Multi`
       source: string    (String)

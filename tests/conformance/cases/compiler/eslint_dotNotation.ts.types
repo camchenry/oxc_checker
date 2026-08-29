@@ -1,5 +1,5 @@
 class X {
->     ^: typeof X   (TypeQuery) (Identifier)
+>     ^: typeof X   (Class) (Identifier)
 
   private priv_prop = 123;
 >         ^^^^^^^^^: number   (Number) (Identifier)
@@ -8,7 +8,7 @@ const x = new X();
 >     ^: X   (TypeReference) (Identifier)
 
 const x = new X();
->             ^: typeof X   (TypeQuery) (Identifier)
+>             ^: typeof X   (Class) (Identifier)
 
 x['priv_prop'] = 123;
 >^: X   (TypeReference) (Identifier)
@@ -17,7 +17,7 @@ x['priv_prop'] = 123;
 >^^^^^^^^^^^^^^^^^^^^^: 123   (NumberLiteral) (ExpressionStatement)
 
 class X {
->     ^: typeof X   (TypeQuery) (Identifier)
+>     ^: typeof X   (Class) (Identifier)
 
   protected protected_prop = 123;
 >           ^^^^^^^^^^^^^^: number   (Number) (Identifier)
@@ -26,7 +26,7 @@ const x = new X();
 >     ^: X   (TypeReference) (Identifier)
 
 const x = new X();
->             ^: typeof X   (TypeQuery) (Identifier)
+>             ^: typeof X   (Class) (Identifier)
 
 x['protected_prop'] = 123;
 >^: X   (TypeReference) (Identifier)
@@ -35,7 +35,7 @@ x['protected_prop'] = 123;
 >^^^^^^^^^^^^^^^^^^^^^^^^^^: 123   (NumberLiteral) (ExpressionStatement)
 
 class X {
->     ^: typeof X   (TypeQuery) (Identifier)
+>     ^: typeof X   (Class) (Identifier)
 
   [key: string]: number;
 >  ^^^: string   (String) (Identifier)
@@ -44,7 +44,7 @@ const x = new X();
 >     ^: X   (TypeReference) (Identifier)
 
 const x = new X();
->             ^: typeof X   (TypeQuery) (Identifier)
+>             ^: typeof X   (Class) (Identifier)
 
 x['hello'] = 123;
 >^: X   (TypeReference) (Identifier)

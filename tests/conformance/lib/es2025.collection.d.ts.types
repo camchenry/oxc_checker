@@ -11,11 +11,11 @@ interface ReadonlySetLike<T> {
 >   ^^^^: { (): Iterator<T>; (): Iterator<T>; }   (Object) (Identifier)
 
     keys(): Iterator<T>;
->           ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>           ^^^^^^^^: typeof Iterator   (Class) (Identifier)
             expected: IteratorConstructor
 
     keys(): Iterator<T>;
->           ^^^^^^^^: typeof Iterator   (TypeQuery) (Identifier)
+>           ^^^^^^^^: typeof Iterator   (Class) (Identifier)
             expected: IteratorConstructor
 
     keys(): Iterator<T>;

@@ -14,7 +14,7 @@ export const moduleMetaUrl = import.meta.url;
 >                                        ^^^: string   (String) (Identifier)
 
 class Base {
->     ^^^^: typeof Base   (TypeQuery) (Identifier)
+>     ^^^^: typeof Base   (Class) (Identifier)
 
     const baseTarget = new.target;
 >         ^^^^^^^^^^: typeof Base   (TypeQuery) (Identifier)

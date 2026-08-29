@@ -53,8 +53,8 @@ use crate::{
     types::{
         CheckerArena, IndexInfo, LabeledTupleElement, MappedModifier, Signature, SignatureKind,
         TupleElement, TupleReadonly, Ty, TyFunction, TyKind, TyMapped, TyParameter, TyProperty,
-        TyPropertyFlags, TyTypeParameter, TyTypePredicate, TyTypeQuery, TyTypeReference,
-        TypeErrorKind, binding_pattern_to_parameter_name, function_maximum_argument_count,
+        TyPropertyFlags, TyTypeParameter, TyTypePredicate, TyTypeReference, TypeErrorKind,
+        binding_pattern_to_parameter_name, function_maximum_argument_count,
         function_minimum_argument_count, function_parameter_type_at_call_index,
         property_name_flags, return_type_and_type_predicate_from_annotation_with_resolver,
         type_predicate_return_type, visit_type,
@@ -603,6 +603,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                     }
                 }
             }
+            TyKind::Class(class) => self.ty.class(
+                class.name,
+                self.instantiate_type_at_depth(class.constructor_type, mapper, depth + 1),
+            ),
             TyKind::TypeQuery(query) => self.ty.type_query(
                 query.name,
                 self.instantiate_type_at_depth(query.resolved, mapper, depth + 1),
@@ -2919,7 +2923,11 @@ impl<'a, 'store> Checker<'a, 'store> {
             .collect::<Vec<_>>();
 
         if type_arguments.is_empty() {
-            self.ty.type_query(name, resolved, std::iter::empty())
+            if matches!(self.ty_kind(resolved), TyKind::Class(_)) {
+                resolved
+            } else {
+                self.ty.type_query(name, resolved, std::iter::empty())
+            }
         } else {
             self.instantiate_type_query_type(program_id, resolved, &type_arguments)
         }
@@ -2941,6 +2949,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 && matches!(self.ty_kind(query.resolved), TyKind::UniqueSymbol(_))
             {
                 return query.resolved;
+            }
+            if matches!(self.ty_kind(query_type), TyKind::Class(_)) {
+                return query_type;
             }
 
             let type_arguments =
@@ -4376,8 +4387,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .map(|ty| self.instantiate_type_query_type(program_id, *ty, type_arguments)),
             ),
             TyKind::Function(function) => self.instantiate_function_type(function, type_arguments),
+            TyKind::Class(class) => self
+                .instantiate_typeof_class_type(program_id, class.name, type_arguments)
+                .unwrap_or(ty),
             TyKind::TypeQuery(query) if query.type_arguments.is_empty() => self
-                .instantiate_typeof_class_type(program_id, query, type_arguments)
+                .instantiate_typeof_class_type(program_id, query.name, type_arguments)
                 .unwrap_or(ty),
             _ => ty,
         }
@@ -4420,10 +4434,9 @@ impl<'a, 'store> Checker<'a, 'store> {
     fn instantiate_typeof_class_type(
         &self,
         program_id: ProgramId,
-        query: &TyTypeQuery<'a>,
+        class_name: &'a str,
         type_arguments: &[Ty<'a>],
     ) -> Option<Ty<'a>> {
-        let class_name = query.name;
         let class_symbol = self.get_class_symbol_for_type(program_id, class_name)?;
         let type_parameters = self
             .get_type_parameters_for_type(class_symbol.program_id, class_name)
@@ -5088,8 +5101,10 @@ impl<'a, 'store> Checker<'a, 'store> {
             Some(class.node_id.get()),
             CheckMode::NONE,
         );
-        let TyKind::TypeQuery(query) = self.ty_kind(super_type) else {
-            return None;
+        let class_name = match self.ty_kind(super_type) {
+            TyKind::Class(class) => class.name,
+            TyKind::TypeQuery(query) => query.name,
+            _ => return None,
         };
         let type_arguments = class
             .super_type_arguments
@@ -5097,7 +5112,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             .flat_map(|arguments| arguments.params.iter())
             .map(|argument| self.get_type_from_ts_type(program_id, argument));
 
-        Some(self.ty.type_reference(query.name, type_arguments))
+        Some(self.ty.type_reference(class_name, type_arguments))
     }
 
     fn get_type_of_object_expression(
@@ -5655,6 +5670,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             self.get_type_of_expression_with_node(program_id, &member.object, node_id, flags);
         let (class_name, is_static) = match self.ty_kind(object_type) {
             TyKind::TypeReference(reference) => (reference.name, false),
+            TyKind::Class(class) => (class.name, true),
             TyKind::TypeQuery(query) => (query.name, true),
             TyKind::Any => return self.ty.any(),
             TyKind::Error(_) => return object_type,
@@ -5732,6 +5748,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .collect::<Vec<_>>();
                 (!property_types.is_empty()).then(|| self.ty.union(property_types))
             }
+            TyKind::Class(class) => self.get_property_type_of_structural_type(
+                program_id,
+                class.constructor_type,
+                property_name,
+            ),
             TyKind::TypeQuery(query) => {
                 self.get_property_type_of_structural_type(program_id, query.resolved, property_name)
             }
@@ -6865,8 +6886,11 @@ impl<'a, 'store> Checker<'a, 'store> {
             });
 
         if let Some(constructor_type) = constructor_type
-            && let TyKind::TypeQuery(query) = self.ty_kind(constructor_type)
-            && query.type_arguments.is_empty()
+            && let Some(class_name) = match self.ty_kind(constructor_type) {
+                TyKind::Class(class) => Some(class.name),
+                TyKind::TypeQuery(query) if query.type_arguments.is_empty() => Some(query.name),
+                _ => None,
+            }
         {
             let mut type_arguments = new_expression
                 .type_arguments
@@ -6880,10 +6904,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .collect::<Vec<_>>();
             let explicit_type_argument_count = type_arguments.len();
             let implicit_display_type_argument_count =
-                self.fill_default_type_arguments(program_id, query.name, &mut type_arguments);
+                self.fill_default_type_arguments(program_id, class_name, &mut type_arguments);
             return self.type_reference_with_display_type_argument_count(
                 program_id,
-                query.name,
+                class_name,
                 type_arguments,
                 explicit_type_argument_count + implicit_display_type_argument_count,
             );
@@ -7013,6 +7037,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 }
                 (reference.name, false)
             }
+            TyKind::Class(class) => (class.name, true),
             // `typeof Class` value-side property access (statics).
             TyKind::TypeQuery(query) => (query.name, true),
             _ => return None,
@@ -7726,8 +7751,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     false,
                     true,
                 );
-                self.ty
-                    .type_query(identifier.name.as_str(), resolved, std::iter::empty())
+                self.ty.class(identifier.name.as_str(), resolved)
             },
         )
     }

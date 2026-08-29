@@ -1,5 +1,5 @@
 class BrandedValue {
->     ^^^^^^^^^^^^: typeof BrandedValue   (TypeQuery) (Identifier)
+>     ^^^^^^^^^^^^: typeof BrandedValue   (Class) (Identifier)
 
   static hasBrand(value: object): boolean {
 >        ^^^^^^^^: (value: object) => boolean   (Function) (Identifier)
@@ -17,7 +17,7 @@ class BrandedValue {
 >          ^^^^^^: boolean   (Boolean) (Identifier)
 
     return result && new BrandedValue().#brand;
->                        ^^^^^^^^^^^^: typeof BrandedValue   (TypeQuery) (Identifier)
+>                        ^^^^^^^^^^^^: typeof BrandedValue   (Class) (Identifier)
 
   hasSecret(value: object): boolean {
 > ^^^^^^^^^: (value: object) => boolean   (Function) (Identifier)
@@ -38,7 +38,7 @@ const _staticResult = BrandedValue.hasBrand({});
 >     ^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _staticResult = BrandedValue.hasBrand({});
->                     ^^^^^^^^^^^^: typeof BrandedValue   (TypeQuery) (Identifier)
+>                     ^^^^^^^^^^^^: typeof BrandedValue   (Class) (Identifier)
 
 const _staticResult = BrandedValue.hasBrand({});
 >                                  ^^^^^^^^: (value: object) => boolean   (Function) (Identifier)
@@ -47,7 +47,7 @@ const _instanceResult = new BrandedValue().hasSecret({});
 >     ^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
 const _instanceResult = new BrandedValue().hasSecret({});
->                           ^^^^^^^^^^^^: typeof BrandedValue   (TypeQuery) (Identifier)
+>                           ^^^^^^^^^^^^: typeof BrandedValue   (Class) (Identifier)
 
 const _instanceResult = new BrandedValue().hasSecret({});
 >                                          ^^^^^^^^^: (value: object) => boolean   (Function) (Identifier)

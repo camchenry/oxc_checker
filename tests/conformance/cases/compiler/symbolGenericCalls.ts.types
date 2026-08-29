@@ -209,7 +209,7 @@ const stringConstraint = fallbackToConstraint();
 >                        ^^^^^^^^^^^^^^^^^^^^: <T extends string>() => T   (Function) (Identifier)
 
 class GenericCallFoo {
->     ^^^^^^^^^^^^^^: typeof GenericCallFoo   (TypeQuery) (Identifier)
+>     ^^^^^^^^^^^^^^: typeof GenericCallFoo   (Class) (Identifier)
 
   doThing(value: { a: number }) { return { b: value.a }; }
 > ^^^^^^^: (value: { a: number; }) => { b: number; }   (Function) (Identifier)
@@ -233,7 +233,7 @@ const classInstance = new GenericCallFoo();
 >     ^^^^^^^^^^^^^: GenericCallFoo   (TypeReference) (Identifier)
 
 const classInstance = new GenericCallFoo();
->                         ^^^^^^^^^^^^^^: typeof GenericCallFoo   (TypeQuery) (Identifier)
+>                         ^^^^^^^^^^^^^^: typeof GenericCallFoo   (Class) (Identifier)
 
 const classMethodResult = classInstance.doThing({ a: 12 });
 >     ^^^^^^^^^^^^^^^^^: { b: number; }   (Object) (Identifier)
