@@ -3,7 +3,7 @@
 # Cases root: src/lib
 files: passed=12 failed=67 panicked=0 total=79 pass_percentage=15.19%
 types: matched=60137 mismatched=683 total=60820 match_percentage=98.88%
-assign: matched=313454 mismatched=11520 total=324974 match_percentage=96.46%
+assign: matched=313458 mismatched=11516 total=324974 match_percentage=96.46%
 
 FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45%
   - src/lib/decorators.d.ts:20 `DecoratorMetadata` type mismatch
@@ -4965,11 +4965,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36176 mismatched_types=95 total_ty
   - :18733 `HTMLInputElement` should be assignable to :18733 `HTMLElement`
       source: { new (): HTMLInputElement; prototype: HTMLInputElement; }    (Object)
       target: { new (): HTMLElement; prototype: HTMLElement; }    (Object)
-  - :18753 `autocomplete` should be assignable to :18747 `alt`
-      typescript source: AutoFill    (Union)
-      typescript target: string    (String)
-      oxc source: AutoFill    (TypeReference)
-      oxc target: string    (String)
   - :18795 `FileList` should not be assignable to :40221 `getExtension`
       typescript source: { new (): FileList; prototype: FileList; }    (Object)
       typescript target: { (name: string): any; (extensionName: "ANGLE_instanced_arrays"): ANGLE_instanced_arrays | null; (extensionName: "EXT_blend_minmax"): EXT_blend_minmax | null; (extensionName: "EXT_color_buffer_float"): EXT_color_buffer_float | null; (extensionName: "EXT_color_buffer_half_float"): EXT_color_buffer_half_float | null; (extensionName: "EXT_float_blend"): EXT_float_blend | null; (extensionName: "EXT_frag_depth"): EXT_frag_depth | null; (extensionName: "EXT_sRGB"): EXT_sRGB | null; (extensionName: "EXT_shader_texture_lod"): EXT_shader_texture_lod | null; (extensionName: "EXT_texture_compression_bptc"): EXT_texture_compression_bptc | null; (extensionName: "EXT_texture_compression_rgtc"): EXT_texture_compression_rgtc | null; (extensionName: "EXT_texture_filter_anisotropic"): EXT_texture_filter_anisotropic | null; (extensionName: "KHR_parallel_shader_compile"): KHR_parallel_shader_compile | null; (extensionName: "OES_element_index_uint"): OES_element_index_uint | null; (extensionName: "OES_fbo_render_mipmap"): OES_fbo_render_mipmap | null; (extensionName: "OES_standard_derivatives"): OES_standard_derivatives | null; (extensionName: "OES_texture_float"): OES_texture_float | null; (extensionName: "OES_texture_float_linear"): OES_texture_float_linear | null; (extensionName: "OES_texture_half_float"): OES_texture_half_float | null; (extensionName: "OES_texture_half_float_linear"): OES_texture_half_float_linear | null; (extensionName: "OES_vertex_array_object"): OES_vertex_array_object | null; (extensionName: "OVR_multiview2"): OVR_multiview2 | null; (extensionName: "WEBGL_color_buffer_float"): WEBGL_color_buffer_float | null; (extensionName: "WEBGL_compressed_texture_astc"): WEBGL_compressed_texture_astc | null; (extensionName: "WEBGL_compressed_texture_etc"): WEBGL_compressed_texture_etc | null; (extensionName: "WEBGL_compressed_texture_etc1"): WEBGL_compressed_texture_etc1 | null; (extensionName: "WEBGL_compressed_texture_pvrtc"): WEBGL_compressed_texture_pvrtc | null; (extensionName: "WEBGL_compressed_texture_s3tc"): WEBGL_compressed_texture_s3tc | null; (extensionName: "WEBGL_compressed_texture_s3tc_srgb"): WEBGL_compressed_texture_s3tc_srgb | null; (extensionName: "WEBGL_debug_renderer_info"): WEBGL_debug_renderer_info | null; (extensionName: "WEBGL_debug_shaders"): WEBGL_debug_shaders | null; (extensionName: "WEBGL_depth_texture"): WEBGL_depth_texture | null; (extensionName: "WEBGL_draw_buffers"): WEBGL_draw_buffers | null; (extensionName: "WEBGL_lose_context"): WEBGL_lose_context | null; (extensionName: "WEBGL_multi_draw"): WEBGL_multi_draw | null; (name: string): any; (extensionName: "ANGLE_instanced_arrays"): ANGLE_instanced_arrays | null; (extensionName: "EXT_blend_minmax"): EXT_blend_minmax | null; (extensionName: "EXT_color_buffer_float"): EXT_color_buffer_float | null; (extensionName: "EXT_color_buffer_half_float"): EXT_color_buffer_half_float | null; (extensionName: "EXT_float_blend"): EXT_float_blend | null; (extensionName: "EXT_frag_depth"): EXT_frag_depth | null; (extensionName: "EXT_sRGB"): EXT_sRGB | null; (extensionName: "EXT_shader_texture_lod"): EXT_shader_texture_lod | null; (extensionName: "EXT_texture_compression_bptc"): EXT_texture_compression_bptc | null; (extensionName: "EXT_texture_compression_rgtc"): EXT_texture_compression_rgtc | null; (extensionName: "EXT_texture_filter_anisotropic"): EXT_texture_filter_anisotropic | null; (extensionName: "KHR_parallel_shader_compile"): KHR_parallel_shader_compile | null; (extensionName: "OES_element_index_uint"): OES_element_index_uint | null; (extensionName: "OES_fbo_render_mipmap"): OES_fbo_render_mipmap | null; (extensionName: "OES_standard_derivatives"): OES_standard_derivatives | null; (extensionName: "OES_texture_float"): OES_texture_float | null; (extensionName: "OES_texture_float_linear"): OES_texture_float_linear | null; (extensionName: "OES_texture_half_float"): OES_texture_half_float | null; (extensionName: "OES_texture_half_float_linear"): OES_texture_half_float_linear | null; (extensionName: "OES_vertex_array_object"): OES_vertex_array_object | null; (extensionName: "OVR_multiview2"): OVR_multiview2 | null; (extensionName: "WEBGL_color_buffer_float"): WEBGL_color_buffer_float | null; (extensionName: "WEBGL_compressed_texture_astc"): WEBGL_compressed_texture_astc | null; (extensionName: "WEBGL_compressed_texture_etc"): WEBGL_compressed_texture_etc | null; (extensionName: "WEBGL_compressed_texture_etc1"): WEBGL_compressed_texture_etc1 | null; (extensionName: "WEBGL_compressed_texture_pvrtc"): WEBGL_compressed_texture_pvrtc | null; (extensionName: "WEBGL_compressed_texture_s3tc"): WEBGL_compressed_texture_s3tc | null; (extensionName: "WEBGL_compressed_texture_s3tc_srgb"): WEBGL_compressed_texture_s3tc_srgb | null; (extensionName: "WEBGL_debug_renderer_info"): WEBGL_debug_renderer_info | null; (extensionName: "WEBGL_debug_shaders"): WEBGL_debug_shaders | null; (extensionName: "WEBGL_depth_texture"): WEBGL_depth_texture | null; (extensionName: "WEBGL_draw_buffers"): WEBGL_draw_buffers | null; (extensionName: "WEBGL_lose_context"): WEBGL_lose_context | null; (extensionName: "WEBGL_multi_draw"): WEBGL_multi_draw | null; }    (Function)
@@ -14348,9 +14343,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36176 mismatched_types=95 total_ty
       typescript target: { <K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; <K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Function)
       oxc source: { new (): Storage; prototype: Storage; }    (Object)
       oxc target: { <K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Object)
-  - :44120 `AutoFillSection` should be assignable to :44121 `Base64URLString`
-      source: `section-${string}`    (TemplateLiteral)
-      target: string    (String)
   - :44158 `GPUTexture` should be assignable to :44158 `GPUSampler`
       source: { new (): GPUTexture; prototype: GPUTexture; }    (Object)
       target: { new (): GPUSampler; prototype: GPUSampler; }    (Object)
@@ -14398,11 +14390,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36176 mismatched_types=95 total_ty
       typescript target: { (index: number): string | null; (index: number): string | null; }    (Function)
       oxc source: { new (): GPUCanvasContext; prototype: GPUCanvasContext; }    (Object)
       oxc target: { (index: number): string | null; (index: number): string | null; }    (Object)
-  - :44201 `OptionalPrefixToken` should be assignable to :24202 `album`
-      typescript source: "" | `${T} `    (Union)
-      typescript target: string    (String)
-      oxc source: `${T} ` | ""    (Union)
-      oxc target: string    (String)
   - :44202 `PerformanceEntry` should not be assignable to :44203 `PublicKeyCredentialClientCapabilities`
       typescript source: { new (): PerformanceEntry; prototype: PerformanceEntry; }    (Object)
       typescript target: { [x: string]: boolean; }    (Mapped)
@@ -38204,11 +38191,6 @@ FAIL src/lib/es2023.intl.d.ts matched_types=45 mismatched_types=2 total_types=47
       typescript target: NumberFormatConstructor    (Function)
       oxc source: "startRange" | "endRange" | "shared"    (Union)
       oxc target: any    (Any)
-  - :38 `StringNumericLiteral` should be assignable to :34 `value`
-      typescript source: "+Infinity" | "-Infinity" | "Infinity" | `${number}`    (Union)
-      typescript target: string    (String)
-      oxc source: `${number}` | "Infinity" | "-Infinity" | "+Infinity"    (Union)
-      oxc target: string    (String)
   - :38 `StringNumericLiteral` should not be assignable to :40 `NumberFormat`
       typescript source: "+Infinity" | "-Infinity" | "Infinity" | `${number}`    (Union)
       typescript target: NumberFormatConstructor    (Function)

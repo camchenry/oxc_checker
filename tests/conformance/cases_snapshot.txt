@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/cases
 files: passed=88 failed=86 panicked=0 total=174 pass_percentage=50.57%
 types: matched=3648 mismatched=55 total=3703 match_percentage=98.51%
-assign: matched=87992 mismatched=3461 total=91453 match_percentage=96.22%
+assign: matched=87994 mismatched=3459 total=91453 match_percentage=96.22%
 
 PASS tests/conformance/cases/compiler/abstractIdentifierNameStrict.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/arrayTypes.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00%
@@ -8443,12 +8443,6 @@ FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTemplateExpression.ts:
   - a.ts:22 `IntersectionWithString` should be assignable to a.ts:21 `intersectionWithString`
       source: string & { _brand: 'test-brand'; }    (Intersection)
       target: string & { _brand: 'test-brand'; }    (Intersection)
-  - a.ts:23 `WrappedIntersection` should be assignable to a.ts:10 `stringWithBoolean`
-      source: `${IntersectionWithString}`    (TemplateLiteral)
-      target: string    (String)
-  - a.ts:23 `WrappedIntersection` should be assignable to a.ts:21 `wrappedIntersection`
-      source: `${IntersectionWithString}`    (TemplateLiteral)
-      target: string    (String)
 FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts matched_types=29 mismatched_types=2 total_types=31 match_percentage=93.55%
   - tests/conformance/cases/compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts:13 `ABCUnion` type mismatch
       expected: "A" | "B" | "C"
