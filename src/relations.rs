@@ -246,6 +246,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             (TyKind::UniqueSymbol(_), TyKind::Symbol) => true,
             (TyKind::NumberLiteral(_), TyKind::Number) => true,
             (TyKind::StringLiteral(_), TyKind::String) => true,
+            (TyKind::BigIntLiteral(_), TyKind::Bigint) => true,
             (TyKind::StringLiteral(source), TyKind::StringLiteral(target)) => {
                 source.value == target.value
             }
