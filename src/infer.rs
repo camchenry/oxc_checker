@@ -21,6 +21,7 @@ use crate::{
     limits::{CONDITIONAL_INFER_MATCH_MAX_DEPTH, CONDITIONAL_TYPE_MAX_DEPTH},
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
+    type_parameter_name,
     types::{
         CheckerArena, LabeledTupleElement, MappedModifier, SignatureKind, TupleElement,
         TupleReadonly, Ty, TyFunction, TyInfer, TyKind, TyMapped, TyProperty, TyTemplateLiteral,
@@ -269,8 +270,7 @@ impl<'a> InferenceContext<'a> {
             .inferences
             .iter()
             .map(|inference| {
-                let source =
-                    arena.type_reference(inference.type_parameter.name, std::iter::empty());
+                let source = arena.type_parameter_type(inference.type_parameter);
                 let fallback_target = substitutions
                     .get(inference.type_parameter)
                     .unwrap_or(source);
@@ -625,10 +625,10 @@ fn is_type_parameter_at_top_level<'a>(
     type_parameter: TyTypeParameter<'a>,
     depth: usize,
 ) -> bool {
+    if type_parameter_name(arena, ty) == Some(type_parameter.name) {
+        return true;
+    }
     match arena.ty_kind(ty) {
-        TyKind::TypeReference(reference) => {
-            reference.is_bare() && reference.name == type_parameter.name
-        }
         TyKind::Union(union) => union
             .types
             .iter()
@@ -1111,6 +1111,13 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
             _ => {
                 if self.is_active_unresolved_type_alias(source) {
+                    ConditionalInferMatchResult::Deferred
+                } else if let TyKind::TypeParameter(source) = self.ty_kind(source)
+                    && self.contains_infer_type_parameter(target)
+                    && source
+                        .constraint_type
+                        .is_some_and(|constraint| self.is_assignable_to(constraint, target))
+                {
                     ConditionalInferMatchResult::Deferred
                 } else if self.is_assignable_to(source, target) {
                     ConditionalInferMatchResult::Matched
@@ -1603,17 +1610,14 @@ impl<'a, 'store> Checker<'a, 'store> {
         function: &TyFunction<'a>,
         parameter_type: Ty<'a>,
     ) -> Ty<'a> {
-        let TyKind::TypeReference(reference) = self.ty_kind(parameter_type) else {
+        let Some(type_parameter_name) = type_parameter_name(self.arena(), parameter_type) else {
             return parameter_type;
         };
-        if !reference.is_bare() {
-            return parameter_type;
-        }
 
         function
             .type_parameters
             .iter()
-            .find(|type_parameter| type_parameter.name == reference.name)
+            .find(|type_parameter| type_parameter.name == type_parameter_name)
             .and_then(|type_parameter| type_parameter.constraint_type)
             .unwrap_or(parameter_type)
     }
@@ -1870,6 +1874,15 @@ impl<'a, 'store> Checker<'a, 'store> {
                 variance,
                 priority.structural(),
             ),
+            (TyKind::TypeParameter(parameter), _) => {
+                let Some(type_parameter) = context
+                    .inference_by_name_mut(parameter.name)
+                    .map(|inference| inference.type_parameter)
+                else {
+                    return;
+                };
+                context.add_candidate(type_parameter, argument_type, priority, variance)
+            }
             (TyKind::TypeReference(reference), _) if reference.is_bare() => {
                 let Some(type_parameter) = context
                     .inference_by_name_mut(reference.name)
@@ -1982,9 +1995,8 @@ fn type_contains_inference_variable<'a>(
 ) -> bool {
     let mut contains = false;
     visit_type(arena, ty, &mut |ty| {
-        if let TyKind::TypeReference(reference) = arena.ty_kind(ty)
-            && reference.is_bare()
-            && context.contains_type_parameter_name(reference.name)
+        if type_parameter_name(arena, ty)
+            .is_some_and(|name| context.contains_type_parameter_name(name))
         {
             contains = true;
         }
@@ -2194,6 +2206,38 @@ impl<'a, 'store> Checker<'a, 'store> {
                     );
                 }
             }
+            TyKind::TypeParameter(type_parameter) => {
+                let key_type = arena.keyof(argument_type);
+                self.infer_types_with_variance(
+                    constraint_type,
+                    key_type,
+                    context,
+                    variance,
+                    InferencePriority::MappedTypeConstraint,
+                );
+                if let Some(extended_constraint) = context
+                    .type_parameter_by_name(type_parameter.name)
+                    .and_then(|type_parameter| type_parameter.constraint_type)
+                {
+                    self.infer_to_mapped_type_with_constraint(
+                        parameter_mapped,
+                        extended_constraint,
+                        argument_type,
+                        context,
+                        variance,
+                        priority,
+                    );
+                } else if let Some(property_types) = inferable_property_types(arena, argument_type)
+                {
+                    self.infer_types_with_variance(
+                        parameter_mapped.template,
+                        arena.union(property_types),
+                        context,
+                        variance,
+                        priority.structural(),
+                    );
+                }
+            }
             TyKind::TypeReference(reference) if reference.is_bare() => {
                 let key_type = arena.keyof(argument_type);
                 self.infer_types_with_variance(
@@ -2214,15 +2258,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                         context,
                         variance,
                         priority,
-                    );
-                } else if let Some(property_types) = inferable_property_types(arena, argument_type)
-                {
-                    self.infer_types_with_variance(
-                        parameter_mapped.template,
-                        arena.union(property_types),
-                        context,
-                        variance,
-                        priority.structural(),
                     );
                 }
             }
@@ -2434,7 +2469,8 @@ fn select_union_inference_candidates<'a>(
         .iter()
         .copied()
         .filter(|ty| {
-            matches!(arena.ty_kind(*ty), TyKind::TypeReference(reference) if reference.is_bare() && context.contains_type_parameter_name(reference.name))
+            type_parameter_name(arena, *ty)
+                .is_some_and(|name| context.contains_type_parameter_name(name))
         })
         .collect::<Vec<_>>();
     if !naked_type_variables.is_empty() {

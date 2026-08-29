@@ -25,7 +25,7 @@ interface ReadonlySetLike<T> {
 >   ^^^: { (value: T): boolean; (value: T): boolean; }   (Object) (Identifier)
 
     has(value: T): boolean;
->       ^^^^^: T   (TypeReference) (Identifier)
+>       ^^^^^: T   (TypeParameter) (Identifier)
 
     has(value: T): boolean;
 >              ^: any   (Any) (Identifier)

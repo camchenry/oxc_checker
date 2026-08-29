@@ -29,7 +29,7 @@ declare function pipe<A extends any[], B>(callback: (...args: A) => B): B;
 >                                         ^^^^^^^^: (...args: A) => B   (Function) (Identifier)
 
 declare function pipe<A extends any[], B>(callback: (...args: A) => B): B;
->                                                       ^^^^: A   (TypeReference) (Identifier)
+>                                                       ^^^^: A   (TypeParameter) (Identifier)
 
 declare function pipe<A extends any[], B>(callback: (...args: A) => B): B;
 >                                                             ^: any   (Any) (Identifier)
@@ -56,13 +56,13 @@ declare function acceptsPredicate<T, S extends T>(
 > ^^^^^^^^^: (value: T) => value is S   (Function) (Identifier)
 
   predicate: (value: T) => value is S,
->             ^^^^^: T   (TypeReference) (Identifier)
+>             ^^^^^: T   (TypeParameter) (Identifier)
 
   predicate: (value: T) => value is S,
 >                    ^: any   (Any) (Identifier)
 
   predicate: (value: T) => value is S,
->                          ^^^^^: T   (TypeReference) (Identifier)
+>                          ^^^^^: T   (TypeParameter) (Identifier)
 
   predicate: (value: T) => value is S,
 >                                   ^: any   (Any) (Identifier)
@@ -179,7 +179,7 @@ declare function configureObject<T>(options: {
 > ^^^^^^^: (value: T) => void   (Function) (Identifier)
 
   consume: (value: T) => void;
->           ^^^^^: T   (TypeReference) (Identifier)
+>           ^^^^^: T   (TypeParameter) (Identifier)
 
   consume: (value: T) => void;
 >                  ^: any   (Any) (Identifier)
@@ -227,7 +227,7 @@ declare function configureTuple<T>(callbacks: [() => T, (value: T) => void]): T;
 >                                                    ^: any   (Any) (Identifier)
 
 declare function configureTuple<T>(callbacks: [() => T, (value: T) => void]): T;
->                                                        ^^^^^: T   (TypeReference) (Identifier)
+>                                                        ^^^^^: T   (TypeParameter) (Identifier)
 
 declare function configureTuple<T>(callbacks: [() => T, (value: T) => void]): T;
 >                                                               ^: any   (Any) (Identifier)

@@ -5,16 +5,16 @@ function process<T>(x: T) {
 >                ^: any   (Any) (Identifier)
 
 function process<T>(x: T) {
->                   ^: T   (TypeReference) (Identifier)
+>                   ^: T   (TypeParameter) (Identifier)
 
 function process<T>(x: T) {
 >                      ^: any   (Any) (Identifier)
 
   if (x) {
->     ^: T   (TypeReference) (Identifier)
+>     ^: T   (TypeParameter) (Identifier)
 
   return x;
->        ^: T   (TypeReference) (Identifier)
+>        ^: T   (TypeParameter) (Identifier)
 
 const mod = { process };
 >     ^^^: { process: <T>(x: T) => 1 | T; }   (Object) (Identifier)

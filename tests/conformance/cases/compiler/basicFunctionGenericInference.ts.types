@@ -5,13 +5,13 @@ function foo<T>(x: T) {
 >            ^: any   (Any) (Identifier)
 
 function foo<T>(x: T) {
->               ^: T   (TypeReference) (Identifier)
+>               ^: T   (TypeParameter) (Identifier)
 
 function foo<T>(x: T) {
 >                  ^: any   (Any) (Identifier)
 
   return x;
->        ^: T   (TypeReference) (Identifier)
+>        ^: T   (TypeParameter) (Identifier)
 
 const x: string = "hello"
 >     ^: string   (String) (Identifier)
@@ -44,28 +44,28 @@ function foo2<T, U>(x: T, y: U) {
 >                ^: any   (Any) (Identifier)
 
 function foo2<T, U>(x: T, y: U) {
->                   ^: T   (TypeReference) (Identifier)
+>                   ^: T   (TypeParameter) (Identifier)
 
 function foo2<T, U>(x: T, y: U) {
 >                      ^: any   (Any) (Identifier)
 
 function foo2<T, U>(x: T, y: U) {
->                         ^: U   (TypeReference) (Identifier)
+>                         ^: U   (TypeParameter) (Identifier)
 
 function foo2<T, U>(x: T, y: U) {
 >                            ^: any   (Any) (Identifier)
 
   return { x, y };
->          ^: T   (TypeReference) (Identifier)
+>          ^: T   (TypeParameter) (Identifier)
 
   return { x, y };
->          ^: T   (TypeReference) (Identifier)
+>          ^: T   (TypeParameter) (Identifier)
 
   return { x, y };
->             ^: U   (TypeReference) (Identifier)
+>             ^: U   (TypeParameter) (Identifier)
 
   return { x, y };
->             ^: U   (TypeReference) (Identifier)
+>             ^: U   (TypeParameter) (Identifier)
 
 const y = foo2("hello", 123);
 >     ^: { x: string; y: number; }   (Object) (Identifier)

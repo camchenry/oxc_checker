@@ -35,7 +35,7 @@ interface ObjectConstructor {
 >       ^^^^^^^^^^^: (item: T, index: number) => K   (Function) (Identifier)
 
         keySelector: (item: T, index: number) => K,
->                     ^^^^: T   (TypeReference) (Identifier)
+>                     ^^^^: T   (TypeParameter) (Identifier)
 
         keySelector: (item: T, index: number) => K,
 >                           ^: any   (Any) (Identifier)

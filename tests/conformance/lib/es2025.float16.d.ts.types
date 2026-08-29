@@ -23,7 +23,7 @@ interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >            ^^^^^^^^^^^^^^^^^: number   (Number) (Identifier)
 
     readonly buffer: TArrayBuffer;
->            ^^^^^^: TArrayBuffer   (TypeReference) (Identifier)
+>            ^^^^^^: TArrayBuffer   (TypeParameter) (Identifier)
 
     readonly buffer: TArrayBuffer;
 >                    ^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -347,7 +347,7 @@ interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >             ^^^^^^^^^^: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U   (Function) (Identifier)
 
     reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
->                          ^^^^^^^^^^^^^: U   (TypeReference) (Identifier)
+>                          ^^^^^^^^^^^^^: U   (TypeParameter) (Identifier)
 
     reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
 >                                         ^: any   (Any) (Identifier)
@@ -365,7 +365,7 @@ interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                                                                                                        ^: any   (Any) (Identifier)
 
     reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
->                                                                                                           ^^^^^^^^^^^^: U   (TypeReference) (Identifier)
+>                                                                                                           ^^^^^^^^^^^^: U   (TypeParameter) (Identifier)
 
     reduce<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
 >                                                                                                                         ^: any   (Any) (Identifier)
@@ -422,7 +422,7 @@ interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                  ^^^^^^^^^^: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U   (Function) (Identifier)
 
     reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
->                               ^^^^^^^^^^^^^: U   (TypeReference) (Identifier)
+>                               ^^^^^^^^^^^^^: U   (TypeParameter) (Identifier)
 
     reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
 >                                              ^: any   (Any) (Identifier)
@@ -440,7 +440,7 @@ interface Float16Array<TArrayBuffer extends ArrayBufferLike = ArrayBufferLike> {
 >                                                                                                             ^: any   (Any) (Identifier)
 
     reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
->                                                                                                                ^^^^^^^^^^^^: U   (TypeReference) (Identifier)
+>                                                                                                                ^^^^^^^^^^^^: U   (TypeParameter) (Identifier)
 
     reduceRight<U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U;
 >                                                                                                                              ^: any   (Any) (Identifier)
@@ -744,7 +744,7 @@ interface Float16ArrayConstructor {
 >                                               ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
->                                                            ^^^^^^: TArrayBuffer   (TypeReference) (Identifier)
+>                                                            ^^^^^^: TArrayBuffer   (TypeParameter) (Identifier)
 
     new <TArrayBuffer extends ArrayBufferLike = ArrayBuffer>(buffer: TArrayBuffer, byteOffset?: number, length?: number): Float16Array<TArrayBuffer>;
 >                                                                    ^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -885,7 +885,7 @@ interface Float16ArrayConstructor {
 >                                    ^^^^^: (v: T, k: number) => number   (Function) (Identifier)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
->                                            ^: T   (TypeReference) (Identifier)
+>                                            ^: T   (TypeParameter) (Identifier)
 
     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
 >                                               ^: any   (Any) (Identifier)
@@ -954,7 +954,7 @@ interface Float16ArrayConstructor {
 >                                  ^^^^^: ((v: T, k: number) => number) | undefined   (Union) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
->                                           ^: T   (TypeReference) (Identifier)
+>                                           ^: T   (TypeParameter) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float16Array<ArrayBuffer>;
 >                                              ^: any   (Any) (Identifier)

@@ -17,7 +17,7 @@ declare function genericOverload<T>(x: T): T[];
 >                                ^: any   (Any) (Identifier)
 
 declare function genericOverload<T>(x: T): T[];
->                                   ^: T   (TypeReference) (Identifier)
+>                                   ^: T   (TypeParameter) (Identifier)
 
 declare function genericOverload<T>(x: T): T[];
 >                                      ^: any   (Any) (Identifier)

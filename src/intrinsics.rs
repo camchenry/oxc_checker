@@ -124,6 +124,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.ty.type_reference(name, [ty])
                 }
             }
+            TyKind::TypeParameter(_) => self.ty.type_reference(name, [ty]),
             TyKind::String | TyKind::Any | TyKind::Error(_) | TyKind::Unknown => {
                 self.ty.type_reference(name, [ty])
             }

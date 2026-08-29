@@ -59,7 +59,7 @@ interface PromiseConstructor {
 >       ^: any   (Any) (Identifier)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
->                                          ^^^^^^: T   (TypeReference) (Identifier)
+>                                          ^^^^^^: T   (TypeParameter) (Identifier)
 
     all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
 >                                                  ^: any   (Any) (Identifier)
@@ -95,7 +95,7 @@ interface PromiseConstructor {
 >        ^: any   (Any) (Identifier)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                           ^^^^^^: T   (TypeReference) (Identifier)
+>                                           ^^^^^^: T   (TypeParameter) (Identifier)
 
     race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
 >                                                   ^: any   (Any) (Identifier)
@@ -149,7 +149,7 @@ interface PromiseConstructor {
 >           ^: any   (Any) (Identifier)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
->              ^^^^^: T   (TypeReference) (Identifier)
+>              ^^^^^: T   (TypeParameter) (Identifier)
 
     resolve<T>(value: T): Promise<Awaited<T>>;
 >                     ^: any   (Any) (Identifier)

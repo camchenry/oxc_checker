@@ -8,7 +8,7 @@ type FlatArray<Arr, Depth extends number> = {
 >                   ^^^^^: any   (Any) (Identifier)
 
     done: Arr;
->   ^^^^: Arr   (TypeReference) (Identifier)
+>   ^^^^: Arr   (TypeParameter) (Identifier)
 
     done: Arr;
 >         ^^^: any   (Any) (Identifier)
@@ -66,13 +66,13 @@ interface ReadonlyArray<T> {
 >       ^^^^^^^^: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>   (Function) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                  ^^^^: This   (TypeReference) (Identifier)
+>                  ^^^^: This   (TypeParameter) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
 >                        ^^^^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                              ^^^^^: T   (TypeReference) (Identifier)
+>                              ^^^^^: T   (TypeParameter) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
 >                                     ^: any   (Any) (Identifier)
@@ -117,7 +117,7 @@ interface ReadonlyArray<T> {
 >           ^: any   (Any) (Identifier)
 
         this: A,
->       ^^^^: A   (TypeReference) (Identifier)
+>       ^^^^: A   (TypeParameter) (Identifier)
 
         this: A,
 >             ^: any   (Any) (Identifier)
@@ -161,13 +161,13 @@ interface Array<T> {
 >       ^^^^^^^^: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>   (Function) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                  ^^^^: This   (TypeReference) (Identifier)
+>                  ^^^^: This   (TypeParameter) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
 >                        ^^^^: any   (Any) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
->                              ^^^^^: T   (TypeReference) (Identifier)
+>                              ^^^^^: T   (TypeParameter) (Identifier)
 
         callback: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>,
 >                                     ^: any   (Any) (Identifier)
@@ -212,7 +212,7 @@ interface Array<T> {
 >           ^: any   (Any) (Identifier)
 
         this: A,
->       ^^^^: A   (TypeReference) (Identifier)
+>       ^^^^: A   (TypeParameter) (Identifier)
 
         this: A,
 >             ^: any   (Any) (Identifier)

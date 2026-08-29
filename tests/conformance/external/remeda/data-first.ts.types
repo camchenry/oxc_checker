@@ -44,7 +44,7 @@ export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) 
 >                            ^: any   (Any) (Identifier)
 
 export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) => R
->                                  ^^^^^: T   (TypeReference) (Identifier)
+>                                  ^^^^^: T   (TypeParameter) (Identifier)
 
 export type LazyEvaluator<T, R> = (value: T, index: number, data: readonly T[]) => R
 >                                         ^: any   (Any) (Identifier)
@@ -140,7 +140,7 @@ export function map<T extends object, U>(
 >                                     ^: any   (Any) (Identifier)
 
   data: T,
-> ^^^^: T   (TypeReference) (Identifier)
+> ^^^^: T   (TypeParameter) (Identifier)
 
   data: T,
 >       ^: any   (Any) (Identifier)
@@ -276,7 +276,7 @@ export function filter<T, S extends T>(
 > ^^^^^^^^^: (value: T, index: number, data: readonly T[]) => value is S   (Function) (Identifier)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
->             ^^^^^: T   (TypeReference) (Identifier)
+>             ^^^^^: T   (TypeParameter) (Identifier)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
 >                    ^: any   (Any) (Identifier)
@@ -291,7 +291,7 @@ export function filter<T, S extends T>(
 >                                                     ^: any   (Any) (Identifier)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
->                                                             ^^^^^: T   (TypeReference) (Identifier)
+>                                                             ^^^^^: T   (TypeParameter) (Identifier)
 
   predicate: (value: T, index: number, data: readonly T[]) => value is S,
 >                                                                      ^: any   (Any) (Identifier)
@@ -390,7 +390,7 @@ export function groupBy<T, Key extends PropertyKey>(
 > ^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => Key   (Function) (Identifier)
 
   callbackfn: (value: T, index: number, data: readonly T[]) => Key,
->              ^^^^^: T   (TypeReference) (Identifier)
+>              ^^^^^: T   (TypeParameter) (Identifier)
 
   callbackfn: (value: T, index: number, data: readonly T[]) => Key,
 >                     ^: any   (Any) (Identifier)
@@ -462,7 +462,7 @@ export function groupBy<T, Key extends PropertyKey>(
 >                                          ^^^^^: number   (Number) (Identifier)
 
     const value = data[index]
->         ^^^^^: T   (TypeReference) (Identifier)
+>         ^^^^^: T   (TypeParameter) (Identifier)
 
     const value = data[index]
 >                 ^^^^: readonly T[]   (Array) (Identifier)
@@ -471,13 +471,13 @@ export function groupBy<T, Key extends PropertyKey>(
 >                      ^^^^^: number   (Number) (Identifier)
 
     const key = callbackfn(value, index, data)
->         ^^^: Key   (TypeReference) (Identifier)
+>         ^^^: Key   (TypeParameter) (Identifier)
 
     const key = callbackfn(value, index, data)
 >               ^^^^^^^^^^: (value: T, index: number, data: readonly T[]) => Key   (Function) (Identifier)
 
     const key = callbackfn(value, index, data)
->                          ^^^^^: T   (TypeReference) (Identifier)
+>                          ^^^^^: T   (TypeParameter) (Identifier)
 
     const key = callbackfn(value, index, data)
 >                                 ^^^^^: number   (Number) (Identifier)
@@ -493,14 +493,14 @@ export function groupBy<T, Key extends PropertyKey>(
 >     ^^^: Partial<Record<Key, T[]>>   (TypeReference) (Identifier)
 
     ;(out[key] ??= []).push(value)
->         ^^^: Key   (TypeReference) (Identifier)
+>         ^^^: Key   (TypeParameter) (Identifier)
 
     ;(out[key] ??= []).push(value)
 >                      ^^^^: any   (Error) (Identifier)
                    expected: (...items: T[]) => number
 
     ;(out[key] ??= []).push(value)
->                           ^^^^^: T   (TypeReference) (Identifier)
+>                           ^^^^^: T   (TypeParameter) (Identifier)
 
   return out
 >        ^^^: Partial<Record<Key, T[]>>   (TypeReference) (Identifier)
@@ -524,7 +524,7 @@ export function pick<T extends object, Keys extends keyof T>(
 >                                                         ^: any   (Any) (Identifier)
 
   data: T,
-> ^^^^: T   (TypeReference) (Identifier)
+> ^^^^: T   (TypeParameter) (Identifier)
 
   data: T,
 >       ^: any   (Any) (Identifier)
@@ -593,7 +593,7 @@ export function pick<T extends object, Keys extends keyof T>(
    expected: Keys
 
     out[key] = data[key]
->              ^^^^: T   (TypeReference) (Identifier)
+>              ^^^^: T   (TypeParameter) (Identifier)
 
     out[key] = data[key]
 >                   ^^^: any   (Any) (Identifier)
@@ -609,7 +609,7 @@ export function pipe<A>(value: A): A
 >                    ^: any   (Any) (Identifier)
 
 export function pipe<A>(value: A): A
->                       ^^^^^: A   (TypeReference) (Identifier)
+>                       ^^^^^: A   (TypeParameter) (Identifier)
 
 export function pipe<A>(value: A): A
 >                              ^: any   (Any) (Identifier)
@@ -627,7 +627,7 @@ export function pipe<A, B>(value: A, op1: (input: A) => B): B
 >                       ^: any   (Any) (Identifier)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->                          ^^^^^: A   (TypeReference) (Identifier)
+>                          ^^^^^: A   (TypeParameter) (Identifier)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
 >                                 ^: any   (Any) (Identifier)
@@ -636,7 +636,7 @@ export function pipe<A, B>(value: A, op1: (input: A) => B): B
 >                                    ^^^: (input: A) => B   (Function) (Identifier)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
->                                          ^^^^^: A   (TypeReference) (Identifier)
+>                                          ^^^^^: A   (TypeParameter) (Identifier)
 
 export function pipe<A, B>(value: A, op1: (input: A) => B): B
 >                                                 ^: any   (Any) (Identifier)
@@ -660,7 +660,7 @@ export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) =>
 >                          ^: any   (Any) (Identifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                             ^^^^^: A   (TypeReference) (Identifier)
+>                             ^^^^^: A   (TypeParameter) (Identifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
 >                                    ^: any   (Any) (Identifier)
@@ -669,7 +669,7 @@ export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) =>
 >                                       ^^^: (input: A) => B   (Function) (Identifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                             ^^^^^: A   (TypeReference) (Identifier)
+>                                             ^^^^^: A   (TypeParameter) (Identifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
 >                                                    ^: any   (Any) (Identifier)
@@ -681,7 +681,7 @@ export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) =>
 >                                                             ^^^: (input: B) => C   (Function) (Identifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
->                                                                   ^^^^^: B   (TypeReference) (Identifier)
+>                                                                   ^^^^^: B   (TypeParameter) (Identifier)
 
 export function pipe<A, B, C>(value: A, op1: (input: A) => B, op2: (input: B) => C): C
 >                                                                          ^: any   (Any) (Identifier)
@@ -708,7 +708,7 @@ export function pipe<A, B, C, D>(
 >                             ^: any   (Any) (Identifier)
 
   value: A,
-> ^^^^^: A   (TypeReference) (Identifier)
+> ^^^^^: A   (TypeParameter) (Identifier)
 
   value: A,
 >        ^: any   (Any) (Identifier)
@@ -717,7 +717,7 @@ export function pipe<A, B, C, D>(
 > ^^^: (input: A) => B   (Function) (Identifier)
 
   op1: (input: A) => B,
->       ^^^^^: A   (TypeReference) (Identifier)
+>       ^^^^^: A   (TypeParameter) (Identifier)
 
   op1: (input: A) => B,
 >              ^: any   (Any) (Identifier)
@@ -729,7 +729,7 @@ export function pipe<A, B, C, D>(
 > ^^^: (input: B) => C   (Function) (Identifier)
 
   op2: (input: B) => C,
->       ^^^^^: B   (TypeReference) (Identifier)
+>       ^^^^^: B   (TypeParameter) (Identifier)
 
   op2: (input: B) => C,
 >              ^: any   (Any) (Identifier)
@@ -741,7 +741,7 @@ export function pipe<A, B, C, D>(
 > ^^^: (input: C) => D   (Function) (Identifier)
 
   op3: (input: C) => D,
->       ^^^^^: C   (TypeReference) (Identifier)
+>       ^^^^^: C   (TypeParameter) (Identifier)
 
   op3: (input: C) => D,
 >              ^: any   (Any) (Identifier)
@@ -855,7 +855,7 @@ const doneTasks = filter(
 > ^^^^^: Task[]   (Array) (Identifier)
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
->  ^^^^: T   (TypeReference) (Identifier)
+>  ^^^^: T   (TypeParameter) (Identifier)
 expected: Task
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
@@ -872,7 +872,7 @@ expected: Task
 >                                          ^^^^^^: number   (Number) (Identifier)
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
->                                                              ^^^^: T   (TypeReference) (Identifier)
+>                                                              ^^^^: T   (TypeParameter) (Identifier)
                                                            expected: Task
 
   (task): task is Task & { status: 'done'; points: number } => task.status === 'done',
@@ -891,11 +891,11 @@ const donePoints = map(doneTasks, task => task.points)
                         expected: (Task & { status: 'done'; points: number; })[]
 
 const donePoints = map(doneTasks, task => task.points)
->                                 ^^^^: T   (TypeReference) (Identifier)
+>                                 ^^^^: T   (TypeParameter) (Identifier)
                               expected: Task & { status: 'done'; points: number; }
 
 const donePoints = map(doneTasks, task => task.points)
->                                         ^^^^: T   (TypeReference) (Identifier)
+>                                         ^^^^: T   (TypeParameter) (Identifier)
                                       expected: Task & { status: 'done'; points: number; }
 
 const donePoints = map(doneTasks, task => task.points)
@@ -913,11 +913,11 @@ const groupedTasks = groupBy(tasks, task => task.status)
 >                            ^^^^^: Task[]   (Array) (Identifier)
 
 const groupedTasks = groupBy(tasks, task => task.status)
->                                   ^^^^: T   (TypeReference) (Identifier)
+>                                   ^^^^: T   (TypeParameter) (Identifier)
                                 expected: Task
 
 const groupedTasks = groupBy(tasks, task => task.status)
->                                           ^^^^: T   (TypeReference) (Identifier)
+>                                           ^^^^: T   (TypeParameter) (Identifier)
                                         expected: Task
 
 const groupedTasks = groupBy(tasks, task => task.status)
@@ -957,11 +957,11 @@ expected: (Task & { status: 'done'; points: number; })[]
             expected: (Task & { status: 'done'; points: number; })[]
 
   items => map(items, item => item.points),
->                     ^^^^: T   (TypeReference) (Identifier)
+>                     ^^^^: T   (TypeParameter) (Identifier)
                   expected: Task & { status: 'done'; points: number; }
 
   items => map(items, item => item.points),
->                             ^^^^: T   (TypeReference) (Identifier)
+>                             ^^^^: T   (TypeParameter) (Identifier)
                           expected: Task & { status: 'done'; points: number; }
 
   items => map(items, item => item.points),
@@ -1029,7 +1029,7 @@ const summaryPoints = taskSummary.points
 >                                 ^^^^^^: number | undefined   (Union) (Identifier)
 
 const firstPoint = donePoints[0]
->     ^^^^^^^^^^: U   (TypeReference) (Identifier)
+>     ^^^^^^^^^^: U   (TypeParameter) (Identifier)
         expected: number
 
 const firstPoint = donePoints[0]

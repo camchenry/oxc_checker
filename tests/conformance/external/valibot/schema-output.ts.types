@@ -8,7 +8,7 @@ export type BaseIssue<Expected extends string = string> = {
 >          ^^^^: "schema"   (StringLiteral) (Identifier)
 
   readonly expected: Expected
->          ^^^^^^^^: Expected   (TypeReference) (Identifier)
+>          ^^^^^^^^: Expected   (TypeParameter) (Identifier)
 
   readonly expected: Expected
 >                    ^^^^^^^^: any   (Any) (Identifier)
@@ -32,19 +32,19 @@ export type BaseSchema<Input, Output, Issue extends BaseIssue> = {
 >                                                   ^^^^^^^^^: any   (Any) (Identifier)
 
     readonly input: Input
->            ^^^^^: Input   (TypeReference) (Identifier)
+>            ^^^^^: Input   (TypeParameter) (Identifier)
 
     readonly input: Input
 >                   ^^^^^: any   (Any) (Identifier)
 
     readonly output: Output
->            ^^^^^^: Output   (TypeReference) (Identifier)
+>            ^^^^^^: Output   (TypeParameter) (Identifier)
 
     readonly output: Output
 >                    ^^^^^^: any   (Any) (Identifier)
 
     readonly issue: Issue
->            ^^^^^: Issue   (TypeReference) (Identifier)
+>            ^^^^^: Issue   (TypeParameter) (Identifier)
 
     readonly issue: Issue
 >                   ^^^^^: any   (Any) (Identifier)
@@ -493,13 +493,13 @@ export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
 >                                                        ^^^^^^^^: any   (Any) (Identifier)
 
   wrapped: TWrapped,
-> ^^^^^^^: TWrapped   (TypeReference) (Identifier)
+> ^^^^^^^: TWrapped   (TypeParameter) (Identifier)
 
   wrapped: TWrapped,
 >          ^^^^^^^^: any   (Any) (Identifier)
 
   default_: TDefault,
-> ^^^^^^^^: TDefault   (TypeReference) (Identifier)
+> ^^^^^^^^: TDefault   (TypeParameter) (Identifier)
 
   default_: TDefault,
 >           ^^^^^^^^: any   (Any) (Identifier)
@@ -525,10 +525,10 @@ export function optional<TWrapped extends GenericSchema, TDefault = undefined>(
 >                                      ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
   return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
->                                                  ^^^^^^^^: TDefault   (TypeReference) (Identifier)
+>                                                  ^^^^^^^^: TDefault   (TypeParameter) (Identifier)
 
   return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
->                                                             ^^^^^^^: TWrapped   (TypeReference) (Identifier)
+>                                                             ^^^^^^^: TWrapped   (TypeParameter) (Identifier)
 
   return { '~run': input => (input === undefined ? default_ : wrapped['~run'](input)) as any }
 >                                                                             ^^^^^: any   (Any) (Identifier)
@@ -549,7 +549,7 @@ export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TIt
                                          expected: { readonly '~types'?: { readonly input: any; readonly output: any; readonly issue: BaseIssue<string>; } | undefined; readonly '~run': (input: unknown) => any; }
 
 export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
->                                                  ^^^^: TItem   (TypeReference) (Identifier)
+>                                                  ^^^^: TItem   (TypeParameter) (Identifier)
 
 export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TItem> {
 >                                                        ^^^^^: any   (Any) (Identifier)
@@ -575,7 +575,7 @@ export function array<TItem extends GenericSchema>(item: TItem): ArraySchema<TIt
 >                                                    ^^^^^: unknown   (Unknown) (Identifier)
 
   return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
->                                                             ^^^^: TItem   (TypeReference) (Identifier)
+>                                                             ^^^^: TItem   (TypeParameter) (Identifier)
 
   return { '~run': input => (input as unknown[]).map(value => item['~run'](value)) }
 >                                                                          ^^^^^: unknown   (Unknown) (Identifier)
@@ -590,7 +590,7 @@ export function object<TEntries extends ObjectEntries>(
 >                                       ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
   entries: TEntries,
-> ^^^^^^^: TEntries   (TypeReference) (Identifier)
+> ^^^^^^^: TEntries   (TypeParameter) (Identifier)
 
   entries: TEntries,
 >          ^^^^^^^^: any   (Any) (Identifier)
@@ -618,7 +618,7 @@ export function object<TEntries extends ObjectEntries>(
 >                ^^^: Extract<keyof TEntries, string>   (TypeReference) (Identifier)
 
       for (const key in entries) {
->                       ^^^^^^^: TEntries   (TypeReference) (Identifier)
+>                       ^^^^^^^: TEntries   (TypeParameter) (Identifier)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
 >       ^^^: Record<string, unknown>   (TypeReference) (Identifier)
@@ -630,7 +630,7 @@ export function object<TEntries extends ObjectEntries>(
 >           ^^^: Extract<keyof TEntries, string>   (TypeReference) (Identifier)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
->                  ^^^^^^^: TEntries   (TypeReference) (Identifier)
+>                  ^^^^^^^: TEntries   (TypeParameter) (Identifier)
 
         out[key] = entries[key]['~run']((input as Record<string, unknown>)[key])
 >                          ^^^: Extract<keyof TEntries, string>   (TypeReference) (Identifier)

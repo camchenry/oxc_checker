@@ -113,6 +113,12 @@ impl<'a, 'store> Checker<'a, 'store> {
             (_, TyKind::Unknown) => true,
             // Unlike `any`, `unknown` is not assignable to any type (except for `any`)
             (TyKind::Unknown, _) => false,
+            (TyKind::TypeParameter(source), TyKind::TypeParameter(target)) => source == target,
+            (TyKind::TypeParameter(source), _) => {
+                source.constraint_type.is_some_and(|constraint| {
+                    self.is_assignable_to_at_depth(constraint, target, next_depth)
+                })
+            }
             // `undefined` is assignable to `void`
             (TyKind::Undefined, TyKind::Void) => true,
             (TyKind::Object(source), TyKind::Object(target)) => {
@@ -346,6 +352,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 | TyKind::TemplateLiteral(_)
                 | TyKind::BooleanLiteral(_)
                 | TyKind::Function(_)
+                | TyKind::TypeParameter(_)
                 | TyKind::TypeReference(_)
                 | TyKind::Array(_)
                 | TyKind::Tuple(_)

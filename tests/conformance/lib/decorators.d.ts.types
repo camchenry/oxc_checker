@@ -105,7 +105,7 @@ interface ClassDecoratorContext<
 >                  ^^^^^^^^^^^: (this: Class) => void   (Function) (Identifier)
 
     addInitializer(initializer: (this: Class) => void): void;
->                                ^^^^: Class   (TypeReference) (Identifier)
+>                                ^^^^: Class   (TypeParameter) (Identifier)
 
     addInitializer(initializer: (this: Class) => void): void;
 >                                      ^^^^^: any   (Any) (Identifier)
@@ -129,7 +129,7 @@ interface ClassMethodDecoratorContext<
 >   ^^^^^: any   (Any) (Identifier)
 
     Value extends (this: This, ...args: any) => any = (this: This, ...args: any) => any,
->                  ^^^^: This   (TypeReference) (Identifier)
+>                  ^^^^: This   (TypeParameter) (Identifier)
 
     Value extends (this: This, ...args: any) => any = (this: This, ...args: any) => any,
 >                        ^^^^: any   (Any) (Identifier)
@@ -138,7 +138,7 @@ interface ClassMethodDecoratorContext<
 >                                 ^^^^: any   (Any) (Identifier)
 
     Value extends (this: This, ...args: any) => any = (this: This, ...args: any) => any,
->                                                      ^^^^: This   (TypeReference) (Identifier)
+>                                                      ^^^^: This   (TypeParameter) (Identifier)
 
     Value extends (this: This, ...args: any) => any = (this: This, ...args: any) => any,
 >                                                            ^^^^: any   (Any) (Identifier)
@@ -165,7 +165,7 @@ interface ClassMethodDecoratorContext<
 >       ^^^: (object: This) => boolean   (Function) (Identifier)
 
         has(object: This): boolean;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         has(object: This): boolean;
 >                   ^^^^: any   (Any) (Identifier)
@@ -174,7 +174,7 @@ interface ClassMethodDecoratorContext<
 >       ^^^: (object: This) => Value   (Function) (Identifier)
 
         get(object: This): Value;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         get(object: This): Value;
 >                   ^^^^: any   (Any) (Identifier)
@@ -189,7 +189,7 @@ interface ClassMethodDecoratorContext<
 >                  ^^^^^^^^^^^: (this: This) => void   (Function) (Identifier)
 
     addInitializer(initializer: (this: This) => void): void;
->                                ^^^^: This   (TypeReference) (Identifier)
+>                                ^^^^: This   (TypeParameter) (Identifier)
 
     addInitializer(initializer: (this: This) => void): void;
 >                                      ^^^^: any   (Any) (Identifier)
@@ -231,7 +231,7 @@ interface ClassGetterDecoratorContext<
 >       ^^^: (object: This) => boolean   (Function) (Identifier)
 
         has(object: This): boolean;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         has(object: This): boolean;
 >                   ^^^^: any   (Any) (Identifier)
@@ -240,7 +240,7 @@ interface ClassGetterDecoratorContext<
 >       ^^^: (object: This) => Value   (Function) (Identifier)
 
         get(object: This): Value;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         get(object: This): Value;
 >                   ^^^^: any   (Any) (Identifier)
@@ -255,7 +255,7 @@ interface ClassGetterDecoratorContext<
 >                  ^^^^^^^^^^^: (this: This) => void   (Function) (Identifier)
 
     addInitializer(initializer: (this: This) => void): void;
->                                ^^^^: This   (TypeReference) (Identifier)
+>                                ^^^^: This   (TypeParameter) (Identifier)
 
     addInitializer(initializer: (this: This) => void): void;
 >                                      ^^^^: any   (Any) (Identifier)
@@ -297,7 +297,7 @@ interface ClassSetterDecoratorContext<
 >       ^^^: (object: This) => boolean   (Function) (Identifier)
 
         has(object: This): boolean;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         has(object: This): boolean;
 >                   ^^^^: any   (Any) (Identifier)
@@ -306,13 +306,13 @@ interface ClassSetterDecoratorContext<
 >       ^^^: (object: This, value: Value) => void   (Function) (Identifier)
 
         set(object: This, value: Value): void;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         set(object: This, value: Value): void;
 >                   ^^^^: any   (Any) (Identifier)
 
         set(object: This, value: Value): void;
->                         ^^^^^: Value   (TypeReference) (Identifier)
+>                         ^^^^^: Value   (TypeParameter) (Identifier)
 
         set(object: This, value: Value): void;
 >                                ^^^^^: any   (Any) (Identifier)
@@ -324,7 +324,7 @@ interface ClassSetterDecoratorContext<
 >                  ^^^^^^^^^^^: (this: This) => void   (Function) (Identifier)
 
     addInitializer(initializer: (this: This) => void): void;
->                                ^^^^: This   (TypeReference) (Identifier)
+>                                ^^^^: This   (TypeParameter) (Identifier)
 
     addInitializer(initializer: (this: This) => void): void;
 >                                      ^^^^: any   (Any) (Identifier)
@@ -366,7 +366,7 @@ interface ClassAccessorDecoratorContext<
 >       ^^^: (object: This) => boolean   (Function) (Identifier)
 
         has(object: This): boolean;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         has(object: This): boolean;
 >                   ^^^^: any   (Any) (Identifier)
@@ -375,7 +375,7 @@ interface ClassAccessorDecoratorContext<
 >       ^^^: (object: This) => Value   (Function) (Identifier)
 
         get(object: This): Value;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         get(object: This): Value;
 >                   ^^^^: any   (Any) (Identifier)
@@ -387,13 +387,13 @@ interface ClassAccessorDecoratorContext<
 >       ^^^: (object: This, value: Value) => void   (Function) (Identifier)
 
         set(object: This, value: Value): void;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         set(object: This, value: Value): void;
 >                   ^^^^: any   (Any) (Identifier)
 
         set(object: This, value: Value): void;
->                         ^^^^^: Value   (TypeReference) (Identifier)
+>                         ^^^^^: Value   (TypeParameter) (Identifier)
 
         set(object: This, value: Value): void;
 >                                ^^^^^: any   (Any) (Identifier)
@@ -405,7 +405,7 @@ interface ClassAccessorDecoratorContext<
 >                  ^^^^^^^^^^^: (this: This) => void   (Function) (Identifier)
 
     addInitializer(initializer: (this: This) => void): void;
->                                ^^^^: This   (TypeReference) (Identifier)
+>                                ^^^^: This   (TypeParameter) (Identifier)
 
     addInitializer(initializer: (this: This) => void): void;
 >                                      ^^^^: any   (Any) (Identifier)
@@ -432,7 +432,7 @@ interface ClassAccessorDecoratorTarget<This, Value> {
 >   ^^^: { (this: This): Value; (this: This): Value; }   (Object) (Identifier)
 
     get(this: This): Value;
->       ^^^^: This   (TypeReference) (Identifier)
+>       ^^^^: This   (TypeParameter) (Identifier)
 
     get(this: This): Value;
 >             ^^^^: any   (Any) (Identifier)
@@ -444,13 +444,13 @@ interface ClassAccessorDecoratorTarget<This, Value> {
 >   ^^^: { (this: This, value: Value): void; (this: This, value: Value): void; }   (Object) (Identifier)
 
     set(this: This, value: Value): void;
->       ^^^^: This   (TypeReference) (Identifier)
+>       ^^^^: This   (TypeParameter) (Identifier)
 
     set(this: This, value: Value): void;
 >             ^^^^: any   (Any) (Identifier)
 
     set(this: This, value: Value): void;
->                   ^^^^^: Value   (TypeReference) (Identifier)
+>                   ^^^^^: Value   (TypeParameter) (Identifier)
 
     set(this: This, value: Value): void;
 >                          ^^^^^: any   (Any) (Identifier)
@@ -471,7 +471,7 @@ interface ClassAccessorDecoratorResult<This, Value> {
 >   ^^^: { (this: This): Value; (this: This): Value; } | undefined   (Union) (Identifier)
 
     get?(this: This): Value;
->        ^^^^: This   (TypeReference) (Identifier)
+>        ^^^^: This   (TypeParameter) (Identifier)
 
     get?(this: This): Value;
 >              ^^^^: any   (Any) (Identifier)
@@ -483,13 +483,13 @@ interface ClassAccessorDecoratorResult<This, Value> {
 >   ^^^: { (this: This, value: Value): void; (this: This, value: Value): void; } | undefined   (Union) (Identifier)
 
     set?(this: This, value: Value): void;
->        ^^^^: This   (TypeReference) (Identifier)
+>        ^^^^: This   (TypeParameter) (Identifier)
 
     set?(this: This, value: Value): void;
 >              ^^^^: any   (Any) (Identifier)
 
     set?(this: This, value: Value): void;
->                    ^^^^^: Value   (TypeReference) (Identifier)
+>                    ^^^^^: Value   (TypeParameter) (Identifier)
 
     set?(this: This, value: Value): void;
 >                           ^^^^^: any   (Any) (Identifier)
@@ -498,13 +498,13 @@ interface ClassAccessorDecoratorResult<This, Value> {
 >   ^^^^: { (this: This, value: Value): Value; (this: This, value: Value): Value; } | undefined   (Union) (Identifier)
 
     init?(this: This, value: Value): Value;
->         ^^^^: This   (TypeReference) (Identifier)
+>         ^^^^: This   (TypeParameter) (Identifier)
 
     init?(this: This, value: Value): Value;
 >               ^^^^: any   (Any) (Identifier)
 
     init?(this: This, value: Value): Value;
->                     ^^^^^: Value   (TypeReference) (Identifier)
+>                     ^^^^^: Value   (TypeParameter) (Identifier)
 
     init?(this: This, value: Value): Value;
 >                            ^^^^^: any   (Any) (Identifier)
@@ -543,7 +543,7 @@ interface ClassFieldDecoratorContext<
 >       ^^^: (object: This) => boolean   (Function) (Identifier)
 
         has(object: This): boolean;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         has(object: This): boolean;
 >                   ^^^^: any   (Any) (Identifier)
@@ -552,7 +552,7 @@ interface ClassFieldDecoratorContext<
 >       ^^^: (object: This) => Value   (Function) (Identifier)
 
         get(object: This): Value;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         get(object: This): Value;
 >                   ^^^^: any   (Any) (Identifier)
@@ -564,13 +564,13 @@ interface ClassFieldDecoratorContext<
 >       ^^^: (object: This, value: Value) => void   (Function) (Identifier)
 
         set(object: This, value: Value): void;
->           ^^^^^^: This   (TypeReference) (Identifier)
+>           ^^^^^^: This   (TypeParameter) (Identifier)
 
         set(object: This, value: Value): void;
 >                   ^^^^: any   (Any) (Identifier)
 
         set(object: This, value: Value): void;
->                         ^^^^^: Value   (TypeReference) (Identifier)
+>                         ^^^^^: Value   (TypeParameter) (Identifier)
 
         set(object: This, value: Value): void;
 >                                ^^^^^: any   (Any) (Identifier)
@@ -582,7 +582,7 @@ interface ClassFieldDecoratorContext<
 >                  ^^^^^^^^^^^: (this: This) => void   (Function) (Identifier)
 
     addInitializer(initializer: (this: This) => void): void;
->                                ^^^^: This   (TypeReference) (Identifier)
+>                                ^^^^: This   (TypeParameter) (Identifier)
 
     addInitializer(initializer: (this: This) => void): void;
 >                                      ^^^^: any   (Any) (Identifier)

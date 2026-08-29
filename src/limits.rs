@@ -6,6 +6,10 @@ pub(crate) const TYPE_EXPANSION_MAX_DEPTH: usize = 32;
 /// pathological or infinite generic type, matching TypeScript's limit.
 pub(crate) const TYPE_INSTANTIATION_MAX_DEPTH: usize = 100;
 
+/// Maximum uncached type instantiations performed while resolving one root
+/// alias before treating its expansion as excessively deep.
+pub(crate) const TYPE_INSTANTIATION_MAX_COUNT: usize = 100;
+
 /// Maximum recursion depth for resolving TypeScript AST type nodes into checker
 /// types before falling back to `any` for pathological recursive annotations.
 pub(crate) const TS_TYPE_RESOLUTION_MAX_DEPTH: usize = 128;

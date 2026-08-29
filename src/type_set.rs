@@ -122,11 +122,10 @@ pub(crate) fn reduce_source_union_type<'a>(
 ) -> Ty<'a> {
     let mut accumulator = UnionAccumulator::new(arena);
     accumulator.extend(types);
-    let contains_type_parameter = accumulator.types.iter().any(|ty| {
-        matches!(
-            arena.ty_kind(*ty),
-            TyKind::TypeReference(reference) if reference.is_bare() && reference.target.is_none()
-        )
+    let contains_type_parameter = accumulator.types.iter().any(|ty| match arena.ty_kind(*ty) {
+        TyKind::TypeParameter(_) => true,
+        TyKind::TypeReference(reference) => reference.is_bare() && reference.target.is_none(),
+        _ => false,
     });
     accumulator.build_with_nullish_normalization(contains_type_parameter)
 }

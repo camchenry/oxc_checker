@@ -11,7 +11,7 @@ interface PromiseFulfilledResult<T> {
 >   ^^^^^^: "fulfilled"   (StringLiteral) (Identifier)
 
     value: T;
->   ^^^^^: T   (TypeReference) (Identifier)
+>   ^^^^^: T   (TypeParameter) (Identifier)
 
     value: T;
 >          ^: any   (Any) (Identifier)
@@ -62,7 +62,7 @@ interface PromiseConstructor {
 >              ^: any   (Any) (Identifier)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
->                                                 ^^^^^^: T   (TypeReference) (Identifier)
+>                                                 ^^^^^^: T   (TypeParameter) (Identifier)
 
     allSettled<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: PromiseSettledResult<Awaited<T[P]>>; }>;
 >                                                         ^: any   (Any) (Identifier)

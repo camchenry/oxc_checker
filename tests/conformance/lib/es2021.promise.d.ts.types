@@ -86,7 +86,7 @@ interface PromiseConstructor {
 >       ^: any   (Any) (Identifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
->                                          ^^^^^^: T   (TypeReference) (Identifier)
+>                                          ^^^^^^: T   (TypeParameter) (Identifier)
 
     any<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
 >                                                  ^: any   (Any) (Identifier)

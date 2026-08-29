@@ -13,7 +13,7 @@ interface Array<T> {
 >   ^^^^^^^^: { (searchElement: T, fromIndex?: number): boolean; (searchElement: T, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: T   (TypeReference) (Identifier)
+>            ^^^^^^^^^^^^^: T   (TypeParameter) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
 >                           ^: any   (Any) (Identifier)
@@ -34,7 +34,7 @@ interface ReadonlyArray<T> {
 >   ^^^^^^^^: { (searchElement: T, fromIndex?: number): boolean; (searchElement: T, fromIndex?: number): boolean; }   (Object) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
->            ^^^^^^^^^^^^^: T   (TypeReference) (Identifier)
+>            ^^^^^^^^^^^^^: T   (TypeParameter) (Identifier)
 
     includes(searchElement: T, fromIndex?: number): boolean;
 >                           ^: any   (Any) (Identifier)

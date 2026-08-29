@@ -42,7 +42,8 @@ use crate::{
     infer::{InferenceResolution, ts_type_contains_infer},
     is_empty_object_intersection,
     limits::{
-        TS_TYPE_RESOLUTION_MAX_DEPTH, TYPE_EXPANSION_MAX_DEPTH, TYPE_INSTANTIATION_MAX_DEPTH,
+        TS_TYPE_RESOLUTION_MAX_DEPTH, TYPE_EXPANSION_MAX_DEPTH, TYPE_INSTANTIATION_MAX_COUNT,
+        TYPE_INSTANTIATION_MAX_DEPTH,
     },
     mapper::{TypeMapper, TypeParameterSubstitutions},
     printer::TypePrinter,
@@ -356,7 +357,11 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         let depth = &self.type_instantiation_depth;
         let current = depth.get();
-        if current >= TYPE_INSTANTIATION_MAX_DEPTH {
+        if current == 0 && self.resolving_type_aliases.borrow().is_empty() {
+            self.type_instantiation_count.set(0);
+        }
+        let count = self.type_instantiation_count.get();
+        if current >= TYPE_INSTANTIATION_MAX_DEPTH || count >= TYPE_INSTANTIATION_MAX_COUNT {
             self.mark_type_instantiation_overflow();
             return self
                 .arena()
@@ -364,20 +369,25 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         depth.set(current + 1);
-        let Some(mapper_key) = mapper.cache_entries(self.arena()) else {
-            return self.instantiate_type_at_depth(ty, mapper, 0);
+        let instantiated = if let Some(mapper_key) = mapper.cache_entries(self.arena()) {
+            let key = InstantiationCacheKey {
+                target: ty.id(),
+                mapper: mapper_key,
+            };
+            if let Some(instantiated) = self.instantiation_cache.borrow().get(&key) {
+                *instantiated
+            } else {
+                self.type_instantiation_count.set(count + 1);
+                let instantiated = self.instantiate_type_at_depth(ty, mapper, 0);
+                self.instantiation_cache
+                    .borrow_mut()
+                    .insert(key, instantiated);
+                instantiated
+            }
+        } else {
+            self.type_instantiation_count.set(count + 1);
+            self.instantiate_type_at_depth(ty, mapper, 0)
         };
-        let key = InstantiationCacheKey {
-            target: ty.id(),
-            mapper: mapper_key,
-        };
-        if let Some(instantiated) = self.instantiation_cache.borrow().get(&key) {
-            return *instantiated;
-        }
-        let instantiated = self.instantiate_type_at_depth(ty, mapper, 0);
-        self.instantiation_cache
-            .borrow_mut()
-            .insert(key, instantiated);
         depth.set(current);
         instantiated
     }
@@ -479,6 +489,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 }),
             ),
             TyKind::Function(function) => {
+                let display_type_parameters_as_arguments = function
+                    .display_type_parameters_as_arguments
+                    || mapper.has_concrete_type_parameter_mapping(self.arena());
                 // A function's own type parameters shadow mappings with the same names from the
                 // enclosing context. Remove them before instantiating its signature components.
                 let type_parameter_names = function
@@ -516,12 +529,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                                     !self.arena().is_type_identical_to(original, instantiated)
                                 },
                             );
-                        self.ty.type_parameter_with_display_default(
-                            type_parameter.name,
+                        TyTypeParameter {
                             constraint_type,
                             default_type,
-                            type_parameter.display_default,
-                        )
+                            ..*type_parameter
+                        }
                     })
                     .collect::<Vec<_>>();
                 let parameters = function
@@ -563,9 +575,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                     parameters,
                     return_type,
                     type_predicate,
-                    function.display_type_parameters_as_arguments || was_semantically_instantiated,
+                    display_type_parameters_as_arguments,
                 )
             }
+            TyKind::TypeParameter(_) => mapper.map(self.arena(), ty),
             TyKind::TypeReference(reference) => {
                 let mapped = mapper.map(self.arena(), ty);
                 if mapped != ty {
@@ -741,20 +754,17 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.arena(),
                     std::iter::once(infer.type_parameter.name),
                 );
-                self.ty.infer(
-                    self.ty.type_parameter_with_display_default(
-                        infer.type_parameter.name,
-                        infer
-                            .type_parameter
-                            .constraint_type
-                            .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1)),
-                        infer
-                            .type_parameter
-                            .default_type
-                            .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1)),
-                        infer.type_parameter.display_default,
-                    ),
-                )
+                self.ty.infer(TyTypeParameter {
+                    constraint_type: infer
+                        .type_parameter
+                        .constraint_type
+                        .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1)),
+                    default_type: infer
+                        .type_parameter
+                        .default_type
+                        .map(|ty| self.instantiate_type_at_depth(ty, &mapper, depth + 1)),
+                    ..infer.type_parameter
+                })
             }
             TyKind::Mapped(mapped) => {
                 let mapper =
@@ -819,6 +829,7 @@ impl<'a, 'store> Checker<'a, 'store> {
     pub(crate) fn could_contain_type_variables(&self, ty: Ty<'a>) -> bool {
         let mut contains = false;
         visit_type(self.arena(), ty, &mut |ty| match self.ty_kind(ty) {
+            TyKind::TypeParameter(_) => contains = true,
             TyKind::TypeReference(reference) if reference.type_arguments.is_empty() => {
                 contains = true
             }
@@ -836,6 +847,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             self.arena(),
             ty,
             &mut |candidate| match self.ty_kind(candidate) {
+                TyKind::TypeParameter(_) => contains = true,
                 TyKind::TypeReference(reference)
                     if reference.is_bare() && reference.target.is_none() =>
                 {
@@ -3289,6 +3301,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             {
                 None
             }
+            TyKind::TypeParameter(_) => None,
             TyKind::TypeReference(reference) => self
                 .get_index_signature_type_from_alias_reference(
                     program_id,
@@ -4240,6 +4253,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             {
                 let is_root_resolution = self.resolving_type_aliases.borrow().is_empty();
                 if is_root_resolution {
+                    self.type_instantiation_count.set(0);
                     self.type_instantiation_overflowed.set(false);
                     let previously_overflowed = self
                         .overflowed_type_alias_resolutions
@@ -4308,7 +4322,18 @@ impl<'a, 'store> Checker<'a, 'store> {
                         }
                         return Some(error);
                     }
-                    if resolving_type_aliases.contains(&key) {
+                    if resolving_type_aliases.iter().any(|resolution| {
+                        resolution.program_id == program_id
+                            && resolution.declaration == declaration
+                            && resolution.type_arguments.len() == type_arguments.len()
+                            && resolution.type_arguments.iter().zip(type_arguments).all(
+                                |(active, current)| {
+                                    self.arena().type_from_id(*active).is_some_and(|active| {
+                                        self.arena().is_type_identical_to(active, *current)
+                                    })
+                                },
+                            )
+                    }) {
                         return None;
                     }
                     resolving_type_aliases.push(key.clone());
@@ -4650,6 +4675,96 @@ impl<'a, 'store> Checker<'a, 'store> {
         reference: &'a TSTypeReference<'a>,
     ) -> Ty<'a> {
         let name = ts_type_name_to_str(self.arena(), &reference.type_name);
+        let symbol_type_parameter = if reference.type_arguments.is_none() {
+            let TSTypeName::IdentifierReference(identifier) = &reference.type_name else {
+                return self.type_reference_with_display_type_argument_count(
+                    program_id,
+                    name,
+                    std::iter::empty(),
+                    0,
+                );
+            };
+            self.symbol_for_identifier_reference(program_id, identifier)
+                .and_then(|symbol| {
+                    let declaration = self
+                        .semantic(symbol.program_id)
+                        .scoping()
+                        .symbol_declaration(symbol.symbol_id);
+                    if let Some(parameter) = self
+                        .nodes(symbol.program_id)
+                        .kind(declaration)
+                        .as_ts_type_parameter()
+                        .or_else(|| {
+                            self.nodes(symbol.program_id)
+                                .parent_kind(declaration)
+                                .as_ts_type_parameter()
+                        })
+                    {
+                        return Some(
+                            self.type_parameter_from_ts_type_parameter(
+                                symbol.program_id,
+                                parameter,
+                            ),
+                        );
+                    }
+                    let AstKind::TSMappedType(mapped) =
+                        self.nodes(symbol.program_id).parent_kind(declaration)
+                    else {
+                        return None;
+                    };
+                    Some(TyTypeParameter {
+                        symbol: Some(symbol),
+                        ..self.ty.type_parameter(
+                            mapped.key.name.as_str(),
+                            Some(self.get_type_from_ts_type(symbol.program_id, &mapped.constraint)),
+                            None,
+                        )
+                    })
+                })
+        } else {
+            None
+        };
+        let scoped_type_parameter = || {
+            self.type_parameters_in_scope(program_id, reference.node_id())
+                .find_map(|type_parameters| {
+                    type_parameters
+                        .params
+                        .iter()
+                        .find(|parameter| parameter.name.name == name)
+                })
+        };
+        let scoped_mapped_type_parameter = || {
+            std::iter::once(self.nodes(program_id).kind(reference.node_id()))
+                .chain(self.nodes(program_id).ancestor_kinds(reference.node_id()))
+                .find_map(|kind| {
+                    let AstKind::TSMappedType(mapped) = kind else {
+                        return None;
+                    };
+                    (mapped.key.name == name).then(|| TyTypeParameter {
+                        symbol: mapped
+                            .key
+                            .symbol_id
+                            .get()
+                            .map(|symbol_id| SymbolRef::new(program_id, symbol_id)),
+                        ..self.ty.type_parameter(
+                            mapped.key.name.as_str(),
+                            Some(self.get_type_from_ts_type(program_id, &mapped.constraint)),
+                            None,
+                        )
+                    })
+                })
+        };
+        if let Some(type_parameter) = symbol_type_parameter {
+            return self.ty.type_parameter_type(type_parameter);
+        }
+        if let Some(type_parameter) = scoped_mapped_type_parameter() {
+            return self.ty.type_parameter_type(type_parameter);
+        }
+        if let Some(type_parameter) = scoped_type_parameter() {
+            return self.ty.type_parameter_type(
+                self.type_parameter_from_ts_type_parameter(program_id, type_parameter),
+            );
+        }
         let mut type_arguments = self.type_arguments_from_reference(program_id, reference);
         let explicit_type_argument_count = type_arguments.len();
         let Some((symbol, declaration)) =
@@ -4662,6 +4777,21 @@ impl<'a, 'store> Checker<'a, 'store> {
                 explicit_type_argument_count,
             );
         };
+        if explicit_type_argument_count == 0
+            && let Some(type_parameter) = self
+                .nodes(symbol.program_id)
+                .kind(declaration)
+                .as_ts_type_parameter()
+                .or_else(|| {
+                    self.nodes(symbol.program_id)
+                        .parent_kind(declaration)
+                        .as_ts_type_parameter()
+                })
+        {
+            return self.ty.type_parameter_type(
+                self.type_parameter_from_ts_type_parameter(symbol.program_id, type_parameter),
+            );
+        }
 
         let implicit_display_type_argument_count =
             self.fill_default_type_arguments(program_id, name, &mut type_arguments);
@@ -5083,12 +5213,12 @@ impl<'a, 'store> Checker<'a, 'store> {
         } else {
             default_type_arguments
                 .iter()
-                .rposition(|ty| {
-                    matches!(
-                        self.ty_kind(*ty),
-                        TyKind::TypeReference(reference)
-                            if reference.is_bare() && reference.target.is_none()
-                    )
+                .rposition(|ty| match self.ty_kind(*ty) {
+                    TyKind::TypeParameter(_) => true,
+                    TyKind::TypeReference(reference) => {
+                        reference.is_bare() && reference.target.is_none()
+                    }
+                    _ => false,
                 })
                 .map_or(0, |index| index + 1)
         };
@@ -7523,6 +7653,11 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         parameter: &'a TSTypeParameter<'a>,
     ) -> TyTypeParameter<'a> {
+        let symbol = parameter
+            .name
+            .symbol_id
+            .get()
+            .map(|symbol_id| SymbolRef::new(program_id, symbol_id));
         let key = parameter
             .name
             .symbol_id
@@ -7532,9 +7667,12 @@ impl<'a, 'store> Checker<'a, 'store> {
         {
             let mut resolving_type_parameters = self.resolving_type_parameters.borrow_mut();
             if resolving_type_parameters.contains(&key) {
-                return self
-                    .ty
-                    .type_parameter(parameter.name.name.as_str(), None, None);
+                return TyTypeParameter {
+                    symbol,
+                    ..self
+                        .ty
+                        .type_parameter(parameter.name.name.as_str(), None, None)
+                };
             }
             resolving_type_parameters.push(key);
         }
@@ -7553,8 +7691,12 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         self.resolving_type_parameters.borrow_mut().pop();
 
-        self.ty
-            .type_parameter(parameter.name.name.as_str(), constraint, default)
+        TyTypeParameter {
+            symbol,
+            ..self
+                .ty
+                .type_parameter(parameter.name.name.as_str(), constraint, default)
+        }
     }
 
     pub fn get_class_symbol_for_type(
@@ -10990,6 +11132,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         node_id: NodeId,
         ty: Ty<'a>,
     ) -> Option<Ty<'a>> {
+        if let TyKind::TypeParameter(type_parameter) = self.ty_kind(ty) {
+            return type_parameter.constraint_type;
+        }
         let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
             return None;
         };
@@ -11037,6 +11182,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         node_id: NodeId,
         ty: Ty<'a>,
     ) -> bool {
+        if matches!(self.ty_kind(ty), TyKind::TypeParameter(_)) {
+            return true;
+        }
         let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
             return false;
         };
@@ -11747,7 +11895,9 @@ impl<'a> Checker<'a, '_> {
             AstKind::TSModuleDeclaration(module) => {
                 self.get_type_of_namespace_declaration(node.program_id, module)
             }
-            AstKind::TSTypeParameter(_) => self.ty.any(),
+            AstKind::TSTypeParameter(parameter) => self.ty.type_parameter_type(
+                self.type_parameter_from_ts_type_parameter(node.program_id, parameter),
+            ),
             AstKind::TSMappedType(_) => self.ty.any(),
             AstKind::TSClassImplements(_) => self.ty.any(),
             AstKind::TSInterfaceHeritage(heritage) => {
@@ -11771,11 +11921,16 @@ impl<'a> Checker<'a, '_> {
             {
                 self.get_type_from_ts_type_reference(node.program_id, reference)
             }
-            AstKind::TSTypeReference(_) => {
-                let ty = self
-                    .get_symbol_at_location(node)
-                    .map_or_else(|| self.ty.any(), |symbol| self.get_type_of_symbol(symbol));
-                if ty.is_none() { self.ty.any() } else { ty }
+            AstKind::TSTypeReference(reference) => {
+                let resolved = self.get_type_from_ts_type_reference(node.program_id, reference);
+                if matches!(self.ty_kind(resolved), TyKind::TypeParameter(_)) {
+                    resolved
+                } else {
+                    let ty = self
+                        .get_symbol_at_location(node)
+                        .map_or_else(|| self.ty.any(), |symbol| self.get_type_of_symbol(symbol));
+                    if ty.is_none() { self.ty.any() } else { ty }
+                }
             }
             AstKind::TSIndexSignatureName(signature_name) => self.get_type_from_ts_type_annotation(
                 node.program_id,

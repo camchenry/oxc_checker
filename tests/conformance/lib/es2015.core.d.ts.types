@@ -22,7 +22,7 @@ interface Array<T> {
 >                     ^^^^^^^^^: (value: T, index: number, obj: T[]) => value is S   (Function) (Identifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                                 ^^^^^: T   (TypeReference) (Identifier)
+>                                 ^^^^^: T   (TypeParameter) (Identifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
 >                                        ^: any   (Any) (Identifier)
@@ -37,7 +37,7 @@ interface Array<T> {
 >                                                               ^: any   (Any) (Identifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
->                                                                       ^^^^^: T   (TypeReference) (Identifier)
+>                                                                       ^^^^^: T   (TypeParameter) (Identifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
 >                                                                                ^: any   (Any) (Identifier)
@@ -55,7 +55,7 @@ interface Array<T> {
 >        ^^^^^^^^^: (value: T, index: number, obj: T[]) => unknown   (Function) (Identifier)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
->                    ^^^^^: T   (TypeReference) (Identifier)
+>                    ^^^^^: T   (TypeParameter) (Identifier)
 
     find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
 >                           ^: any   (Any) (Identifier)
@@ -82,7 +82,7 @@ interface Array<T> {
 >             ^^^^^^^^^: (value: T, index: number, obj: T[]) => unknown   (Function) (Identifier)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
->                         ^^^^^: T   (TypeReference) (Identifier)
+>                         ^^^^^: T   (TypeParameter) (Identifier)
 
     findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
 >                                ^: any   (Any) (Identifier)
@@ -103,7 +103,7 @@ interface Array<T> {
 >   ^^^^: { (value: T, start?: number, end?: number): this; (value: T, start?: number, end?: number): this; }   (Object) (Identifier)
 
     fill(value: T, start?: number, end?: number): this;
->        ^^^^^: T   (TypeReference) (Identifier)
+>        ^^^^^: T   (TypeParameter) (Identifier)
 
     fill(value: T, start?: number, end?: number): this;
 >               ^: any   (Any) (Identifier)
@@ -201,7 +201,7 @@ interface ArrayConstructor {
 >                                       ^^^^^: (v: T, k: number) => U   (Function) (Identifier)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                                               ^: T   (TypeReference) (Identifier)
+>                                               ^: T   (TypeParameter) (Identifier)
 
     from<T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
 >                                                  ^: any   (Any) (Identifier)
@@ -448,13 +448,13 @@ interface ObjectConstructor {
 >                        ^: any   (Any) (Identifier)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
->                           ^^^^^^: T   (TypeReference) (Identifier)
+>                           ^^^^^^: T   (TypeParameter) (Identifier)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
 >                                   ^: any   (Any) (Identifier)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
->                                      ^^^^^^: U   (TypeReference) (Identifier)
+>                                      ^^^^^^: U   (TypeParameter) (Identifier)
 
     assign<T extends {}, U>(target: T, source: U): T & U;
 >                                              ^: any   (Any) (Identifier)
@@ -478,19 +478,19 @@ interface ObjectConstructor {
 >                           ^: any   (Any) (Identifier)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                              ^^^^^^: T   (TypeReference) (Identifier)
+>                              ^^^^^^: T   (TypeParameter) (Identifier)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
 >                                      ^: any   (Any) (Identifier)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                                         ^^^^^^^: U   (TypeReference) (Identifier)
+>                                         ^^^^^^^: U   (TypeParameter) (Identifier)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
 >                                                  ^: any   (Any) (Identifier)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
->                                                     ^^^^^^^: V   (TypeReference) (Identifier)
+>                                                     ^^^^^^^: V   (TypeParameter) (Identifier)
 
     assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
 >                                                              ^: any   (Any) (Identifier)
@@ -520,25 +520,25 @@ interface ObjectConstructor {
 >                              ^: any   (Any) (Identifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                 ^^^^^^: T   (TypeReference) (Identifier)
+>                                 ^^^^^^: T   (TypeParameter) (Identifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
 >                                         ^: any   (Any) (Identifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                            ^^^^^^^: U   (TypeReference) (Identifier)
+>                                            ^^^^^^^: U   (TypeParameter) (Identifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
 >                                                     ^: any   (Any) (Identifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                                        ^^^^^^^: V   (TypeReference) (Identifier)
+>                                                        ^^^^^^^: V   (TypeParameter) (Identifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
 >                                                                 ^: any   (Any) (Identifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
->                                                                    ^^^^^^^: W   (TypeReference) (Identifier)
+>                                                                    ^^^^^^^: W   (TypeParameter) (Identifier)
 
     assign<T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W;
 >                                                                             ^: any   (Any) (Identifier)
@@ -616,7 +616,7 @@ interface ReadonlyArray<T> {
 >                     ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => value is S   (Function) (Identifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                                 ^^^^^: T   (TypeReference) (Identifier)
+>                                 ^^^^^: T   (TypeParameter) (Identifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
 >                                        ^: any   (Any) (Identifier)
@@ -631,7 +631,7 @@ interface ReadonlyArray<T> {
 >                                                                        ^: any   (Any) (Identifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
->                                                                                ^^^^^: T   (TypeReference) (Identifier)
+>                                                                                ^^^^^: T   (TypeParameter) (Identifier)
 
     find<S extends T>(predicate: (value: T, index: number, obj: readonly T[]) => value is S, thisArg?: any): S | undefined;
 >                                                                                         ^: any   (Any) (Identifier)
@@ -649,7 +649,7 @@ interface ReadonlyArray<T> {
 >        ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => unknown   (Function) (Identifier)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
->                    ^^^^^: T   (TypeReference) (Identifier)
+>                    ^^^^^: T   (TypeParameter) (Identifier)
 
     find(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): T | undefined;
 >                           ^: any   (Any) (Identifier)
@@ -676,7 +676,7 @@ interface ReadonlyArray<T> {
 >             ^^^^^^^^^: (value: T, index: number, obj: readonly T[]) => unknown   (Function) (Identifier)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
->                         ^^^^^: T   (TypeReference) (Identifier)
+>                         ^^^^^: T   (TypeParameter) (Identifier)
 
     findIndex(predicate: (value: T, index: number, obj: readonly T[]) => unknown, thisArg?: any): number;
 >                                ^: any   (Any) (Identifier)

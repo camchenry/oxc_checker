@@ -348,7 +348,7 @@ export type UnionToIntersection<Union> = (
 > ^^^^^: any   (Any) (Identifier)
 
   Union extends unknown ? (distributedUnion: Union) => void : never
->                          ^^^^^^^^^^^^^^^^: Union   (TypeReference) (Identifier)
+>                          ^^^^^^^^^^^^^^^^: Union   (TypeParameter) (Identifier)
 
   Union extends unknown ? (distributedUnion: Union) => void : never
 >                                            ^^^^^: any   (Any) (Identifier)

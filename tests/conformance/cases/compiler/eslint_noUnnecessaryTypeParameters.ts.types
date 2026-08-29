@@ -8,13 +8,13 @@ function second<A, B>(a: A, b: B): B {
 >                  ^: any   (Any) (Identifier)
 
 function second<A, B>(a: A, b: B): B {
->                     ^: A   (TypeReference) (Identifier)
+>                     ^: A   (TypeParameter) (Identifier)
 
 function second<A, B>(a: A, b: B): B {
 >                        ^: any   (Any) (Identifier)
 
 function second<A, B>(a: A, b: B): B {
->                           ^: B   (TypeReference) (Identifier)
+>                           ^: B   (TypeParameter) (Identifier)
 
 function second<A, B>(a: A, b: B): B {
 >                              ^: any   (Any) (Identifier)
@@ -23,7 +23,7 @@ function second<A, B>(a: A, b: B): B {
 >                                  ^: any   (Any) (Identifier)
 
   return b;
->        ^: B   (TypeReference) (Identifier)
+>        ^: B   (TypeParameter) (Identifier)
 
 function parseJSON<T>(input: string): T {
 >        ^^^^^^^^^: <T>(input: string) => T   (Function) (Identifier)
@@ -59,13 +59,13 @@ function printProperty<T, K extends keyof T>(obj: T, key: K) {
 >                                         ^: any   (Any) (Identifier)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
->                                            ^^^: T   (TypeReference) (Identifier)
+>                                            ^^^: T   (TypeParameter) (Identifier)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
 >                                                 ^: any   (Any) (Identifier)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
->                                                    ^^^: K   (TypeReference) (Identifier)
+>                                                    ^^^: K   (TypeParameter) (Identifier)
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
 >                                                         ^: any   (Any) (Identifier)
@@ -80,10 +80,10 @@ function printProperty<T, K extends keyof T>(obj: T, key: K) {
 >         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(obj[key]);
->             ^^^: T   (TypeReference) (Identifier)
+>             ^^^: T   (TypeParameter) (Identifier)
 
   console.log(obj[key]);
->                 ^^^: K   (TypeReference) (Identifier)
+>                 ^^^: K   (TypeParameter) (Identifier)
 
 function second<B>(a: unknown, b: B): B {
 >        ^^^^^^: <B>(a: unknown, b: B) => B   (Function) (Identifier)
@@ -95,7 +95,7 @@ function second<B>(a: unknown, b: B): B {
 >                  ^: unknown   (Unknown) (Identifier)
 
 function second<B>(a: unknown, b: B): B {
->                              ^: B   (TypeReference) (Identifier)
+>                              ^: B   (TypeParameter) (Identifier)
 
 function second<B>(a: unknown, b: B): B {
 >                                 ^: any   (Any) (Identifier)
@@ -104,7 +104,7 @@ function second<B>(a: unknown, b: B): B {
 >                                     ^: any   (Any) (Identifier)
 
   return b;
->        ^: B   (TypeReference) (Identifier)
+>        ^: B   (TypeParameter) (Identifier)
 
 function parseJSON(input: string): unknown {
 >        ^^^^^^^^^: (input: string) => unknown   (Function) (Identifier)
@@ -128,7 +128,7 @@ function printProperty<T>(obj: T, key: keyof T) {
 >                      ^: any   (Any) (Identifier)
 
 function printProperty<T>(obj: T, key: keyof T) {
->                         ^^^: T   (TypeReference) (Identifier)
+>                         ^^^: T   (TypeParameter) (Identifier)
 
 function printProperty<T>(obj: T, key: keyof T) {
 >                              ^: any   (Any) (Identifier)
@@ -149,7 +149,7 @@ function printProperty<T>(obj: T, key: keyof T) {
 >         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(obj[key]);
->             ^^^: T   (TypeReference) (Identifier)
+>             ^^^: T   (TypeParameter) (Identifier)
 
   console.log(obj[key]);
 >                 ^^^: keyof T   (Keyof) (Identifier)
@@ -161,7 +161,7 @@ function identity<T>(arg: T): T {
 >                 ^: any   (Any) (Identifier)
 
 function identity<T>(arg: T): T {
->                    ^^^: T   (TypeReference) (Identifier)
+>                    ^^^: T   (TypeParameter) (Identifier)
 
 function identity<T>(arg: T): T {
 >                         ^: any   (Any) (Identifier)
@@ -170,7 +170,7 @@ function identity<T>(arg: T): T {
 >                             ^: any   (Any) (Identifier)
 
   return arg;
->        ^^^: T   (TypeReference) (Identifier)
+>        ^^^: T   (TypeParameter) (Identifier)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
 >        ^^^^^^^^^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (Function) (Identifier)
@@ -185,22 +185,22 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
 >                                       ^: any   (Any) (Identifier)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
->                                          ^^^: T   (TypeReference) (Identifier)
+>                                          ^^^: T   (TypeParameter) (Identifier)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
 >                                               ^: any   (Any) (Identifier)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
->                                                  ^^^: K   (TypeReference) (Identifier)
+>                                                  ^^^: K   (TypeParameter) (Identifier)
 
 function getProperty<T, K extends keyof T>(obj: T, key: K) {
 >                                                       ^: any   (Any) (Identifier)
 
   return obj[key];
->        ^^^: T   (TypeReference) (Identifier)
+>        ^^^: T   (TypeParameter) (Identifier)
 
   return obj[key];
->            ^^^: K   (TypeReference) (Identifier)
+>            ^^^: K   (TypeParameter) (Identifier)
 
 declare function length<T>(array: ReadonlyArray<T>): number;
 >                ^^^^^^: <T>(array: ReadonlyArray<T>) => number   (Function) (Identifier)

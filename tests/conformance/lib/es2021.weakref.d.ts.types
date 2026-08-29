@@ -50,7 +50,7 @@ interface WeakRefConstructor {
 >                  ^^^^^^^: any   (Error) (Identifier)
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
->                           ^^^^^^: T   (TypeReference) (Identifier)
+>                           ^^^^^^: T   (TypeParameter) (Identifier)
 
     new <T extends WeakKey>(target: T): WeakRef<T>;
 >                                   ^: any   (Any) (Identifier)
@@ -101,7 +101,7 @@ interface FinalizationRegistry<T> {
 >                    ^^^^^^^: any   (Error) (Identifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
->                             ^^^^^^^^^: T   (TypeReference) (Identifier)
+>                             ^^^^^^^^^: T   (TypeParameter) (Identifier)
 
     register(target: WeakKey, heldValue: T, unregisterToken?: WeakKey): void;
 >                                        ^: any   (Any) (Identifier)
@@ -149,7 +149,7 @@ interface FinalizationRegistryConstructor {
 >           ^^^^^^^^^^^^^^^: (heldValue: T) => void   (Function) (Identifier)
 
     new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
->                             ^^^^^^^^^: T   (TypeReference) (Identifier)
+>                             ^^^^^^^^^: T   (TypeParameter) (Identifier)
 
     new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
 >                                        ^: any   (Any) (Identifier)

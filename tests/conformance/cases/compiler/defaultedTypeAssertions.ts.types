@@ -11,7 +11,7 @@ interface AssertionBox<T = number> { value: T }
 >                      ^: any   (Any) (Identifier)
 
 interface AssertionBox<T = number> { value: T }
->                                    ^^^^^: T   (TypeReference) (Identifier)
+>                                    ^^^^^: T   (TypeParameter) (Identifier)
 
 interface AssertionBox<T = number> { value: T }
 >                                           ^: any   (Any) (Identifier)
@@ -29,7 +29,7 @@ interface SelfDefault<T = T> { value: T }
 >                         ^: any   (Any) (Identifier)
 
 interface SelfDefault<T = T> { value: T }
->                              ^^^^^: T   (TypeReference) (Identifier)
+>                              ^^^^^: T   (TypeParameter) (Identifier)
 
 interface SelfDefault<T = T> { value: T }
 >                                     ^: any   (Any) (Identifier)
@@ -50,19 +50,19 @@ interface ForwardDefault<T = U, U = string> { t: T; u: U }
 >                               ^: any   (Any) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
->                                             ^: T   (TypeReference) (Identifier)
+>                                             ^: T   (TypeParameter) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
 >                                                ^: any   (Any) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
->                                                   ^: U   (TypeReference) (Identifier)
+>                                                   ^: U   (TypeParameter) (Identifier)
 
 interface ForwardDefault<T = U, U = string> { t: T; u: U }
 >                                                      ^: any   (Any) (Identifier)
 
 type Identity<T> = T;
->    ^^^^^^^^: T   (TypeReference) (Identifier)
+>    ^^^^^^^^: T   (TypeParameter) (Identifier)
 
 type Identity<T> = T;
 >             ^: any   (Any) (Identifier)
@@ -71,7 +71,7 @@ type Identity<T> = T;
 >                  ^: any   (Any) (Identifier)
 
 type DefaultIdentity<T = string> = T;
->    ^^^^^^^^^^^^^^^: T   (TypeReference) (Identifier)
+>    ^^^^^^^^^^^^^^^: T   (TypeParameter) (Identifier)
 
 type DefaultIdentity<T = string> = T;
 >                    ^: any   (Any) (Identifier)
@@ -86,7 +86,7 @@ type AliasBox<T> = { value: T };
 >             ^: any   (Any) (Identifier)
 
 type AliasBox<T> = { value: T };
->                    ^^^^^: T   (TypeReference) (Identifier)
+>                    ^^^^^: T   (TypeParameter) (Identifier)
 
 type AliasBox<T> = { value: T };
 >                           ^: any   (Any) (Identifier)

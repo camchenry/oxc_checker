@@ -130,7 +130,7 @@ export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyData
 >   ^^^^^: any   (Any) (Identifier)
 
       [dataTagSymbol]: TValue
->      ^^^^^^^^^^^^^: TValue   (TypeReference) (Identifier)
+>      ^^^^^^^^^^^^^: TValue   (TypeParameter) (Identifier)
 
       [dataTagSymbol]: TValue
 >      ^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
@@ -139,7 +139,7 @@ export type DataTag<TType, TValue, TError = UnsetMarker> = TType extends AnyData
 >                      ^^^^^^: any   (Any) (Identifier)
 
       [dataTagErrorSymbol]: TError
->      ^^^^^^^^^^^^^^^^^^: TError   (TypeReference) (Identifier)
+>      ^^^^^^^^^^^^^^^^^^: TError   (TypeParameter) (Identifier)
 
       [dataTagErrorSymbol]: TError
 >      ^^^^^^^^^^^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
@@ -293,7 +293,7 @@ export type QueryFunctionContext<
 >             ^^^^^^^^^^^: any   (Any) (Identifier)
 
       queryKey: TQueryKey
->     ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
+>     ^^^^^^^^: TQueryKey   (TypeParameter) (Identifier)
 
       queryKey: TQueryKey
 >               ^^^^^^^^^: any   (Any) (Identifier)
@@ -329,7 +329,7 @@ export type QueryFunctionContext<
 >             ^^^^^^^^^^^: any   (Any) (Identifier)
 
       queryKey: TQueryKey
->     ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
+>     ^^^^^^^^: TQueryKey   (TypeParameter) (Identifier)
 
       queryKey: TQueryKey
 >               ^^^^^^^^^: any   (Any) (Identifier)
@@ -344,7 +344,7 @@ export type QueryFunctionContext<
 >             ^^^^^^^^^^^: { new (): AbortSignal; prototype: AbortSignal; abort(reason?: any): AbortSignal; any(signals: AbortSignal[]): AbortSignal; timeout(milliseconds: number): AbortSignal; }   (Object) (Identifier)
 
       pageParam: TPageParam
->     ^^^^^^^^^: TPageParam   (TypeReference) (Identifier)
+>     ^^^^^^^^^: TPageParam   (TypeParameter) (Identifier)
 
       pageParam: TPageParam
 >                ^^^^^^^^^^: any   (Any) (Identifier)
@@ -609,13 +609,13 @@ type ReducibleStreamedQueryParams<
 > ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (Function) (Identifier)
 
   reducer: (acc: TData, chunk: TQueryFnData) => TData
->           ^^^: TData   (TypeReference) (Identifier)
+>           ^^^: TData   (TypeParameter) (Identifier)
 
   reducer: (acc: TData, chunk: TQueryFnData) => TData
 >                ^^^^^: any   (Any) (Identifier)
 
   reducer: (acc: TData, chunk: TQueryFnData) => TData
->                       ^^^^^: TQueryFnData   (TypeReference) (Identifier)
+>                       ^^^^^: TQueryFnData   (TypeParameter) (Identifier)
 
   reducer: (acc: TData, chunk: TQueryFnData) => TData
 >                              ^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -624,7 +624,7 @@ type ReducibleStreamedQueryParams<
 >                                               ^^^^^: any   (Any) (Identifier)
 
   initialValue: TData
-> ^^^^^^^^^^^^: TData   (TypeReference) (Identifier)
+> ^^^^^^^^^^^^: TData   (TypeParameter) (Identifier)
 
   initialValue: TData
 >               ^^^^^: any   (Any) (Identifier)
@@ -711,13 +711,13 @@ export function streamedQuery<
 > ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (Function) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->            ^^^^^: TData   (TypeReference) (Identifier)
+>            ^^^^^: TData   (TypeParameter) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                   ^^^^^: TQueryFnData   (TypeReference) (Identifier)
+>                   ^^^^^: TQueryFnData   (TypeParameter) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                                  ^^^^^: TData   (TypeReference) (Identifier)
+>                                  ^^^^^: TData   (TypeParameter) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
 >                                           ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
@@ -729,13 +729,13 @@ export function streamedQuery<
 >                                                 ^^^^^^^^^^^^: any   (Any) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
->                                                                 ^^^^^: TQueryFnData   (TypeReference) (Identifier)
+>                                                                 ^^^^^: TQueryFnData   (TypeParameter) (Identifier)
 
   reducer = (items, chunk) => [...(items as Array<TQueryFnData>), chunk] as TData,
 >                                                                           ^^^^^: any   (Any) (Identifier)
 
   initialValue = [] as TData,
-> ^^^^^^^^^^^^: TData   (TypeReference) (Identifier)
+> ^^^^^^^^^^^^: TData   (TypeParameter) (Identifier)
 
   initialValue = [] as TData,
 >                      ^^^^^: any   (Any) (Identifier)
@@ -798,13 +798,13 @@ export function streamedQuery<
 >                   ^^^^: Record<string, unknown> | undefined   (Union) (Identifier)
 
       queryKey: context.queryKey,
->     ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
+>     ^^^^^^^^: TQueryKey   (TypeParameter) (Identifier)
 
       queryKey: context.queryKey,
 >               ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
       queryKey: context.queryKey,
->                       ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
+>                       ^^^^^^^^: TQueryKey   (TypeParameter) (Identifier)
 
       pageParam: context.pageParam,
 >     ^^^^^^^^^: unknown   (Unknown) (Identifier)
@@ -843,10 +843,10 @@ export function streamedQuery<
 >                                                                           ^^^^^^^^^: any   (Any) (Identifier)
 
     let result = initialValue
->       ^^^^^^: TData   (TypeReference) (Identifier)
+>       ^^^^^^: TData   (TypeParameter) (Identifier)
 
     let result = initialValue
->                ^^^^^^^^^^^^: TData   (TypeReference) (Identifier)
+>                ^^^^^^^^^^^^: TData   (TypeParameter) (Identifier)
 
     for await (const chunk of stream) {
 >                    ^^^^^: any   (Any) (Identifier)
@@ -859,16 +859,16 @@ export function streamedQuery<
 >         ^^^^^^^^^^^: "append" | "reset" | "replace"   (Union) (Identifier)
 
         result = reducer(result, chunk)
->       ^^^^^^: TData   (TypeReference) (Identifier)
+>       ^^^^^^: TData   (TypeParameter) (Identifier)
 
         result = reducer(result, chunk)
->       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: TData   (TypeReference) (ExpressionStatement)
+>       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: TData   (TypeParameter) (ExpressionStatement)
 
         result = reducer(result, chunk)
 >                ^^^^^^^: (acc: TData, chunk: TQueryFnData) => TData   (Function) (Identifier)
 
         result = reducer(result, chunk)
->                        ^^^^^^: TData   (TypeReference) (Identifier)
+>                        ^^^^^^: TData   (TypeParameter) (Identifier)
 
         result = reducer(result, chunk)
 >                                ^^^^^: any   (Any) (Identifier)
@@ -893,7 +893,7 @@ export function streamedQuery<
 >                                          ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
->                                                  ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
+>                                                  ^^^^^^^^: TQueryKey   (TypeParameter) (Identifier)
 
         context.client.setQueryData<TData>(context.queryKey, (previous) =>
 >                                                             ^^^^^^^^: TData | undefined   (Union) (Identifier)
@@ -908,7 +908,7 @@ export function streamedQuery<
 >                              ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
->                                          ^^^^^^^^^^^^: TData   (TypeReference) (Identifier)
+>                                          ^^^^^^^^^^^^: TData   (TypeParameter) (Identifier)
 
           reducer(previous === undefined ? initialValue : previous, chunk),
 >                                                         ^^^^^^^^: TData & ({} | null)   (Intersection) (Identifier)
@@ -933,10 +933,10 @@ export function streamedQuery<
 >                                             ^^^^^^^: { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }   (Object) (Identifier)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                                                     ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
+>                                                     ^^^^^^^^: TQueryKey   (TypeParameter) (Identifier)
 
     return context.client.getQueryData<TData>(context.queryKey) ?? result
->                                                                  ^^^^^^: TData   (TypeReference) (Identifier)
+>                                                                  ^^^^^^: TData   (TypeParameter) (Identifier)
 
 import { streamedQuery } from '../packages/query-core/src/streamedQuery'
 >        ^^^^^^^^^^^^^: <TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, refetchMode, reducer, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>   (Function) (Identifier)

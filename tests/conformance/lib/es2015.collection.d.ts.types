@@ -17,7 +17,7 @@ interface Map<K, V> {
 >   ^^^^^^: { (key: K): boolean; (key: K): boolean; }   (Object) (Identifier)
 
     delete(key: K): boolean;
->          ^^^: K   (TypeReference) (Identifier)
+>          ^^^: K   (TypeParameter) (Identifier)
 
     delete(key: K): boolean;
 >               ^: any   (Any) (Identifier)
@@ -29,13 +29,13 @@ interface Map<K, V> {
 >           ^^^^^^^^^^: (value: V, key: K, map: Map<K, V>) => void   (Function) (Identifier)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                        ^^^^^: V   (TypeReference) (Identifier)
+>                        ^^^^^: V   (TypeParameter) (Identifier)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
 >                               ^: any   (Any) (Identifier)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
->                                  ^^^: K   (TypeReference) (Identifier)
+>                                  ^^^: K   (TypeParameter) (Identifier)
 
     forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void;
 >                                       ^: any   (Any) (Identifier)
@@ -62,7 +62,7 @@ interface Map<K, V> {
 >   ^^^: { (key: K): V | undefined; (key: K): V | undefined; }   (Object) (Identifier)
 
     get(key: K): V | undefined;
->       ^^^: K   (TypeReference) (Identifier)
+>       ^^^: K   (TypeParameter) (Identifier)
 
     get(key: K): V | undefined;
 >            ^: any   (Any) (Identifier)
@@ -74,7 +74,7 @@ interface Map<K, V> {
 >   ^^^: { (key: K): boolean; (key: K): boolean; }   (Object) (Identifier)
 
     has(key: K): boolean;
->       ^^^: K   (TypeReference) (Identifier)
+>       ^^^: K   (TypeParameter) (Identifier)
 
     has(key: K): boolean;
 >            ^: any   (Any) (Identifier)
@@ -83,13 +83,13 @@ interface Map<K, V> {
 >   ^^^: { (key: K, value: V): this; (key: K, value: V): this; }   (Object) (Identifier)
 
     set(key: K, value: V): this;
->       ^^^: K   (TypeReference) (Identifier)
+>       ^^^: K   (TypeParameter) (Identifier)
 
     set(key: K, value: V): this;
 >            ^: any   (Any) (Identifier)
 
     set(key: K, value: V): this;
->               ^^^^^: V   (TypeReference) (Identifier)
+>               ^^^^^: V   (TypeParameter) (Identifier)
 
     set(key: K, value: V): this;
 >                      ^: any   (Any) (Identifier)
@@ -174,13 +174,13 @@ interface ReadonlyMap<K, V> {
 >           ^^^^^^^^^^: (value: V, key: K, map: ReadonlyMap<K, V>) => void   (Function) (Identifier)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->                        ^^^^^: V   (TypeReference) (Identifier)
+>                        ^^^^^: V   (TypeParameter) (Identifier)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
 >                               ^: any   (Any) (Identifier)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
->                                  ^^^: K   (TypeReference) (Identifier)
+>                                  ^^^: K   (TypeParameter) (Identifier)
 
     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
 >                                       ^: any   (Any) (Identifier)
@@ -207,7 +207,7 @@ interface ReadonlyMap<K, V> {
 >   ^^^: { (key: K): V | undefined; (key: K): V | undefined; }   (Object) (Identifier)
 
     get(key: K): V | undefined;
->       ^^^: K   (TypeReference) (Identifier)
+>       ^^^: K   (TypeParameter) (Identifier)
 
     get(key: K): V | undefined;
 >            ^: any   (Any) (Identifier)
@@ -219,7 +219,7 @@ interface ReadonlyMap<K, V> {
 >   ^^^: { (key: K): boolean; (key: K): boolean; }   (Object) (Identifier)
 
     has(key: K): boolean;
->       ^^^: K   (TypeReference) (Identifier)
+>       ^^^: K   (TypeParameter) (Identifier)
 
     has(key: K): boolean;
 >            ^: any   (Any) (Identifier)
@@ -249,7 +249,7 @@ interface WeakMap<K extends WeakKey, V> {
 >   ^^^^^^: { (key: K): boolean; (key: K): boolean; }   (Object) (Identifier)
 
     delete(key: K): boolean;
->          ^^^: K   (TypeReference) (Identifier)
+>          ^^^: K   (TypeParameter) (Identifier)
 
     delete(key: K): boolean;
 >               ^: any   (Any) (Identifier)
@@ -258,7 +258,7 @@ interface WeakMap<K extends WeakKey, V> {
 >   ^^^: { (key: K): V | undefined; (key: K): V | undefined; }   (Object) (Identifier)
 
     get(key: K): V | undefined;
->       ^^^: K   (TypeReference) (Identifier)
+>       ^^^: K   (TypeParameter) (Identifier)
 
     get(key: K): V | undefined;
 >            ^: any   (Any) (Identifier)
@@ -270,7 +270,7 @@ interface WeakMap<K extends WeakKey, V> {
 >   ^^^: { (key: K): boolean; (key: K): boolean; }   (Object) (Identifier)
 
     has(key: K): boolean;
->       ^^^: K   (TypeReference) (Identifier)
+>       ^^^: K   (TypeParameter) (Identifier)
 
     has(key: K): boolean;
 >            ^: any   (Any) (Identifier)
@@ -279,13 +279,13 @@ interface WeakMap<K extends WeakKey, V> {
 >   ^^^: { (key: K, value: V): this; (key: K, value: V): this; }   (Object) (Identifier)
 
     set(key: K, value: V): this;
->       ^^^: K   (TypeReference) (Identifier)
+>       ^^^: K   (TypeParameter) (Identifier)
 
     set(key: K, value: V): this;
 >            ^: any   (Any) (Identifier)
 
     set(key: K, value: V): this;
->               ^^^^^: V   (TypeReference) (Identifier)
+>               ^^^^^: V   (TypeParameter) (Identifier)
 
     set(key: K, value: V): this;
 >                      ^: any   (Any) (Identifier)
@@ -373,7 +373,7 @@ interface Set<T> {
 >   ^^^: { (value: T): this; (value: T): this; }   (Object) (Identifier)
 
     add(value: T): this;
->       ^^^^^: T   (TypeReference) (Identifier)
+>       ^^^^^: T   (TypeParameter) (Identifier)
 
     add(value: T): this;
 >              ^: any   (Any) (Identifier)
@@ -385,7 +385,7 @@ interface Set<T> {
 >   ^^^^^^: { (value: T): boolean; (value: T): boolean; }   (Object) (Identifier)
 
     delete(value: T): boolean;
->          ^^^^^: T   (TypeReference) (Identifier)
+>          ^^^^^: T   (TypeParameter) (Identifier)
 
     delete(value: T): boolean;
 >                 ^: any   (Any) (Identifier)
@@ -397,13 +397,13 @@ interface Set<T> {
 >           ^^^^^^^^^^: (value: T, value2: T, set: Set<T>) => void   (Function) (Identifier)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                        ^^^^^: T   (TypeReference) (Identifier)
+>                        ^^^^^: T   (TypeParameter) (Identifier)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
 >                               ^: any   (Any) (Identifier)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
->                                  ^^^^^^: T   (TypeReference) (Identifier)
+>                                  ^^^^^^: T   (TypeParameter) (Identifier)
 
     forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
 >                                          ^: any   (Any) (Identifier)
@@ -427,7 +427,7 @@ interface Set<T> {
 >   ^^^: { (value: T): boolean; (value: T): boolean; }   (Object) (Identifier)
 
     has(value: T): boolean;
->       ^^^^^: T   (TypeReference) (Identifier)
+>       ^^^^^: T   (TypeParameter) (Identifier)
 
     has(value: T): boolean;
 >              ^: any   (Any) (Identifier)
@@ -493,13 +493,13 @@ interface ReadonlySet<T> {
 >           ^^^^^^^^^^: (value: T, value2: T, set: ReadonlySet<T>) => void   (Function) (Identifier)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->                        ^^^^^: T   (TypeReference) (Identifier)
+>                        ^^^^^: T   (TypeParameter) (Identifier)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
 >                               ^: any   (Any) (Identifier)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
->                                  ^^^^^^: T   (TypeReference) (Identifier)
+>                                  ^^^^^^: T   (TypeParameter) (Identifier)
 
     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
 >                                          ^: any   (Any) (Identifier)
@@ -523,7 +523,7 @@ interface ReadonlySet<T> {
 >   ^^^: { (value: T): boolean; (value: T): boolean; }   (Object) (Identifier)
 
     has(value: T): boolean;
->       ^^^^^: T   (TypeReference) (Identifier)
+>       ^^^^^: T   (TypeParameter) (Identifier)
 
     has(value: T): boolean;
 >              ^: any   (Any) (Identifier)
@@ -550,7 +550,7 @@ interface WeakSet<T extends WeakKey> {
 >   ^^^: { (value: T): this; (value: T): this; }   (Object) (Identifier)
 
     add(value: T): this;
->       ^^^^^: T   (TypeReference) (Identifier)
+>       ^^^^^: T   (TypeParameter) (Identifier)
 
     add(value: T): this;
 >              ^: any   (Any) (Identifier)
@@ -559,7 +559,7 @@ interface WeakSet<T extends WeakKey> {
 >   ^^^^^^: { (value: T): boolean; (value: T): boolean; }   (Object) (Identifier)
 
     delete(value: T): boolean;
->          ^^^^^: T   (TypeReference) (Identifier)
+>          ^^^^^: T   (TypeParameter) (Identifier)
 
     delete(value: T): boolean;
 >                 ^: any   (Any) (Identifier)
@@ -568,7 +568,7 @@ interface WeakSet<T extends WeakKey> {
 >   ^^^: { (value: T): boolean; (value: T): boolean; }   (Object) (Identifier)
 
     has(value: T): boolean;
->       ^^^^^: T   (TypeReference) (Identifier)
+>       ^^^^^: T   (TypeParameter) (Identifier)
 
     has(value: T): boolean;
 >              ^: any   (Any) (Identifier)

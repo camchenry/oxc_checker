@@ -193,6 +193,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
             TyKind::Function(function) => {
                 self.function_type_to_string(function, &|_| None, flags, depth)
             }
+            TyKind::TypeParameter(type_parameter) => type_parameter.name.to_string(),
             TyKind::TypeReference(reference) => {
                 if let Some(replacement) = replace_type_reference(ty)
                     && replacement != ty

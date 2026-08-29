@@ -54,7 +54,7 @@ interface Generator<T = unknown, TReturn = any, TNext = any> extends IteratorObj
 >   ^^^^^^: { (value: TReturn): IteratorResult<T, TReturn>; (value: TReturn): IteratorResult<T, TReturn>; }   (Object) (Identifier)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
->          ^^^^^: TReturn   (TypeReference) (Identifier)
+>          ^^^^^: TReturn   (TypeParameter) (Identifier)
 
     return(value: TReturn): IteratorResult<T, TReturn>;
 >                 ^^^^^^^: any   (Any) (Identifier)

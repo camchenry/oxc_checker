@@ -5,13 +5,13 @@ function explicitIdentity<T>(value: T) { return value; }
 >                         ^: any   (Any) (Identifier)
 
 function explicitIdentity<T>(value: T) { return value; }
->                            ^^^^^: T   (TypeReference) (Identifier)
+>                            ^^^^^: T   (TypeParameter) (Identifier)
 
 function explicitIdentity<T>(value: T) { return value; }
 >                                   ^: any   (Any) (Identifier)
 
 function explicitIdentity<T>(value: T) { return value; }
->                                               ^^^^^: T   (TypeReference) (Identifier)
+>                                               ^^^^^: T   (TypeParameter) (Identifier)
 
 const explicitResult = explicitIdentity<string>("test");
 >     ^^^^^^^^^^^^^^: string   (String) (Identifier)
@@ -26,16 +26,16 @@ function objectBox<T>(value: T) { return { value }; }
 >                  ^: any   (Any) (Identifier)
 
 function objectBox<T>(value: T) { return { value }; }
->                     ^^^^^: T   (TypeReference) (Identifier)
+>                     ^^^^^: T   (TypeParameter) (Identifier)
 
 function objectBox<T>(value: T) { return { value }; }
 >                            ^: any   (Any) (Identifier)
 
 function objectBox<T>(value: T) { return { value }; }
->                                          ^^^^^: T   (TypeReference) (Identifier)
+>                                          ^^^^^: T   (TypeParameter) (Identifier)
 
 function objectBox<T>(value: T) { return { value }; }
->                                          ^^^^^: T   (TypeReference) (Identifier)
+>                                          ^^^^^: T   (TypeParameter) (Identifier)
 
 const objectResult = objectBox(123);
 >     ^^^^^^^^^^^^: { value: number; }   (Object) (Identifier)
@@ -50,7 +50,7 @@ type ResultBox<T> = { value: T };
 >              ^: any   (Any) (Identifier)
 
 type ResultBox<T> = { value: T };
->                     ^^^^^: T   (TypeReference) (Identifier)
+>                     ^^^^^: T   (TypeParameter) (Identifier)
 
 type ResultBox<T> = { value: T };
 >                            ^: any   (Any) (Identifier)
@@ -62,7 +62,7 @@ function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
 >                     ^: any   (Any) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
->                        ^^^^^: T   (TypeReference) (Identifier)
+>                        ^^^^^: T   (TypeParameter) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
 >                               ^: any   (Any) (Identifier)
@@ -74,10 +74,10 @@ function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
 >                                             ^: any   (Any) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
->                                                           ^^^^^: T   (TypeReference) (Identifier)
+>                                                           ^^^^^: T   (TypeParameter) (Identifier)
 
 function referenceBox<T>(value: T): ResultBox<T> { return { value }; }
->                                                           ^^^^^: T   (TypeReference) (Identifier)
+>                                                           ^^^^^: T   (TypeParameter) (Identifier)
 
 const explicitBox: ResultBox<string> = { value: "test" };
 >     ^^^^^^^^^^^: ResultBox<string>   (TypeReference) (Identifier)
@@ -131,7 +131,7 @@ declare const constrainedFunctionValue: <T extends ConstraintA>(value: T) => T;
 >                                                  ^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare const constrainedFunctionValue: <T extends ConstraintA>(value: T) => T;
->                                                               ^^^^^: T   (TypeReference) (Identifier)
+>                                                               ^^^^^: T   (TypeParameter) (Identifier)
 
 declare const constrainedFunctionValue: <T extends ConstraintA>(value: T) => T;
 >                                                                      ^: any   (Any) (Identifier)
@@ -254,13 +254,13 @@ function inferredIdentity<T>(value: T) { return value; }
 >                         ^: any   (Any) (Identifier)
 
 function inferredIdentity<T>(value: T) { return value; }
->                            ^^^^^: T   (TypeReference) (Identifier)
+>                            ^^^^^: T   (TypeParameter) (Identifier)
 
 function inferredIdentity<T>(value: T) { return value; }
 >                                   ^: any   (Any) (Identifier)
 
 function inferredIdentity<T>(value: T) { return value; }
->                                               ^^^^^: T   (TypeReference) (Identifier)
+>                                               ^^^^^: T   (TypeParameter) (Identifier)
 
 const inferredNumber = inferredIdentity(123);
 >     ^^^^^^^^^^^^^^: 123   (NumberLiteral) (Identifier)
@@ -338,7 +338,7 @@ declare function genericPick<T>(value: T): T;
 >                            ^: any   (Any) (Identifier)
 
 declare function genericPick<T>(value: T): T;
->                               ^^^^^: T   (TypeReference) (Identifier)
+>                               ^^^^^: T   (TypeParameter) (Identifier)
 
 declare function genericPick<T>(value: T): T;
 >                                      ^: any   (Any) (Identifier)

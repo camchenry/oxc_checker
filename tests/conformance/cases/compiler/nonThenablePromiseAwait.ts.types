@@ -8,7 +8,7 @@ interface Promise<T> {
 >                 ^: any   (Any) (Identifier)
 
   value: T;
-> ^^^^^: T   (TypeReference) (Identifier)
+> ^^^^^: T   (TypeParameter) (Identifier)
 
   value: T;
 >        ^: any   (Any) (Identifier)

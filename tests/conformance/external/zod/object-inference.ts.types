@@ -35,13 +35,13 @@ export abstract class ZodType<Output = any, Input = Output> {
 >                                                   ^^^^^^: any   (Any) (Identifier)
 
   readonly _output!: Output
->          ^^^^^^^: Output   (TypeReference) (Identifier)
+>          ^^^^^^^: Output   (TypeParameter) (Identifier)
 
   readonly _output!: Output
 >                    ^^^^^^: any   (Any) (Identifier)
 
   readonly _input!: Input
->          ^^^^^^: Input   (TypeReference) (Identifier)
+>          ^^^^^^: Input   (TypeParameter) (Identifier)
 
   readonly _input!: Input
 >                   ^^^^^: any   (Any) (Identifier)
@@ -167,7 +167,7 @@ export class ZodOptional<T extends ZodTypeAny> extends ZodType<
 >       ^: any   (Any) (Identifier)
 
   constructor(readonly innerType: T) {
->                      ^^^^^^^^^: T   (TypeReference) (Identifier)
+>                      ^^^^^^^^^: T   (TypeParameter) (Identifier)
 
   constructor(readonly innerType: T) {
 >                                 ^: any   (Any) (Identifier)
@@ -198,7 +198,7 @@ export class ZodOptional<T extends ZodTypeAny> extends ZodType<
 >                               ^^^^^^^^^: undefined   (Undefined) (Identifier)
 
     return data === undefined ? undefined : this.innerType.parse(data)
->                                                ^^^^^^^^^: T   (TypeReference) (Identifier)
+>                                                ^^^^^^^^^: T   (TypeParameter) (Identifier)
 
     return data === undefined ? undefined : this.innerType.parse(data)
 >                                                          ^^^^^: any   (Error) (Identifier)
@@ -233,7 +233,7 @@ export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T
 >                                                                              ^: any   (Any) (Identifier)
 
   constructor(readonly element: T) {
->                      ^^^^^^^: T   (TypeReference) (Identifier)
+>                      ^^^^^^^: T   (TypeParameter) (Identifier)
 
   constructor(readonly element: T) {
 >                               ^: any   (Any) (Identifier)
@@ -264,7 +264,7 @@ export class ZodArray<T extends ZodTypeAny> extends ZodType<output<T>[], input<T
 >                                  ^^^^^: unknown   (Unknown) (Identifier)
 
     return (data as unknown[]).map(value => this.element.parse(value))
->                                                ^^^^^^^: T   (TypeReference) (Identifier)
+>                                                ^^^^^^^: T   (TypeParameter) (Identifier)
 
     return (data as unknown[]).map(value => this.element.parse(value))
 >                                                        ^^^^^: any   (Error) (Identifier)
@@ -359,7 +359,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >                 ^^^^^: any   (Any) (Identifier)
 
   constructor(readonly shape: Shape) {
->                      ^^^^^: Shape   (TypeReference) (Identifier)
+>                      ^^^^^: Shape   (TypeParameter) (Identifier)
 
   constructor(readonly shape: Shape) {
 >                             ^^^^^: any   (Any) (Identifier)
@@ -393,7 +393,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >              ^^^: Extract<keyof Shape, string>   (TypeReference) (Identifier)
 
     for (const key in this.shape) {
->                          ^^^^^: Shape   (TypeReference) (Identifier)
+>                          ^^^^^: Shape   (TypeParameter) (Identifier)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
 >     ^^^: Record<string, unknown>   (TypeReference) (Identifier)
@@ -405,7 +405,7 @@ export class ZodObject<Shape extends ZodRawShape> extends ZodType<
 >         ^^^: Extract<keyof Shape, string>   (TypeReference) (Identifier)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
->                     ^^^^^: Shape   (TypeReference) (Identifier)
+>                     ^^^^^: Shape   (TypeParameter) (Identifier)
 
       out[key] = this.shape[key].parse((data as Record<string, unknown>)[key])
 >                           ^^^: Extract<keyof Shape, string>   (TypeReference) (Identifier)
@@ -449,7 +449,7 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
 >                                   ^^^^^: any   (Any) (Identifier)
 
     mask: Mask,
->   ^^^^: Mask   (TypeReference) (Identifier)
+>   ^^^^: Mask   (TypeParameter) (Identifier)
 
     mask: Mask,
 >         ^^^^: any   (Any) (Identifier)
@@ -497,7 +497,7 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
 >              ^^^: Extract<keyof Mask, string>   (TypeReference) (Identifier)
 
     for (const key in mask) {
->                     ^^^^: Mask   (TypeReference) (Identifier)
+>                     ^^^^: Mask   (TypeParameter) (Identifier)
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
 >     ^^^: Pick<Shape, keyof Mask & keyof Shape>   (TypeReference) (Identifier)
@@ -515,7 +515,7 @@ expected: <Mask extends { [Key in keyof Shape]?: true; }>(mask: Mask) => ZodObje
 >                                   ^^^^^: any   (Any) (Identifier)
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
->                                                 ^^^^^: Shape   (TypeReference) (Identifier)
+>                                                 ^^^^^: Shape   (TypeParameter) (Identifier)
 
       out[key as keyof Mask & keyof Shape] = this.shape[key as keyof Shape]
 >                                                       ^^^: Extract<keyof Mask, string>   (TypeReference) (Identifier)
@@ -583,7 +583,7 @@ expected: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>
                             expected: { [x: string]: ZodTypeAny; }
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
->                                     ^^^^^: Shape   (TypeReference) (Identifier)
+>                                     ^^^^^: Shape   (TypeParameter) (Identifier)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
 >                                            ^^^^^: any   (Any) (Identifier)
@@ -592,7 +592,7 @@ expected: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>
 >                                                          ^^^^^^^^^: typeof ZodObject   (Class) (Identifier)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
->                                                                    ^^^^^: Shape   (TypeReference) (Identifier)
+>                                                                    ^^^^^: Shape   (TypeParameter) (Identifier)
 
 import { z } from '../src/v3/external'
 >        ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (Object) (Identifier)

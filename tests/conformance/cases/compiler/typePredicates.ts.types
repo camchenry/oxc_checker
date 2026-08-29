@@ -59,7 +59,7 @@ interface PredicateArray<T> {
 >                      ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => value is S   (Function) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                  ^^^^^: T   (TypeReference) (Identifier)
+>                                  ^^^^^: T   (TypeParameter) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
 >                                         ^: any   (Any) (Identifier)
@@ -74,7 +74,7 @@ interface PredicateArray<T> {
 >                                                                           ^: any   (Any) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
->                                                                                   ^^^^^: T   (TypeReference) (Identifier)
+>                                                                                   ^^^^^: T   (TypeParameter) (Identifier)
 
     every<S extends T>(predicate: (value: T, index: number, array: readonly T[]) => value is S): this is readonly S[];
 >                                                                                            ^: any   (Any) (Identifier)
@@ -113,13 +113,13 @@ interface MethodSignatureCoverage<T> {
 >                                                     ^: any   (Any) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->                                                         ^^^^^: U   (TypeReference) (Identifier)
+>                                                         ^^^^^: U   (TypeParameter) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
 >                                                                ^: any   (Any) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
->                                                                    ^^^^^: U   (TypeReference) (Identifier)
+>                                                                    ^^^^^: U   (TypeParameter) (Identifier)
 
     narrow<U extends T>(this: MethodSignatureCoverage<T>, value: U): value is U;
 >                                                                             ^: any   (Any) (Identifier)

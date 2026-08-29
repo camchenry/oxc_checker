@@ -11,7 +11,7 @@ type ReturnedQueryFunctionContext<TQueryKey, TPageParam = never> =
 >  ^^^^^^^^^^: any   (Any) (Identifier)
 
     ? { queryKey: TQueryKey; pageParam?: unknown }
->       ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
+>       ^^^^^^^^: TQueryKey   (TypeParameter) (Identifier)
 
     ? { queryKey: TQueryKey; pageParam?: unknown }
 >                 ^^^^^^^^^: any   (Any) (Identifier)
@@ -20,13 +20,13 @@ type ReturnedQueryFunctionContext<TQueryKey, TPageParam = never> =
 >                            ^^^^^^^^^: unknown   (Unknown) (Identifier)
 
     : { queryKey: TQueryKey; pageParam: TPageParam };
->       ^^^^^^^^: TQueryKey   (TypeReference) (Identifier)
+>       ^^^^^^^^: TQueryKey   (TypeParameter) (Identifier)
 
     : { queryKey: TQueryKey; pageParam: TPageParam };
 >                 ^^^^^^^^^: any   (Any) (Identifier)
 
     : { queryKey: TQueryKey; pageParam: TPageParam };
->                            ^^^^^^^^^: TPageParam   (TypeReference) (Identifier)
+>                            ^^^^^^^^^: TPageParam   (TypeParameter) (Identifier)
 
     : { queryKey: TQueryKey; pageParam: TPageParam };
 >                                       ^^^^^^^^^^: any   (Any) (Identifier)
@@ -107,7 +107,7 @@ declare function acceptEvent<T extends { kind: "event"; value: string }>(value: 
 >                                                       ^^^^^: string   (String) (Identifier)
 
 declare function acceptEvent<T extends { kind: "event"; value: string }>(value: T): T;
->                                                                        ^^^^^: T   (TypeReference) (Identifier)
+>                                                                        ^^^^^: T   (TypeParameter) (Identifier)
 
 declare function acceptEvent<T extends { kind: "event"; value: string }>(value: T): T;
 >                                                                               ^: any   (Any) (Identifier)
@@ -245,13 +245,13 @@ declare function falsy<T>(value: T | false): T;
 >                                            ^: any   (Any) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                ^^^^^^^^^^^^^: <T>(value: T | Promise<T>) => T   (Function) (Identifier)
+>                ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (Function) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
 >                              ^: any   (Any) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
->                                 ^^^^^: T | Promise<T>   (Union) (Identifier)
+>                                 ^^^^^: Promise<T> | T   (Union) (Identifier)
 
 declare function unwrapPromise<T>(value: Promise<T> | T): T;
 >                                        ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
@@ -299,7 +299,7 @@ const promiseValue = unwrapPromise(promiseString);
 >     ^^^^^^^^^^^^: string   (String) (Identifier)
 
 const promiseValue = unwrapPromise(promiseString);
->                    ^^^^^^^^^^^^^: <T>(value: T | Promise<T>) => T   (Function) (Identifier)
+>                    ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (Function) (Identifier)
 
 const promiseValue = unwrapPromise(promiseString);
 >                                  ^^^^^^^^^^^^^: Promise<string>   (TypeReference) (Identifier)
@@ -308,7 +308,7 @@ const directValue = unwrapPromise("ready");
 >     ^^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
 
 const directValue = unwrapPromise("ready");
->                   ^^^^^^^^^^^^^: <T>(value: T | Promise<T>) => T   (Function) (Identifier)
+>                   ^^^^^^^^^^^^^: <T>(value: Promise<T> | T) => T   (Function) (Identifier)
 
 declare const intersectionSource: string[] & { extra: number };
 >             ^^^^^^^^^^^^^^^^^^: string[] & { extra: number; }   (Intersection) (Identifier)
@@ -380,7 +380,7 @@ function explicitOverload<T>(x: T): T;
 >                         ^: any   (Any) (Identifier)
 
 function explicitOverload<T>(x: T): T;
->                            ^: T   (TypeReference) (Identifier)
+>                            ^: T   (TypeParameter) (Identifier)
 
 function explicitOverload<T>(x: T): T;
 >                               ^: any   (Any) (Identifier)
@@ -398,7 +398,7 @@ function explicitOverload<T, U>(x: T): U;
 >                            ^: any   (Any) (Identifier)
 
 function explicitOverload<T, U>(x: T): U;
->                               ^: T   (TypeReference) (Identifier)
+>                               ^: T   (TypeParameter) (Identifier)
 
 function explicitOverload<T, U>(x: T): U;
 >                                  ^: any   (Any) (Identifier)

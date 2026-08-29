@@ -8,7 +8,7 @@ export interface Action<T extends string = string> {
 >                       ^: any   (Any) (Identifier)
 
   type: T
-> ^^^^: T   (TypeReference) (Identifier)
+> ^^^^: T   (TypeParameter) (Identifier)
 
   type: T
 >       ^: any   (Any) (Identifier)
@@ -182,7 +182,7 @@ export type IsEmptyObj<T, True, False = never> = T extends any
 >     ^^^^^: any   (Any) (Identifier)
 
 export type AtLeastTS35<True, False> = [True, False][IsUnknown<
->           ^^^^^^^^^^^: True   (TypeReference) (Identifier)
+>           ^^^^^^^^^^^: True   (TypeParameter) (Identifier)
 
 export type AtLeastTS35<True, False> = [True, False][IsUnknown<
 >                       ^^^^: any   (Any) (Identifier)
@@ -422,13 +422,13 @@ export type PayloadAction<
 > ^: any   (Any) (Identifier)
 
   payload: P
-> ^^^^^^^: P   (TypeReference) (Identifier)
+> ^^^^^^^: P   (TypeParameter) (Identifier)
 
   payload: P
 >          ^: any   (Any) (Identifier)
 
   type: T
-> ^^^^: T   (TypeReference) (Identifier)
+> ^^^^: T   (TypeParameter) (Identifier)
 
   type: T
 >       ^: any   (Any) (Identifier)
@@ -437,7 +437,7 @@ export type PayloadAction<
 >     ^: any   (Any) (Identifier)
 
       meta: M
->     ^^^^: M   (TypeReference) (Identifier)
+>     ^^^^: M   (TypeParameter) (Identifier)
 
       meta: M
 >           ^: any   (Any) (Identifier)
@@ -446,7 +446,7 @@ export type PayloadAction<
 >   ^: any   (Any) (Identifier)
 
         error: E
->       ^^^^^: E   (TypeReference) (Identifier)
+>       ^^^^^: E   (TypeParameter) (Identifier)
 
         error: E
 >              ^: any   (Any) (Identifier)
@@ -461,7 +461,7 @@ export type PrepareAction<P> =
 >        ^^^^: any[]   (Array) (Identifier)
 
   | ((...args: any[]) => { payload: P })
->                          ^^^^^^^: P   (TypeReference) (Identifier)
+>                          ^^^^^^^: P   (TypeParameter) (Identifier)
 
   | ((...args: any[]) => { payload: P })
 >                                   ^: any   (Any) (Identifier)
@@ -470,7 +470,7 @@ export type PrepareAction<P> =
 >        ^^^^: any[]   (Array) (Identifier)
 
   | ((...args: any[]) => { payload: P; meta: any })
->                          ^^^^^^^: P   (TypeReference) (Identifier)
+>                          ^^^^^^^: P   (TypeParameter) (Identifier)
 
   | ((...args: any[]) => { payload: P; meta: any })
 >                                   ^: any   (Any) (Identifier)
@@ -482,7 +482,7 @@ export type PrepareAction<P> =
 >        ^^^^: any[]   (Array) (Identifier)
 
   | ((...args: any[]) => { payload: P; error: any })
->                          ^^^^^^^: P   (TypeReference) (Identifier)
+>                          ^^^^^^^: P   (TypeParameter) (Identifier)
 
   | ((...args: any[]) => { payload: P; error: any })
 >                                   ^: any   (Any) (Identifier)
@@ -494,7 +494,7 @@ export type PrepareAction<P> =
 >        ^^^^: any[]   (Array) (Identifier)
 
   | ((...args: any[]) => { payload: P; meta: any; error: any })
->                          ^^^^^^^: P   (TypeReference) (Identifier)
+>                          ^^^^^^^: P   (TypeParameter) (Identifier)
 
   | ((...args: any[]) => { payload: P; meta: any; error: any })
 >                                   ^: any   (Any) (Identifier)
@@ -599,7 +599,7 @@ export type BaseActionCreator<P, T extends string, M = never, E = never> = {
 >                                                             ^: any   (Any) (Identifier)
 
   type: T
-> ^^^^: T   (TypeReference) (Identifier)
+> ^^^^: T   (TypeParameter) (Identifier)
 
   type: T
 >       ^: any   (Any) (Identifier)
@@ -665,7 +665,7 @@ export interface ActionCreatorWithPreparedPayload<
 >                                    ^: any   (Any) (Identifier)
 
   (...args: Args): PayloadAction<P, T, M, E>
->     ^^^^: Args   (TypeReference) (Identifier)
+>     ^^^^: Args   (TypeParameter) (Identifier)
 
   (...args: Args): PayloadAction<P, T, M, E>
 >           ^^^^: any   (Any) (Identifier)
@@ -767,7 +767,7 @@ export interface ActionCreatorWithPayload<P, T extends string = string>
 >                              ^: any   (Any) (Identifier)
 
   (payload: P): PayloadAction<P, T>
->  ^^^^^^^: P   (TypeReference) (Identifier)
+>  ^^^^^^^: P   (TypeParameter) (Identifier)
 
   (payload: P): PayloadAction<P, T>
 >           ^: any   (Any) (Identifier)
@@ -800,7 +800,7 @@ export interface ActionCreatorWithNonInferrablePayload<
 >  ^^: any   (Any) (Identifier)
 
   <PT extends unknown>(payload: PT): PayloadAction<PT, T>
->                      ^^^^^^^: PT   (TypeReference) (Identifier)
+>                      ^^^^^^^: PT   (TypeParameter) (Identifier)
 
   <PT extends unknown>(payload: PT): PayloadAction<PT, T>
 >                               ^^: any   (Any) (Identifier)
@@ -945,7 +945,7 @@ export function createAction<P = void, T extends string = string>(
 >                                      ^: any   (Any) (Identifier)
 
   type: T,
-> ^^^^: T   (TypeReference) (Identifier)
+> ^^^^: T   (TypeParameter) (Identifier)
 
   type: T,
 >       ^: any   (Any) (Identifier)
@@ -973,13 +973,13 @@ export function createAction<
 > ^: any   (Any) (Identifier)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
-> ^^^^: T   (TypeReference) (Identifier)
+> ^^^^: T   (TypeParameter) (Identifier)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
 >       ^: any   (Any) (Identifier)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
->          ^^^^^^^^^^^^^: PA   (TypeReference) (Identifier)
+>          ^^^^^^^^^^^^^: PA   (TypeParameter) (Identifier)
 
 >(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>
 >                         ^^: any   (Any) (Identifier)

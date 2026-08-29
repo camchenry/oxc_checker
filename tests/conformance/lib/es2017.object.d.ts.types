@@ -77,7 +77,7 @@ interface ObjectConstructor {
 >                             ^: any   (Any) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
->                                ^: T   (TypeReference) (Identifier)
+>                                ^: T   (TypeParameter) (Identifier)
 
     getOwnPropertyDescriptors<T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; };
 >                                   ^: any   (Any) (Identifier)

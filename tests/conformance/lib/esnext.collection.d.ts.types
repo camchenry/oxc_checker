@@ -16,13 +16,13 @@ interface Map<K, V> {
 >   ^^^^^^^^^^^: { (key: K, defaultValue: V): V; (key: K, defaultValue: V): V; }   (Object) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->               ^^^: K   (TypeReference) (Identifier)
+>               ^^^: K   (TypeParameter) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
 >                    ^: any   (Any) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->                       ^^^^^^^^^^^^: V   (TypeReference) (Identifier)
+>                       ^^^^^^^^^^^^: V   (TypeParameter) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
 >                                     ^: any   (Any) (Identifier)
@@ -34,7 +34,7 @@ interface Map<K, V> {
 >   ^^^^^^^^^^^^^^^^^^^: { (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }   (Object) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                       ^^^: K   (TypeReference) (Identifier)
+>                       ^^^: K   (TypeParameter) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
 >                            ^: any   (Any) (Identifier)
@@ -43,7 +43,7 @@ interface Map<K, V> {
 >                               ^^^^^^^^: (key: K) => V   (Function) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                                          ^^^: K   (TypeReference) (Identifier)
+>                                          ^^^: K   (TypeParameter) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
 >                                               ^: any   (Any) (Identifier)
@@ -78,13 +78,13 @@ interface WeakMap<K extends WeakKey, V> {
 >   ^^^^^^^^^^^: { (key: K, defaultValue: V): V; (key: K, defaultValue: V): V; }   (Object) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->               ^^^: K   (TypeReference) (Identifier)
+>               ^^^: K   (TypeParameter) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
 >                    ^: any   (Any) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
->                       ^^^^^^^^^^^^: V   (TypeReference) (Identifier)
+>                       ^^^^^^^^^^^^: V   (TypeParameter) (Identifier)
 
     getOrInsert(key: K, defaultValue: V): V;
 >                                     ^: any   (Any) (Identifier)
@@ -96,7 +96,7 @@ interface WeakMap<K extends WeakKey, V> {
 >   ^^^^^^^^^^^^^^^^^^^: { (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }   (Object) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                       ^^^: K   (TypeReference) (Identifier)
+>                       ^^^: K   (TypeParameter) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
 >                            ^: any   (Any) (Identifier)
@@ -105,7 +105,7 @@ interface WeakMap<K extends WeakKey, V> {
 >                               ^^^^^^^^: (key: K) => V   (Function) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
->                                          ^^^: K   (TypeReference) (Identifier)
+>                                          ^^^: K   (TypeParameter) (Identifier)
 
     getOrInsertComputed(key: K, callback: (key: K) => V): V;
 >                                               ^: any   (Any) (Identifier)

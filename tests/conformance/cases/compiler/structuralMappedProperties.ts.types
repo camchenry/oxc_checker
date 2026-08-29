@@ -65,7 +65,7 @@ type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
 >                   ^^^^^: any   (Any) (Identifier)
 
 type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
->                                            ^^^^^: Value   (TypeReference) (Identifier)
+>                                            ^^^^^: Value   (TypeParameter) (Identifier)
 
 type Boxed<Value> = Value extends string ? { value: Value } : { value: number };
 >                                                   ^^^^^: any   (Any) (Identifier)

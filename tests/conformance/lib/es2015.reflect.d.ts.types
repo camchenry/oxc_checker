@@ -20,13 +20,13 @@ declare namespace Reflect {
 >       ^^^^^^: (this: T, ...args: A) => R   (Function) (Identifier)
 
         target: (this: T, ...args: A) => R,
->                ^^^^: T   (TypeReference) (Identifier)
+>                ^^^^: T   (TypeParameter) (Identifier)
 
         target: (this: T, ...args: A) => R,
 >                      ^: any   (Any) (Identifier)
 
         target: (this: T, ...args: A) => R,
->                            ^^^^: A   (TypeReference) (Identifier)
+>                            ^^^^: A   (TypeParameter) (Identifier)
 
         target: (this: T, ...args: A) => R,
 >                                  ^: any   (Any) (Identifier)
@@ -35,7 +35,7 @@ declare namespace Reflect {
 >                                        ^: any   (Any) (Identifier)
 
         thisArgument: T,
->       ^^^^^^^^^^^^: T   (TypeReference) (Identifier)
+>       ^^^^^^^^^^^^: T   (TypeParameter) (Identifier)
 
         thisArgument: T,
 >                     ^: any   (Any) (Identifier)
@@ -92,7 +92,7 @@ declare namespace Reflect {
 >       ^^^^^^: new (...args: A) => R   (Object) (Identifier)
 
         target: new (...args: A) => R,
->                       ^^^^: A   (TypeReference) (Identifier)
+>                       ^^^^: A   (TypeParameter) (Identifier)
 
         target: new (...args: A) => R,
 >                             ^: any   (Any) (Identifier)
@@ -212,13 +212,13 @@ declare namespace Reflect {
 >                                            ^^^^^^^^^^^: any   (Error) (Identifier)
 
         target: T,
->       ^^^^^^: T   (TypeReference) (Identifier)
+>       ^^^^^^: T   (TypeParameter) (Identifier)
 
         target: T,
 >               ^: any   (Any) (Identifier)
 
         propertyKey: P,
->       ^^^^^^^^^^^: P   (TypeReference) (Identifier)
+>       ^^^^^^^^^^^: P   (TypeParameter) (Identifier)
 
         propertyKey: P,
 >                    ^: any   (Any) (Identifier)
@@ -254,13 +254,13 @@ declare namespace Reflect {
 >                                                                 ^^^^^^^^^^^: any   (Error) (Identifier)
 
         target: T,
->       ^^^^^^: T   (TypeReference) (Identifier)
+>       ^^^^^^: T   (TypeParameter) (Identifier)
 
         target: T,
 >               ^: any   (Any) (Identifier)
 
         propertyKey: P,
->       ^^^^^^^^^^^: P   (TypeReference) (Identifier)
+>       ^^^^^^^^^^^: P   (TypeParameter) (Identifier)
 
         propertyKey: P,
 >                    ^: any   (Any) (Identifier)
@@ -338,13 +338,13 @@ declare namespace Reflect {
 >                                            ^^^^^^^^^^^: any   (Error) (Identifier)
 
         target: T,
->       ^^^^^^: T   (TypeReference) (Identifier)
+>       ^^^^^^: T   (TypeParameter) (Identifier)
 
         target: T,
 >               ^: any   (Any) (Identifier)
 
         propertyKey: P,
->       ^^^^^^^^^^^: P   (TypeReference) (Identifier)
+>       ^^^^^^^^^^^: P   (TypeParameter) (Identifier)
 
         propertyKey: P,
 >                    ^: any   (Any) (Identifier)

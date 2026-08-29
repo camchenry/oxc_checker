@@ -29,13 +29,13 @@ async function preserveGeneric<T>(value: T) { return value; }
 >                              ^: any   (Any) (Identifier)
 
 async function preserveGeneric<T>(value: T) { return value; }
->                                 ^^^^^: T   (TypeReference) (Identifier)
+>                                 ^^^^^: T   (TypeParameter) (Identifier)
 
 async function preserveGeneric<T>(value: T) { return value; }
 >                                        ^: any   (Any) (Identifier)
 
 async function preserveGeneric<T>(value: T) { return value; }
->                                                    ^^^^^: T   (TypeReference) (Identifier)
+>                                                    ^^^^^: T   (TypeParameter) (Identifier)
 
 const returnsNumber = async () => 1;
 >     ^^^^^^^^^^^^^: () => Promise<number>   (Function) (Identifier)

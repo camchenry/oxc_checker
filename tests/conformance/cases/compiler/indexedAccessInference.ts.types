@@ -11,13 +11,13 @@ declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
 >                                       ^: any   (Any) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                          ^^^: T   (TypeReference) (Identifier)
+>                                          ^^^: T   (TypeParameter) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
 >                                               ^: any   (Any) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
->                                                  ^^^: K   (TypeReference) (Identifier)
+>                                                  ^^^: K   (TypeParameter) (Identifier)
 
 declare function get<T, K extends keyof T>(obj: T, key: K): T[K];
 >                                                       ^: any   (Any) (Identifier)

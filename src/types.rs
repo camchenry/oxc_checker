@@ -177,6 +177,7 @@ impl<'a> TypeBuilder<'a> {
             constraint_type,
             default_type,
             display_default,
+            symbol: None,
         }
     }
 }
@@ -578,6 +579,8 @@ pub enum TyKind<'a> {
     Object(&'a TyObject<'a>),
     ModuleNamespace(&'a TyModuleNamespace<'a>),
     Function(&'a TyFunction<'a>),
+    /// A type parameter used as a type, e.g. `T` in `(value: T) => T`.
+    TypeParameter(&'a TyTypeParameter<'a>),
     TypeReference(&'a TyTypeReference<'a>),
     /// Value side of a class declaration or expression.
     Class(&'a TyClass<'a>),
@@ -756,7 +759,7 @@ impl<'a> TyTypePredicate<'a> {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, Clone, Copy)]
 pub struct TyTypeParameter<'a> {
     pub name: &'a str,
     /// constraint type (e.g., `U` in `T extends U`)
@@ -766,7 +769,25 @@ pub struct TyTypeParameter<'a> {
     /// Whether to display the default type when printing. This can be used to
     /// omit the default type in lib declarations.
     pub(crate) display_default: bool,
+    pub(crate) symbol: Option<SymbolRef>,
 }
+
+impl PartialEq for TyTypeParameter<'_> {
+    fn eq(&self, other: &Self) -> bool {
+        match (self.symbol, other.symbol) {
+            (Some(left), Some(right)) => left == right,
+            (None, None) => {
+                self.name == other.name
+                    && self.constraint_type == other.constraint_type
+                    && self.default_type == other.default_type
+                    && self.display_default == other.display_default
+            }
+            _ => false,
+        }
+    }
+}
+
+impl Eq for TyTypeParameter<'_> {}
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub struct TyParameter<'a> {
@@ -1290,6 +1311,9 @@ impl<'a> TypeIdentity<'a> {
             (TyKind::Function(left), TyKind::Function(right)) => {
                 self.functions_are_identical(left, right)
             }
+            (TyKind::TypeParameter(left), TyKind::TypeParameter(right)) => {
+                self.type_parameters_are_identical(left, right)
+            }
             (TyKind::TypeReference(left), TyKind::TypeReference(right)) => {
                 left.has_identical_target(right)
                     && self.types_are_identical(&left.type_arguments, &right.type_arguments)
@@ -1451,9 +1475,16 @@ impl<'a> TypeIdentity<'a> {
         left: &TyTypeParameter<'a>,
         right: &TyTypeParameter<'a>,
     ) -> bool {
-        left.name == right.name
-            && self.optional_types_are_identical(left.constraint_type, right.constraint_type)
-            && self.optional_types_are_identical(left.default_type, right.default_type)
+        match (left.symbol, right.symbol) {
+            (Some(left), Some(right)) => left == right,
+            (None, None) => {
+                left.name == right.name
+                    && self
+                        .optional_types_are_identical(left.constraint_type, right.constraint_type)
+                    && self.optional_types_are_identical(left.default_type, right.default_type)
+            }
+            _ => false,
+        }
     }
 
     fn type_predicates_are_identical(
@@ -1581,6 +1612,14 @@ fn visit_type_at_depth<'a>(
                 .and_then(|predicate| predicate.target_type())
             {
                 visit_type_at_depth(arena, target_type, f, visited, next_depth);
+            }
+        }
+        TyKind::TypeParameter(type_parameter) => {
+            if let Some(constraint_type) = type_parameter.constraint_type {
+                visit_type_at_depth(arena, constraint_type, f, visited, next_depth);
+            }
+            if let Some(default_type) = type_parameter.default_type {
+                visit_type_at_depth(arena, default_type, f, visited, next_depth);
             }
         }
         TyKind::TypeReference(reference) => {
@@ -1776,6 +1815,7 @@ impl<'a> Ty<'a> {
             constraint_type,
             default_type,
             display_default,
+            symbol: None,
         }
     }
 }
@@ -2017,6 +2057,10 @@ impl<'a> CheckerArena<'a> {
             return_type,
             type_predicate: type_predicate.map(|predicate| self.alloc(predicate)),
         })))
+    }
+
+    pub fn type_parameter_type(self, type_parameter: TyTypeParameter<'a>) -> Ty<'a> {
+        self.alloc_type(TyKind::TypeParameter(self.alloc(type_parameter)))
     }
 
     pub fn type_reference(
@@ -2500,6 +2544,7 @@ impl<'a> Ty<'a> {
             TyKind::This => "TyThis",
             TyKind::GlobalThis => "TyGlobalThis",
             TyKind::Function(_) => "TyFunction",
+            TyKind::TypeParameter(_) => "TyTypeParameter",
             TyKind::TypeReference(_) => "TyTypeReference",
             TyKind::Class(_) => "TyClass",
             TyKind::TypeQuery(_) => "TyTypeQuery",

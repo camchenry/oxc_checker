@@ -114,7 +114,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >              ^^^^^^^^^^: (value: T, index: number) => U   (Function) (Identifier)
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
->                           ^^^^^: T   (TypeReference) (Identifier)
+>                           ^^^^^: T   (TypeParameter) (Identifier)
 
         map<U>(callbackfn: (value: T, index: number) => U): IteratorObject<U, undefined, unknown>;
 >                                  ^: any   (Any) (Identifier)
@@ -148,7 +148,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >                           ^^^^^^^^^: (value: T, index: number) => value is S   (Function) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                                       ^^^^^: T   (TypeReference) (Identifier)
+>                                       ^^^^^: T   (TypeParameter) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
 >                                              ^: any   (Any) (Identifier)
@@ -157,7 +157,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >                                                 ^^^^^: number   (Number) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
->                                                                   ^^^^^: T   (TypeReference) (Identifier)
+>                                                                   ^^^^^: T   (TypeParameter) (Identifier)
 
         filter<S extends T>(predicate: (value: T, index: number) => value is S): IteratorObject<S, undefined, unknown>;
 >                                                                            ^: any   (Any) (Identifier)
@@ -179,7 +179,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >              ^^^^^^^^^: (value: T, index: number) => unknown   (Function) (Identifier)
 
         filter(predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>;
->                          ^^^^^: T   (TypeReference) (Identifier)
+>                          ^^^^^: T   (TypeParameter) (Identifier)
 
         filter(predicate: (value: T, index: number) => unknown): IteratorObject<T, undefined, unknown>;
 >                                 ^: any   (Any) (Identifier)
@@ -239,7 +239,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >                  ^^^^^^^^: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>   (Function) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
->                             ^^^^^: T   (TypeReference) (Identifier)
+>                             ^^^^^: T   (TypeParameter) (Identifier)
 
         flatMap<U>(callback: (value: T, index: number) => Iterator<U, unknown, undefined> | Iterable<U, unknown, undefined>): IteratorObject<U, undefined, unknown>;
 >                                    ^: any   (Any) (Identifier)
@@ -284,13 +284,13 @@ type IteratorObjectConstructor = typeof Iterator;
 >              ^^^^^^^^^^: (previousValue: T, currentValue: T, currentIndex: number) => T   (Function) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
->                           ^^^^^^^^^^^^^: T   (TypeReference) (Identifier)
+>                           ^^^^^^^^^^^^^: T   (TypeParameter) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
 >                                          ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
->                                             ^^^^^^^^^^^^: T   (TypeReference) (Identifier)
+>                                             ^^^^^^^^^^^^: T   (TypeParameter) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T): T;
 >                                                           ^: any   (Any) (Identifier)
@@ -312,13 +312,13 @@ type IteratorObjectConstructor = typeof Iterator;
 >              ^^^^^^^^^^: (previousValue: T, currentValue: T, currentIndex: number) => T   (Function) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                           ^^^^^^^^^^^^^: T   (TypeReference) (Identifier)
+>                           ^^^^^^^^^^^^^: T   (TypeParameter) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
 >                                          ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                                             ^^^^^^^^^^^^: T   (TypeReference) (Identifier)
+>                                             ^^^^^^^^^^^^: T   (TypeParameter) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
 >                                                           ^: any   (Any) (Identifier)
@@ -330,7 +330,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >                                                                                       ^: any   (Any) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
->                                                                                          ^^^^^^^^^^^^: T   (TypeReference) (Identifier)
+>                                                                                          ^^^^^^^^^^^^: T   (TypeParameter) (Identifier)
 
         reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number) => T, initialValue: T): T;
 >                                                                                                        ^: any   (Any) (Identifier)
@@ -349,13 +349,13 @@ type IteratorObjectConstructor = typeof Iterator;
 >                 ^^^^^^^^^^: (previousValue: U, currentValue: T, currentIndex: number) => U   (Function) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                              ^^^^^^^^^^^^^: U   (TypeReference) (Identifier)
+>                              ^^^^^^^^^^^^^: U   (TypeParameter) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
 >                                             ^: any   (Any) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                                                ^^^^^^^^^^^^: T   (TypeReference) (Identifier)
+>                                                ^^^^^^^^^^^^: T   (TypeParameter) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
 >                                                              ^: any   (Any) (Identifier)
@@ -367,7 +367,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >                                                                                          ^: any   (Any) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
->                                                                                             ^^^^^^^^^^^^: U   (TypeReference) (Identifier)
+>                                                                                             ^^^^^^^^^^^^: U   (TypeParameter) (Identifier)
 
         reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
 >                                                                                                           ^: any   (Any) (Identifier)
@@ -390,7 +390,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >               ^^^^^^^^^^: (value: T, index: number) => void   (Function) (Identifier)
 
         forEach(callbackfn: (value: T, index: number) => void): void;
->                            ^^^^^: T   (TypeReference) (Identifier)
+>                            ^^^^^: T   (TypeParameter) (Identifier)
 
         forEach(callbackfn: (value: T, index: number) => void): void;
 >                                   ^: any   (Any) (Identifier)
@@ -406,7 +406,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >            ^^^^^^^^^: (value: T, index: number) => unknown   (Function) (Identifier)
 
         some(predicate: (value: T, index: number) => unknown): boolean;
->                        ^^^^^: T   (TypeReference) (Identifier)
+>                        ^^^^^: T   (TypeParameter) (Identifier)
 
         some(predicate: (value: T, index: number) => unknown): boolean;
 >                               ^: any   (Any) (Identifier)
@@ -422,7 +422,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >             ^^^^^^^^^: (value: T, index: number) => unknown   (Function) (Identifier)
 
         every(predicate: (value: T, index: number) => unknown): boolean;
->                         ^^^^^: T   (TypeReference) (Identifier)
+>                         ^^^^^: T   (TypeParameter) (Identifier)
 
         every(predicate: (value: T, index: number) => unknown): boolean;
 >                                ^: any   (Any) (Identifier)
@@ -444,7 +444,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >                         ^^^^^^^^^: (value: T, index: number) => value is S   (Function) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->                                     ^^^^^: T   (TypeReference) (Identifier)
+>                                     ^^^^^: T   (TypeParameter) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
 >                                            ^: any   (Any) (Identifier)
@@ -453,7 +453,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >                                               ^^^^^: number   (Number) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
->                                                                 ^^^^^: T   (TypeReference) (Identifier)
+>                                                                 ^^^^^: T   (TypeParameter) (Identifier)
 
         find<S extends T>(predicate: (value: T, index: number) => value is S): S | undefined;
 >                                                                          ^: any   (Any) (Identifier)
@@ -469,7 +469,7 @@ type IteratorObjectConstructor = typeof Iterator;
 >            ^^^^^^^^^: (value: T, index: number) => unknown   (Function) (Identifier)
 
         find(predicate: (value: T, index: number) => unknown): T | undefined;
->                        ^^^^^: T   (TypeReference) (Identifier)
+>                        ^^^^^: T   (TypeParameter) (Identifier)
 
         find(predicate: (value: T, index: number) => unknown): T | undefined;
 >                               ^: any   (Any) (Identifier)

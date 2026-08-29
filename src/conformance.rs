@@ -2469,7 +2469,7 @@ fn actual_identifier_record<'a>(
         AstKind::TSTypeParameter(parameter) => (
             parameter.name.span,
             Cow::Borrowed(parameter.name.name.as_str()),
-            checker.get_type_at_location(node_ref),
+            Ty::any(),
         ),
         AstKind::TSMappedType(mapped) => (
             mapped.key.span,
@@ -2492,7 +2492,28 @@ fn actual_identifier_record<'a>(
         }
         AstKind::TSTypeReference(reference) => {
             let (span, text) = ts_type_name_span_and_text(&reference.type_name)?;
-            (span, text, checker.get_type_at_location(node_ref))
+            let ty = checker.get_type_at_location(node_ref);
+            let is_type_alias = checker
+                .get_symbol_at_location(node_ref)
+                .map(|symbol| checker.get_imported_symbol(symbol).unwrap_or(symbol))
+                .is_some_and(|symbol| {
+                    let declaration = checker
+                        .semantic(symbol.program_id)
+                        .scoping()
+                        .symbol_declaration(symbol.symbol_id);
+                    matches!(
+                        checker.nodes(symbol.program_id).kind(declaration),
+                        AstKind::TSTypeAliasDeclaration(_)
+                    )
+                });
+            let ty = if matches!(arena.ty_kind(ty), TyKind::TypeParameter(_))
+                || (entry.is_lib() && is_type_alias)
+            {
+                Ty::any()
+            } else {
+                ty
+            };
+            (span, text, ty)
         }
         AstKind::Directive(directive) => (
             directive.span,

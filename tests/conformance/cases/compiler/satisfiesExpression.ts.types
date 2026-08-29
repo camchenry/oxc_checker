@@ -26,7 +26,7 @@ type Handler<T> = (value: T) => T
 >            ^: any   (Any) (Identifier)
 
 type Handler<T> = (value: T) => T
->                  ^^^^^: T   (TypeReference) (Identifier)
+>                  ^^^^^: T   (TypeParameter) (Identifier)
 
 type Handler<T> = (value: T) => T
 >                         ^: any   (Any) (Identifier)
@@ -224,19 +224,19 @@ const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
 >                      ^: any   (Any) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->                         ^^^^^: T   (TypeReference) (Identifier)
+>                         ^^^^^: T   (TypeParameter) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
 >                                ^: any   (Any) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->                                      ^^^^^: T   (TypeReference) (Identifier)
+>                                      ^^^^^: T   (TypeParameter) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
 >                                                        ^: any   (Any) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
->                                                           ^^^^^: T   (TypeReference) (Identifier)
+>                                                           ^^^^^: T   (TypeParameter) (Identifier)
 
 const genericArrow = (<T>(value: T) => value) satisfies <T>(value: T) => T
 >                                                                  ^: any   (Any) (Identifier)
@@ -308,7 +308,7 @@ declare function takesPoint<T extends Point>(value: T): T
 >                                     ^^^^^: any   (Any) (Identifier)
 
 declare function takesPoint<T extends Point>(value: T): T
->                                            ^^^^^: T   (TypeReference) (Identifier)
+>                                            ^^^^^: T   (TypeParameter) (Identifier)
 
 declare function takesPoint<T extends Point>(value: T): T
 >                                                   ^: any   (Any) (Identifier)

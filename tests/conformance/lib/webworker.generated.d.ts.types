@@ -4133,7 +4133,7 @@ interface ReadableStreamReadValueResult<T> {
 >   ^^^^: false   (BooleanLiteral) (Identifier)
 
     value: T;
->   ^^^^^: T   (TypeReference) (Identifier)
+>   ^^^^^: T   (TypeParameter) (Identifier)
 
     value: T;
 >          ^: any   (Any) (Identifier)
@@ -5867,7 +5867,7 @@ interface AbortSignal extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof AbortSignalEventMap>(type: K, listener: (this: AbortSignal, ev: AbortSignalEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                         ^^^^: K   (TypeReference) (Identifier)
+>                                                         ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof AbortSignalEventMap>(type: K, listener: (this: AbortSignal, ev: AbortSignalEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                               ^: any   (Any) (Identifier)
@@ -5939,7 +5939,7 @@ interface AbortSignal extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof AbortSignalEventMap>(type: K, listener: (this: AbortSignal, ev: AbortSignalEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                            ^^^^: K   (TypeReference) (Identifier)
+>                                                            ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof AbortSignalEventMap>(type: K, listener: (this: AbortSignal, ev: AbortSignalEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                  ^: any   (Any) (Identifier)
@@ -6110,7 +6110,7 @@ interface AbstractWorker {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof AbstractWorkerEventMap>(type: K, listener: (this: AbstractWorker, ev: AbstractWorkerEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                            ^^^^: K   (TypeReference) (Identifier)
+>                                                            ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof AbstractWorkerEventMap>(type: K, listener: (this: AbstractWorker, ev: AbstractWorkerEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                  ^: any   (Any) (Identifier)
@@ -6182,7 +6182,7 @@ interface AbstractWorker {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof AbstractWorkerEventMap>(type: K, listener: (this: AbstractWorker, ev: AbstractWorkerEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                               ^^^^: K   (TypeReference) (Identifier)
+>                                                               ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof AbstractWorkerEventMap>(type: K, listener: (this: AbstractWorker, ev: AbstractWorkerEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                     ^: any   (Any) (Identifier)
@@ -6467,7 +6467,7 @@ interface AudioDecoder extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof AudioDecoderEventMap>(type: K, listener: (this: AudioDecoder, ev: AudioDecoderEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                          ^^^^: K   (TypeReference) (Identifier)
+>                                                          ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof AudioDecoderEventMap>(type: K, listener: (this: AudioDecoder, ev: AudioDecoderEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                ^: any   (Any) (Identifier)
@@ -6539,7 +6539,7 @@ interface AudioDecoder extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof AudioDecoderEventMap>(type: K, listener: (this: AudioDecoder, ev: AudioDecoderEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                             ^^^^: K   (TypeReference) (Identifier)
+>                                                             ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof AudioDecoderEventMap>(type: K, listener: (this: AudioDecoder, ev: AudioDecoderEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                   ^: any   (Any) (Identifier)
@@ -6755,7 +6755,7 @@ interface AudioEncoder extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof AudioEncoderEventMap>(type: K, listener: (this: AudioEncoder, ev: AudioEncoderEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                          ^^^^: K   (TypeReference) (Identifier)
+>                                                          ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof AudioEncoderEventMap>(type: K, listener: (this: AudioEncoder, ev: AudioEncoderEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                ^: any   (Any) (Identifier)
@@ -6827,7 +6827,7 @@ interface AudioEncoder extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof AudioEncoderEventMap>(type: K, listener: (this: AudioEncoder, ev: AudioEncoderEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                             ^^^^: K   (TypeReference) (Identifier)
+>                                                             ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof AudioEncoderEventMap>(type: K, listener: (this: AudioEncoder, ev: AudioEncoderEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                   ^: any   (Any) (Identifier)
@@ -7279,7 +7279,7 @@ interface BroadcastChannel extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof BroadcastChannelEventMap>(type: K, listener: (this: BroadcastChannel, ev: BroadcastChannelEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                              ^^^^: K   (TypeReference) (Identifier)
+>                                                              ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof BroadcastChannelEventMap>(type: K, listener: (this: BroadcastChannel, ev: BroadcastChannelEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                    ^: any   (Any) (Identifier)
@@ -7351,7 +7351,7 @@ interface BroadcastChannel extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof BroadcastChannelEventMap>(type: K, listener: (this: BroadcastChannel, ev: BroadcastChannelEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                 ^^^^: K   (TypeReference) (Identifier)
+>                                                                 ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof BroadcastChannelEventMap>(type: K, listener: (this: BroadcastChannel, ev: BroadcastChannelEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                       ^: any   (Any) (Identifier)
@@ -11169,7 +11169,7 @@ interface Crypto {
 >                                                   ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     getRandomValues<T extends Exclude<BufferSource, ArrayBuffer>>(array: T): T;
->                                                                 ^^^^^: T   (TypeReference) (Identifier)
+>                                                                 ^^^^^: T   (TypeParameter) (Identifier)
 
     getRandomValues<T extends Exclude<BufferSource, ArrayBuffer>>(array: T): T;
 >                                                                        ^: any   (Any) (Identifier)
@@ -11262,7 +11262,7 @@ interface CustomEvent<T = any> extends Event {
 >                                      ^^^^^: { new (type: string, eventInitDict?: EventInit): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }   (Object) (Identifier)
 
     readonly detail: T;
->            ^^^^^^: T   (TypeReference) (Identifier)
+>            ^^^^^^: T   (TypeParameter) (Identifier)
 
     readonly detail: T;
 >                    ^: any   (Any) (Identifier)
@@ -12993,7 +12993,7 @@ interface DedicatedWorkerGlobalScope extends WorkerGlobalScope, AnimationFramePr
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof DedicatedWorkerGlobalScopeEventMap>(type: K, listener: (this: DedicatedWorkerGlobalScope, ev: DedicatedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                                        ^^^^: K   (TypeReference) (Identifier)
+>                                                                        ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof DedicatedWorkerGlobalScopeEventMap>(type: K, listener: (this: DedicatedWorkerGlobalScope, ev: DedicatedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                              ^: any   (Any) (Identifier)
@@ -13065,7 +13065,7 @@ interface DedicatedWorkerGlobalScope extends WorkerGlobalScope, AnimationFramePr
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof DedicatedWorkerGlobalScopeEventMap>(type: K, listener: (this: DedicatedWorkerGlobalScope, ev: DedicatedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                           ^^^^: K   (TypeReference) (Identifier)
+>                                                                           ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof DedicatedWorkerGlobalScopeEventMap>(type: K, listener: (this: DedicatedWorkerGlobalScope, ev: DedicatedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                                 ^: any   (Any) (Identifier)
@@ -13779,7 +13779,7 @@ interface EventSource extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof EventSourceEventMap>(type: K, listener: (this: EventSource, ev: EventSourceEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                         ^^^^: K   (TypeReference) (Identifier)
+>                                                         ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof EventSourceEventMap>(type: K, listener: (this: EventSource, ev: EventSourceEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                               ^: any   (Any) (Identifier)
@@ -13887,7 +13887,7 @@ interface EventSource extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof EventSourceEventMap>(type: K, listener: (this: EventSource, ev: EventSourceEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                            ^^^^: K   (TypeReference) (Identifier)
+>                                                            ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof EventSourceEventMap>(type: K, listener: (this: EventSource, ev: EventSourceEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                  ^: any   (Any) (Identifier)
@@ -14873,7 +14873,7 @@ interface FileReader extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof FileReaderEventMap>(type: K, listener: (this: FileReader, ev: FileReaderEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                        ^^^^: K   (TypeReference) (Identifier)
+>                                                        ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof FileReaderEventMap>(type: K, listener: (this: FileReader, ev: FileReaderEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                              ^: any   (Any) (Identifier)
@@ -14945,7 +14945,7 @@ interface FileReader extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof FileReaderEventMap>(type: K, listener: (this: FileReader, ev: FileReaderEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                           ^^^^: K   (TypeReference) (Identifier)
+>                                                           ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof FileReaderEventMap>(type: K, listener: (this: FileReader, ev: FileReaderEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                 ^: any   (Any) (Identifier)
@@ -15833,7 +15833,7 @@ interface FontFaceSet extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof FontFaceSetEventMap>(type: K, listener: (this: FontFaceSet, ev: FontFaceSetEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                         ^^^^: K   (TypeReference) (Identifier)
+>                                                         ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof FontFaceSetEventMap>(type: K, listener: (this: FontFaceSet, ev: FontFaceSetEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                               ^: any   (Any) (Identifier)
@@ -15905,7 +15905,7 @@ interface FontFaceSet extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof FontFaceSetEventMap>(type: K, listener: (this: FontFaceSet, ev: FontFaceSetEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                            ^^^^: K   (TypeReference) (Identifier)
+>                                                            ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof FontFaceSetEventMap>(type: K, listener: (this: FontFaceSet, ev: FontFaceSetEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                  ^: any   (Any) (Identifier)
@@ -17706,7 +17706,7 @@ interface GPUDevice extends EventTarget, GPUObjectBase {
 >                                    ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof GPUDeviceEventMap>(type: K, listener: (this: GPUDevice, ev: GPUDeviceEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                       ^^^^: K   (TypeReference) (Identifier)
+>                                                       ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof GPUDeviceEventMap>(type: K, listener: (this: GPUDevice, ev: GPUDeviceEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                             ^: any   (Any) (Identifier)
@@ -17778,7 +17778,7 @@ interface GPUDevice extends EventTarget, GPUObjectBase {
 >                                       ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof GPUDeviceEventMap>(type: K, listener: (this: GPUDevice, ev: GPUDeviceEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                          ^^^^: K   (TypeReference) (Identifier)
+>                                                          ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof GPUDeviceEventMap>(type: K, listener: (this: GPUDevice, ev: GPUDeviceEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                ^: any   (Any) (Identifier)
@@ -19689,7 +19689,7 @@ interface IDBDatabase extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof IDBDatabaseEventMap>(type: K, listener: (this: IDBDatabase, ev: IDBDatabaseEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                         ^^^^: K   (TypeReference) (Identifier)
+>                                                         ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof IDBDatabaseEventMap>(type: K, listener: (this: IDBDatabase, ev: IDBDatabaseEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                               ^: any   (Any) (Identifier)
@@ -19761,7 +19761,7 @@ interface IDBDatabase extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof IDBDatabaseEventMap>(type: K, listener: (this: IDBDatabase, ev: IDBDatabaseEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                            ^^^^: K   (TypeReference) (Identifier)
+>                                                            ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof IDBDatabaseEventMap>(type: K, listener: (this: IDBDatabase, ev: IDBDatabaseEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                  ^: any   (Any) (Identifier)
@@ -20691,7 +20691,7 @@ interface IDBOpenDBRequest extends IDBRequest<IDBDatabase> {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof IDBOpenDBRequestEventMap>(type: K, listener: (this: IDBOpenDBRequest, ev: IDBOpenDBRequestEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                              ^^^^: K   (TypeReference) (Identifier)
+>                                                              ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof IDBOpenDBRequestEventMap>(type: K, listener: (this: IDBOpenDBRequest, ev: IDBOpenDBRequestEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                    ^: any   (Any) (Identifier)
@@ -20763,7 +20763,7 @@ interface IDBOpenDBRequest extends IDBRequest<IDBDatabase> {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof IDBOpenDBRequestEventMap>(type: K, listener: (this: IDBOpenDBRequest, ev: IDBOpenDBRequestEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                 ^^^^: K   (TypeReference) (Identifier)
+>                                                                 ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof IDBOpenDBRequestEventMap>(type: K, listener: (this: IDBOpenDBRequest, ev: IDBOpenDBRequestEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                       ^: any   (Any) (Identifier)
@@ -20937,7 +20937,7 @@ interface IDBRequest<T = any> extends EventTarget {
 >                        ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     readonly result: T;
->            ^^^^^^: T   (TypeReference) (Identifier)
+>            ^^^^^^: T   (TypeParameter) (Identifier)
 
     readonly result: T;
 >                    ^: any   (Any) (Identifier)
@@ -20985,7 +20985,7 @@ interface IDBRequest<T = any> extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof IDBRequestEventMap>(type: K, listener: (this: IDBRequest<T>, ev: IDBRequestEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                        ^^^^: K   (TypeReference) (Identifier)
+>                                                        ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof IDBRequestEventMap>(type: K, listener: (this: IDBRequest<T>, ev: IDBRequestEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                              ^: any   (Any) (Identifier)
@@ -21060,7 +21060,7 @@ interface IDBRequest<T = any> extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof IDBRequestEventMap>(type: K, listener: (this: IDBRequest<T>, ev: IDBRequestEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                           ^^^^: K   (TypeReference) (Identifier)
+>                                                           ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof IDBRequestEventMap>(type: K, listener: (this: IDBRequest<T>, ev: IDBRequestEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                 ^: any   (Any) (Identifier)
@@ -21309,7 +21309,7 @@ interface IDBTransaction extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                            ^^^^: K   (TypeReference) (Identifier)
+>                                                            ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                  ^: any   (Any) (Identifier)
@@ -21381,7 +21381,7 @@ interface IDBTransaction extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                               ^^^^: K   (TypeReference) (Identifier)
+>                                                               ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                     ^: any   (Any) (Identifier)
@@ -22224,7 +22224,7 @@ interface MessageEvent<T = any> extends Event {
 >                                       ^^^^^: { new (type: string, eventInitDict?: EventInit): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }   (Object) (Identifier)
 
     readonly data: T;
->            ^^^^: T   (TypeReference) (Identifier)
+>            ^^^^: T   (TypeParameter) (Identifier)
 
     readonly data: T;
 >                  ^: any   (Any) (Identifier)
@@ -22362,7 +22362,7 @@ interface MessageEventTarget<T> {
 >   ^^^^^^^^^: ((this: T, ev: MessageEvent) => any) | null   (Union) (Identifier)
 
     onmessage: ((this: T, ev: MessageEvent) => any) | null;
->                ^^^^: T   (TypeReference) (Identifier)
+>                ^^^^: T   (TypeParameter) (Identifier)
 
     onmessage: ((this: T, ev: MessageEvent) => any) | null;
 >                      ^: any   (Any) (Identifier)
@@ -22380,7 +22380,7 @@ interface MessageEventTarget<T> {
 >   ^^^^^^^^^^^^^^: ((this: T, ev: MessageEvent) => any) | null   (Union) (Identifier)
 
     onmessageerror: ((this: T, ev: MessageEvent) => any) | null;
->                     ^^^^: T   (TypeReference) (Identifier)
+>                     ^^^^: T   (TypeParameter) (Identifier)
 
     onmessageerror: ((this: T, ev: MessageEvent) => any) | null;
 >                           ^: any   (Any) (Identifier)
@@ -22407,7 +22407,7 @@ interface MessageEventTarget<T> {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof MessageEventTargetEventMap>(type: K, listener: (this: T, ev: MessageEventTargetEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                                ^^^^: K   (TypeReference) (Identifier)
+>                                                                ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof MessageEventTargetEventMap>(type: K, listener: (this: T, ev: MessageEventTargetEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                      ^: any   (Any) (Identifier)
@@ -22416,7 +22416,7 @@ interface MessageEventTarget<T> {
 >                                                                         ^^^^^^^^: (this: T, ev: MessageEventTargetEventMap[K]) => any   (Function) (Identifier)
 
     addEventListener<K extends keyof MessageEventTargetEventMap>(type: K, listener: (this: T, ev: MessageEventTargetEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                                                    ^^^^: T   (TypeReference) (Identifier)
+>                                                                                    ^^^^: T   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof MessageEventTargetEventMap>(type: K, listener: (this: T, ev: MessageEventTargetEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                                          ^: any   (Any) (Identifier)
@@ -22476,7 +22476,7 @@ interface MessageEventTarget<T> {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof MessageEventTargetEventMap>(type: K, listener: (this: T, ev: MessageEventTargetEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                   ^^^^: K   (TypeReference) (Identifier)
+>                                                                   ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof MessageEventTargetEventMap>(type: K, listener: (this: T, ev: MessageEventTargetEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                         ^: any   (Any) (Identifier)
@@ -22485,7 +22485,7 @@ interface MessageEventTarget<T> {
 >                                                                            ^^^^^^^^: (this: T, ev: MessageEventTargetEventMap[K]) => any   (Function) (Identifier)
 
     removeEventListener<K extends keyof MessageEventTargetEventMap>(type: K, listener: (this: T, ev: MessageEventTargetEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                                       ^^^^: T   (TypeReference) (Identifier)
+>                                                                                       ^^^^: T   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof MessageEventTargetEventMap>(type: K, listener: (this: T, ev: MessageEventTargetEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                                             ^: any   (Any) (Identifier)
@@ -22626,7 +22626,7 @@ interface MessagePort extends EventTarget, MessageEventTarget<MessagePort> {
 >                                    ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof MessagePortEventMap>(type: K, listener: (this: MessagePort, ev: MessagePortEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                         ^^^^: K   (TypeReference) (Identifier)
+>                                                         ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof MessagePortEventMap>(type: K, listener: (this: MessagePort, ev: MessagePortEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                               ^: any   (Any) (Identifier)
@@ -22698,7 +22698,7 @@ interface MessagePort extends EventTarget, MessageEventTarget<MessagePort> {
 >                                       ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof MessagePortEventMap>(type: K, listener: (this: MessagePort, ev: MessagePortEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                            ^^^^: K   (TypeReference) (Identifier)
+>                                                            ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof MessagePortEventMap>(type: K, listener: (this: MessagePort, ev: MessagePortEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                  ^: any   (Any) (Identifier)
@@ -23158,7 +23158,7 @@ interface Notification extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof NotificationEventMap>(type: K, listener: (this: Notification, ev: NotificationEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                          ^^^^: K   (TypeReference) (Identifier)
+>                                                          ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof NotificationEventMap>(type: K, listener: (this: Notification, ev: NotificationEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                ^: any   (Any) (Identifier)
@@ -23232,7 +23232,7 @@ interface Notification extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof NotificationEventMap>(type: K, listener: (this: Notification, ev: NotificationEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                             ^^^^: K   (TypeReference) (Identifier)
+>                                                             ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof NotificationEventMap>(type: K, listener: (this: Notification, ev: NotificationEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                   ^: any   (Any) (Identifier)
@@ -23913,7 +23913,7 @@ interface OffscreenCanvas extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof OffscreenCanvasEventMap>(type: K, listener: (this: OffscreenCanvas, ev: OffscreenCanvasEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                             ^^^^: K   (TypeReference) (Identifier)
+>                                                             ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof OffscreenCanvasEventMap>(type: K, listener: (this: OffscreenCanvas, ev: OffscreenCanvasEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                   ^: any   (Any) (Identifier)
@@ -23985,7 +23985,7 @@ interface OffscreenCanvas extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof OffscreenCanvasEventMap>(type: K, listener: (this: OffscreenCanvas, ev: OffscreenCanvasEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                ^^^^: K   (TypeReference) (Identifier)
+>                                                                ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof OffscreenCanvasEventMap>(type: K, listener: (this: OffscreenCanvas, ev: OffscreenCanvasEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                      ^: any   (Any) (Identifier)
@@ -24417,7 +24417,7 @@ interface Performance extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof PerformanceEventMap>(type: K, listener: (this: Performance, ev: PerformanceEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                         ^^^^: K   (TypeReference) (Identifier)
+>                                                         ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof PerformanceEventMap>(type: K, listener: (this: Performance, ev: PerformanceEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                               ^: any   (Any) (Identifier)
@@ -24489,7 +24489,7 @@ interface Performance extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof PerformanceEventMap>(type: K, listener: (this: Performance, ev: PerformanceEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                            ^^^^: K   (TypeReference) (Identifier)
+>                                                            ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof PerformanceEventMap>(type: K, listener: (this: Performance, ev: PerformanceEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                  ^: any   (Any) (Identifier)
@@ -25047,7 +25047,7 @@ interface PermissionStatus extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof PermissionStatusEventMap>(type: K, listener: (this: PermissionStatus, ev: PermissionStatusEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                              ^^^^: K   (TypeReference) (Identifier)
+>                                                              ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof PermissionStatusEventMap>(type: K, listener: (this: PermissionStatus, ev: PermissionStatusEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                    ^: any   (Any) (Identifier)
@@ -25119,7 +25119,7 @@ interface PermissionStatus extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof PermissionStatusEventMap>(type: K, listener: (this: PermissionStatus, ev: PermissionStatusEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                 ^^^^: K   (TypeReference) (Identifier)
+>                                                                 ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof PermissionStatusEventMap>(type: K, listener: (this: PermissionStatus, ev: PermissionStatusEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                       ^: any   (Any) (Identifier)
@@ -26047,7 +26047,7 @@ interface RTCDataChannel extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                            ^^^^: K   (TypeReference) (Identifier)
+>                                                            ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                  ^: any   (Any) (Identifier)
@@ -26119,7 +26119,7 @@ interface RTCDataChannel extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                               ^^^^: K   (TypeReference) (Identifier)
+>                                                               ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof RTCDataChannelEventMap>(type: K, listener: (this: RTCDataChannel, ev: RTCDataChannelEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                     ^: any   (Any) (Identifier)
@@ -26776,7 +26776,7 @@ interface ReadableStreamBYOBReader extends ReadableStreamGenericReader {
 >                                        ^^^^^^^^^^^: ArrayBufferConstructor   (TypeReference) (Identifier)
 
     read<T extends Exclude<BufferSource, ArrayBuffer>>(view: T, options?: ReadableStreamBYOBReaderReadOptions): Promise<ReadableStreamReadResult<T>>;
->                                                      ^^^^: T   (TypeReference) (Identifier)
+>                                                      ^^^^: T   (TypeParameter) (Identifier)
 
     read<T extends Exclude<BufferSource, ArrayBuffer>>(view: T, options?: ReadableStreamBYOBReaderReadOptions): Promise<ReadableStreamReadResult<T>>;
 >                                                            ^: any   (Any) (Identifier)
@@ -26926,7 +26926,7 @@ interface ReadableStreamDefaultController<R = any> {
 >   ^^^^^^^: { (chunk: R): void; (chunk: R): void; }   (Object) (Identifier)
 
     enqueue(chunk: R): void;
->           ^^^^^: R   (TypeReference) (Identifier)
+>           ^^^^^: R   (TypeParameter) (Identifier)
 
     enqueue(chunk: R): void;
 >                  ^: any   (Any) (Identifier)
@@ -27620,7 +27620,7 @@ interface ServiceWorker extends EventTarget, AbstractWorker {
 >                                    ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof ServiceWorkerEventMap>(type: K, listener: (this: ServiceWorker, ev: ServiceWorkerEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                           ^^^^: K   (TypeReference) (Identifier)
+>                                                           ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof ServiceWorkerEventMap>(type: K, listener: (this: ServiceWorker, ev: ServiceWorkerEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                 ^: any   (Any) (Identifier)
@@ -27692,7 +27692,7 @@ interface ServiceWorker extends EventTarget, AbstractWorker {
 >                                       ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof ServiceWorkerEventMap>(type: K, listener: (this: ServiceWorker, ev: ServiceWorkerEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                              ^^^^: K   (TypeReference) (Identifier)
+>                                                              ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof ServiceWorkerEventMap>(type: K, listener: (this: ServiceWorker, ev: ServiceWorkerEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                    ^: any   (Any) (Identifier)
@@ -27990,7 +27990,7 @@ interface ServiceWorkerContainer extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof ServiceWorkerContainerEventMap>(type: K, listener: (this: ServiceWorkerContainer, ev: ServiceWorkerContainerEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                                    ^^^^: K   (TypeReference) (Identifier)
+>                                                                    ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof ServiceWorkerContainerEventMap>(type: K, listener: (this: ServiceWorkerContainer, ev: ServiceWorkerContainerEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                          ^: any   (Any) (Identifier)
@@ -28062,7 +28062,7 @@ interface ServiceWorkerContainer extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof ServiceWorkerContainerEventMap>(type: K, listener: (this: ServiceWorkerContainer, ev: ServiceWorkerContainerEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                       ^^^^: K   (TypeReference) (Identifier)
+>                                                                       ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof ServiceWorkerContainerEventMap>(type: K, listener: (this: ServiceWorkerContainer, ev: ServiceWorkerContainerEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                             ^: any   (Any) (Identifier)
@@ -28491,7 +28491,7 @@ interface ServiceWorkerGlobalScope extends WorkerGlobalScope {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof ServiceWorkerGlobalScopeEventMap>(type: K, listener: (this: ServiceWorkerGlobalScope, ev: ServiceWorkerGlobalScopeEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                                      ^^^^: K   (TypeReference) (Identifier)
+>                                                                      ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof ServiceWorkerGlobalScopeEventMap>(type: K, listener: (this: ServiceWorkerGlobalScope, ev: ServiceWorkerGlobalScopeEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                            ^: any   (Any) (Identifier)
@@ -28563,7 +28563,7 @@ interface ServiceWorkerGlobalScope extends WorkerGlobalScope {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof ServiceWorkerGlobalScopeEventMap>(type: K, listener: (this: ServiceWorkerGlobalScope, ev: ServiceWorkerGlobalScopeEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                         ^^^^: K   (TypeReference) (Identifier)
+>                                                                         ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof ServiceWorkerGlobalScopeEventMap>(type: K, listener: (this: ServiceWorkerGlobalScope, ev: ServiceWorkerGlobalScopeEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                               ^: any   (Any) (Identifier)
@@ -28829,7 +28829,7 @@ interface ServiceWorkerRegistration extends EventTarget, PushManagerAttribute {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof ServiceWorkerRegistrationEventMap>(type: K, listener: (this: ServiceWorkerRegistration, ev: ServiceWorkerRegistrationEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                                       ^^^^: K   (TypeReference) (Identifier)
+>                                                                       ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof ServiceWorkerRegistrationEventMap>(type: K, listener: (this: ServiceWorkerRegistration, ev: ServiceWorkerRegistrationEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                             ^: any   (Any) (Identifier)
@@ -28901,7 +28901,7 @@ interface ServiceWorkerRegistration extends EventTarget, PushManagerAttribute {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof ServiceWorkerRegistrationEventMap>(type: K, listener: (this: ServiceWorkerRegistration, ev: ServiceWorkerRegistrationEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                          ^^^^: K   (TypeReference) (Identifier)
+>                                                                          ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof ServiceWorkerRegistrationEventMap>(type: K, listener: (this: ServiceWorkerRegistration, ev: ServiceWorkerRegistrationEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                                ^: any   (Any) (Identifier)
@@ -29048,7 +29048,7 @@ interface SharedWorkerGlobalScope extends WorkerGlobalScope {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof SharedWorkerGlobalScopeEventMap>(type: K, listener: (this: SharedWorkerGlobalScope, ev: SharedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                                     ^^^^: K   (TypeReference) (Identifier)
+>                                                                     ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof SharedWorkerGlobalScopeEventMap>(type: K, listener: (this: SharedWorkerGlobalScope, ev: SharedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                           ^: any   (Any) (Identifier)
@@ -29120,7 +29120,7 @@ interface SharedWorkerGlobalScope extends WorkerGlobalScope {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof SharedWorkerGlobalScopeEventMap>(type: K, listener: (this: SharedWorkerGlobalScope, ev: SharedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                        ^^^^: K   (TypeReference) (Identifier)
+>                                                                        ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof SharedWorkerGlobalScopeEventMap>(type: K, listener: (this: SharedWorkerGlobalScope, ev: SharedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                              ^: any   (Any) (Identifier)
@@ -30539,7 +30539,7 @@ interface TaskSignal extends AbortSignal {
 >                                    ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof TaskSignalEventMap>(type: K, listener: (this: TaskSignal, ev: TaskSignalEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                        ^^^^: K   (TypeReference) (Identifier)
+>                                                        ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof TaskSignalEventMap>(type: K, listener: (this: TaskSignal, ev: TaskSignalEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                              ^: any   (Any) (Identifier)
@@ -30611,7 +30611,7 @@ interface TaskSignal extends AbortSignal {
 >                                       ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof TaskSignalEventMap>(type: K, listener: (this: TaskSignal, ev: TaskSignalEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                           ^^^^: K   (TypeReference) (Identifier)
+>                                                           ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof TaskSignalEventMap>(type: K, listener: (this: TaskSignal, ev: TaskSignalEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                 ^: any   (Any) (Identifier)
@@ -31832,7 +31832,7 @@ interface VideoDecoder extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof VideoDecoderEventMap>(type: K, listener: (this: VideoDecoder, ev: VideoDecoderEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                          ^^^^: K   (TypeReference) (Identifier)
+>                                                          ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof VideoDecoderEventMap>(type: K, listener: (this: VideoDecoder, ev: VideoDecoderEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                ^: any   (Any) (Identifier)
@@ -31904,7 +31904,7 @@ interface VideoDecoder extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof VideoDecoderEventMap>(type: K, listener: (this: VideoDecoder, ev: VideoDecoderEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                             ^^^^: K   (TypeReference) (Identifier)
+>                                                             ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof VideoDecoderEventMap>(type: K, listener: (this: VideoDecoder, ev: VideoDecoderEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                   ^: any   (Any) (Identifier)
@@ -32129,7 +32129,7 @@ interface VideoEncoder extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof VideoEncoderEventMap>(type: K, listener: (this: VideoEncoder, ev: VideoEncoderEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                          ^^^^: K   (TypeReference) (Identifier)
+>                                                          ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof VideoEncoderEventMap>(type: K, listener: (this: VideoEncoder, ev: VideoEncoderEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                ^: any   (Any) (Identifier)
@@ -32201,7 +32201,7 @@ interface VideoEncoder extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof VideoEncoderEventMap>(type: K, listener: (this: VideoEncoder, ev: VideoEncoderEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                             ^^^^: K   (TypeReference) (Identifier)
+>                                                             ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof VideoEncoderEventMap>(type: K, listener: (this: VideoEncoder, ev: VideoEncoderEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                   ^: any   (Any) (Identifier)
@@ -45377,7 +45377,7 @@ interface WebSocket extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof WebSocketEventMap>(type: K, listener: (this: WebSocket, ev: WebSocketEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                       ^^^^: K   (TypeReference) (Identifier)
+>                                                       ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof WebSocketEventMap>(type: K, listener: (this: WebSocket, ev: WebSocketEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                             ^: any   (Any) (Identifier)
@@ -45449,7 +45449,7 @@ interface WebSocket extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof WebSocketEventMap>(type: K, listener: (this: WebSocket, ev: WebSocketEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                          ^^^^: K   (TypeReference) (Identifier)
+>                                                          ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof WebSocketEventMap>(type: K, listener: (this: WebSocket, ev: WebSocketEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                ^: any   (Any) (Identifier)
@@ -46186,7 +46186,7 @@ interface WindowOrWorkerGlobalScope {
 >                   ^: any   (Any) (Identifier)
 
     structuredClone<T = any>(value: T, options?: StructuredSerializeOptions): T;
->                            ^^^^^: T   (TypeReference) (Identifier)
+>                            ^^^^^: T   (TypeParameter) (Identifier)
 
     structuredClone<T = any>(value: T, options?: StructuredSerializeOptions): T;
 >                                   ^: any   (Any) (Identifier)
@@ -46294,7 +46294,7 @@ interface Worker extends EventTarget, AbstractWorker, MessageEventTarget<Worker>
 >                                    ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof WorkerEventMap>(type: K, listener: (this: Worker, ev: WorkerEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                    ^^^^: K   (TypeReference) (Identifier)
+>                                                    ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof WorkerEventMap>(type: K, listener: (this: Worker, ev: WorkerEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                          ^: any   (Any) (Identifier)
@@ -46366,7 +46366,7 @@ interface Worker extends EventTarget, AbstractWorker, MessageEventTarget<Worker>
 >                                       ^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof WorkerEventMap>(type: K, listener: (this: Worker, ev: WorkerEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                       ^^^^: K   (TypeReference) (Identifier)
+>                                                       ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof WorkerEventMap>(type: K, listener: (this: Worker, ev: WorkerEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                             ^: any   (Any) (Identifier)
@@ -46712,7 +46712,7 @@ interface WorkerGlobalScope extends EventTarget, FontFaceSource, WindowOrWorkerG
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof WorkerGlobalScopeEventMap>(type: K, listener: (this: WorkerGlobalScope, ev: WorkerGlobalScopeEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                               ^^^^: K   (TypeReference) (Identifier)
+>                                                               ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof WorkerGlobalScopeEventMap>(type: K, listener: (this: WorkerGlobalScope, ev: WorkerGlobalScopeEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                     ^: any   (Any) (Identifier)
@@ -46784,7 +46784,7 @@ interface WorkerGlobalScope extends EventTarget, FontFaceSource, WindowOrWorkerG
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof WorkerGlobalScopeEventMap>(type: K, listener: (this: WorkerGlobalScope, ev: WorkerGlobalScopeEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                  ^^^^: K   (TypeReference) (Identifier)
+>                                                                  ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof WorkerGlobalScopeEventMap>(type: K, listener: (this: WorkerGlobalScope, ev: WorkerGlobalScopeEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                        ^: any   (Any) (Identifier)
@@ -47448,7 +47448,7 @@ interface XMLHttpRequest extends XMLHttpRequestEventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof XMLHttpRequestEventMap>(type: K, listener: (this: XMLHttpRequest, ev: XMLHttpRequestEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                            ^^^^: K   (TypeReference) (Identifier)
+>                                                            ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof XMLHttpRequestEventMap>(type: K, listener: (this: XMLHttpRequest, ev: XMLHttpRequestEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                  ^: any   (Any) (Identifier)
@@ -47520,7 +47520,7 @@ interface XMLHttpRequest extends XMLHttpRequestEventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof XMLHttpRequestEventMap>(type: K, listener: (this: XMLHttpRequest, ev: XMLHttpRequestEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                               ^^^^: K   (TypeReference) (Identifier)
+>                                                               ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof XMLHttpRequestEventMap>(type: K, listener: (this: XMLHttpRequest, ev: XMLHttpRequestEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                     ^: any   (Any) (Identifier)
@@ -47874,7 +47874,7 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof XMLHttpRequestEventTargetEventMap>(type: K, listener: (this: XMLHttpRequestEventTarget, ev: XMLHttpRequestEventTargetEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                                       ^^^^: K   (TypeReference) (Identifier)
+>                                                                       ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof XMLHttpRequestEventTargetEventMap>(type: K, listener: (this: XMLHttpRequestEventTarget, ev: XMLHttpRequestEventTargetEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                             ^: any   (Any) (Identifier)
@@ -47946,7 +47946,7 @@ interface XMLHttpRequestEventTarget extends EventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof XMLHttpRequestEventTargetEventMap>(type: K, listener: (this: XMLHttpRequestEventTarget, ev: XMLHttpRequestEventTargetEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                          ^^^^: K   (TypeReference) (Identifier)
+>                                                                          ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof XMLHttpRequestEventTargetEventMap>(type: K, listener: (this: XMLHttpRequestEventTarget, ev: XMLHttpRequestEventTargetEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                                ^: any   (Any) (Identifier)
@@ -48048,7 +48048,7 @@ interface XMLHttpRequestUpload extends XMLHttpRequestEventTarget {
 >                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     addEventListener<K extends keyof XMLHttpRequestEventTargetEventMap>(type: K, listener: (this: XMLHttpRequestUpload, ev: XMLHttpRequestEventTargetEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                                       ^^^^: K   (TypeReference) (Identifier)
+>                                                                       ^^^^: K   (TypeParameter) (Identifier)
 
     addEventListener<K extends keyof XMLHttpRequestEventTargetEventMap>(type: K, listener: (this: XMLHttpRequestUpload, ev: XMLHttpRequestEventTargetEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                             ^: any   (Any) (Identifier)
@@ -48120,7 +48120,7 @@ interface XMLHttpRequestUpload extends XMLHttpRequestEventTarget {
 >                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     removeEventListener<K extends keyof XMLHttpRequestEventTargetEventMap>(type: K, listener: (this: XMLHttpRequestUpload, ev: XMLHttpRequestEventTargetEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                          ^^^^: K   (TypeReference) (Identifier)
+>                                                                          ^^^^: K   (TypeParameter) (Identifier)
 
     removeEventListener<K extends keyof XMLHttpRequestEventTargetEventMap>(type: K, listener: (this: XMLHttpRequestUpload, ev: XMLHttpRequestEventTargetEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                                ^: any   (Any) (Identifier)
@@ -48862,7 +48862,7 @@ declare namespace WebAssembly {
 >       ^^^^^^^: boolean | undefined   (Union) (Identifier)
 
         value: T;
->       ^^^^^: T   (TypeReference) (Identifier)
+>       ^^^^^: T   (TypeParameter) (Identifier)
 
         value: T;
 >              ^: any   (Any) (Identifier)
@@ -49659,7 +49659,7 @@ interface QueuingStrategySize<T = any> {
 >                             ^: any   (Any) (Identifier)
 
     (chunk: T): number;
->    ^^^^^: T   (TypeReference) (Identifier)
+>    ^^^^^: T   (TypeParameter) (Identifier)
 
     (chunk: T): number;
 >           ^: any   (Any) (Identifier)
@@ -49755,7 +49755,7 @@ interface TransformerTransformCallback<I, O> {
 >                                         ^: any   (Any) (Identifier)
 
     (chunk: I, controller: TransformStreamDefaultController<O>): void | PromiseLike<void>;
->    ^^^^^: I   (TypeReference) (Identifier)
+>    ^^^^^: I   (TypeParameter) (Identifier)
 
     (chunk: I, controller: TransformStreamDefaultController<O>): void | PromiseLike<void>;
 >           ^: any   (Any) (Identifier)
@@ -49830,7 +49830,7 @@ interface UnderlyingSinkWriteCallback<W> {
 >                                     ^: any   (Any) (Identifier)
 
     (chunk: W, controller: WritableStreamDefaultController): void | PromiseLike<void>;
->    ^^^^^: W   (TypeReference) (Identifier)
+>    ^^^^^: W   (TypeParameter) (Identifier)
 
     (chunk: W, controller: WritableStreamDefaultController): void | PromiseLike<void>;
 >           ^: any   (Any) (Identifier)
@@ -50470,7 +50470,7 @@ declare function structuredClone<T = any>(value: T, options?: StructuredSerializ
 >                                ^: any   (Any) (Identifier)
 
 declare function structuredClone<T = any>(value: T, options?: StructuredSerializeOptions): T;
->                                         ^^^^^: T   (TypeReference) (Identifier)
+>                                         ^^^^^: T   (TypeParameter) (Identifier)
 
 declare function structuredClone<T = any>(value: T, options?: StructuredSerializeOptions): T;
 >                                                ^: any   (Any) (Identifier)
@@ -50565,7 +50565,7 @@ declare function addEventListener<K extends keyof DedicatedWorkerGlobalScopeEven
 >                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare function addEventListener<K extends keyof DedicatedWorkerGlobalScopeEventMap>(type: K, listener: (this: DedicatedWorkerGlobalScope, ev: DedicatedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
->                                                                                     ^^^^: K   (TypeReference) (Identifier)
+>                                                                                     ^^^^: K   (TypeParameter) (Identifier)
 
 declare function addEventListener<K extends keyof DedicatedWorkerGlobalScopeEventMap>(type: K, listener: (this: DedicatedWorkerGlobalScope, ev: DedicatedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 >                                                                                           ^: any   (Any) (Identifier)
@@ -50639,7 +50639,7 @@ declare function removeEventListener<K extends keyof DedicatedWorkerGlobalScopeE
 >                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare function removeEventListener<K extends keyof DedicatedWorkerGlobalScopeEventMap>(type: K, listener: (this: DedicatedWorkerGlobalScope, ev: DedicatedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
->                                                                                        ^^^^: K   (TypeReference) (Identifier)
+>                                                                                        ^^^^: K   (TypeParameter) (Identifier)
 
 declare function removeEventListener<K extends keyof DedicatedWorkerGlobalScopeEventMap>(type: K, listener: (this: DedicatedWorkerGlobalScope, ev: DedicatedWorkerGlobalScopeEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
 >                                                                                              ^: any   (Any) (Identifier)

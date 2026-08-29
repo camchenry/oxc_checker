@@ -5,7 +5,7 @@ type Box<T> = { value: T };
 >        ^: any   (Any) (Identifier)
 
 type Box<T> = { value: T };
->               ^^^^^: T   (TypeReference) (Identifier)
+>               ^^^^^: T   (TypeParameter) (Identifier)
 
 type Box<T> = { value: T };
 >                      ^: any   (Any) (Identifier)
@@ -17,7 +17,7 @@ type DefaultBox<T = number> = { value: T };
 >               ^: any   (Any) (Identifier)
 
 type DefaultBox<T = number> = { value: T };
->                               ^^^^^: T   (TypeReference) (Identifier)
+>                               ^^^^^: T   (TypeParameter) (Identifier)
 
 type DefaultBox<T = number> = { value: T };
 >                                      ^: any   (Any) (Identifier)
@@ -32,7 +32,7 @@ type SelfDefault<T = T> = { value: T };
 >                    ^: any   (Any) (Identifier)
 
 type SelfDefault<T = T> = { value: T };
->                           ^^^^^: T   (TypeReference) (Identifier)
+>                           ^^^^^: T   (TypeParameter) (Identifier)
 
 type SelfDefault<T = T> = { value: T };
 >                                  ^: any   (Any) (Identifier)
@@ -50,13 +50,13 @@ type ForwardDefault<T = U, U = string> = { t: T; u: U };
 >                          ^: any   (Any) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                                          ^: T   (TypeReference) (Identifier)
+>                                          ^: T   (TypeParameter) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
 >                                             ^: any   (Any) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
->                                                ^: U   (TypeReference) (Identifier)
+>                                                ^: U   (TypeParameter) (Identifier)
 
 type ForwardDefault<T = U, U = string> = { t: T; u: U };
 >                                                   ^: any   (Any) (Identifier)
@@ -74,13 +74,13 @@ type DependentDefault<T = string, U = T> = { t: T; u: U };
 >                                     ^: any   (Any) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                            ^: T   (TypeReference) (Identifier)
+>                                            ^: T   (TypeParameter) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
 >                                               ^: any   (Any) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
->                                                  ^: U   (TypeReference) (Identifier)
+>                                                  ^: U   (TypeParameter) (Identifier)
 
 type DependentDefault<T = string, U = T> = { t: T; u: U };
 >                                                     ^: any   (Any) (Identifier)
@@ -92,7 +92,7 @@ function box<T>(x: T): Box<T> {
 >            ^: any   (Any) (Identifier)
 
 function box<T>(x: T): Box<T> {
->               ^: T   (TypeReference) (Identifier)
+>               ^: T   (TypeParameter) (Identifier)
 
 function box<T>(x: T): Box<T> {
 >                  ^: any   (Any) (Identifier)
@@ -104,10 +104,10 @@ function box<T>(x: T): Box<T> {
 >                          ^: any   (Any) (Identifier)
 
   return { value: x };
->          ^^^^^: T   (TypeReference) (Identifier)
+>          ^^^^^: T   (TypeParameter) (Identifier)
 
   return { value: x };
->                 ^: T   (TypeReference) (Identifier)
+>                 ^: T   (TypeParameter) (Identifier)
 
 const explicit: Box<string> = { value: "test" };
 >     ^^^^^^^^: Box<string>   (TypeReference) (Identifier)

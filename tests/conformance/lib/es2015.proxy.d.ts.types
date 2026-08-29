@@ -11,7 +11,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^^^: { (target: T, thisArg: any, argArray: any[]): any; (target: T, thisArg: any, argArray: any[]): any; } | undefined   (Union) (Identifier)
 
     apply?(target: T, thisArg: any, argArray: any[]): any;
->          ^^^^^^: T   (TypeReference) (Identifier)
+>          ^^^^^^: T   (TypeParameter) (Identifier)
 
     apply?(target: T, thisArg: any, argArray: any[]): any;
 >                  ^: any   (Any) (Identifier)
@@ -26,7 +26,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^^^^^^^: { (target: T, argArray: any[], newTarget: Function): object; (target: T, argArray: any[], newTarget: Function): object; } | undefined   (Union) (Identifier)
 
     construct?(target: T, argArray: any[], newTarget: Function): object;
->              ^^^^^^: T   (TypeReference) (Identifier)
+>              ^^^^^^: T   (TypeParameter) (Identifier)
 
     construct?(target: T, argArray: any[], newTarget: Function): object;
 >                      ^: any   (Any) (Identifier)
@@ -47,7 +47,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^^^^^^^^^^^^: { (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; (target: T, property: string | symbol, attributes: PropertyDescriptor): boolean; } | undefined   (Union) (Identifier)
 
     defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
->                   ^^^^^^: T   (TypeReference) (Identifier)
+>                   ^^^^^^: T   (TypeParameter) (Identifier)
 
     defineProperty?(target: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
 >                           ^: any   (Any) (Identifier)
@@ -68,7 +68,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^^^^^^^^^^^^: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; } | undefined   (Union) (Identifier)
 
     deleteProperty?(target: T, p: string | symbol): boolean;
->                   ^^^^^^: T   (TypeReference) (Identifier)
+>                   ^^^^^^: T   (TypeParameter) (Identifier)
 
     deleteProperty?(target: T, p: string | symbol): boolean;
 >                           ^: any   (Any) (Identifier)
@@ -80,7 +80,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^: { (target: T, p: string | symbol, receiver: any): any; (target: T, p: string | symbol, receiver: any): any; } | undefined   (Union) (Identifier)
 
     get?(target: T, p: string | symbol, receiver: any): any;
->        ^^^^^^: T   (TypeReference) (Identifier)
+>        ^^^^^^: T   (TypeParameter) (Identifier)
 
     get?(target: T, p: string | symbol, receiver: any): any;
 >                ^: any   (Any) (Identifier)
@@ -95,7 +95,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^^^^^^^^^^^^^^^^^^^^^^: { (target: T, p: string | symbol): PropertyDescriptor | undefined; (target: T, p: string | symbol): PropertyDescriptor | undefined; } | undefined   (Union) (Identifier)
 
     getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
->                             ^^^^^^: T   (TypeReference) (Identifier)
+>                             ^^^^^^: T   (TypeParameter) (Identifier)
 
     getOwnPropertyDescriptor?(target: T, p: string | symbol): PropertyDescriptor | undefined;
 >                                     ^: any   (Any) (Identifier)
@@ -113,7 +113,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^^^^^^^^^^^^: { (target: T): object | null; (target: T): object | null; } | undefined   (Union) (Identifier)
 
     getPrototypeOf?(target: T): object | null;
->                   ^^^^^^: T   (TypeReference) (Identifier)
+>                   ^^^^^^: T   (TypeParameter) (Identifier)
 
     getPrototypeOf?(target: T): object | null;
 >                           ^: any   (Any) (Identifier)
@@ -122,7 +122,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^: { (target: T, p: string | symbol): boolean; (target: T, p: string | symbol): boolean; } | undefined   (Union) (Identifier)
 
     has?(target: T, p: string | symbol): boolean;
->        ^^^^^^: T   (TypeReference) (Identifier)
+>        ^^^^^^: T   (TypeParameter) (Identifier)
 
     has?(target: T, p: string | symbol): boolean;
 >                ^: any   (Any) (Identifier)
@@ -134,7 +134,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^^^^^^^^^^: { (target: T): boolean; (target: T): boolean; } | undefined   (Union) (Identifier)
 
     isExtensible?(target: T): boolean;
->                 ^^^^^^: T   (TypeReference) (Identifier)
+>                 ^^^^^^: T   (TypeParameter) (Identifier)
 
     isExtensible?(target: T): boolean;
 >                         ^: any   (Any) (Identifier)
@@ -143,7 +143,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^^^^^: { (target: T): ArrayLike<string | symbol>; (target: T): ArrayLike<string | symbol>; } | undefined   (Union) (Identifier)
 
     ownKeys?(target: T): ArrayLike<string | symbol>;
->            ^^^^^^: T   (TypeReference) (Identifier)
+>            ^^^^^^: T   (TypeParameter) (Identifier)
 
     ownKeys?(target: T): ArrayLike<string | symbol>;
 >                    ^: any   (Any) (Identifier)
@@ -158,7 +158,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^^^^^^^^^^^^^^^: { (target: T): boolean; (target: T): boolean; } | undefined   (Union) (Identifier)
 
     preventExtensions?(target: T): boolean;
->                      ^^^^^^: T   (TypeReference) (Identifier)
+>                      ^^^^^^: T   (TypeParameter) (Identifier)
 
     preventExtensions?(target: T): boolean;
 >                              ^: any   (Any) (Identifier)
@@ -167,7 +167,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^: { (target: T, p: string | symbol, newValue: any, receiver: any): boolean; (target: T, p: string | symbol, newValue: any, receiver: any): boolean; } | undefined   (Union) (Identifier)
 
     set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
->        ^^^^^^: T   (TypeReference) (Identifier)
+>        ^^^^^^: T   (TypeParameter) (Identifier)
 
     set?(target: T, p: string | symbol, newValue: any, receiver: any): boolean;
 >                ^: any   (Any) (Identifier)
@@ -185,7 +185,7 @@ interface ProxyHandler<T extends object> {
 >   ^^^^^^^^^^^^^^: { (target: T, v: object | null): boolean; (target: T, v: object | null): boolean; } | undefined   (Union) (Identifier)
 
     setPrototypeOf?(target: T, v: object | null): boolean;
->                   ^^^^^^: T   (TypeReference) (Identifier)
+>                   ^^^^^^: T   (TypeParameter) (Identifier)
 
     setPrototypeOf?(target: T, v: object | null): boolean;
 >                           ^: any   (Any) (Identifier)
@@ -206,7 +206,7 @@ interface ProxyConstructor {
 >             ^: any   (Any) (Identifier)
 
     revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
->                               ^^^^^^: T   (TypeReference) (Identifier)
+>                               ^^^^^^: T   (TypeParameter) (Identifier)
 
     revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
 >                                       ^: any   (Any) (Identifier)
@@ -224,7 +224,7 @@ interface ProxyConstructor {
 >                                                                ^: any   (Any) (Identifier)
 
     revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
->                                                                       ^^^^^: T   (TypeReference) (Identifier)
+>                                                                       ^^^^^: T   (TypeParameter) (Identifier)
 
     revocable<T extends object>(target: T, handler: ProxyHandler<T>): { proxy: T; revoke: () => void; };
 >                                                                              ^: any   (Any) (Identifier)
@@ -236,7 +236,7 @@ interface ProxyConstructor {
 >        ^: any   (Any) (Identifier)
 
     new <T extends object>(target: T, handler: ProxyHandler<T>): T;
->                          ^^^^^^: T   (TypeReference) (Identifier)
+>                          ^^^^^^: T   (TypeParameter) (Identifier)
 
     new <T extends object>(target: T, handler: ProxyHandler<T>): T;
 >                                  ^: any   (Any) (Identifier)

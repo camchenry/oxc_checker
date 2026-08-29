@@ -20,7 +20,7 @@ interface IteratorYieldResult<TYield> {
 >   ^^^^: false | undefined   (Union) (Identifier)
 
     value: TYield;
->   ^^^^^: TYield   (TypeReference) (Identifier)
+>   ^^^^^: TYield   (TypeParameter) (Identifier)
 
     value: TYield;
 >          ^^^^^^: any   (Any) (Identifier)
@@ -38,7 +38,7 @@ interface IteratorReturnResult<TReturn> {
 >   ^^^^: true   (BooleanLiteral) (Identifier)
 
     value: TReturn;
->   ^^^^^: TReturn   (TypeReference) (Identifier)
+>   ^^^^^: TReturn   (TypeParameter) (Identifier)
 
     value: TReturn;
 >          ^^^^^^^: any   (Any) (Identifier)
@@ -451,7 +451,7 @@ interface ArrayConstructor {
 >                                                    ^^^^^: (v: T, k: number) => U   (Function) (Identifier)
 
     from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
->                                                            ^: T   (TypeReference) (Identifier)
+>                                                            ^: T   (TypeParameter) (Identifier)
 
     from<T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
 >                                                               ^: any   (Any) (Identifier)
@@ -1392,7 +1392,7 @@ interface Int8ArrayConstructor {
 >                                  ^^^^^: ((v: T, k: number) => number) | undefined   (Union) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
->                                           ^: T   (TypeReference) (Identifier)
+>                                           ^: T   (TypeParameter) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int8Array<ArrayBuffer>;
 >                                              ^: any   (Any) (Identifier)
@@ -1550,7 +1550,7 @@ interface Uint8ArrayConstructor {
 >                                  ^^^^^: ((v: T, k: number) => number) | undefined   (Union) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
->                                           ^: T   (TypeReference) (Identifier)
+>                                           ^: T   (TypeParameter) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8Array<ArrayBuffer>;
 >                                              ^: any   (Any) (Identifier)
@@ -1708,7 +1708,7 @@ interface Uint8ClampedArrayConstructor {
 >                                  ^^^^^: ((v: T, k: number) => number) | undefined   (Union) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
->                                           ^: T   (TypeReference) (Identifier)
+>                                           ^: T   (TypeParameter) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray<ArrayBuffer>;
 >                                              ^: any   (Any) (Identifier)
@@ -1866,7 +1866,7 @@ interface Int16ArrayConstructor {
 >                                  ^^^^^: ((v: T, k: number) => number) | undefined   (Union) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
->                                           ^: T   (TypeReference) (Identifier)
+>                                           ^: T   (TypeParameter) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int16Array<ArrayBuffer>;
 >                                              ^: any   (Any) (Identifier)
@@ -2024,7 +2024,7 @@ interface Uint16ArrayConstructor {
 >                                  ^^^^^: ((v: T, k: number) => number) | undefined   (Union) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
->                                           ^: T   (TypeReference) (Identifier)
+>                                           ^: T   (TypeParameter) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint16Array<ArrayBuffer>;
 >                                              ^: any   (Any) (Identifier)
@@ -2182,7 +2182,7 @@ interface Int32ArrayConstructor {
 >                                  ^^^^^: ((v: T, k: number) => number) | undefined   (Union) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
->                                           ^: T   (TypeReference) (Identifier)
+>                                           ^: T   (TypeParameter) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>;
 >                                              ^: any   (Any) (Identifier)
@@ -2340,7 +2340,7 @@ interface Uint32ArrayConstructor {
 >                                  ^^^^^: ((v: T, k: number) => number) | undefined   (Union) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
->                                           ^: T   (TypeReference) (Identifier)
+>                                           ^: T   (TypeParameter) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Uint32Array<ArrayBuffer>;
 >                                              ^: any   (Any) (Identifier)
@@ -2498,7 +2498,7 @@ interface Float32ArrayConstructor {
 >                                  ^^^^^: ((v: T, k: number) => number) | undefined   (Union) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
->                                           ^: T   (TypeReference) (Identifier)
+>                                           ^: T   (TypeParameter) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float32Array<ArrayBuffer>;
 >                                              ^: any   (Any) (Identifier)
@@ -2656,7 +2656,7 @@ interface Float64ArrayConstructor {
 >                                  ^^^^^: ((v: T, k: number) => number) | undefined   (Union) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
->                                           ^: T   (TypeReference) (Identifier)
+>                                           ^: T   (TypeParameter) (Identifier)
 
     from<T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Float64Array<ArrayBuffer>;
 >                                              ^: any   (Any) (Identifier)

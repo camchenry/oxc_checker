@@ -2023,16 +2023,16 @@ fn destructured_parameters_preserve_pattern_and_property_types() {
         ),
         "TData"
     );
-    assert_type_eq(
-        ret.arena,
-        &get_first_symbol_type(&ret, "items"),
-        &arena(&ret).type_reference("TData", std::iter::empty()),
-    );
-    assert_type_eq(
-        ret.arena,
-        &get_first_symbol_type(&ret, "chunk"),
-        &arena(&ret).type_reference("TQueryFnData", std::iter::empty()),
-    );
+    let items = get_first_symbol_type(&ret, "items");
+    let TyKind::TypeParameter(items) = ret.arena.ty_kind(items) else {
+        panic!("expected items to use a type parameter");
+    };
+    assert_eq!(items.name, "TData");
+    let chunk = get_first_symbol_type(&ret, "chunk");
+    let TyKind::TypeParameter(chunk) = ret.arena.ty_kind(chunk) else {
+        panic!("expected chunk to use a type parameter");
+    };
+    assert_eq!(chunk.name, "TQueryFnData");
 }
 
 #[test]
@@ -2537,9 +2537,12 @@ fn conditional_infer_return_type_of_generic_function_falls_back_to_unknown() {
     ",
     );
 
+    let value = get_type_alias_type(&ret, "Value");
     assert_eq!(
-        type_string(&ret, get_type_alias_type(&ret, "Value")),
-        "unknown"
+        type_string(&ret, value),
+        "unknown",
+        "{:?}",
+        ret.arena.ty_kind(value),
     );
 }
 
@@ -2667,6 +2670,31 @@ fn recursive_type_instantiation_depth_produces_error_type() {
         Some(TypeErrorKind::TypeInstantiationDepthExceeded)
     );
     assert_eq!(type_string(&ret, value), "any");
+}
+
+#[test]
+fn recursively_growing_type_arguments_hit_instantiation_limit() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+        type Foo<T extends "true", B> = { "true": Foo<T, Foo<T, B>> }[T];
+        let f1: Foo<"true", {}>;
+        "#,
+    );
+
+    let checker = checker(&ret);
+    let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
+    let rendered = semantic
+        .nodes()
+        .iter_enumerated()
+        .map(|(node_id, _)| {
+            let node = NodeRef::new(ret.program_id, node_id);
+            checker.type_to_string(checker.get_type_at_location(node), node)
+        })
+        .collect::<Vec<_>>();
+
+    assert!(rendered.iter().any(|ty| ty == "any"));
 }
 
 #[test]
@@ -3306,6 +3334,28 @@ fn single_interface_method_signature_location_uses_function_type() {
 }
 
 #[test]
+fn merged_interface_method_signature_preserves_type_parameter_constraint() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+    interface PredicateArray<T> {
+        every<S extends T>(predicate: (value: T) => value is S): this is readonly S[];
+    }
+    interface PredicateArray<T> {
+        every(predicate: (value: T) => unknown): boolean;
+    }
+    "#,
+    );
+
+    let types = get_ts_method_signature_types(&ret, "every");
+    assert!(
+        types.iter().all(|ty| ty.contains("<S extends T>")),
+        "{types:?}"
+    );
+}
+
+#[test]
 fn optional_interface_method_signature_location_includes_undefined() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -3576,6 +3626,65 @@ fn classes_use_class_types_in_value_queries() {
     assert_eq!(
         type_string(&ret, get_global_symbol_type(&ret, "instance")),
         "C"
+    );
+}
+
+#[test]
+fn generic_signatures_use_type_parameter_types() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "function identity<T extends string>(value: T): T { return value; }",
+    );
+    let identity = get_global_symbol_type(&ret, "identity");
+    let TyKind::Function(function) = ret.arena.ty_kind(identity) else {
+        panic!("expected a function");
+    };
+
+    let parameter_type = function.parameters[0].ty;
+    let TyKind::TypeParameter(type_parameter) = ret.arena.ty_kind(parameter_type) else {
+        panic!("expected a type parameter");
+    };
+    assert_eq!(type_parameter.name, "T");
+    assert_eq!(type_parameter.constraint_type, Some(Ty::string()));
+    assert!(
+        ret.arena
+            .is_type_identical_to(function.return_type, parameter_type)
+    );
+}
+
+#[test]
+fn type_parameters_use_declaration_identity() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "function first<T>(value: T): T { return value; } function second<T>(value: T): T { return value; }",
+    );
+    let checker = checker(&ret);
+    let parameter_type = |name| {
+        let TyKind::Function(function) = ret.arena.ty_kind(get_global_symbol_type(&ret, name))
+        else {
+            panic!("expected a function");
+        };
+        function.parameters[0].ty
+    };
+    let first = parameter_type("first");
+    let second = parameter_type("second");
+
+    assert!(ret.arena.is_type_identical_to(first, first));
+    assert!(!ret.arena.is_type_identical_to(first, second));
+    assert!(!checker.is_assignable_to(first, second));
+    assert!(!checker.is_assignable_to(second, first));
+}
+
+#[test]
+fn return_type_of_generic_identity_is_unknown() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(&allocator, "declare const result: ReturnType<<T>() => T>;");
+
+    assert_eq!(
+        type_string(&ret, get_global_symbol_type(&ret, "result")),
+        "unknown"
     );
 }
 
@@ -4418,25 +4527,23 @@ fn generic_function_defaults_render_and_apply_when_not_inferred() {
         type_string(&ret, get_global_symbol_type(&ret, "foo")),
         "<T = A>(x?: T) => T"
     );
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "fromDefault"),
-        &arena(&ret).type_reference("A", std::iter::empty()),
+    assert_eq!(
+        type_string(&ret, get_global_symbol_type(&ret, "fromDefault")),
+        "A"
     );
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "fromInference"),
-        &arena(&ret).type_reference("A", std::iter::empty()),
+    assert_eq!(
+        type_string(&ret, get_global_symbol_type(&ret, "fromInference")),
+        "A"
     );
     assert_eq!(
         get_global_symbol_type(&ret, "fromDependentDefault"),
         Ty::string()
     );
-    assert_type_eq(
-        ret.arena,
-        &get_global_symbol_type(&ret, "unresolvedValue"),
-        &arena(&ret).type_reference("T", std::iter::empty()),
-    );
+    let unresolved = get_global_symbol_type(&ret, "unresolvedValue");
+    let TyKind::TypeParameter(unresolved) = ret.arena.ty_kind(unresolved) else {
+        panic!("expected unresolvedValue to use a type parameter");
+    };
+    assert_eq!(unresolved.name, "T");
 }
 
 #[test]

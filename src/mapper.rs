@@ -59,12 +59,7 @@ impl<'a> TypeParameterSubstitutions<'a> {
             arena,
             self.pairs
                 .iter()
-                .map(|(type_parameter, ty)| {
-                    (
-                        arena.type_reference(type_parameter.name, std::iter::empty()),
-                        *ty,
-                    )
-                })
+                .map(|(type_parameter, ty)| (arena.type_parameter_type(*type_parameter), *ty))
                 .collect(),
         )
     }
@@ -103,10 +98,7 @@ impl<'a> TypeMapper<'a> {
             .into_iter()
             .zip(type_arguments)
             .map(|(type_parameter, type_argument)| {
-                (
-                    arena.type_reference(type_parameter.name, std::iter::empty()),
-                    type_argument,
-                )
+                (arena.type_parameter_type(type_parameter), type_argument)
             })
             .collect::<MapperPairs<'a>>();
         Self::from_pairs(arena, pairs)
@@ -158,6 +150,24 @@ impl<'a> TypeMapper<'a> {
         matches!(self, Self::Empty)
     }
 
+    pub(crate) fn has_concrete_type_parameter_mapping(&self, arena: CheckerArena<'a>) -> bool {
+        let is_concrete = |source: Ty<'a>, target: Ty<'a>| {
+            let Some(source_name) = type_parameter_name(arena, source) else {
+                return false;
+            };
+            type_parameter_name(arena, target) != Some(source_name)
+        };
+        match self {
+            Self::Empty => false,
+            Self::Simple { source, target } => is_concrete(*source, *target),
+            Self::Array { sources, targets } => sources
+                .iter()
+                .zip(targets.iter())
+                .any(|(source, target)| is_concrete(*source, *target)),
+            Self::ContextualInference { .. } => false,
+        }
+    }
+
     pub(crate) fn cache_entries(
         &self,
         arena: CheckerArena<'a>,
@@ -194,7 +204,7 @@ impl<'a> TypeMapper<'a> {
         match self {
             Self::Empty => ty,
             Self::Simple { source, target } => {
-                if arena.is_type_identical_to(ty, *source) {
+                if types_match_for_mapping(arena, ty, *source) {
                     *target
                 } else {
                     ty
@@ -204,7 +214,7 @@ impl<'a> TypeMapper<'a> {
                 .iter()
                 .zip(targets.iter())
                 .find_map(|(source, target)| {
-                    arena.is_type_identical_to(ty, *source).then_some(*target)
+                    types_match_for_mapping(arena, ty, *source).then_some(*target)
                 })
                 .unwrap_or(ty),
             Self::ContextualInference {
@@ -218,11 +228,14 @@ impl<'a> TypeMapper<'a> {
                 .zip(fallback_targets.iter())
                 .enumerate()
                 .find_map(|(index, (source, fallback_target))| {
-                    if !arena.is_type_identical_to(ty, *source) {
+                    if !types_match_for_mapping(arena, ty, *source) {
                         return None;
                     }
                     fixed.borrow_mut()[index] = true;
                     let resolved = match contextual_arena.ty_kind(*source) {
+                        TyKind::TypeParameter(type_parameter) => {
+                            resolver.borrow_mut()(type_parameter.name)
+                        }
                         TyKind::TypeReference(reference) if reference.is_bare() => {
                             resolver.borrow_mut()(reference.name)
                         }
@@ -276,7 +289,7 @@ impl<'a> TypeMapper<'a> {
         match self {
             Self::Empty => {}
             Self::Simple { source, target } => {
-                if !arena.is_type_identical_to(*source, excluded) {
+                if !types_match_for_mapping(arena, *source, excluded) {
                     pairs.push((*source, *target));
                 }
             }
@@ -286,7 +299,7 @@ impl<'a> TypeMapper<'a> {
                         .iter()
                         .copied()
                         .zip(targets.iter().copied())
-                        .filter(|(source, _)| !arena.is_type_identical_to(*source, excluded)),
+                        .filter(|(source, _)| !types_match_for_mapping(arena, *source, excluded)),
                 );
             }
             Self::ContextualInference {
@@ -299,10 +312,31 @@ impl<'a> TypeMapper<'a> {
                         .iter()
                         .copied()
                         .zip(fallback_targets.iter().copied())
-                        .filter(|(source, _)| !arena.is_type_identical_to(*source, excluded)),
+                        .filter(|(source, _)| !types_match_for_mapping(arena, *source, excluded)),
                 );
             }
         }
+    }
+}
+
+fn types_match_for_mapping<'a>(arena: CheckerArena<'a>, left: Ty<'a>, right: Ty<'a>) -> bool {
+    if arena.is_type_identical_to(left, right) {
+        return true;
+    }
+    match (arena.ty_kind(left), arena.ty_kind(right)) {
+        (TyKind::TypeParameter(parameter), TyKind::TypeReference(reference))
+        | (TyKind::TypeReference(reference), TyKind::TypeParameter(parameter)) => {
+            reference.is_bare() && parameter.name == reference.name
+        }
+        _ => false,
+    }
+}
+
+fn type_parameter_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<&'a str> {
+    match arena.ty_kind(ty) {
+        TyKind::TypeParameter(type_parameter) => Some(type_parameter.name),
+        TyKind::TypeReference(reference) if reference.is_bare() => Some(reference.name),
+        _ => None,
     }
 }
 
@@ -311,7 +345,11 @@ fn is_bare_type_reference_with_name<'a>(
     ty: Ty<'a>,
     names: &[&'a str],
 ) -> bool {
-    matches!(arena.ty_kind(ty), TyKind::TypeReference(reference) if reference.is_bare() && names.contains(&reference.name))
+    match arena.ty_kind(ty) {
+        TyKind::TypeParameter(type_parameter) => names.contains(&type_parameter.name),
+        TyKind::TypeReference(reference) => reference.is_bare() && names.contains(&reference.name),
+        _ => false,
+    }
 }
 
 #[cfg(test)]
@@ -319,6 +357,21 @@ mod tests {
     use oxc_allocator::Allocator;
 
     use super::*;
+    use crate::types::TypeBuilder;
+
+    #[test]
+    fn mapper_preserves_same_named_type_parameter_identity() {
+        let allocator = Allocator::default();
+        let arena = CheckerArena::new(&allocator);
+        let types = TypeBuilder::new(arena);
+        let source = arena.type_parameter_type(types.type_parameter("T", Some(Ty::string()), None));
+        let distinct =
+            arena.type_parameter_type(types.type_parameter("T", Some(Ty::number()), None));
+        let mapper = TypeMapper::single(source, Ty::boolean());
+
+        assert_eq!(mapper.map(arena, source), Ty::boolean());
+        assert_eq!(mapper.map(arena, distinct), distinct);
+    }
 
     #[test]
     fn contextual_inference_mapper_resolves_type_parameter_when_read() {

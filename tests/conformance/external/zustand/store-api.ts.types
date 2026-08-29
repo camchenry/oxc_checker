@@ -25,7 +25,7 @@ expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?:
 >                        ^: any   (Any) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
->                               ^^^^^: T   (TypeReference) (Identifier)
+>                               ^^^^^: T   (TypeParameter) (Identifier)
 
   _(partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: false): void
 >                                      ^: any   (Any) (Identifier)
@@ -56,7 +56,7 @@ expected: { (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?:
 >          ^: any   (Any) (Identifier)
 
   _(state: T | ((state: T) => T), replace: true): void
->                ^^^^^: T   (TypeReference) (Identifier)
+>                ^^^^^: T   (TypeParameter) (Identifier)
 
   _(state: T | ((state: T) => T), replace: true): void
 >                       ^: any   (Any) (Identifier)
@@ -105,13 +105,13 @@ export interface StoreApi<T> {
 >             ^^^^^^^^: (state: T, prevState: T) => void   (Function) (Identifier)
 
   subscribe: (listener: (state: T, prevState: T) => void) => () => void
->                        ^^^^^: T   (TypeReference) (Identifier)
+>                        ^^^^^: T   (TypeParameter) (Identifier)
 
   subscribe: (listener: (state: T, prevState: T) => void) => () => void
 >                               ^: any   (Any) (Identifier)
 
   subscribe: (listener: (state: T, prevState: T) => void) => () => void
->                                  ^^^^^^^^^: T   (TypeReference) (Identifier)
+>                                  ^^^^^^^^^: T   (TypeParameter) (Identifier)
 
   subscribe: (listener: (state: T, prevState: T) => void) => () => void
 >                                             ^: any   (Any) (Identifier)

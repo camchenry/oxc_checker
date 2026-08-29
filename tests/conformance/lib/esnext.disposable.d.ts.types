@@ -137,7 +137,7 @@ interface DisposableStack {
 >                 ^^^^^^^^^^: any   (Any) (Identifier)
 
     use<T extends Disposable | null | undefined>(value: T): T;
->                                                ^^^^^: T   (TypeReference) (Identifier)
+>                                                ^^^^^: T   (TypeParameter) (Identifier)
 
     use<T extends Disposable | null | undefined>(value: T): T;
 >                                                       ^: any   (Any) (Identifier)
@@ -152,7 +152,7 @@ interface DisposableStack {
 >         ^: any   (Any) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
->            ^^^^^: T   (TypeReference) (Identifier)
+>            ^^^^^: T   (TypeParameter) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
 >                   ^: any   (Any) (Identifier)
@@ -161,7 +161,7 @@ interface DisposableStack {
 >                      ^^^^^^^^^: (value: T) => void   (Function) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
->                                  ^^^^^: T   (TypeReference) (Identifier)
+>                                  ^^^^^: T   (TypeParameter) (Identifier)
 
     adopt<T>(value: T, onDispose: (value: T) => void): T;
 >                                         ^: any   (Any) (Identifier)
@@ -263,7 +263,7 @@ interface AsyncDisposableStack {
 >                                   ^^^^^^^^^^: any   (Any) (Identifier)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
->                                                                  ^^^^^: T   (TypeReference) (Identifier)
+>                                                                  ^^^^^: T   (TypeParameter) (Identifier)
 
     use<T extends AsyncDisposable | Disposable | null | undefined>(value: T): T;
 >                                                                         ^: any   (Any) (Identifier)
@@ -278,7 +278,7 @@ interface AsyncDisposableStack {
 >         ^: any   (Any) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->            ^^^^^: T   (TypeReference) (Identifier)
+>            ^^^^^: T   (TypeParameter) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
 >                   ^: any   (Any) (Identifier)
@@ -287,7 +287,7 @@ interface AsyncDisposableStack {
 >                      ^^^^^^^^^^^^^^: (value: T) => PromiseLike<void> | void   (Function) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
->                                       ^^^^^: T   (TypeReference) (Identifier)
+>                                       ^^^^^: T   (TypeParameter) (Identifier)
 
     adopt<T>(value: T, onDisposeAsync: (value: T) => PromiseLike<void> | void): T;
 >                                              ^: any   (Any) (Identifier)

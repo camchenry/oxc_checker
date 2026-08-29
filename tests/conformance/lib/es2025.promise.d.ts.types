@@ -17,7 +17,7 @@ interface PromiseConstructor {
 >                               ^^^^^^^^^^: (...args: U) => T | PromiseLike<T>   (Function) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                               ^^^^: U   (TypeReference) (Identifier)
+>                                               ^^^^: U   (TypeParameter) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
 >                                                     ^: any   (Any) (Identifier)
@@ -35,7 +35,7 @@ interface PromiseConstructor {
 >                                                                           ^: any   (Any) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
->                                                                                  ^^^^: U   (TypeReference) (Identifier)
+>                                                                                  ^^^^: U   (TypeParameter) (Identifier)
 
     try<T, U extends unknown[]>(callbackFn: (...args: U) => T | PromiseLike<T>, ...args: U): Promise<Awaited<T>>;
 >                                                                                        ^: any   (Any) (Identifier)

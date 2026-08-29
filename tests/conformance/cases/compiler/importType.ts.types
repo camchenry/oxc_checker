@@ -11,7 +11,7 @@ export type Box<T> = { value: T };
 >               ^: any   (Any) (Identifier)
 
 export type Box<T> = { value: T };
->                      ^^^^^: T   (TypeReference) (Identifier)
+>                      ^^^^^: T   (TypeParameter) (Identifier)
 
 export type Box<T> = { value: T };
 >                             ^: any   (Any) (Identifier)

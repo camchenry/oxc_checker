@@ -22,7 +22,7 @@ interface Array<T> {
 >                         ^^^^^^^^^: (value: T, index: number, array: T[]) => value is S   (Function) (Identifier)
 
     findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
->                                     ^^^^^: T   (TypeReference) (Identifier)
+>                                     ^^^^^: T   (TypeParameter) (Identifier)
 
     findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
 >                                            ^: any   (Any) (Identifier)
@@ -37,7 +37,7 @@ interface Array<T> {
 >                                                                     ^: any   (Any) (Identifier)
 
     findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
->                                                                             ^^^^^: T   (TypeReference) (Identifier)
+>                                                                             ^^^^^: T   (TypeParameter) (Identifier)
 
     findLast<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
 >                                                                                      ^: any   (Any) (Identifier)
@@ -55,7 +55,7 @@ interface Array<T> {
 >            ^^^^^^^^^: (value: T, index: number, array: T[]) => unknown   (Function) (Identifier)
 
     findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
->                        ^^^^^: T   (TypeReference) (Identifier)
+>                        ^^^^^: T   (TypeParameter) (Identifier)
 
     findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
 >                               ^: any   (Any) (Identifier)
@@ -82,7 +82,7 @@ interface Array<T> {
 >                 ^^^^^^^^^: (value: T, index: number, array: T[]) => unknown   (Function) (Identifier)
 
     findLastIndex(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number;
->                             ^^^^^: T   (TypeReference) (Identifier)
+>                             ^^^^^: T   (TypeParameter) (Identifier)
 
     findLastIndex(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number;
 >                                    ^: any   (Any) (Identifier)
@@ -112,13 +112,13 @@ interface Array<T> {
 >            ^^^^^^^^^: ((a: T, b: T) => number) | undefined   (Union) (Identifier)
 
     toSorted(compareFn?: (a: T, b: T) => number): T[];
->                         ^: T   (TypeReference) (Identifier)
+>                         ^: T   (TypeParameter) (Identifier)
 
     toSorted(compareFn?: (a: T, b: T) => number): T[];
 >                            ^: any   (Any) (Identifier)
 
     toSorted(compareFn?: (a: T, b: T) => number): T[];
->                               ^: T   (TypeReference) (Identifier)
+>                               ^: T   (TypeParameter) (Identifier)
 
     toSorted(compareFn?: (a: T, b: T) => number): T[];
 >                                  ^: any   (Any) (Identifier)
@@ -163,7 +163,7 @@ interface Array<T> {
 >        ^^^^^: number   (Number) (Identifier)
 
     with(index: number, value: T): T[];
->                       ^^^^^: T   (TypeReference) (Identifier)
+>                       ^^^^^: T   (TypeParameter) (Identifier)
 
     with(index: number, value: T): T[];
 >                              ^: any   (Any) (Identifier)
@@ -193,7 +193,7 @@ interface ReadonlyArray<T> {
 >       ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => value is S   (Function) (Identifier)
 
         predicate: (value: T, index: number, array: readonly T[]) => value is S,
->                   ^^^^^: T   (TypeReference) (Identifier)
+>                   ^^^^^: T   (TypeParameter) (Identifier)
 
         predicate: (value: T, index: number, array: readonly T[]) => value is S,
 >                          ^: any   (Any) (Identifier)
@@ -208,7 +208,7 @@ interface ReadonlyArray<T> {
 >                                                            ^: any   (Any) (Identifier)
 
         predicate: (value: T, index: number, array: readonly T[]) => value is S,
->                                                                    ^^^^^: T   (TypeReference) (Identifier)
+>                                                                    ^^^^^: T   (TypeParameter) (Identifier)
 
         predicate: (value: T, index: number, array: readonly T[]) => value is S,
 >                                                                             ^: any   (Any) (Identifier)
@@ -226,7 +226,7 @@ interface ReadonlyArray<T> {
 >       ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => unknown   (Function) (Identifier)
 
         predicate: (value: T, index: number, array: readonly T[]) => unknown,
->                   ^^^^^: T   (TypeReference) (Identifier)
+>                   ^^^^^: T   (TypeParameter) (Identifier)
 
         predicate: (value: T, index: number, array: readonly T[]) => unknown,
 >                          ^: any   (Any) (Identifier)
@@ -253,7 +253,7 @@ interface ReadonlyArray<T> {
 >       ^^^^^^^^^: (value: T, index: number, array: readonly T[]) => unknown   (Function) (Identifier)
 
         predicate: (value: T, index: number, array: readonly T[]) => unknown,
->                   ^^^^^: T   (TypeReference) (Identifier)
+>                   ^^^^^: T   (TypeParameter) (Identifier)
 
         predicate: (value: T, index: number, array: readonly T[]) => unknown,
 >                          ^: any   (Any) (Identifier)
@@ -283,13 +283,13 @@ interface ReadonlyArray<T> {
 >            ^^^^^^^^^: ((a: T, b: T) => number) | undefined   (Union) (Identifier)
 
     toSorted(compareFn?: (a: T, b: T) => number): T[];
->                         ^: T   (TypeReference) (Identifier)
+>                         ^: T   (TypeParameter) (Identifier)
 
     toSorted(compareFn?: (a: T, b: T) => number): T[];
 >                            ^: any   (Any) (Identifier)
 
     toSorted(compareFn?: (a: T, b: T) => number): T[];
->                               ^: T   (TypeReference) (Identifier)
+>                               ^: T   (TypeParameter) (Identifier)
 
     toSorted(compareFn?: (a: T, b: T) => number): T[];
 >                                  ^: any   (Any) (Identifier)
@@ -334,7 +334,7 @@ interface ReadonlyArray<T> {
 >        ^^^^^: number   (Number) (Identifier)
 
     with(index: number, value: T): T[];
->                       ^^^^^: T   (TypeReference) (Identifier)
+>                       ^^^^^: T   (TypeParameter) (Identifier)
 
     with(index: number, value: T): T[];
 >                              ^: any   (Any) (Identifier)

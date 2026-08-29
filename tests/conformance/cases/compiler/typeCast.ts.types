@@ -2,7 +2,7 @@ declare const x: any;
 >             ^: any   (Any) (Identifier)
 
 type G<T> = T;
->    ^: T   (TypeReference) (Identifier)
+>    ^: T   (TypeParameter) (Identifier)
 
 type G<T> = T;
 >      ^: any   (Any) (Identifier)
@@ -104,7 +104,7 @@ interface i00<T = number> { a: T; }
 >             ^: any   (Any) (Identifier)
 
 interface i00<T = number> { a: T; }
->                           ^: T   (TypeReference) (Identifier)
+>                           ^: T   (TypeParameter) (Identifier)
 
 interface i00<T = number> { a: T; }
 >                              ^: any   (Any) (Identifier)

@@ -45,9 +45,18 @@ fn index_type_to_property_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Optio
         types::TyKind::TemplateLiteral(template) if template.expressions.is_empty() => {
             Some(template.quasis[0].value)
         }
+        types::TyKind::TypeParameter(type_parameter) => Some(type_parameter.name),
         types::TyKind::TypeReference(reference) if reference.is_bare() => Some(reference.name),
         types::TyKind::String => Some(arena.str("string")),
         types::TyKind::Number => Some(arena.str("number")),
+        _ => None,
+    }
+}
+
+fn type_parameter_name<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> Option<&'a str> {
+    match arena.ty_kind(ty) {
+        types::TyKind::TypeParameter(type_parameter) => Some(type_parameter.name),
+        types::TyKind::TypeReference(reference) if reference.is_bare() => Some(reference.name),
         _ => None,
     }
 }
