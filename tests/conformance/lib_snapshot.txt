@@ -3,7 +3,7 @@
 # Cases root: src/lib
 files: passed=14 failed=65 panicked=0 total=79 pass_percentage=17.72%
 types: matched=60158 mismatched=662 total=60820 match_percentage=98.91%
-assign: matched=313494 mismatched=11480 total=324974 match_percentage=96.47%
+assign: matched=313496 mismatched=11478 total=324974 match_percentage=96.47%
 
 FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45%
   - src/lib/decorators.d.ts:20 `DecoratorMetadata` type mismatch
@@ -13906,11 +13906,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { (bitmap: ImageBitmap | null): void; (bitmap: ImageBitmap | null): void; }    (Function)
       oxc source: { (options?: ScrollToOptions): void; (x: number, y: number): void; }    (Object)
       oxc target: { (bitmap: ImageBitmap | null): void; (bitmap: ImageBitmap | null): void; }    (Object)
-  - :43784 `toString` should be assignable to :43783 `stop`
-      typescript source: { (): string; (): string; }    (Function)
-      typescript target: { (): void; (): void; }    (Function)
-      oxc source: () => string    (Function)
-      oxc target: () => void    (Function)
   - :43790 `Event` should not be assignable to :22755 `takePhoto`
       typescript source: { new (type: string, eventInitDict?: EventInit): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }    (Object)
       typescript target: { (photoSettings?: PhotoSettings): Promise<Blob>; (photoSettings?: PhotoSettings): Promise<Blob>; }    (Function)
@@ -51483,9 +51478,6 @@ FAIL src/lib/webworker.generated.d.ts matched_types=14293 mismatched_types=169 t
       typescript target: WebGLUniformLocation    (Object)
       oxc source: () => void    (Function)
       oxc target: WebGLUniformLocation    (TypeReference)
-  - :4955 `getSize` should be assignable to :4949 `flush`
-      source: () => number    (Function)
-      target: () => void    (Function)
   - :4955 `getSize` should be assignable to :4961 `read`
       source: () => number    (Function)
       target: (buffer: AllowSharedBufferSource, options?: FileSystemReadWriteOptions) => number    (Function)

@@ -696,6 +696,7 @@ pub enum TyTypePredicate<'a> {
         /// The parameter name written in the predicate.
         parameter_name: &'a str,
         /// The matching function parameter index, when one exists.
+        // TODO(refactor): this could be derived?
         parameter_index: Option<usize>,
         /// The type asserted for the parameter.
         target_type: Ty<'a>,
@@ -725,6 +726,19 @@ impl<'a> TyTypePredicate<'a> {
                 target_type
             }
         }
+    }
+
+    /// Returns `true` if the predicate is an assertion, e.g. `asserts this` or `asserts parameter`.
+    pub fn is_assertion(self) -> bool {
+        matches!(
+            self,
+            Self::AssertsThis { .. } | Self::AssertsIdentifier { .. }
+        )
+    }
+
+    /// Returns `true` if the predicate is a type guard, e.g. `this is T` or `parameter is T`.
+    pub fn is_type_guard(self) -> bool {
+        matches!(self, Self::This { .. } | Self::Identifier { .. })
     }
 
     /// Maps the asserted type while preserving the predicate variant and parameter identity.

@@ -209,41 +209,85 @@ impl<'a, 'store> Checker<'a, 'store> {
                     }
                     mapper
                 };
-                source.parameters.len() == target.parameters.len()
-                    && source.parameters.iter().zip(target.parameters.iter()).all(
-                        |(source_parameter, target_parameter)| {
-                            self.is_assignable_to_at_depth(
-                                target_parameter.ty,
-                                self.instantiate_type(source_parameter.ty, &source_mapper),
-                                next_depth,
-                            )
-                        },
-                    )
-                    && match target.type_predicate {
-                        Some(target_predicate) => {
-                            source.type_predicate.is_some_and(|source_predicate| {
-                                type_predicate_kinds_match(source_predicate, target_predicate)
-                                    && match (
-                                        source_predicate.target_type(),
-                                        target_predicate.target_type(),
-                                    ) {
-                                        (Some(source_type), Some(target_type)) => self
-                                            .is_assignable_to_at_depth(
-                                                self.instantiate_type(source_type, &source_mapper),
-                                                target_type,
-                                                next_depth,
-                                            ),
-                                        (None, None) => true,
-                                        _ => false,
-                                    }
-                            })
-                        }
-                        None => self.is_assignable_to_at_depth(
-                            self.instantiate_type(source.return_type, &source_mapper),
-                            target.return_type,
+
+                // If there are a different number of parameters, consider it not assignable.
+                if source.parameters.len() != target.parameters.len() {
+                    dbg!(1);
+                    return false;
+                }
+
+                // Each parameter must be assignable to the corresponding parameter in the target function
+                let parameters_match = source.parameters.iter().zip(target.parameters.iter()).all(
+                    |(source_parameter, target_parameter)| {
+                        self.is_assignable_to_at_depth(
+                            target_parameter.ty,
+                            self.instantiate_type(source_parameter.ty, &source_mapper),
                             next_depth,
-                        ),
+                        )
+                    },
+                );
+                if !parameters_match {
+                    dbg!(2);
+                    return false;
+                }
+
+                // Type predicates (e.g., `x is string`) must match in their target types
+                let type_predicate_matches = match (source.type_predicate, target.type_predicate) {
+                    (Some(source_predicate), Some(target_predicate)) => {
+                        type_predicate_kinds_match(source_predicate, target_predicate)
+                            && match (
+                                source_predicate.target_type(),
+                                target_predicate.target_type(),
+                            ) {
+                                (Some(source_type), Some(target_type)) => self
+                                    .is_assignable_to_at_depth(
+                                        self.instantiate_type(source_type, &source_mapper),
+                                        target_type,
+                                        next_depth,
+                                    ),
+                                (None, None) => true,
+                                _ => false,
+                            }
                     }
+                    (Some(type_predicate), None) => {
+                        // If the source has a type predicate and the target does not, it's fine as long as: the target
+                        // has a boolean return type, and the source type predicate is a type guard (e.g., `x is string`)
+                        // In other words, `(x: string) => x is string` is assignable to `(x: string) => boolean`
+                        self.ty_kind(target.return_type) == TyKind::Boolean
+                            && type_predicate.is_type_guard()
+                    }
+                    (None, None) => true,
+                    _ => false,
+                };
+                if !type_predicate_matches {
+                    dbg!(3);
+                    return false;
+                }
+
+                // Check that the return type matches
+                let source_return_type = self.instantiate_type(source.return_type, &source_mapper);
+                let target_return_type = target.return_type;
+
+                let return_type_matches = match (
+                    self.ty_kind(source_return_type),
+                    self.ty_kind(target_return_type),
+                ) {
+                    // In a function return type context, we consider `void` as covariant with any type (wide type to)
+                    (_, TyKind::Void) => true,
+                    // Otherwise: just check if the return types are assignable
+                    _ => self.is_assignable_to_at_depth(
+                        source_return_type,
+                        target_return_type,
+                        next_depth,
+                    ),
+                };
+                if !return_type_matches {
+                    dbg!(4);
+                    return false;
+                }
+
+                // Otherwise, assume the functions are assignable.
+                true
             }
             (TyKind::TypeReference(source), TyKind::TypeReference(target)) => {
                 source.has_identical_target(target)
@@ -575,7 +619,7 @@ mod tests {
     };
 
     use crate::{
-        TypeBuilder,
+        TyTypePredicate, TypeBuilder,
         checker::Checker,
         program::{HostModuleResolution, ProgramHost, ProgramStore, ProgramStoreBuilder},
     };
@@ -774,5 +818,49 @@ mod tests {
         // `{}` is not assignable to undefined, null
         assert!(!is_assignable_to(arena.object([]), Ty::Undefined));
         assert!(!is_assignable_to(arena.object([]), Ty::Null));
+    }
+
+    #[test]
+    fn test_function_type_assignability() {
+        let allocator = Allocator::default();
+        let store = test_store(&allocator);
+        let checker = Checker::new(&store);
+        let arena = checker.arena;
+        let ty = TypeBuilder::new(arena);
+        let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
+
+        // (a: number) => void is assignable to (a: number) => void
+        assert!(is_assignable_to(
+            ty.function([], [ty.parameter("a", Ty::Number)], Ty::Void),
+            ty.function([], [ty.parameter("a", Ty::Number)], Ty::Void)
+        ));
+
+        // '(value: string) => void' is not assignable to type '(value: string) => string'
+        assert!(!is_assignable_to(
+            ty.function([], [ty.parameter("value", Ty::String)], Ty::Void),
+            ty.function([], [ty.parameter("value", Ty::String)], Ty::String)
+        ));
+
+        // '(value: string) => string' is assignable to type '(value: string) => void'
+        assert!(is_assignable_to(
+            ty.function([], [ty.parameter("value", Ty::String)], Ty::String),
+            ty.function([], [ty.parameter("value", Ty::String)], Ty::Void)
+        ));
+
+        // Type predicate: `(value: string) => value is string` is assignable to `(value: string) => boolean`
+        assert!(is_assignable_to(
+            ty.function_with_type_predicate_and_display(
+                [],
+                [ty.parameter("value", Ty::String)],
+                Ty::Boolean,
+                Some(TyTypePredicate::Identifier {
+                    parameter_name: "value",
+                    parameter_index: Some(0),
+                    target_type: Ty::String
+                }),
+                true,
+            ),
+            ty.function([], [ty.parameter("value", Ty::String)], Ty::Boolean)
+        ));
     }
 }
