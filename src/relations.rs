@@ -234,6 +234,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                     return false;
                 }
 
+                // Functions that return a value can be assigned to a function that returns void,
+                // because the caller ignores its result.
+                let target_return_type = target.return_type();
+                if self.ty_kind(target_return_type) == TyKind::Void {
+                    return true;
+                }
+
                 // Type predicates (e.g., `x is string`) must match in their target types
                 dbg!(source.type_predicate, target.type_predicate);
                 let type_predicate_matches = match (source.type_predicate, target.type_predicate) {
@@ -260,12 +267,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         self.ty_kind(target.return_type()) == TyKind::Boolean
                             && type_predicate.is_type_guard()
                     }
-                    (None, Some(type_predicate)) => {
-                        dbg!(self.ty_kind(source.return_type()));
-                        dbg!(self.ty_kind(target.return_type()));
-                        self.ty_kind(target.return_type()) == TyKind::Void
-                            && type_predicate.is_assertion()
-                    }
+                    (None, Some(_)) => false,
                     (None, None) => true,
                 };
                 if !type_predicate_matches {
@@ -276,20 +278,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                 // Check that the return type matches
                 let source_return_type =
                     self.instantiate_type(source.return_type(), &source_mapper);
-                let target_return_type = target.return_type();
 
                 let return_type_matches = match (
                     self.ty_kind(source_return_type),
                     self.ty_kind(target_return_type),
                 ) {
-                    // In a function return type context, we consider `void` as covariant with any type (wide type to)
-                    (_, TyKind::Void) => true,
-                    _ if target
-                        .type_predicate
-                        .is_some_and(|pred| pred.is_assertion()) =>
-                    {
-                        true
-                    }
                     // Otherwise: just check if the return types are assignable
                     _ => self.is_assignable_to_at_depth(
                         source_return_type,
@@ -899,6 +892,32 @@ mod tests {
         // Type assertion: `() => void` is assignable to `(x: unknown) => asserts x is string`
         assert!(is_assignable_to(
             ty.function([], [], Ty::Void),
+            ty.function_with_type_predicate_and_display(
+                [],
+                [ty.parameter("x", Ty::Unknown)],
+                type_predicate_return_type(true),
+                Some(TyTypePredicate::AssertsIdentifier {
+                    parameter_name: "x",
+                    parameter_index: Some(0),
+                    target_type: Some(Ty::String)
+                }),
+                true,
+            )
+        ));
+
+        // `(x: unknown) => x is string` is assignable to `(x: unknown) => asserts x is string`
+        assert!(is_assignable_to(
+            ty.function_with_type_predicate_and_display(
+                [],
+                [ty.parameter("x", Ty::Unknown)],
+                type_predicate_return_type(false),
+                Some(TyTypePredicate::Identifier {
+                    parameter_name: "x",
+                    parameter_index: Some(0),
+                    target_type: Ty::String
+                }),
+                true,
+            ),
             ty.function_with_type_predicate_and_display(
                 [],
                 [ty.parameter("x", Ty::Unknown)],

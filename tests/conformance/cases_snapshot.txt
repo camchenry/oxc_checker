@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/cases
 files: passed=99 failed=75 panicked=0 total=174 pass_percentage=56.90%
 types: matched=3672 mismatched=55 total=3727 match_percentage=98.52%
-assign: matched=89443 mismatched=2874 total=92317 match_percentage=96.89%
+assign: matched=89484 mismatched=2833 total=92317 match_percentage=96.93%
 
 PASS tests/conformance/cases/compiler/abstractIdentifierNameStrict.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/arrayTypes.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00%
@@ -7553,66 +7553,6 @@ FAIL tests/conformance/cases/compiler/flowTypes.ts matched_types=73 mismatched_t
       typescript target: object    (Unknown)
       oxc source: Console    (TypeReference)
       oxc target: object    (PrimitiveObject)
-  - :44 `isAction` should be assignable to :5 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :44 `isAction` should be assignable to :8 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :44 `isAction` should be assignable to :18 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :44 `isAction` should be assignable to :21 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :44 `isAction` should be assignable to :35 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :44 `isAction` should be assignable to :37 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :44 `isAction` should be assignable to :49 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :44 `isAction` should be assignable to :51 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :44 `isAction` should be assignable to :56 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :44 `isAction` should be assignable to :58 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :47 `isAction` should be assignable to :5 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :47 `isAction` should be assignable to :8 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :47 `isAction` should be assignable to :18 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :47 `isAction` should be assignable to :21 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :47 `isAction` should be assignable to :35 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :47 `isAction` should be assignable to :37 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :47 `isAction` should be assignable to :49 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :47 `isAction` should be assignable to :51 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :47 `isAction` should be assignable to :56 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
-  - :47 `isAction` should be assignable to :58 `log`
-      source: (action: unknown) => action is Action    (Function)
-      target: (...data: any[]) => void    (Function)
   - :47 `maybeAction` should be assignable to :54 `maybeAction`
       typescript source: Action    (Object)
       typescript target: object | null    (Union)
@@ -7731,9 +7671,6 @@ FAIL tests/conformance/cases/compiler/flowTypes.ts matched_types=73 mismatched_t
       oxc target: object    (PrimitiveObject)
 PASS tests/conformance/cases/compiler/functionExpandoProperties.ts matched_types=61 mismatched_types=0 total_types=61 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/functionReturnTypes.ts matched_types=30 mismatched_types=0 total_types=30 match_percentage=100.00%
-  - :27 `assertsIsString` should be assignable to :41 `assertsGenericIsString`
-      source: (x: unknown) => asserts x is string    (Function)
-      target: <T>(x: T) => asserts x is T    (Function)
   - :29 `Error` should be assignable to :2 `empty`
       typescript source: ErrorConstructor    (Function)
       typescript target: () => void    (Function)
@@ -7749,18 +7686,9 @@ FAIL tests/conformance/cases/compiler/functionReturnTypes.ts matched_types=30 mi
       typescript target: <T>(x: T) => asserts x is T    (Function)
       oxc source: ErrorConstructor    (TypeReference)
       oxc target: <T>(x: T) => asserts x is T    (Function)
-  - :33 `isString` should be assignable to :27 `assertsIsString`
-      source: (x: unknown) => x is string    (Function)
-      target: (x: unknown) => asserts x is string    (Function)
-  - :33 `isString` should be assignable to :41 `assertsGenericIsString`
-      source: (x: unknown) => x is string    (Function)
-      target: <T>(x: T) => asserts x is T    (Function)
   - :37 `genericIsString` should be assignable to :27 `assertsIsString`
       source: <T>(x: T) => x is T    (Function)
       target: (x: unknown) => asserts x is string    (Function)
-  - :37 `genericIsString` should be assignable to :41 `assertsGenericIsString`
-      source: <T>(x: T) => x is T    (Function)
-      target: <T>(x: T) => asserts x is T    (Function)
   - :41 `assertsGenericIsString` should be assignable to :27 `assertsIsString`
       source: <T>(x: T) => asserts x is T    (Function)
       target: (x: unknown) => asserts x is string    (Function)
@@ -12960,57 +12888,18 @@ PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::declared.ts m
 PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::objectCallbacks.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::optional.ts matched_types=2 mismatched_types=0 total_types=2 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/symbolFunctionParameters.ts::predicates.ts matched_types=23 mismatched_types=0 total_types=23 match_percentage=100.00%
-  - predicates.ts:4 `assertion` should be assignable to predicates.ts:2 `acceptsPredicate`
+  - predicates.ts:4 `assertion` should not be assignable to predicates.ts:6 `thisAssertion`
       source: (value: unknown) => asserts value is string    (Function)
-      target: <T, S extends T>(predicate: (value: T) => value is S, assertion: (value: unknown) => asserts value is string, thisPredicate: (this: unknown) => this is { ready: true; }, thisAssertion: (this: unknown) => asserts this is { ready: true; }, bareAssertion: (value: unknown) => asserts value, bareThisAssertion: (this: unknown) => asserts this) => void    (Function)
-  - predicates.ts:4 `assertion` should be assignable to predicates.ts:7 `bareAssertion`
+      target: (this: unknown) => asserts this is { ready: true; }    (Function)
+  - predicates.ts:4 `assertion` should not be assignable to predicates.ts:8 `bareThisAssertion`
       source: (value: unknown) => asserts value is string    (Function)
-      target: (value: unknown) => asserts value    (Function)
-  - predicates.ts:5 `thisPredicate` should be assignable to predicates.ts:2 `acceptsPredicate`
-      source: (this: unknown) => this is { ready: true; }    (Function)
-      target: <T, S extends T>(predicate: (value: T) => value is S, assertion: (value: unknown) => asserts value is string, thisPredicate: (this: unknown) => this is { ready: true; }, thisAssertion: (this: unknown) => asserts this is { ready: true; }, bareAssertion: (value: unknown) => asserts value, bareThisAssertion: (this: unknown) => asserts this) => void    (Function)
-  - predicates.ts:5 `thisPredicate` should be assignable to predicates.ts:4 `assertion`
-      source: (this: unknown) => this is { ready: true; }    (Function)
-      target: (value: unknown) => asserts value is string    (Function)
-  - predicates.ts:5 `thisPredicate` should be assignable to predicates.ts:6 `thisAssertion`
-      source: (this: unknown) => this is { ready: true; }    (Function)
-      target: (this: unknown) => asserts this is { ready: true; }    (Function)
-  - predicates.ts:5 `thisPredicate` should be assignable to predicates.ts:7 `bareAssertion`
-      source: (this: unknown) => this is { ready: true; }    (Function)
-      target: (value: unknown) => asserts value    (Function)
-  - predicates.ts:5 `thisPredicate` should be assignable to predicates.ts:8 `bareThisAssertion`
-      source: (this: unknown) => this is { ready: true; }    (Function)
       target: (this: unknown) => asserts this    (Function)
-  - predicates.ts:6 `thisAssertion` should be assignable to predicates.ts:2 `acceptsPredicate`
-      source: (this: unknown) => asserts this is { ready: true; }    (Function)
-      target: <T, S extends T>(predicate: (value: T) => value is S, assertion: (value: unknown) => asserts value is string, thisPredicate: (this: unknown) => this is { ready: true; }, thisAssertion: (this: unknown) => asserts this is { ready: true; }, bareAssertion: (value: unknown) => asserts value, bareThisAssertion: (this: unknown) => asserts this) => void    (Function)
-  - predicates.ts:6 `thisAssertion` should be assignable to predicates.ts:4 `assertion`
-      source: (this: unknown) => asserts this is { ready: true; }    (Function)
-      target: (value: unknown) => asserts value is string    (Function)
-  - predicates.ts:6 `thisAssertion` should be assignable to predicates.ts:7 `bareAssertion`
-      source: (this: unknown) => asserts this is { ready: true; }    (Function)
-      target: (value: unknown) => asserts value    (Function)
-  - predicates.ts:6 `thisAssertion` should be assignable to predicates.ts:8 `bareThisAssertion`
-      source: (this: unknown) => asserts this is { ready: true; }    (Function)
-      target: (this: unknown) => asserts this    (Function)
-  - predicates.ts:7 `bareAssertion` should be assignable to predicates.ts:2 `acceptsPredicate`
+  - predicates.ts:7 `bareAssertion` should not be assignable to predicates.ts:6 `thisAssertion`
       source: (value: unknown) => asserts value    (Function)
-      target: <T, S extends T>(predicate: (value: T) => value is S, assertion: (value: unknown) => asserts value is string, thisPredicate: (this: unknown) => this is { ready: true; }, thisAssertion: (this: unknown) => asserts this is { ready: true; }, bareAssertion: (value: unknown) => asserts value, bareThisAssertion: (this: unknown) => asserts this) => void    (Function)
-  - predicates.ts:7 `bareAssertion` should be assignable to predicates.ts:4 `assertion`
-      source: (value: unknown) => asserts value    (Function)
-      target: (value: unknown) => asserts value is string    (Function)
-  - predicates.ts:8 `bareThisAssertion` should be assignable to predicates.ts:2 `acceptsPredicate`
-      source: (this: unknown) => asserts this    (Function)
-      target: <T, S extends T>(predicate: (value: T) => value is S, assertion: (value: unknown) => asserts value is string, thisPredicate: (this: unknown) => this is { ready: true; }, thisAssertion: (this: unknown) => asserts this is { ready: true; }, bareAssertion: (value: unknown) => asserts value, bareThisAssertion: (this: unknown) => asserts this) => void    (Function)
-  - predicates.ts:8 `bareThisAssertion` should be assignable to predicates.ts:4 `assertion`
-      source: (this: unknown) => asserts this    (Function)
-      target: (value: unknown) => asserts value is string    (Function)
-  - predicates.ts:8 `bareThisAssertion` should be assignable to predicates.ts:6 `thisAssertion`
-      source: (this: unknown) => asserts this    (Function)
       target: (this: unknown) => asserts this is { ready: true; }    (Function)
-  - predicates.ts:8 `bareThisAssertion` should be assignable to predicates.ts:7 `bareAssertion`
-      source: (this: unknown) => asserts this    (Function)
-      target: (value: unknown) => asserts value    (Function)
+  - predicates.ts:7 `bareAssertion` should not be assignable to predicates.ts:8 `bareThisAssertion`
+      source: (value: unknown) => asserts value    (Function)
+      target: (this: unknown) => asserts this    (Function)
 PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::tupleCallbacks.ts matched_types=14 mismatched_types=0 total_types=14 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::class.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/symbolGenericCalls.ts::constraints.ts matched_types=32 mismatched_types=0 total_types=32 match_percentage=100.00%
@@ -13118,18 +13007,6 @@ FAIL tests/conformance/cases/compiler/tsIndexSignatures.ts matched_types=13 mism
 PASS tests/conformance/cases/compiler/tupleTypes.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/typeCast.ts matched_types=39 mismatched_types=0 total_types=39 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/typePredicates.ts matched_types=54 mismatched_types=0 total_types=54 match_percentage=100.00%
-  - :1 `IsString` should be assignable to :2 `AssertString`
-      source: (value: unknown) => value is string    (Function)
-      target: (value: unknown) => asserts value is string    (Function)
-  - :1 `IsString` should be assignable to :3 `AssertValue`
-      source: (value: unknown) => value is string    (Function)
-      target: (value: unknown) => asserts value    (Function)
-  - :2 `AssertString` should be assignable to :3 `AssertValue`
-      source: (value: unknown) => asserts value is string    (Function)
-      target: (value: unknown) => asserts value    (Function)
-  - :3 `AssertValue` should be assignable to :2 `AssertString`
-      source: (value: unknown) => asserts value    (Function)
-      target: (value: unknown) => asserts value is string    (Function)
   - :4 `ThisIsReady` should be assignable to :2 `AssertString`
       source: (this: { ready: boolean; }) => this is { ready: true; }    (Function)
       target: (value: unknown) => asserts value is string    (Function)
