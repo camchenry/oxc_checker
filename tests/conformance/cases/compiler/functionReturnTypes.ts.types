@@ -15,3 +15,75 @@ function returnsBig() {
 
 function returnsBig2() {
 >        ^^^^^^^^^^^: () => 0n | 1n   (Function) (Identifier)
+
+function assertsIsString(x: unknown): asserts x is string {
+>        ^^^^^^^^^^^^^^^: (x: unknown) => asserts x is string   (Function) (Identifier)
+
+function assertsIsString(x: unknown): asserts x is string {
+>                        ^: unknown   (Unknown) (Identifier)
+
+function assertsIsString(x: unknown): asserts x is string {
+>                                             ^: unknown   (Unknown) (Identifier)
+
+  if (typeof x !== "string") {
+>            ^: unknown   (Unknown) (Identifier)
+
+    throw new Error("Not a string");
+>             ^^^^^: ErrorConstructor   (TypeReference) (Identifier)
+
+function isString(x: unknown): x is string {
+>        ^^^^^^^^: (x: unknown) => x is string   (Function) (Identifier)
+
+function isString(x: unknown): x is string {
+>                 ^: unknown   (Unknown) (Identifier)
+
+function isString(x: unknown): x is string {
+>                              ^: unknown   (Unknown) (Identifier)
+
+  return typeof x === "string";
+>               ^: unknown   (Unknown) (Identifier)
+
+function genericIsString<T>(x: T): x is T {
+>        ^^^^^^^^^^^^^^^: <T>(x: T) => x is T   (Function) (Identifier)
+
+function genericIsString<T>(x: T): x is T {
+>                        ^: any   (Any) (Identifier)
+
+function genericIsString<T>(x: T): x is T {
+>                           ^: T   (TypeParameter) (Identifier)
+
+function genericIsString<T>(x: T): x is T {
+>                              ^: any   (Any) (Identifier)
+
+function genericIsString<T>(x: T): x is T {
+>                                  ^: T   (TypeParameter) (Identifier)
+
+function genericIsString<T>(x: T): x is T {
+>                                       ^: any   (Any) (Identifier)
+
+  return typeof x === "string";
+>               ^: T   (TypeParameter) (Identifier)
+
+function assertsGenericIsString<T>(x: T): asserts x is T {
+>        ^^^^^^^^^^^^^^^^^^^^^^: <T>(x: T) => asserts x is T   (Function) (Identifier)
+
+function assertsGenericIsString<T>(x: T): asserts x is T {
+>                               ^: any   (Any) (Identifier)
+
+function assertsGenericIsString<T>(x: T): asserts x is T {
+>                                  ^: T   (TypeParameter) (Identifier)
+
+function assertsGenericIsString<T>(x: T): asserts x is T {
+>                                     ^: any   (Any) (Identifier)
+
+function assertsGenericIsString<T>(x: T): asserts x is T {
+>                                                 ^: T   (TypeParameter) (Identifier)
+
+function assertsGenericIsString<T>(x: T): asserts x is T {
+>                                                      ^: any   (Any) (Identifier)
+
+  if (typeof x !== "string") {
+>            ^: T   (TypeParameter) (Identifier)
+
+    throw new Error("Not a string");
+>             ^^^^^: ErrorConstructor   (TypeReference) (Identifier)
