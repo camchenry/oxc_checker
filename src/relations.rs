@@ -210,8 +210,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                     mapper
                 };
 
-                // If there are a different number of parameters, consider it not assignable.
-                if source.parameters.len() != target.parameters.len() {
+                // If the source function has more parameters than the target function, it is not assignable.
+                let source_arity = source.parameters.len();
+                let target_arity = target.parameters.len();
+                let min_arity = source_arity.min(target_arity);
+                if min_arity < source_arity {
                     dbg!(1);
                     return false;
                 }
@@ -232,6 +235,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 }
 
                 // Type predicates (e.g., `x is string`) must match in their target types
+                dbg!(source.type_predicate, target.type_predicate);
                 let type_predicate_matches = match (source.type_predicate, target.type_predicate) {
                     (Some(source_predicate), Some(target_predicate)) => {
                         type_predicate_kinds_match(source_predicate, target_predicate)
@@ -253,11 +257,16 @@ impl<'a, 'store> Checker<'a, 'store> {
                         // If the source has a type predicate and the target does not, it's fine as long as: the target
                         // has a boolean return type, and the source type predicate is a type guard (e.g., `x is string`)
                         // In other words, `(x: string) => x is string` is assignable to `(x: string) => boolean`
-                        self.ty_kind(target.return_type) == TyKind::Boolean
+                        self.ty_kind(target.return_type()) == TyKind::Boolean
                             && type_predicate.is_type_guard()
                     }
+                    (None, Some(type_predicate)) => {
+                        dbg!(self.ty_kind(source.return_type()));
+                        dbg!(self.ty_kind(target.return_type()));
+                        self.ty_kind(target.return_type()) == TyKind::Void
+                            && type_predicate.is_assertion()
+                    }
                     (None, None) => true,
-                    _ => false,
                 };
                 if !type_predicate_matches {
                     dbg!(3);
@@ -265,8 +274,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 }
 
                 // Check that the return type matches
-                let source_return_type = self.instantiate_type(source.return_type, &source_mapper);
-                let target_return_type = target.return_type;
+                let source_return_type =
+                    self.instantiate_type(source.return_type(), &source_mapper);
+                let target_return_type = target.return_type();
 
                 let return_type_matches = match (
                     self.ty_kind(source_return_type),
@@ -274,6 +284,12 @@ impl<'a, 'store> Checker<'a, 'store> {
                 ) {
                     // In a function return type context, we consider `void` as covariant with any type (wide type to)
                     (_, TyKind::Void) => true,
+                    _ if target
+                        .type_predicate
+                        .is_some_and(|pred| pred.is_assertion()) =>
+                    {
+                        true
+                    }
                     // Otherwise: just check if the return types are assignable
                     _ => self.is_assignable_to_at_depth(
                         source_return_type,
@@ -622,6 +638,7 @@ mod tests {
         TyTypePredicate, TypeBuilder,
         checker::Checker,
         program::{HostModuleResolution, ProgramHost, ProgramStore, ProgramStoreBuilder},
+        type_predicate_return_type,
     };
 
     use super::*;
@@ -861,6 +878,38 @@ mod tests {
                 true,
             ),
             ty.function([], [ty.parameter("value", Ty::String)], Ty::Boolean)
+        ));
+
+        // Type assertion: `(value: string) => never` is assignable to `(value: string) => asserts value is string`
+        assert!(is_assignable_to(
+            ty.function([], [ty.parameter("value", Ty::String)], Ty::Never),
+            ty.function_with_type_predicate_and_display(
+                [],
+                [ty.parameter("value", Ty::String)],
+                type_predicate_return_type(true),
+                Some(TyTypePredicate::AssertsIdentifier {
+                    parameter_name: "value",
+                    parameter_index: Some(0),
+                    target_type: Some(Ty::String)
+                }),
+                true,
+            )
+        ));
+
+        // Type assertion: `() => void` is assignable to `(x: unknown) => asserts x is string`
+        assert!(is_assignable_to(
+            ty.function([], [], Ty::Void),
+            ty.function_with_type_predicate_and_display(
+                [],
+                [ty.parameter("x", Ty::Unknown)],
+                type_predicate_return_type(true),
+                Some(TyTypePredicate::AssertsIdentifier {
+                    parameter_name: "x",
+                    parameter_index: Some(0),
+                    target_type: Some(Ty::String)
+                }),
+                true,
+            )
         ));
     }
 }

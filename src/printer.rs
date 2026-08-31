@@ -696,7 +696,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
         let return_type = function.type_predicate.map_or_else(
             || {
                 self.to_type_string_with_flags(
-                    function.return_type,
+                    function.return_type(),
                     replace_type_reference,
                     flags | TypeFormatFlags::WRITE_ARRAY_AS_GENERIC_TYPE,
                     depth,
@@ -709,7 +709,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
         if flags.contains(TypeFormatFlags::PARENTHESIZE_CONDITIONAL_RETURN)
             && function.type_predicate.is_none()
             && matches!(
-                self.checker.ty_kind(function.return_type),
+                self.checker.ty_kind(function.return_type()),
                 TyKind::Conditional(_)
             )
         {

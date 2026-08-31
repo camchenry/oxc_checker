@@ -878,10 +878,11 @@ impl<'a, 'store> Checker<'a, 'store> {
             return None;
         }
 
-        let TyKind::Conditional(check_return) = self.ty_kind(check_function.return_type) else {
+        let TyKind::Conditional(check_return) = self.ty_kind(check_function.return_type()) else {
             return None;
         };
-        let TyKind::Conditional(extends_return) = self.ty_kind(extends_function.return_type) else {
+        let TyKind::Conditional(extends_return) = self.ty_kind(extends_function.return_type())
+        else {
             return None;
         };
         if self.could_contain_type_variables(check_return.extends_type)
@@ -1252,8 +1253,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             .map(|(source, target)| (self.instantiate_type(source.ty, &source_mapper), target.ty));
         self.infer_conditional_from_type_pairs(
             parameter_pairs.chain(std::iter::once((
-                self.instantiate_type(source.return_type, &source_mapper),
-                target.return_type,
+                self.instantiate_type(source.return_type(), &source_mapper),
+                target.return_type(),
             ))),
             inferences,
             depth + 1,
@@ -1453,7 +1454,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             self.arena(),
         )
         .with_return_type(
-            self.inference_return_type_for_literal_widening(program_id, function.return_type),
+            self.inference_return_type_for_literal_widening(program_id, function.return_type()),
         );
         for (parameter_type, argument_type) in type_pairs {
             let argument_type =
@@ -1976,10 +1977,11 @@ impl<'a, 'store> Checker<'a, 'store> {
             );
         }
 
-        if type_contains_inference_variable(self.arena(), parameter_function.return_type, context) {
+        if type_contains_inference_variable(self.arena(), parameter_function.return_type(), context)
+        {
             self.infer_types_with_variance(
-                parameter_function.return_type,
-                argument_function.return_type,
+                parameter_function.return_type(),
+                argument_function.return_type(),
                 context,
                 variance,
                 priority.return_type(),

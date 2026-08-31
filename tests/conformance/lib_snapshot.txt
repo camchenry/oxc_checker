@@ -3,7 +3,7 @@
 # Cases root: src/lib
 files: passed=14 failed=65 panicked=0 total=79 pass_percentage=17.72%
 types: matched=60158 mismatched=662 total=60820 match_percentage=98.91%
-assign: matched=313496 mismatched=11478 total=324974 match_percentage=96.47%
+assign: matched=313500 mismatched=11474 total=324974 match_percentage=96.47%
 
 FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45%
   - src/lib/decorators.d.ts:20 `DecoratorMetadata` type mismatch
@@ -105,9 +105,6 @@ FAIL src/lib/decorators.legacy.d.ts matched_types=25 mismatched_types=0 total_ty
       typescript target: Object    (Object)
       oxc source: (target: Object, propertyKey: string | symbol) => void    (Function)
       oxc target: Object    (TypeReference)
-  - :2 `PropertyDecorator` should be assignable to :3 `MethodDecorator`
-      source: (target: Object, propertyKey: string | symbol) => void    (Function)
-      target: <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void    (Function)
   - :2 `PropertyDecorator` should be assignable to :3 `target`
       typescript source: (target: Object, propertyKey: string | symbol) => void    (Function)
       typescript target: Object    (Object)
@@ -13886,11 +13883,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; }    (Function)
       oxc source: typeof globalThis    (GlobalThis)
       oxc target: { <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; }    (Object)
-  - :43645 `blur` should be assignable to :43651 `cancelIdleCallback`
-      typescript source: { (): void; (): void; }    (Function)
-      typescript target: { (handle: number): void; (handle: number): void; }    (Function)
-      oxc source: () => void    (Function)
-      oxc target: (handle: number) => void    (Function)
   - :43670 `confirm` should be assignable to :43664 `close`
       typescript source: { (message?: string): boolean; (message?: string): boolean; }    (Function)
       typescript target: { (): void; (): void; }    (Function)
@@ -16507,9 +16499,6 @@ FAIL src/lib/es2015.promise.d.ts matched_types=56 mismatched_types=0 total_types
   - :5 `prototype` should be assignable to :60 `value`
       source: Promise<any>    (TypeReference)
       target: T | PromiseLike<T>    (Union)
-  - :13 `reject` should be assignable to :13 `executor`
-      source: (reason?: any) => void    (Function)
-      target: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void    (Function)
   - :21 `all` should be assignable to :13 `executor`
       typescript source: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }    (Function)
       typescript target: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void    (Function)
@@ -51478,9 +51467,6 @@ FAIL src/lib/webworker.generated.d.ts matched_types=14293 mismatched_types=169 t
       typescript target: WebGLUniformLocation    (Object)
       oxc source: () => void    (Function)
       oxc target: WebGLUniformLocation    (TypeReference)
-  - :4955 `getSize` should be assignable to :4961 `read`
-      source: () => number    (Function)
-      target: (buffer: AllowSharedBufferSource, options?: FileSystemReadWriteOptions) => number    (Function)
   - :4961 `buffer` should be assignable to :12939 `program`
       typescript source: AllowSharedBufferSource    (Union)
       typescript target: WebGLProgram    (Object)

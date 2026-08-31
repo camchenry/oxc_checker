@@ -3676,7 +3676,7 @@ fn generic_signatures_use_type_parameter_types() {
     assert_eq!(type_parameter.constraint_type, Some(Ty::string()));
     assert!(
         ret.arena
-            .is_type_identical_to(function.return_type, parameter_type)
+            .is_type_identical_to(function.return_type(), parameter_type)
     );
 }
 

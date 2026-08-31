@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/external
 files: passed=12 failed=29 panicked=0 total=41 pass_percentage=29.27%
 types: matched=2168 mismatched=330 total=2498 match_percentage=86.79%
-assign: matched=56154 mismatched=12520 total=68674 match_percentage=81.77%
+assign: matched=56173 mismatched=12501 total=68674 match_percentage=81.80%
 
 FAIL tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts matched_types=192 mismatched_types=2 total_types=194 match_percentage=98.97%
   - tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts:11 `PathImpl` type mismatch
@@ -23953,16 +23953,6 @@ FAIL tests/conformance/external/remeda/data-first.ts::src/map.ts matched_types=4
       typescript target: any[]    (TypeReference)
       oxc source: unknown    (Unknown)
       oxc target: unknown    (Unknown)
-  - src/map.ts:10 `map` should be assignable to src/map.ts:8 `callbackfn`
-      typescript source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      typescript target: LazyEvaluator<any, any>    (Function)
-      oxc source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      oxc target: LazyEvaluator<any, any>    (TypeReference)
-  - src/map.ts:10 `map` should be assignable to src/map.ts:10 `callbackfn`
-      typescript source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      typescript target: LazyEvaluator<any, any>    (Function)
-      oxc source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      oxc target: LazyEvaluator<any, any>    (TypeReference)
   - src/map.ts:10 `map` should not be assignable to src/map.ts:10 `data`
       typescript source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
       typescript target: any[]    (TypeReference)
@@ -23973,11 +23963,6 @@ FAIL tests/conformance/external/remeda/data-first.ts::src/map.ts matched_types=4
       typescript target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
       oxc source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
       oxc target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Object)
-  - src/map.ts:10 `map` should be assignable to src/map.ts:11 `callbackfn`
-      typescript source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      typescript target: LazyEvaluator<any, any>    (Function)
-      oxc source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      oxc target: LazyEvaluator<any, any>    (TypeReference)
   - src/map.ts:10 `index` should not be assignable to src/map.ts:10 `data`
       typescript source: number    (Number)
       typescript target: any[]    (TypeReference)
@@ -24128,16 +24113,6 @@ FAIL tests/conformance/external/remeda/data-first.ts::src/map.ts matched_types=4
       typescript target: any[]    (TypeReference)
       oxc source: unknown    (Unknown)
       oxc target: unknown    (Unknown)
-  - src/map.ts:11 `map` should be assignable to src/map.ts:8 `callbackfn`
-      typescript source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      typescript target: LazyEvaluator<any, any>    (Function)
-      oxc source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      oxc target: LazyEvaluator<any, any>    (TypeReference)
-  - src/map.ts:11 `map` should be assignable to src/map.ts:10 `callbackfn`
-      typescript source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      typescript target: LazyEvaluator<any, any>    (Function)
-      oxc source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      oxc target: LazyEvaluator<any, any>    (TypeReference)
   - src/map.ts:11 `map` should not be assignable to src/map.ts:10 `data`
       typescript source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
       typescript target: any[]    (TypeReference)
@@ -24148,11 +24123,6 @@ FAIL tests/conformance/external/remeda/data-first.ts::src/map.ts matched_types=4
       typescript target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
       oxc source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
       oxc target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Object)
-  - src/map.ts:11 `map` should be assignable to src/map.ts:11 `callbackfn`
-      typescript source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      typescript target: LazyEvaluator<any, any>    (Function)
-      oxc source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-      oxc target: LazyEvaluator<any, any>    (TypeReference)
   - src/map.ts:11 `index` should not be assignable to src/map.ts:10 `data`
       typescript source: number    (Number)
       typescript target: any[]    (TypeReference)
@@ -48130,36 +48100,11 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: StateCreator<any>    (Intersection)
       oxc source: () => T    (Function)
       oxc target: StateCreator<any> | undefined    (Union)
-  - src/react.ts:35 `getState` should be assignable to src/react.ts:34 `useBoundStore`
-      typescript source: () => any    (Function)
-      typescript target: (selector?: (state: any) => any) => any    (Function)
-      oxc source: () => T    (Function)
-      oxc target: (selector?: (state: any) => any) => any    (Function)
-  - src/react.ts:35 `getState` should be assignable to src/react.ts:34 `selector`
-      typescript source: () => any    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: () => T    (Function)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:35 `getState` should be assignable to src/react.ts:35 `selector`
-      typescript source: () => any    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: () => T    (Function)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:35 `getState` should be assignable to src/react.ts:35 `selector`
-      typescript source: () => any    (Function)
-      typescript target: (state: any) => any    (Function)
-      oxc source: () => T    (Function)
-      oxc target: (state: any) => any    (Function)
   - src/react.ts:35 `getState` should be assignable to src/react.ts:37 `assign`
       typescript source: () => any    (Function)
       typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
       oxc source: () => T    (Function)
       oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
-  - src/react.ts:35 `getState` should be assignable to src/react.ts:37 `useBoundStore`
-      typescript source: () => any    (Function)
-      typescript target: (selector?: (state: any) => any) => any    (Function)
-      oxc source: () => T    (Function)
-      oxc target: (selector?: (state: any) => any) => any    (Function)
   - src/react.ts:35 `api` should be assignable to src/react.ts:10 `ReadonlyStoreApi`
       typescript source: StoreApi<any>    (TypeReference)
       typescript target: { getState: () => T; getInitialState: () => T; subscribe: (listener: (state: T, prevState: T) => void) => () => void; }    (Mapped)
@@ -48255,36 +48200,11 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: StateCreator<any>    (Intersection)
       oxc source: () => T    (Function)
       oxc target: StateCreator<any> | undefined    (Union)
-  - src/react.ts:35 `getState` should be assignable to src/react.ts:34 `useBoundStore`
-      typescript source: () => any    (Function)
-      typescript target: (selector?: (state: any) => any) => any    (Function)
-      oxc source: () => T    (Function)
-      oxc target: (selector?: (state: any) => any) => any    (Function)
-  - src/react.ts:35 `getState` should be assignable to src/react.ts:34 `selector`
-      typescript source: () => any    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: () => T    (Function)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:35 `getState` should be assignable to src/react.ts:35 `selector`
-      typescript source: () => any    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: () => T    (Function)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:35 `getState` should be assignable to src/react.ts:35 `selector`
-      typescript source: () => any    (Function)
-      typescript target: (state: any) => any    (Function)
-      oxc source: () => T    (Function)
-      oxc target: (state: any) => any    (Function)
   - src/react.ts:35 `getState` should be assignable to src/react.ts:37 `assign`
       typescript source: () => any    (Function)
       typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
       oxc source: () => T    (Function)
       oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
-  - src/react.ts:35 `getState` should be assignable to src/react.ts:37 `useBoundStore`
-      typescript source: () => any    (Function)
-      typescript target: (selector?: (state: any) => any) => any    (Function)
-      oxc source: () => T    (Function)
-      oxc target: (selector?: (state: any) => any) => any    (Function)
   - src/react.ts:37 `Object` should be assignable to src/react.ts:1 `createStore`
       typescript source: ObjectConstructor    (Function)
       typescript target: CreateStore    (Function)
@@ -48646,15 +48566,6 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/vanilla.ts matched_typ
       typescript target: StateCreator<any, [], [], any>    (Intersection)
       oxc source: CreateStore    (TypeReference)
       oxc target: StateCreator<any>    (TypeReference)
-  - src/vanilla.ts:63 `subscribe` should be assignable to src/vanilla.ts:63 `listener`
-      source: (listener: (state: any, prevState: any) => void) => () => boolean    (Function)
-      target: (state: any, prevState: any) => void    (Function)
-  - src/vanilla.ts:64 `add` should be assignable to src/vanilla.ts:64 `listener`
-      source: (value: (state: any, prevState: any) => void) => Set<(state: any, prevState: any) => void>    (Function)
-      target: (state: any, prevState: any) => void    (Function)
-  - src/vanilla.ts:65 `delete` should be assignable to src/vanilla.ts:65 `listener`
-      source: (value: (state: any, prevState: any) => void) => boolean    (Function)
-      target: (state: any, prevState: any) => void    (Function)
 FAIL tests/conformance/external/zustand/store-api.ts::tests/store-api-usage.ts matched_types=25 mismatched_types=46 total_types=71 match_percentage=35.21%
   - tests/conformance/external/zustand/store-api.ts::tests/store-api-usage.ts:10 `set` type mismatch
       expected: { (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }

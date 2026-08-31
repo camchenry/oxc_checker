@@ -679,8 +679,20 @@ pub struct TyFunction<'a> {
     /// Whether to render type parameters as instantiated type arguments.
     pub(crate) display_type_parameters_as_arguments: bool,
     pub parameters: ArenaVec<'a, TyParameter<'a>>,
-    pub return_type: Ty<'a>,
+    // TODO(refactor): combine the return type and type predicate into a single enum,
+    // since there are some mutually exclusive cases, like `asserts this` or `this is T`
+    // where the return type is implied by the type predicate kind.
+    return_type: Ty<'a>,
     pub type_predicate: Option<&'a TyTypePredicate<'a>>,
+}
+
+impl<'a> TyFunction<'a> {
+    pub fn return_type(&self) -> Ty<'a> {
+        if let Some(predicate) = self.type_predicate {
+            return type_predicate_return_type(predicate.is_assertion());
+        }
+        self.return_type
+    }
 }
 
 /// A function return type predicate with only the data valid for its syntax.

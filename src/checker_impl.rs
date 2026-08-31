@@ -550,10 +550,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                     })
                     .collect::<Vec<_>>();
                 let return_type =
-                    self.instantiate_type_at_depth(function.return_type, &mapper, depth + 1);
+                    self.instantiate_type_at_depth(function.return_type(), &mapper, depth + 1);
                 was_semantically_instantiated |= !self
                     .arena()
-                    .is_type_identical_to(function.return_type, return_type);
+                    .is_type_identical_to(function.return_type(), return_type);
                 let type_predicate = function.type_predicate.map(|predicate| {
                     let instantiated =
                         self.instantiate_type_predicate_at_depth(*predicate, &mapper, depth);
@@ -4448,7 +4448,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .optional(parameter.optional)
                     .rest(parameter.rest)
             }),
-            self.instantiate_type(function.return_type, &mapper),
+            self.instantiate_type(function.return_type(), &mapper),
             function
                 .type_predicate
                 .map(|predicate| self.instantiate_type_predicate(*predicate, &mapper)),
@@ -6428,7 +6428,7 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         let return_type = self.instantiate_signature_return_type(
             program_id,
-            function.return_type,
+            function.return_type(),
             inference.mapper(),
         );
         Some(ResolvedSignatureCandidate {
@@ -6855,7 +6855,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         );
         let instantiated = self.instantiate_signature_return_type(
             program_id,
-            function.return_type,
+            function.return_type(),
             inference.mapper(),
         );
 
@@ -8236,7 +8236,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             MethodDefinitionKind::Get
                 if let TyKind::Function(func) = self.ty_kind(inferred_method_type) =>
             {
-                func.return_type
+                func.return_type()
             }
             // For setters: `(value: T) => void` collapses into `T`. If `T` is not annotated, then it must be inferred
             // from the type of the getter.
@@ -8477,7 +8477,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         .optional(parameter.optional)
                         .rest(parameter.rest)
                 }),
-                self.get_apparent_type(program_id, function.return_type, depth + 1),
+                self.get_apparent_type(program_id, function.return_type(), depth + 1),
                 function.type_predicate.copied(),
                 function.display_type_parameters_as_arguments,
             ),
