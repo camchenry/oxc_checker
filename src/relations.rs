@@ -4,7 +4,7 @@ use crate::{
     limits::ASSIGNABILITY_MAX_DEPTH,
     mapper::TypeMapper,
     type_predicate_kinds_match,
-    types::{Ty, TyKind},
+    types::{Ty, TyKind, function_maximum_argument_count, function_minimum_argument_count},
 };
 
 impl<'a, 'store> Checker<'a, 'store> {
@@ -210,12 +210,16 @@ impl<'a, 'store> Checker<'a, 'store> {
                     mapper
                 };
 
-                // If the source function has more parameters than the target function, it is not assignable.
-                let source_arity = source.parameters.len();
-                let target_arity = target.parameters.len();
-                let min_arity = source_arity.min(target_arity);
-                if min_arity < source_arity {
-                    dbg!(1);
+                // If the number of required arguments for the source is greater than the
+                // largest possible number of arguments for the target (that is: no overlap),
+                // then the functions are not assignable.
+                let source_minimum_argument_count =
+                    function_minimum_argument_count(self.arena(), source);
+                let target_maximum_argument_count =
+                    function_maximum_argument_count(self.arena(), target);
+                if target_maximum_argument_count
+                    .is_some_and(|target_count| source_minimum_argument_count > target_count)
+                {
                     return false;
                 }
 
@@ -843,6 +847,61 @@ mod tests {
         assert!(is_assignable_to(
             ty.function([], [ty.parameter("a", Ty::Number)], Ty::Void),
             ty.function([], [ty.parameter("a", Ty::Number)], Ty::Void)
+        ));
+
+        // Optional and rest parameters do not increase a source function's minimum arity.
+        assert!(is_assignable_to(
+            ty.function(
+                [],
+                [
+                    ty.parameter("a", Ty::Number),
+                    ty.parameter("b", Ty::Number).optional(true)
+                ],
+                Ty::Void
+            ),
+            ty.function([], [ty.parameter("a", Ty::Number)], Ty::Void)
+        ));
+        assert!(is_assignable_to(
+            ty.function(
+                [],
+                [
+                    ty.parameter("a", Ty::Number),
+                    ty.parameter("rest", arena.array(Ty::Number)).rest(true)
+                ],
+                Ty::Void
+            ),
+            ty.function([], [ty.parameter("a", Ty::Number)], Ty::Void)
+        ));
+
+        let required_pair = arena.tuple(vec![
+            TupleElement::Regular(Ty::Number),
+            TupleElement::Regular(Ty::Number),
+        ]);
+        assert!(!is_assignable_to(
+            ty.function(
+                [],
+                [ty.parameter("args", required_pair).rest(true)],
+                Ty::Void
+            ),
+            ty.function([], [ty.parameter("arg", required_pair)], Ty::Void)
+        ));
+
+        // A target rest parameter can accept any number of source parameters.
+        let number_array = arena.array(Ty::Number);
+        assert!(is_assignable_to(
+            ty.function(
+                [],
+                [
+                    ty.parameter("a", number_array),
+                    ty.parameter("b", number_array)
+                ],
+                Ty::Void
+            ),
+            ty.function(
+                [],
+                [ty.parameter("rest", number_array).rest(true)],
+                Ty::Void
+            )
         ));
 
         // '(value: string) => void' is not assignable to type '(value: string) => string'

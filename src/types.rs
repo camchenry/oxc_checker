@@ -837,6 +837,7 @@ impl<'a> TyParameter<'a> {
     }
 }
 
+/// Returns the minimum number of arguments required to call a function, including any required elements of a rest tuple parameter.
 pub(crate) fn function_minimum_argument_count<'a>(
     arena: CheckerArena<'a>,
     function: &TyFunction<'a>,
@@ -856,6 +857,7 @@ pub(crate) fn function_minimum_argument_count<'a>(
             })
 }
 
+/// Returns the maximum number of arguments allowed to call a function, including any elements of a rest tuple parameter, or `None` if the function has a rest parameter with an unbounded tuple type.
 pub(crate) fn function_maximum_argument_count<'a>(
     arena: CheckerArena<'a>,
     function: &TyFunction<'a>,

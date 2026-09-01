@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/external
 files: passed=12 failed=29 panicked=0 total=41 pass_percentage=29.27%
 types: matched=2168 mismatched=330 total=2498 match_percentage=86.79%
-assign: matched=56173 mismatched=12501 total=68674 match_percentage=81.80%
+assign: matched=56177 mismatched=12497 total=68674 match_percentage=81.80%
 
 FAIL tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts matched_types=192 mismatched_types=2 total_types=194 match_percentage=98.97%
   - tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts:11 `PathImpl` type mismatch
@@ -47917,16 +47917,6 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: StateCreator<any>    (Intersection)
       oxc source: (selector?: (state: any) => any) => any    (Function)
       oxc target: StateCreator<any> | undefined    (Union)
-  - src/react.ts:34 `useBoundStore` should be assignable to src/react.ts:35 `getState`
-      typescript source: (selector?: (state: any) => any) => any    (Function)
-      typescript target: () => any    (Function)
-      oxc source: (selector?: (state: any) => any) => any    (Function)
-      oxc target: () => T    (Function)
-  - src/react.ts:34 `useBoundStore` should be assignable to src/react.ts:35 `getState`
-      typescript source: (selector?: (state: any) => any) => any    (Function)
-      typescript target: () => any    (Function)
-      oxc source: (selector?: (state: any) => any) => any    (Function)
-      oxc target: () => T    (Function)
   - src/react.ts:34 `selector` should be assignable to src/react.ts:29 `initializer`
       source: ((state: any) => any) | undefined    (Union)
       target: StateCreator<any> | undefined    (Union)
@@ -48481,16 +48471,6 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: StateCreator<any>    (Intersection)
       oxc source: (selector?: (state: any) => any) => any    (Function)
       oxc target: StateCreator<any> | undefined    (Union)
-  - src/react.ts:37 `useBoundStore` should be assignable to src/react.ts:35 `getState`
-      typescript source: (selector?: (state: any) => any) => any    (Function)
-      typescript target: () => any    (Function)
-      oxc source: (selector?: (state: any) => any) => any    (Function)
-      oxc target: () => T    (Function)
-  - src/react.ts:37 `useBoundStore` should be assignable to src/react.ts:35 `getState`
-      typescript source: (selector?: (state: any) => any) => any    (Function)
-      typescript target: () => any    (Function)
-      oxc source: (selector?: (state: any) => any) => any    (Function)
-      oxc target: () => T    (Function)
   - src/react.ts:37 `api` should be assignable to src/react.ts:10 `ReadonlyStoreApi`
       typescript source: StoreApi<any>    (TypeReference)
       typescript target: { getState: () => T; getInitialState: () => T; subscribe: (listener: (state: T, prevState: T) => void) => () => void; }    (Mapped)

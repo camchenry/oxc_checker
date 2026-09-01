@@ -3,7 +3,7 @@
 # Cases root: src/lib
 files: passed=14 failed=65 panicked=0 total=79 pass_percentage=17.72%
 types: matched=60158 mismatched=662 total=60820 match_percentage=98.91%
-assign: matched=313500 mismatched=11474 total=324974 match_percentage=96.47%
+assign: matched=313502 mismatched=11472 total=324974 match_percentage=96.47%
 
 FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45%
   - src/lib/decorators.d.ts:20 `DecoratorMetadata` type mismatch
@@ -13883,16 +13883,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; }    (Function)
       oxc source: typeof globalThis    (GlobalThis)
       oxc target: { <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; }    (Object)
-  - :43670 `confirm` should be assignable to :43664 `close`
-      typescript source: { (message?: string): boolean; (message?: string): boolean; }    (Function)
-      typescript target: { (): void; (): void; }    (Function)
-      oxc source: (message?: string) => boolean    (Function)
-      oxc target: () => void    (Function)
-  - :43731 `prompt` should be assignable to :43725 `print`
-      typescript source: { (message?: string, _default?: string): string | null; (message?: string, _default?: string): string | null; }    (Function)
-      typescript target: { (): void; (): void; }    (Function)
-      oxc source: (message?: string, _default?: string) => string | null    (Function)
-      oxc target: () => void    (Function)
   - :43763 `scroll` should not be assignable to :22711 `transferFromImageBitmap`
       typescript source: { (options?: ScrollToOptions): void; (x: number, y: number): void; (options?: ScrollToOptions): void; (x: number, y: number): void; }    (Function)
       typescript target: { (bitmap: ImageBitmap | null): void; (bitmap: ImageBitmap | null): void; }    (Function)
