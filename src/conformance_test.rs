@@ -477,6 +477,66 @@ fn assignability_uses_expected_primitive_instead_of_oxc_literal() {
 }
 
 #[test]
+fn collection_skips_assignability_when_target_type_mismatches() {
+    let source_text = "let source: number = 1; let target: number = 2;";
+    let path = Arc::<str>::from("compiler/skipMismatchedAssignability.ts");
+    let source_start = u32::try_from(source_text.find("source").unwrap()).unwrap();
+    let target_start = u32::try_from(source_text.find("target").unwrap()).unwrap();
+    let target = TypeRecordKey {
+        start: target_start,
+        end: target_start + 6,
+        text: "target".to_string(),
+    };
+    let expectations = ConformanceExpectations::from_records(&[
+        TypeRecord {
+            path: Arc::clone(&path),
+            start: source_start,
+            end: source_start + 6,
+            text: "source".to_string(),
+            node_type: "BindingIdentifier".to_string(),
+            r#type: TypeRecordType {
+                name: "Number".to_string(),
+                display: "number".to_string(),
+            },
+            assignability: vec![AssignabilityRecord {
+                target: target.clone(),
+                assignable: true,
+            }],
+        },
+        TypeRecord {
+            path,
+            start: target.start,
+            end: target.end,
+            text: target.text.clone(),
+            node_type: "BindingIdentifier".to_string(),
+            r#type: TypeRecordType {
+                name: "String".to_string(),
+                display: "string".to_string(),
+            },
+            assignability: Vec::new(),
+        },
+    ]);
+    let allocator = Allocator::default();
+
+    let records = collect_oxc_records_from_source_with_programs(
+        Path::new("tests/conformance/cases"),
+        Path::new("tests/conformance/cases/compiler/skipMismatchedAssignability.ts"),
+        source_text,
+        &allocator,
+        None,
+        Some(&expectations),
+    )
+    .records;
+    let source = records
+        .iter()
+        .find(|record| record.start == source_start && record.text == "source")
+        .unwrap();
+
+    assert_eq!(source.r#type.display, "number");
+    assert!(source.assignability.is_empty());
+}
+
+#[test]
 fn compare_records_counts_union_order_only_differences_as_matches() {
     let expected = TypeRecord {
         path: Arc::from("compiler/unionOrder.ts"),
@@ -588,6 +648,64 @@ fn assignment_mismatches_have_separate_totals_and_no_file_summary() {
         .find(|line| line.starts_with("FAIL "))
         .unwrap();
     assert!(!file_header.contains("matched_assignments"));
+}
+
+#[test]
+fn compare_records_skips_assignability_when_an_endpoint_type_mismatches() {
+    let target = TypeRecordKey {
+        start: 10,
+        end: 16,
+        text: "target".to_string(),
+    };
+    let expected_source = TypeRecord {
+        path: Arc::from("compiler/basicPrimitives.ts"),
+        start: 0,
+        end: 6,
+        text: "source".to_string(),
+        node_type: "Identifier".to_string(),
+        r#type: TypeRecordType {
+            name: "Number".to_string(),
+            display: "number".to_string(),
+        },
+        assignability: vec![AssignabilityRecord {
+            target: target.clone(),
+            assignable: true,
+        }],
+    };
+    let expected_target = TypeRecord {
+        path: Arc::clone(&expected_source.path),
+        start: target.start,
+        end: target.end,
+        text: target.text.clone(),
+        node_type: "Identifier".to_string(),
+        r#type: TypeRecordType {
+            name: "String".to_string(),
+            display: "string".to_string(),
+        },
+        assignability: Vec::new(),
+    };
+    let actual_source = TypeRecord {
+        r#type: TypeRecordType {
+            name: "String".to_string(),
+            display: "string".to_string(),
+        },
+        assignability: vec![AssignabilityRecord {
+            target,
+            assignable: false,
+        }],
+        ..expected_source.clone()
+    };
+
+    let results = compare_records(
+        &[expected_source, expected_target.clone()],
+        &[actual_source, expected_target],
+    );
+    let stats = ComparisonStats::from_results(&results, 0);
+
+    assert_eq!(stats.mismatched_types, 1);
+    assert_eq!(stats.matched_assignments, 0);
+    assert_eq!(stats.mismatched_assignments, 0);
+    assert_eq!(stats.total_assignments, 0);
 }
 
 #[test]

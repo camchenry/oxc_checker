@@ -2046,6 +2046,12 @@ fn actual_identifier_records<'a>(
         let Some(&target_index) = record_indices.get(&target) else {
             continue;
         };
+        if expected_types.is_some_and(|expected_types| {
+            !captured_type_matches_expectation(&records[source_index], expected_types)
+                || !captured_type_matches_expectation(&records[target_index], expected_types)
+        }) {
+            continue;
+        }
         let source_type = assignability_type(&records[source_index], expected_types);
         let target_type = assignability_type(&records[target_index], expected_types);
         let assignable = checker.is_assignable_to(source_type, target_type);
@@ -2058,6 +2064,15 @@ fn actual_identifier_records<'a>(
         .into_iter()
         .map(|captured| captured.record)
         .collect()
+}
+
+fn captured_type_matches_expectation(
+    captured: &CapturedTypeRecord<'_>,
+    expected_types: &TypeRecordMap,
+) -> bool {
+    expected_types
+        .get(&captured.record.key())
+        .is_some_and(|expected| type_records_are_compatible(expected, &captured.record.r#type))
 }
 
 fn assignability_type<'a>(
@@ -2698,6 +2713,9 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
                 .get(&path)
                 .unwrap_or(&empty_assignments);
             for ((source, target), expected) in tsc_assignments {
+                if !assignability_types_are_compatible(tsc_by_key, oxc_by_key, source, target) {
+                    continue;
+                }
                 let actual = oxc_assignments
                     .get(&(source.clone(), target.clone()))
                     .copied();
@@ -2735,6 +2753,21 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
             }
         })
         .collect()
+}
+
+fn assignability_types_are_compatible(
+    expected_types: &TypeRecordMap,
+    actual_types: &TypeRecordMap,
+    source: &TypeRecordKey,
+    target: &TypeRecordKey,
+) -> bool {
+    [source, target].into_iter().all(|key| {
+        expected_types.get(key).is_some_and(|expected| {
+            actual_types
+                .get(key)
+                .is_some_and(|actual| type_records_are_compatible(expected, actual))
+        })
+    })
 }
 
 fn missing_type_record() -> TypeRecordType {

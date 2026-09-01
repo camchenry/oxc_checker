@@ -1,3 +1,3 @@
 {"path":"es2019.symbol.d.ts","start":10,"end":16,"text":"Symbol","nodeType":"Identifier","type":{"name":"Any","display":"any"},"assignability":[]}
-{"path":"es2019.symbol.d.ts","start":10,"end":16,"text":"Symbol","nodeType":"Identifier","type":{"name":"Any","display":"any"},"assignability":[{"target":{"start":10,"end":16,"text":"Symbol"},"assignable":true},{"target":{"start":118,"end":129,"text":"description"},"assignable":true}]}
-{"path":"es2019.symbol.d.ts","start":118,"end":129,"text":"description","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"},"assignability":[{"target":{"start":10,"end":16,"text":"Symbol"},"assignable":true},{"target":{"start":118,"end":129,"text":"description"},"assignable":true}]}
+{"path":"es2019.symbol.d.ts","start":10,"end":16,"text":"Symbol","nodeType":"Identifier","type":{"name":"Any","display":"any"},"assignability":[]}
+{"path":"es2019.symbol.d.ts","start":118,"end":129,"text":"description","nodeType":"Identifier","type":{"name":"Union","display":"string | undefined"},"assignability":[{"target":{"start":118,"end":129,"text":"description"},"assignable":true}]}
