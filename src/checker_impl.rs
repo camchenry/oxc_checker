@@ -9522,13 +9522,20 @@ impl<'a, 'store> Checker<'a, 'store> {
         member_name: &str,
         member_type: Ty<'a>,
     ) -> Ty<'a> {
+        let make_qualified_name =
+            |name: &str| self.arena().str(&format!("{namespace_name}.{name}"));
+        if let TyKind::Class(class) = self.ty_kind(member_type) {
+            return self
+                .ty
+                .class(make_qualified_name(member_name), class.constructor_type);
+        }
         let TyKind::TypeQuery(query) = self.ty_kind(member_type) else {
             return member_type;
         };
         let TyKind::ModuleNamespace(namespace) = self.ty_kind(query.resolved) else {
             return member_type;
         };
-        let qualified_name = self.arena().str(&format!("{namespace_name}.{member_name}"));
+        let qualified_name = make_qualified_name(member_name);
         let resolved = self.ty.module_namespace(
             qualified_name,
             namespace.properties.iter().map(|property| TyProperty {
@@ -11917,7 +11924,17 @@ impl<'a> Checker<'a, '_> {
             AstKind::TSTypeReference(reference)
                 if matches!(reference.type_name, TSTypeName::QualifiedName(_)) =>
             {
-                self.get_type_from_ts_type_reference(node.program_id, reference)
+                let resolved = self.get_type_from_ts_type_reference(node.program_id, reference);
+                let TSTypeName::QualifiedName(qualified) = &reference.type_name else {
+                    return resolved;
+                };
+                let value_type =
+                    self.get_type_of_ts_import_equals_qualified_name(node.program_id, qualified);
+                if matches!(self.ty_kind(value_type), TyKind::Class(_)) {
+                    value_type
+                } else {
+                    resolved
+                }
             }
             AstKind::TSTypeReference(reference) => {
                 let resolved = self.get_type_from_ts_type_reference(node.program_id, reference);

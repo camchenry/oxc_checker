@@ -693,6 +693,37 @@ fn checker_resolves_interface_heritage_value_types() {
 }
 
 #[test]
+fn checker_qualifies_class_values_at_type_reference_locations() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "namespace Container { export class Derived extends Lanthanum.nitidus<petrophilus.minutilla> {} }\
+         namespace Lanthanum { export class nitidus<T> {} }\
+         namespace petrophilus { export class minutilla {} }",
+    );
+    let checker = checker(&ret);
+    let nodes = ret.store.entry(ret.program_id).unwrap().semantic().nodes();
+    let printed = nodes
+        .iter_enumerated()
+        .filter(|(_, node)| {
+            matches!(
+                node.kind(),
+                AstKind::StaticMemberExpression(_) | AstKind::TSTypeReference(_)
+            )
+        })
+        .map(|(node_id, _)| {
+            let node = NodeRef::new(ret.program_id, node_id);
+            checker.type_to_string(checker.get_type_at_location(node), node)
+        })
+        .collect::<Vec<_>>();
+
+    assert_eq!(
+        printed,
+        ["typeof Lanthanum.nitidus", "typeof petrophilus.minutilla"]
+    );
+}
+
+#[test]
 fn checker_expands_object_type_queries_at_variable_bindings() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
