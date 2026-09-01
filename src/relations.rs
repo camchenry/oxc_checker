@@ -173,6 +173,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .types
                 .iter()
                 .all(|ty| self.is_assignable_to_at_depth(source, *ty, next_depth)),
+            (TyKind::Intersection(_), TyKind::Intersection(_))
+                if self.arena().is_type_identical_to(source, target) =>
+            {
+                true
+            }
             (TyKind::Function(source), TyKind::Function(target)) => {
                 let source_mapper = if source.type_parameters.is_empty()
                     || target.type_parameters.is_empty()
@@ -778,6 +783,17 @@ mod tests {
         ]);
         // `string & { __brand: "brand" }` is assignable to `string`
         assert!(is_assignable_to(string_brand, Ty::String));
+
+        let identical_string_brand = arena.intersection([
+            Ty::String,
+            arena.object([
+                TypeBuilder::new(arena).property("__brand", arena.string_literal("brand"))
+            ]),
+        ]);
+        assert_ne!(string_brand, identical_string_brand);
+        assert!(arena.is_type_identical_to(string_brand, identical_string_brand));
+        assert!(is_assignable_to(string_brand, identical_string_brand));
+        assert!(is_assignable_to(identical_string_brand, string_brand));
     }
 
     #[test]
