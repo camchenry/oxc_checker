@@ -10400,9 +10400,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             let Some(expression) = declarator.init.as_ref() else {
                 return self.ty.any();
             };
-            let flags = if declarator.kind == VariableDeclarationKind::Const
-                && !self.is_in_exported_declaration(program_id, declaration)
-            {
+            let flags = if declarator.kind.is_const() {
                 CheckMode::PRESERVE_LITERALS
             } else {
                 CheckMode::NONE

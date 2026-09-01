@@ -4805,3 +4805,19 @@ fn test_get_global_type() {
         &arena(&ret).type_reference("Promise", std::iter::empty()),
     );
 }
+
+#[test]
+fn test_const_export_literal_type() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+    export const name = "literal";
+    "#,
+    );
+
+    assert_eq!(
+        type_string(&ret, get_global_symbol_type(&ret, "name")),
+        "\"literal\""
+    );
+}
