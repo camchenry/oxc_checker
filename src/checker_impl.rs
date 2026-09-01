@@ -1458,12 +1458,32 @@ impl<'a, 'store> Checker<'a, 'store> {
             BinaryOperator::LessEqualThan => self.ty.boolean(),
             BinaryOperator::GreaterThan => self.ty.boolean(),
             BinaryOperator::GreaterEqualThan => self.ty.boolean(),
-            BinaryOperator::Addition
-                if left.is_string_like(self.arena()) || right.is_string_like(self.arena()) =>
-            {
-                self.ty.string()
+            BinaryOperator::Addition => {
+                // For compatibility with tsc, unless we definitely know the type of the left and right
+                // operands, then we fallback to `any` for the resulting type.
+                let is_strictly_assignable_to = |source: Ty<'a>, target: Ty<'a>| {
+                    !source.is_any_like(self.arena()) && self.is_assignable_to(source, target)
+                };
+                if is_strictly_assignable_to(left, self.ty.number())
+                    && is_strictly_assignable_to(right, self.ty.number())
+                {
+                    self.ty.number()
+                } else if is_strictly_assignable_to(left, self.ty.bigint())
+                    && is_strictly_assignable_to(right, self.ty.bigint())
+                {
+                    self.ty.bigint()
+                } else if is_strictly_assignable_to(left, self.ty.string())
+                    || is_strictly_assignable_to(right, self.ty.string())
+                {
+                    self.ty.string()
+                } else if left.is_error(self.arena()) {
+                    left
+                } else if right.is_error(self.arena()) {
+                    right
+                } else {
+                    self.ty.any()
+                }
             }
-            BinaryOperator::Addition => self.ty.number(),
             BinaryOperator::Subtraction => self.ty.number(),
             BinaryOperator::Multiplication => self.ty.number(),
             BinaryOperator::Division => self.ty.number(),

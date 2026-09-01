@@ -943,7 +943,8 @@ const counterInitializer: StateCreator<CounterState> = (set, get) => ({
                     expected: { (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
 
   increment: (by = 1) => set({ count: get().count + by }),
->                              ^^^^^: number   (Number) (Identifier)
+>                              ^^^^^: any   (Any) (Identifier)
+                            expected: number
 
   increment: (by = 1) => set({ count: get().count + by }),
 >                                     ^^^: any   (Any) (Identifier)
@@ -1090,7 +1091,8 @@ const unsubscribe = useCounter.subscribe((state, prevState) => {
    expected: number
 
   nextCount + prevCount
-> ^^^^^^^^^^^^^^^^^^^^^: number   (Number) (ExpressionStatement)
+> ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+               expected: number
 
   nextCount + prevCount
 >             ^^^^^^^^^: any   (Any) (Identifier)

@@ -1928,6 +1928,31 @@ fn unresolved_symbols_produce_error_types() {
 }
 
 #[test]
+fn addition_falls_back_to_any_when_the_result_is_indeterminate() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+        declare const anyValue: any;
+        declare const unknownValue: unknown;
+        const numberResult = 1 + 2;
+        const bigintResult = 1n + 2n;
+        const stringResult = "value" + anyValue;
+        const anyResult = 1 + anyValue;
+        const unknownResult = 1 + unknownValue;
+        const invalidResult = true + false;
+        "#,
+    );
+
+    assert_eq!(get_global_symbol_type(&ret, "numberResult"), Ty::number());
+    assert_eq!(get_global_symbol_type(&ret, "bigintResult"), Ty::bigint());
+    assert_eq!(get_global_symbol_type(&ret, "stringResult"), Ty::string());
+    assert_eq!(get_global_symbol_type(&ret, "anyResult"), Ty::any());
+    assert_eq!(get_global_symbol_type(&ret, "unknownResult"), Ty::any());
+    assert_eq!(get_global_symbol_type(&ret, "invalidResult"), Ty::any());
+}
+
+#[test]
 fn intersection_with_any_reduces_to_any() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(&allocator, "");
