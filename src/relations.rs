@@ -234,7 +234,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                     },
                 );
                 if !parameters_match {
-                    dbg!(2);
                     return false;
                 }
 
@@ -246,7 +245,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 }
 
                 // Type predicates (e.g., `x is string`) must match in their target types
-                dbg!(source.type_predicate, target.type_predicate);
                 let type_predicate_matches = match (source.type_predicate, target.type_predicate) {
                     (Some(source_predicate), Some(target_predicate)) => {
                         type_predicate_kinds_match(source_predicate, target_predicate)
@@ -275,27 +273,18 @@ impl<'a, 'store> Checker<'a, 'store> {
                     (None, None) => true,
                 };
                 if !type_predicate_matches {
-                    dbg!(3);
                     return false;
                 }
 
                 // Check that the return type matches
                 let source_return_type =
                     self.instantiate_type(source.return_type(), &source_mapper);
-
-                let return_type_matches = match (
-                    self.ty_kind(source_return_type),
-                    self.ty_kind(target_return_type),
-                ) {
-                    // Otherwise: just check if the return types are assignable
-                    _ => self.is_assignable_to_at_depth(
-                        source_return_type,
-                        target_return_type,
-                        next_depth,
-                    ),
-                };
+                let return_type_matches = self.is_assignable_to_at_depth(
+                    source_return_type,
+                    target_return_type,
+                    next_depth,
+                );
                 if !return_type_matches {
-                    dbg!(4);
                     return false;
                 }
 
