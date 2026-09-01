@@ -3,7 +3,7 @@
 # Cases root: src/lib
 files: passed=14 failed=65 panicked=0 total=79 pass_percentage=17.72%
 types: matched=60158 mismatched=662 total=60820 match_percentage=98.91%
-assign: matched=313502 mismatched=11472 total=324974 match_percentage=96.47%
+assign: matched=313504 mismatched=11470 total=324974 match_percentage=96.47%
 
 FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45%
   - src/lib/decorators.d.ts:20 `DecoratorMetadata` type mismatch
@@ -29620,11 +29620,6 @@ FAIL src/lib/es2021.promise.d.ts matched_types=34 mismatched_types=0 total_types
       typescript target: Iterable<T | PromiseLike<T>>    (TypeReference)
       oxc source: any[]    (Array)
       oxc target: Iterable<T | PromiseLike<T>>    (TypeReference)
-  - :22 `values` should not be assignable to :2 `errors`
-      typescript source: T    (TypeParameter)
-      typescript target: any[]    (TypeReference)
-      oxc source: T    (TypeParameter)
-      oxc target: any[]    (Array)
   - :22 `values` should be assignable to :6 `errors`
       source: T    (TypeParameter)
       target: Iterable<any>    (TypeReference)
@@ -52487,11 +52482,6 @@ FAIL src/lib/webworker.generated.d.ts matched_types=14293 mismatched_types=169 t
       typescript target: { (source: Response | PromiseLike<Response>, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (source: Response | PromiseLike<Response>, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; }    (Function)
       oxc source: { (): Promise<void>; (): Promise<void>; }    (Object)
       oxc target: { (source: Response | PromiseLike<Response>, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; (source: Response | PromiseLike<Response>, importObject?: Imports, options?: WebAssemblyCompileOptions): Promise<WebAssemblyInstantiatedSource>; }    (Object)
-  - :7739 `languages` should not be assignable to :14639 `data`
-      typescript source: readonly string[]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly string[]    (Array)
-      oxc target: any[]    (Array)
   - :7745 `LockManager` should not be assignable to :14657 `countReset`
       typescript source: { new (): LockManager; prototype: LockManager; }    (Object)
       typescript target: { (label?: string): void; (label?: string): void; }    (Function)

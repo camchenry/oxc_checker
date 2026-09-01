@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/cases
 files: passed=101 failed=73 panicked=0 total=174 pass_percentage=58.05%
 types: matched=3672 mismatched=55 total=3727 match_percentage=98.52%
-assign: matched=89531 mismatched=2786 total=92317 match_percentage=96.98%
+assign: matched=89549 mismatched=2768 total=92317 match_percentage=97.00%
 
 PASS tests/conformance/cases/compiler/abstractIdentifierNameStrict.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/arrayTypes.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00%
@@ -7164,68 +7164,18 @@ FAIL tests/conformance/cases/compiler/eslint_noUnsafeArguments.ts::a.ts matched_
   - a.ts:9 `foo` should be assignable to a.ts:19 `bar`
       source: (arg1: string, arg2: number, arg3: string) => void    (Function)
       target: (arg1: string, arg2: number, ...rest: string[]) => void    (Function)
-  - a.ts:11 `tuple1` should not be assignable to a.ts:8 `anyArray`
-      typescript source: readonly ["a", any, "b"]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly ["a", any, "b"]    (Tuple)
-      oxc target: any[]    (Array)
-  - a.ts:11 `tuple1` should not be assignable to a.ts:9 `anyArray`
-      typescript source: readonly ["a", any, "b"]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly ["a", any, "b"]    (Tuple)
-      oxc target: any[]    (Array)
-  - a.ts:11 `tuple1` should not be assignable to a.ts:17 `rest`
-      typescript source: readonly ["a", any, "b"]    (TypeReference)
-      typescript target: string[]    (TypeReference)
-      oxc source: readonly ["a", any, "b"]    (Tuple)
-      oxc target: string[]    (Array)
   - a.ts:12 `foo` should be assignable to a.ts:17 `bar`
       source: (arg1: string, arg2: number, arg3: string) => void    (Function)
       target: (arg1: string, arg2: number, ...rest: string[]) => void    (Function)
   - a.ts:12 `foo` should be assignable to a.ts:19 `bar`
       source: (arg1: string, arg2: number, arg3: string) => void    (Function)
       target: (arg1: string, arg2: number, ...rest: string[]) => void    (Function)
-  - a.ts:12 `tuple1` should not be assignable to a.ts:8 `anyArray`
-      typescript source: readonly ["a", any, "b"]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly ["a", any, "b"]    (Tuple)
-      oxc target: any[]    (Array)
-  - a.ts:12 `tuple1` should not be assignable to a.ts:9 `anyArray`
-      typescript source: readonly ["a", any, "b"]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly ["a", any, "b"]    (Tuple)
-      oxc target: any[]    (Array)
-  - a.ts:12 `tuple1` should not be assignable to a.ts:17 `rest`
-      typescript source: readonly ["a", any, "b"]    (TypeReference)
-      typescript target: string[]    (TypeReference)
-      oxc source: readonly ["a", any, "b"]    (Tuple)
-      oxc target: string[]    (Array)
-  - a.ts:14 `tuple2` should not be assignable to a.ts:8 `anyArray`
-      typescript source: readonly [1]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly [1]    (Tuple)
-      oxc target: any[]    (Array)
-  - a.ts:14 `tuple2` should not be assignable to a.ts:9 `anyArray`
-      typescript source: readonly [1]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly [1]    (Tuple)
-      oxc target: any[]    (Array)
   - a.ts:15 `foo` should be assignable to a.ts:17 `bar`
       source: (arg1: string, arg2: number, arg3: string) => void    (Function)
       target: (arg1: string, arg2: number, ...rest: string[]) => void    (Function)
   - a.ts:15 `foo` should be assignable to a.ts:19 `bar`
       source: (arg1: string, arg2: number, arg3: string) => void    (Function)
       target: (arg1: string, arg2: number, ...rest: string[]) => void    (Function)
-  - a.ts:15 `tuple2` should not be assignable to a.ts:8 `anyArray`
-      typescript source: readonly [1]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly [1]    (Tuple)
-      oxc target: any[]    (Array)
-  - a.ts:15 `tuple2` should not be assignable to a.ts:9 `anyArray`
-      typescript source: readonly [1]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly [1]    (Tuple)
-      oxc target: any[]    (Array)
   - a.ts:17 `bar` should be assignable to a.ts:1 `foo`
       source: (arg1: string, arg2: number, ...rest: string[]) => void    (Function)
       target: (arg1: string, arg2: number, arg3: string) => void    (Function)
@@ -10498,11 +10448,6 @@ FAIL tests/conformance/cases/compiler/mappedTypeInference.ts matched_types=39 mi
   - :8 `unwrap` should be assignable to :9 `unwrapReadonly`
       source: <T>(value: { [P in keyof T]: T[P]; }) => T    (Function)
       target: <T>(value: { readonly [P in keyof T]: T[P]; }) => T    (Function)
-  - :9 `readonlyTupleValue` should not be assignable to :8 `tupleValue`
-      typescript source: readonly [number, string]    (TypeReference)
-      typescript target: [number, string]    (TypeReference)
-      oxc source: readonly [number, string]    (Tuple)
-      oxc target: [number, string]    (Tuple)
   - :9 `unwrapReadonly` should be assignable to :2 `unwrap`
       source: <T>(value: { readonly [P in keyof T]: T[P]; }) => T    (Function)
       target: <T>(value: { [P in keyof T]: T[P]; }) => T    (Function)
@@ -10984,32 +10929,6 @@ FAIL tests/conformance/cases/compiler/namedTuples.ts matched_types=37 mismatched
   - :3 `point` should be assignable to :7 `pointWithY`
       source: Point    (TypeReference)
       target: OptionalPoint    (TypeReference)
-  - :12 `ReadonlyPoint` should not be assignable to :2 `Point`
-      typescript source: readonly [x: number, y: number]    (TypeReference)
-      typescript target: [x: number, y: number]    (TypeReference)
-      oxc source: readonly [x: number, y: number]    (Tuple)
-      oxc target: [x: number, y: number]    (Tuple)
-  - :12 `ReadonlyPoint` should not be assignable to :3 `point`
-      typescript source: readonly [x: number, y: number]    (TypeReference)
-      typescript target: Point    (TypeReference)
-      oxc source: readonly [x: number, y: number]    (Tuple)
-      oxc target: Point    (TypeReference)
-  - :12 `ReadonlyPoint` should not be assignable to :22 `point`
-      typescript source: readonly [x: number, y: number]    (TypeReference)
-      typescript target: Point    (TypeReference)
-      oxc source: readonly [x: number, y: number]    (Tuple)
-      oxc target: Point    (TypeReference)
-  - :13 `readonlyPoint` should not be assignable to :2 `Point`
-      typescript source: ReadonlyPoint    (TypeReference)
-      typescript target: [x: number, y: number]    (TypeReference)
-      oxc source: ReadonlyPoint    (TypeReference)
-      oxc target: [x: number, y: number]    (Tuple)
-  - :13 `readonlyPoint` should not be assignable to :3 `point`
-      source: ReadonlyPoint    (TypeReference)
-      target: Point    (TypeReference)
-  - :13 `readonlyPoint` should not be assignable to :22 `point`
-      source: ReadonlyPoint    (TypeReference)
-      target: Point    (TypeReference)
   - :15 `MessageTuple` should be assignable to :9 `Command`
       typescript source: [kind: "message", payload: string]    (TypeReference)
       typescript target: [name: string, ...args: string[]]    (TypeReference)
@@ -12655,11 +12574,6 @@ FAIL tests/conformance/cases/compiler/symbolBasicTypes.ts matched_types=59 misma
       typescript target: { (o: object): string[]; (o: {}): string[]; }    (Function)
       oxc source: ArrayConstructor    (TypeReference)
       oxc target: { (o: object): string[]; (o: {}): string[]; }    (Object)
-  - :21 `readonlyArray` should not be assignable to :16 `objectKeys`
-      typescript source: readonly string[]    (TypeReference)
-      typescript target: string[]    (TypeReference)
-      oxc source: readonly string[]    (Array)
-      oxc target: string[]    (Array)
   - :28 `stringIndex` should not be assignable to :16 `keys`
       typescript source: { [key: string]: bigint; }    (Object)
       typescript target: { (o: object): string[]; (o: {}): string[]; }    (Function)

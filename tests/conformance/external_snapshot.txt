@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/external
 files: passed=12 failed=29 panicked=0 total=41 pass_percentage=29.27%
 types: matched=2168 mismatched=330 total=2498 match_percentage=86.79%
-assign: matched=56177 mismatched=12497 total=68674 match_percentage=81.80%
+assign: matched=56180 mismatched=12494 total=68674 match_percentage=81.81%
 
 FAIL tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts matched_types=192 mismatched_types=2 total_types=194 match_percentage=98.97%
   - tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts:11 `PathImpl` type mismatch
@@ -23757,22 +23757,7 @@ FAIL tests/conformance/external/remeda/data-first.ts::src/map.ts matched_types=4
       typescript source: readonly T[]    (TypeReference)
       typescript target: any[]    (TypeReference)
       oxc source: readonly T[]    (Array)
-      oxc target: any[]    (Array)
-  - src/map.ts:3 `data` should not be assignable to src/map.ts:10 `data`
-      typescript source: readonly T[]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly T[]    (Array)
       oxc target: unknown    (Unknown)
-  - src/map.ts:3 `data` should not be assignable to src/map.ts:11 `values`
-      typescript source: readonly T[]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly T[]    (Array)
-      oxc target: any[]    (Array)
-  - src/map.ts:3 `data` should not be assignable to src/map.ts:11 `values`
-      typescript source: readonly T[]    (TypeReference)
-      typescript target: any[]    (TypeReference)
-      oxc source: readonly T[]    (Array)
-      oxc target: any[]    (Array)
   - src/map.ts:3 `callbackfn` should not be assignable to src/map.ts:10 `data`
       typescript source: LazyEvaluator<T, U>    (Function)
       typescript target: any[]    (TypeReference)

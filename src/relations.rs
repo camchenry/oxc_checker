@@ -358,14 +358,26 @@ impl<'a, 'store> Checker<'a, 'store> {
                 self.is_assignable_to_at_depth(source, target.resolved, next_depth)
             }
             (TyKind::Array(source), TyKind::Array(target)) => {
+                // Assignment of an immutable array to a mutable array is not allowed
+                if source.readonly && !target.readonly {
+                    return false;
+                }
                 self.is_assignable_to_at_depth(source.element_type, target.element_type, next_depth)
             }
             (TyKind::Tuple(source), TyKind::Array(target)) => {
+                // Assignment of an immutable array to a mutable array is not allowed
+                if source.readonly && !target.readonly {
+                    return false;
+                }
                 source.elements.iter().all(|element| {
                     self.is_assignable_to_at_depth(element.ty(), target.element_type, next_depth)
                 })
             }
             (TyKind::Tuple(source), TyKind::Tuple(target)) => {
+                // Assignment of an immutable array to a mutable array is not allowed
+                if source.readonly && !target.readonly {
+                    return false;
+                }
                 source.elements.len() == target.elements.len()
                     && source.elements.iter().zip(target.elements.iter()).all(
                         |(source_element, target_element)| match (source_element, target_element) {
@@ -988,6 +1000,61 @@ mod tests {
                 }),
                 true,
             )
+        ));
+    }
+
+    #[test]
+    fn test_array_and_tuple_type_assignability() {
+        let allocator = Allocator::default();
+        let store = test_store(&allocator);
+        let checker = Checker::new(&store);
+        let arena = checker.arena;
+        let ty = TypeBuilder::new(arena);
+        let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
+
+        // number[] is not assignable to [number, number]
+        assert!(!is_assignable_to(
+            ty.array(Ty::Number),
+            ty.tuple(vec![
+                TupleElement::Regular(Ty::Number),
+                TupleElement::Regular(Ty::Number)
+            ])
+        ));
+
+        // [number, number] is assignable to number[]
+        assert!(is_assignable_to(
+            ty.tuple(vec![
+                TupleElement::Regular(Ty::Number),
+                TupleElement::Regular(Ty::Number)
+            ]),
+            ty.array(Ty::Number)
+        ));
+
+        // readonly number[] is not assignable to number[]
+        assert!(!is_assignable_to(
+            ty.generic_array(Ty::Number, true),
+            ty.array(Ty::Number)
+        ));
+
+        // readonly [number, number] is not assignable to [number, number]
+        assert!(!is_assignable_to(
+            ty.readonly_tuple(vec![
+                TupleElement::Regular(Ty::Number),
+                TupleElement::Regular(Ty::Number)
+            ]),
+            ty.tuple(vec![
+                TupleElement::Regular(Ty::Number),
+                TupleElement::Regular(Ty::Number)
+            ])
+        ));
+
+        // readonly [number, number] is not assignable to number[]
+        assert!(!is_assignable_to(
+            ty.readonly_tuple(vec![
+                TupleElement::Regular(Ty::Number),
+                TupleElement::Regular(Ty::Number)
+            ]),
+            ty.array(Ty::Number)
         ));
     }
 }
