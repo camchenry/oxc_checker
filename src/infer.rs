@@ -1236,7 +1236,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             return ConditionalInferMatchResult::NoMatch;
         }
         if let Some(rest_index) = target_rest_index
-            && (rest_index + 1 != target.parameters.len() || source.parameters.len() < rest_index)
+            && rest_index + 1 != target.parameters.len()
         {
             return ConditionalInferMatchResult::NoMatch;
         }
@@ -1244,6 +1244,28 @@ impl<'a, 'store> Checker<'a, 'store> {
         let source_mapper =
             self.infer_conditional_source_function_type_parameter_mapper(source, target);
         let parameter_count = target_rest_index.unwrap_or(target.parameters.len());
+
+        if !source.parameters.iter().any(|parameter| parameter.rest) {
+            // Add the extra target parameters as potential candidates.
+            // Example: inferring `T` when `source` is `() => void`
+            //                         and `target` is `(value: T) => void`.
+            // If type is unresolved, then it will be set to `unknown` rather than ignored.
+            for target in target
+                .parameters
+                .iter()
+                .skip(source.parameters.len())
+                .take(parameter_count)
+            {
+                self.collect_infer_types(target.ty, &mut |infer| {
+                    inferences.add_candidate(
+                        infer.type_parameter,
+                        Ty::Unknown,
+                        InferencePriority::NakedTypeVariable,
+                        InferenceVariance::Covariant,
+                    );
+                });
+            }
+        }
 
         let parameter_pairs = source
             .parameters

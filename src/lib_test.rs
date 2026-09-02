@@ -4287,13 +4287,48 @@ fn awaited_primitive_types() {
     const requiredCopyOfOptionalUndefined = requiredCopy(optionalUndefinedTuple);
     const requiredCopyOfOptionalUnionUndefined = requiredCopy(optionalUnionUndefinedTuple);
     const constructedAll = new All(tupleOfPromises);
+
+
     type T1 = Awaited<number>;
-    type T2 = Awaited<Promise<void>>;
+    type T2 = Awaited<Promise<number>>;
+    type T3 = Awaited<number | Promise<number>>;
+    type T4 = Awaited<number | Promise<string>>;
+    type T5 = Awaited<{ then: number }>;
+    type T6 = Awaited<{ then(): void }>;
+    type T7 = Awaited<{ then(x: number): void }>;
+    type T8 = Awaited<{ then(x: () => void): void }>;
+
+    type TUndefined = Awaited<undefined>;
+    type TNull = Awaited<null>;
+    type TNullOrUndefined = Awaited<null | undefined>;
     "#,
     );
 
     assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T1")), "number");
-    assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T2")), "void");
+    assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T2")), "number");
+    assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T3")), "number");
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "T4")),
+        "number | string"
+    );
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "T5")),
+        "{ then: number; }"
+    );
+    assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T6")), "never");
+    assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T7")), "never");
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "TUndefined")),
+        "undefined"
+    );
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "TNull")),
+        "null"
+    );
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "TNullOrUndefined")),
+        "null | undefined"
+    );
     assert_eq!(
         type_string(&ret, get_global_symbol_type(&ret, "arrayOfPromises")),
         "Promise<number>[]"
