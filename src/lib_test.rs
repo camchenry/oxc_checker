@@ -4297,6 +4297,13 @@ fn awaited_primitive_types() {
     type T6 = Awaited<{ then(): void }>;
     type T7 = Awaited<{ then(x: number): void }>;
     type T8 = Awaited<{ then(x: () => void): void }>;
+    type T9 = Awaited<any>;
+    type T10 = Awaited<never>;
+    type T11 = Awaited<unknown>;
+    type T12 = Awaited<Promise<Promise<number>>>;
+    type T13 = Awaited<Promise<Promise<number>> | string | null>;
+    type T14 = Awaited<Promise<Promise<number>> | string | undefined>;
+    type T15 = Awaited<Promise<Promise<number>> | string | null | undefined>;
 
     type TUndefined = Awaited<undefined>;
     type TNull = Awaited<null>;
@@ -4318,6 +4325,32 @@ fn awaited_primitive_types() {
     assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T6")), "never");
     assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T7")), "never");
     assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "T8")),
+        "unknown"
+    );
+    assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T9")), "any");
+    assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T10")), "never");
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "T11")),
+        "unknown"
+    );
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "T12")),
+        "number"
+    );
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "T13")),
+        "number | string | null"
+    );
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "T14")),
+        "number | string | undefined"
+    );
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "T15")),
+        "number | string | null | undefined"
+    );
+    assert_eq!(
         type_string(&ret, get_type_alias_type(&ret, "TUndefined")),
         "undefined"
     );
@@ -4329,6 +4362,7 @@ fn awaited_primitive_types() {
         type_string(&ret, get_type_alias_type(&ret, "TNullOrUndefined")),
         "null | undefined"
     );
+    assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T16")), "any");
     assert_eq!(
         type_string(&ret, get_global_symbol_type(&ret, "arrayOfPromises")),
         "Promise<number>[]"
