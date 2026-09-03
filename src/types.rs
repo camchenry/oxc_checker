@@ -2015,6 +2015,26 @@ impl<'a> CheckerArena<'a> {
         )
     }
 
+    pub(crate) fn alloc_object(
+        self,
+        properties: &'a [TyProperty<'a>],
+        signatures: &'a [Signature<'a>],
+        index_infos: &'a [IndexInfo<'a>],
+        is_constructor_type: bool,
+    ) -> &'a TyObject<'a> {
+        let members = (!signatures.is_empty() || !index_infos.is_empty()).then(|| {
+            self.alloc(TyObjectMembers {
+                signatures,
+                index_infos,
+            })
+        });
+        self.alloc(TyObject {
+            properties,
+            members,
+            is_constructor_type,
+        })
+    }
+
     pub(crate) fn object_from_slices(
         self,
         properties: &'a [TyProperty<'a>],
@@ -2022,17 +2042,12 @@ impl<'a> CheckerArena<'a> {
         index_infos: &'a [IndexInfo<'a>],
         is_constructor_type: bool,
     ) -> Ty<'a> {
-        let members = (!signatures.is_empty() || !index_infos.is_empty()).then(|| {
-            self.alloc(TyObjectMembers {
-                signatures,
-                index_infos,
-            })
-        });
-        self.alloc_type(TyKind::Object(self.alloc(TyObject {
+        self.alloc_type(TyKind::Object(self.alloc_object(
             properties,
-            members,
+            signatures,
+            index_infos,
             is_constructor_type,
-        })))
+        )))
     }
 
     pub fn module_namespace(

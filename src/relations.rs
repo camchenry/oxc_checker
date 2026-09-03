@@ -4,12 +4,58 @@ use crate::{
     limits::ASSIGNABILITY_MAX_DEPTH,
     mapper::TypeMapper,
     type_predicate_kinds_match,
-    types::{Ty, TyKind, function_maximum_argument_count, function_minimum_argument_count},
+    types::{
+        Ty, TyIntersection, TyKind, TyObject, function_maximum_argument_count,
+        function_minimum_argument_count,
+    },
 };
+
+enum IntersectionResolution<'a> {
+    Never,
+    Object(&'a TyObject<'a>),
+    Primitive {
+        primitives: &'a [Ty<'a>],
+        object: &'a TyObject<'a>,
+    },
+}
 
 impl<'a, 'store> Checker<'a, 'store> {
     pub fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool {
         self.is_assignable_to_at_depth(source, target, 0)
+    }
+
+    fn resolve_intersection_type(
+        &self,
+        intersection: &TyIntersection<'a>,
+    ) -> IntersectionResolution<'a> {
+        let properties = self
+            .ty
+            .alloc_slice_from_iter(intersection.types.iter().flat_map(
+                |ty| match self.ty_kind(*ty) {
+                    TyKind::Object(object) => object.properties.iter().copied(),
+                    _ => [].iter().copied(),
+                },
+            ));
+        let primitives = self.ty.alloc_slice_from_iter(
+            intersection
+                .types
+                .iter()
+                .copied()
+                .filter(|ty| ty.is_primitive(self.arena())),
+        );
+        if primitives.iter().enumerate().any(|(index, left)| {
+            primitives[index + 1..].iter().any(|right| {
+                !self.is_assignable_to(*left, *right) && !self.is_assignable_to(*right, *left)
+            })
+        }) {
+            return IntersectionResolution::Never;
+        }
+        let object = self.ty.alloc_object(properties, &[], &[], false);
+        if primitives.is_empty() {
+            IntersectionResolution::Object(object)
+        } else {
+            IntersectionResolution::Primitive { primitives, object }
+        }
     }
 
     fn is_assignable_to_at_depth(&self, source: Ty<'a>, target: Ty<'a>, depth: usize) -> bool {
@@ -100,8 +146,17 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         let next_depth = depth + 1;
 
-        let source_kind = self.ty_kind(source);
+        let mut source_kind = self.ty_kind(source);
         let target_kind = self.ty_kind(target);
+
+        if let TyKind::Intersection(intersection) = source_kind
+            && matches!(
+                self.resolve_intersection_type(intersection),
+                IntersectionResolution::Never
+            )
+        {
+            source_kind = TyKind::Never;
+        }
 
         match (source_kind, target_kind) {
             // `never` is not assignable to any type
@@ -166,24 +221,22 @@ impl<'a, 'store> Checker<'a, 'store> {
             // For example: `{ a: string } & { b: string }` is assignable to `{ a: string; b: string }`, but neither of
             // `{ a: string }` or `{ b: string }` are assignable to `{ a: string; b: string }`.
             (TyKind::Intersection(intersection), TyKind::Object(target_object)) => {
-                // First, check that all primitive types are assignable to the target object type.
-                for ty in &intersection.types {
-                    if ty.is_primitive(self.arena())
-                        && !self.is_assignable_to_at_depth(*ty, target, next_depth)
-                    {
-                        return false;
+                let resolved = self.resolve_intersection_type(intersection);
+                let object = match resolved {
+                    IntersectionResolution::Never => return true,
+                    IntersectionResolution::Object(object) => object,
+                    IntersectionResolution::Primitive { primitives, object } => {
+                        if primitives
+                            .iter()
+                            .any(|ty| !self.is_assignable_to_at_depth(*ty, target, next_depth))
+                        {
+                            return false;
+                        }
+                        object
                     }
-                }
-                let combined_properties =
-                    intersection
-                        .types
-                        .iter()
-                        .flat_map(|ty| match self.ty_kind(*ty) {
-                            TyKind::Object(object) => object.properties.iter(),
-                            _ => [].iter(),
-                        });
+                };
                 self.object_properties_assignable_to(
-                    &combined_properties,
+                    &object.properties.iter(),
                     target_object,
                     next_depth,
                 )
@@ -866,6 +919,13 @@ mod tests {
         assert!(is_assignable_to(
             ty.intersection([ty.object([ty.property("value", Ty::String)]), thenable,]),
             ty.intersection([Ty::PrimitiveObject, thenable]),
+        ));
+
+        // declare const impossible: string & number;
+        // const value: boolean = impossible;
+        assert!(is_assignable_to(
+            ty.intersection([Ty::String, Ty::Number]),
+            Ty::Boolean,
         ));
 
         // Branded types
