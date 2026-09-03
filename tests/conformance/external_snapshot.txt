@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/external
 files: passed=12 failed=29 panicked=0 total=41 pass_percentage=29.27%
 types: matched=2166 mismatched=332 total=2498 match_percentage=86.71%
-assign: matched=39342 mismatched=1053 total=40395 match_percentage=97.39%
+assign: matched=39277 mismatched=1118 total=40395 match_percentage=97.23%
 
 FAIL tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts matched_types=192 mismatched_types=2 total_types=194 match_percentage=98.97%
   - tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts:11 `PathImpl` type mismatch
@@ -2134,9 +2134,6 @@ FAIL tests/conformance/external/type-fest/object-utilities.ts::source/except.ts 
       target: boolean | undefined    (Union)
   - source/except.ts:25 `ApplyDefaultOptions` should be assignable to source/except.ts:10 `ExceptOptions`
       source: { [Key in keyof Defaults]: Key extends keyof SpecifiedOptions ? NonNullable<SpecifiedOptions[Key & keyof SpecifiedOptions]> : Defaults[Key]; }    (Mapped)
-      target: { requireExactProps?: boolean; }    (Object)
-  - source/except.ts:28 `_Except` should be assignable to source/except.ts:10 `ExceptOptions`
-      source: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectType[KeyType]; } & (Options["requireExactProps"] extends true ? Partial<Record<KeysType, never>> : {})    (Intersection)
       target: { requireExactProps?: boolean; }    (Object)
 PASS tests/conformance/external/type-fest/object-utilities.ts::source/internal/index.ts matched_types=25 mismatched_types=0 total_types=25 match_percentage=100.00%
 PASS tests/conformance/external/type-fest/object-utilities.ts::source/is-equal.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
@@ -4285,6 +4282,36 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: (selector?: (state: any) => any) => any    (Function)
       oxc source: CreateStore    (TypeReference)
       oxc target: (selector?: (state: any) => any) => any    (Function)
+  - src/react.ts:5 `StateCreator` should not be assignable to src/react.ts:1 `createStore`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:5 `StateCreator` should not be assignable to src/react.ts:20 `Create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
+  - src/react.ts:5 `StateCreator` should not be assignable to src/react.ts:29 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:5 `StateCreator` should not be assignable to src/react.ts:31 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:5 `StateCreator` should not be assignable to src/react.ts:33 `createStore`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:5 `StateCreator` should not be assignable to src/react.ts:37 `assign`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
   - src/react.ts:10 `ReadonlyStoreApi` should not be assignable to src/react.ts:1 `createStore`
       typescript source: { getState: () => T; getInitialState: () => T; subscribe: (listener: (state: T, prevState: T) => void) => () => void; }    (Mapped)
       typescript target: CreateStore    (Function)
@@ -4315,6 +4342,21 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
       oxc source: { getState: () => T; getInitialState: () => T; subscribe: (listener: (state: T, prevState: T) => void) => () => void; }    (Object)
       oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
+  - src/react.ts:15 `UseBoundStore` should not be assignable to src/react.ts:1 `createStore`
+      typescript source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:15 `UseBoundStore` should not be assignable to src/react.ts:20 `Create`
+      typescript source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
+      typescript target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
+      oxc source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
+      oxc target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
+  - src/react.ts:15 `UseBoundStore` should not be assignable to src/react.ts:29 `create`
+      typescript source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
+      oxc target: Create    (TypeReference)
   - src/react.ts:15 `UseBoundStore` should be assignable to src/react.ts:29 `initializer`
       source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
       target: StateCreator<any> | undefined    (Union)
@@ -4326,11 +4368,21 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: StateCreator<any>    (Intersection)
       oxc source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
       oxc target: StateCreator<any>    (TypeReference)
+  - src/react.ts:15 `UseBoundStore` should not be assignable to src/react.ts:31 `create`
+      typescript source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
+      oxc target: Create    (TypeReference)
   - src/react.ts:15 `UseBoundStore` should be assignable to src/react.ts:31 `nextInitializer`
       typescript source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
       typescript target: StateCreator<any>    (Intersection)
       oxc source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
       oxc target: StateCreator<any>    (TypeReference)
+  - src/react.ts:15 `UseBoundStore` should not be assignable to src/react.ts:33 `createStore`
+      typescript source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
+      oxc target: CreateStore    (TypeReference)
   - src/react.ts:15 `UseBoundStore` should be assignable to src/react.ts:34 `useBoundStore`
       source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
       target: (selector?: (state: any) => any) => any    (Function)
@@ -4343,11 +4395,6 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
   - src/react.ts:15 `UseBoundStore` should be assignable to src/react.ts:35 `selector`
       source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
       target: (state: any) => any    (Function)
-  - src/react.ts:15 `UseBoundStore` should be assignable to src/react.ts:37 `assign`
-      typescript source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
-      typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
-      oxc source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
-      oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
   - src/react.ts:15 `UseBoundStore` should be assignable to src/react.ts:37 `useBoundStore`
       source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
       target: (selector?: (state: any) => any) => any    (Function)
@@ -4396,6 +4443,126 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: (selector?: (state: any) => any) => any    (Function)
       oxc source: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
       oxc target: (selector?: (state: any) => any) => any    (Function)
+  - src/react.ts:22 `initializer` should not be assignable to src/react.ts:1 `createStore`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:22 `initializer` should not be assignable to src/react.ts:20 `Create`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
+  - src/react.ts:22 `initializer` should not be assignable to src/react.ts:29 `create`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:22 `initializer` should not be assignable to src/react.ts:31 `create`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:22 `initializer` should not be assignable to src/react.ts:33 `createStore`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:22 `initializer` should not be assignable to src/react.ts:37 `assign`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
+  - src/react.ts:22 `StateCreator` should not be assignable to src/react.ts:1 `createStore`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:22 `StateCreator` should not be assignable to src/react.ts:20 `Create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
+  - src/react.ts:22 `StateCreator` should not be assignable to src/react.ts:29 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:22 `StateCreator` should not be assignable to src/react.ts:31 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:22 `StateCreator` should not be assignable to src/react.ts:33 `createStore`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:22 `StateCreator` should not be assignable to src/react.ts:37 `assign`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
+  - src/react.ts:25 `initializer` should not be assignable to src/react.ts:1 `createStore`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:25 `initializer` should not be assignable to src/react.ts:20 `Create`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
+  - src/react.ts:25 `initializer` should not be assignable to src/react.ts:29 `create`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:25 `initializer` should not be assignable to src/react.ts:31 `create`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:25 `initializer` should not be assignable to src/react.ts:33 `createStore`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:25 `initializer` should not be assignable to src/react.ts:37 `assign`
+      typescript source: StateCreator<T, [], Mos>    (Intersection)
+      typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
+      oxc source: StateCreator<T, [], Mos>    (TypeReference)
+      oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
+  - src/react.ts:25 `StateCreator` should not be assignable to src/react.ts:1 `createStore`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:25 `StateCreator` should not be assignable to src/react.ts:20 `Create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
+  - src/react.ts:25 `StateCreator` should not be assignable to src/react.ts:29 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:25 `StateCreator` should not be assignable to src/react.ts:31 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:25 `StateCreator` should not be assignable to src/react.ts:33 `createStore`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:25 `StateCreator` should not be assignable to src/react.ts:37 `assign`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
   - src/react.ts:29 `create` should be assignable to src/react.ts:29 `initializer`
       typescript source: Create    (Function)
       typescript target: StateCreator<any> | undefined    (Union)
@@ -4441,6 +4608,96 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: (selector?: (state: any) => any) => any    (Function)
       oxc source: Create    (TypeReference)
       oxc target: (selector?: (state: any) => any) => any    (Function)
+  - src/react.ts:29 `StateCreator` should not be assignable to src/react.ts:1 `createStore`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:29 `StateCreator` should not be assignable to src/react.ts:20 `Create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
+  - src/react.ts:29 `StateCreator` should not be assignable to src/react.ts:29 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:29 `StateCreator` should not be assignable to src/react.ts:31 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:29 `StateCreator` should not be assignable to src/react.ts:33 `createStore`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:29 `StateCreator` should not be assignable to src/react.ts:37 `assign`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:1 `createStore`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:20 `Create`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:29 `create`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:31 `create`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:33 `createStore`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:37 `assign`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
+  - src/react.ts:31 `StateCreator` should not be assignable to src/react.ts:1 `createStore`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:31 `StateCreator` should not be assignable to src/react.ts:20 `Create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
+  - src/react.ts:31 `StateCreator` should not be assignable to src/react.ts:29 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:31 `StateCreator` should not be assignable to src/react.ts:31 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:31 `StateCreator` should not be assignable to src/react.ts:33 `createStore`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:31 `StateCreator` should not be assignable to src/react.ts:37 `assign`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
   - src/react.ts:31 `create` should be assignable to src/react.ts:29 `initializer`
       typescript source: Create    (Function)
       typescript target: StateCreator<any> | undefined    (Union)
@@ -4486,6 +4743,36 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: (selector?: (state: any) => any) => any    (Function)
       oxc source: Create    (TypeReference)
       oxc target: (selector?: (state: any) => any) => any    (Function)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:1 `createStore`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:20 `Create`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:29 `create`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:31 `create`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: Create    (TypeReference)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:33 `createStore`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: CreateStore    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: CreateStore    (TypeReference)
+  - src/react.ts:31 `nextInitializer` should not be assignable to src/react.ts:37 `assign`
+      typescript source: StateCreator<any>    (Intersection)
+      typescript target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Function)
+      oxc source: StateCreator<any>    (TypeReference)
+      oxc target: { <T extends {}, U>(target: T, source: U): T & U; <T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V; <T extends {}, U, V, W>(target: T, source1: U, source2: V, source3: W): T & U & V & W; (target: object, ...sources: any[]): any; }    (Object)
   - src/react.ts:33 `createStore` should not be assignable to src/react.ts:20 `Create`
       typescript source: CreateStore    (Function)
       typescript target: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
@@ -5086,6 +5373,16 @@ FAIL tests/conformance/external/zustand/store-api.ts::tests/store-api-usage.ts m
       typescript target: (by?: number) => void    (Function)
       oxc source: Create    (TypeReference)
       oxc target: (by?: number) => void    (Function)
+  - tests/store-api-usage.ts:2 `StateCreator` should not be assignable to tests/store-api-usage.ts:1 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - tests/store-api-usage.ts:2 `StateCreator` should not be assignable to tests/store-api-usage.ts:15 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
   - tests/store-api-usage.ts:4 `CounterState` should not be assignable to tests/store-api-usage.ts:1 `create`
       typescript source: { count: number; label?: string; increment: (by?: number) => void; }    (Object)
       typescript target: Create    (Function)
@@ -5096,8 +5393,38 @@ FAIL tests/conformance/external/zustand/store-api.ts::tests/store-api-usage.ts m
       typescript target: Create    (Function)
       oxc source: { count: number; label?: string; increment: (by?: number) => void; }    (Object)
       oxc target: Create    (TypeReference)
+  - tests/store-api-usage.ts:10 `counterInitializer` should not be assignable to tests/store-api-usage.ts:1 `create`
+      typescript source: StateCreator<CounterState>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<CounterState>    (TypeReference)
+      oxc target: Create    (TypeReference)
+  - tests/store-api-usage.ts:10 `counterInitializer` should not be assignable to tests/store-api-usage.ts:15 `create`
+      typescript source: StateCreator<CounterState>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<CounterState>    (TypeReference)
+      oxc target: Create    (TypeReference)
+  - tests/store-api-usage.ts:10 `StateCreator` should not be assignable to tests/store-api-usage.ts:1 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
+  - tests/store-api-usage.ts:10 `StateCreator` should not be assignable to tests/store-api-usage.ts:15 `create`
+      typescript source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: ((setState: Get<Mutate<StoreApi<T>, Mis>, "setState", never>, getState: Get<Mutate<StoreApi<T>, Mis>, "getState", never>, store: Mutate<StoreApi<T>, Mis>) => U) & { $$storeMutators?: Mos; }    (Intersection)
+      oxc target: Create    (TypeReference)
   - tests/store-api-usage.ts:15 `create` should be assignable to tests/store-api-usage.ts:7 `increment`
       typescript source: Create    (Function)
       typescript target: (by?: number) => void    (Function)
       oxc source: Create    (TypeReference)
       oxc target: (by?: number) => void    (Function)
+  - tests/store-api-usage.ts:15 `counterInitializer` should not be assignable to tests/store-api-usage.ts:1 `create`
+      typescript source: StateCreator<CounterState>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<CounterState>    (TypeReference)
+      oxc target: Create    (TypeReference)
+  - tests/store-api-usage.ts:15 `counterInitializer` should not be assignable to tests/store-api-usage.ts:15 `create`
+      typescript source: StateCreator<CounterState>    (Intersection)
+      typescript target: Create    (Function)
+      oxc source: StateCreator<CounterState>    (TypeReference)
+      oxc target: Create    (TypeReference)

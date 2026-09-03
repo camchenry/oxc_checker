@@ -615,6 +615,8 @@ impl<'a> TyKind<'a> {
                 | Self::Symbol
                 | Self::Undefined
                 | Self::Null
+                | Self::Unknown
+                | Self::PrimitiveObject
         )
     }
 }
@@ -2492,6 +2494,24 @@ impl<'a> Ty<'a> {
     /// Returns `true` if the type is a intersection type.
     pub fn is_intersection(&self, arena: CheckerArena<'a>) -> bool {
         matches!(arena.ty_kind(*self), TyKind::Intersection(_))
+    }
+
+    /// Returns `true` if the type is a primitive/keyword type (`number`, `string`, `object`, etc.).
+    pub fn is_primitive(&self, arena: CheckerArena<'a>) -> bool {
+        matches!(
+            arena.ty_kind(*self),
+            TyKind::String
+                | TyKind::Number
+                | TyKind::Boolean
+                | TyKind::Bigint
+                | TyKind::Symbol
+                | TyKind::Undefined
+                | TyKind::Null
+                | TyKind::Void
+                | TyKind::Never
+                | TyKind::Unknown
+                | TyKind::PrimitiveObject
+        )
     }
 
     pub(crate) fn is_transparent_type_alias_union_constituent(

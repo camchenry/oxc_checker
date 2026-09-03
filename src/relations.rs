@@ -114,6 +114,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             (_, TyKind::Unknown) => true,
             // Unlike `any`, `unknown` is not assignable to any type (except for `any`)
             (TyKind::Unknown, _) => false,
+            // `undefined` is assignable to `void`
+            (TyKind::Undefined, TyKind::Void) => true,
             (TyKind::Union(source_union), _) => source_union.types.iter().all(|source_type| {
                 self.is_assignable_to_at_depth(*source_type, target, next_depth)
             }),
@@ -126,16 +128,16 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.is_assignable_to_at_depth(constraint, target, next_depth)
                 })
             }
-            // `undefined` is assignable to `void`
-            (TyKind::Undefined, TyKind::Void) => true,
-            (TyKind::Object(source), TyKind::Object(target)) => {
-                self.properties_assignable_to(source.properties, target.properties, next_depth)
-            }
+            (TyKind::Object(source), TyKind::Object(target)) => self.properties_assignable_to(
+                &source.properties.iter(),
+                target.properties,
+                next_depth,
+            ),
             (TyKind::PrimitiveObject, TyKind::Object(target)) => {
-                self.properties_assignable_to(&[], target.properties, next_depth)
+                self.properties_assignable_to(&[].iter(), target.properties, next_depth)
             }
             (TyKind::Object(source), TyKind::PrimitiveObject) => {
-                self.properties_assignable_to(source.properties, &[], next_depth)
+                self.properties_assignable_to(&source.properties.iter(), &[], next_depth)
             }
             (
                 TyKind::Array(_)
@@ -145,19 +147,48 @@ impl<'a, 'store> Checker<'a, 'store> {
                 | TyKind::ModuleNamespace(_),
                 TyKind::PrimitiveObject,
             ) => true,
-            (TyKind::ModuleNamespace(source), TyKind::Object(target)) => {
-                self.properties_assignable_to(&source.properties, target.properties, next_depth)
+            (TyKind::ModuleNamespace(source), TyKind::Object(target)) => self
+                .properties_assignable_to(&source.properties.iter(), target.properties, next_depth),
+            (TyKind::Object(source), TyKind::ModuleNamespace(target)) => self
+                .properties_assignable_to(
+                    &source.properties.iter(),
+                    &target.properties,
+                    next_depth,
+                ),
+            (TyKind::ModuleNamespace(source), TyKind::ModuleNamespace(target)) => self
+                .properties_assignable_to(
+                    &source.properties.iter(),
+                    &target.properties,
+                    next_depth,
+                ),
+            // When checking assignability of an intersection to object, we need to check that the combined structure of
+            // all types in the intersection are assignable to the target object type. It's not sufficient to check that
+            // each type in the intersection is assignable, because a combination of the types may conflict.
+            // For example: `{ a: string } & { b: string }` is assignable to `{ a: string; b: string }`, but neither of
+            // `{ a: string }` or `{ b: string }` are assignable to `{ a: string; b: string }`.
+            (TyKind::Intersection(intersection), TyKind::Object(target_object)) => {
+                // First, check that all primitive types are assignable to the target object type.
+                for ty in &intersection.types {
+                    if ty.is_primitive(self.arena())
+                        && !self.is_assignable_to_at_depth(*ty, target, next_depth)
+                    {
+                        return false;
+                    }
+                }
+                let combined_properties =
+                    intersection
+                        .types
+                        .iter()
+                        .flat_map(|ty| match self.ty_kind(*ty) {
+                            TyKind::Object(object) => object.properties.iter(),
+                            _ => [].iter(),
+                        });
+                self.properties_assignable_to(
+                    &combined_properties,
+                    target_object.properties,
+                    next_depth,
+                )
             }
-            (TyKind::Object(source), TyKind::ModuleNamespace(target)) => {
-                self.properties_assignable_to(source.properties, &target.properties, next_depth)
-            }
-            (TyKind::ModuleNamespace(source), TyKind::ModuleNamespace(target)) => {
-                self.properties_assignable_to(&source.properties, &target.properties, next_depth)
-            }
-            (TyKind::Intersection(intersection), TyKind::Object(_)) => intersection
-                .types
-                .iter()
-                .all(|ty| self.is_assignable_to_at_depth(target, *ty, next_depth)),
             (TyKind::Intersection(intersection), TyKind::TypeParameter(_)) => intersection
                 .types
                 .iter()
@@ -603,14 +634,17 @@ impl<'a, 'store> Checker<'a, 'store> {
         })
     }
 
-    fn properties_assignable_to(
+    fn properties_assignable_to<'properties>(
         &self,
-        source_properties: &[TyProperty<'a>],
+        source_properties: &(impl Iterator<Item = &'properties TyProperty<'a>> + Clone),
         target_properties: &[TyProperty<'a>],
         depth: usize,
-    ) -> bool {
+    ) -> bool
+    where
+        'a: 'properties,
+    {
         target_properties.iter().all(|target_property| {
-            let Some(source_property) = source_properties.iter().find(|source_property| {
+            let Some(source_property) = (*source_properties).clone().find(|source_property| {
                 source_property.name == target_property.name
                     && source_property.computed == target_property.computed
             }) else {
@@ -742,53 +776,63 @@ mod tests {
         let store = test_store(&allocator);
         let checker = Checker::new(&store);
         let arena = checker.arena;
+        let ty = TypeBuilder::new(arena);
         let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
 
-        let number_and_string = arena.intersection([
-            arena.object([TypeBuilder::new(arena).property("a", Ty::Number)]),
-            arena.object([TypeBuilder::new(arena).property("b", Ty::String)]),
+        let number_and_string = ty.intersection([
+            arena.object([ty.property("a", Ty::Number)]),
+            arena.object([ty.property("b", Ty::String)]),
         ]);
 
         // { a: number, b: string } -> { a: number } & { b: string }
         assert!(is_assignable_to(
-            arena.object([
-                TypeBuilder::new(arena).property("a", Ty::Number),
-                TypeBuilder::new(arena).property("b", Ty::String)
-            ]),
+            ty.object([ty.property("a", Ty::Number), ty.property("b", Ty::String)]),
             number_and_string
         ));
         // { a: number } -!> { a: number, b: string }
         assert!(!is_assignable_to(
-            arena.object([TypeBuilder::new(arena).property("a", Ty::Number)]),
-            arena.object([
-                TypeBuilder::new(arena).property("a", Ty::Number),
-                TypeBuilder::new(arena).property("b", Ty::String)
-            ]),
+            ty.object([ty.property("a", Ty::Number)]),
+            ty.object([ty.property("a", Ty::Number), ty.property("b", Ty::String)]),
         ));
         // { a: number } & { b: string } -> { a: number, b: string }
         assert!(is_assignable_to(
             number_and_string,
-            arena.object([
-                TypeBuilder::new(arena).property("a", Ty::Number),
-                TypeBuilder::new(arena).property("b", Ty::String)
+            ty.object([ty.property("a", Ty::Number), ty.property("b", Ty::String)]),
+        ));
+
+        // `{ a: string } & { b: string }` is not assignable to `{ a: string, b: string, c: string }`
+        assert!(!is_assignable_to(
+            ty.intersection([
+                ty.object([ty.property("a", Ty::String)]),
+                ty.object([ty.property("b", Ty::String)])
+            ]),
+            ty.object([
+                ty.property("a", Ty::String),
+                ty.property("b", Ty::String),
+                ty.property("c", Ty::String)
             ]),
         ));
 
-        // Branded types
-        let string_brand = arena.intersection([
-            Ty::String,
-            arena.object([
-                TypeBuilder::new(arena).property("__brand", arena.string_literal("brand"))
+        // `{ a: string; c: number } & { b: string }` is assignable to `{ a: string; b: string; }`
+        assert!(is_assignable_to(
+            ty.intersection([
+                ty.object([ty.property("a", Ty::String), ty.property("c", Ty::Number)]),
+                ty.object([ty.property("b", Ty::String)])
             ]),
+            ty.object([ty.property("a", Ty::String), ty.property("b", Ty::String)]),
+        ));
+
+        // Branded types
+        let string_brand = ty.intersection([
+            Ty::String,
+            ty.object([ty.property("__brand", ty.string_literal("brand"))]),
         ]);
         // `string & { __brand: "brand" }` is assignable to `string`
         assert!(is_assignable_to(string_brand, Ty::String));
 
-        let identical_string_brand = arena.intersection([
+        let identical_string_brand = ty.intersection([
             Ty::String,
-            arena.object([
-                TypeBuilder::new(arena).property("__brand", arena.string_literal("brand"))
-            ]),
+            ty.object([ty.property("__brand", ty.string_literal("brand"))]),
         ]);
         assert_ne!(string_brand, identical_string_brand);
         assert!(arena.is_type_identical_to(string_brand, identical_string_brand));
