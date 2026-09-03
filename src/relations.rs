@@ -19,6 +19,18 @@ enum IntersectionResolution<'a> {
     },
 }
 
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum PrimitiveDomain {
+    String,
+    Number,
+    Boolean,
+    Bigint,
+    Symbol,
+    Null,
+    Undefined,
+    Object,
+}
+
 impl<'a, 'store> Checker<'a, 'store> {
     pub fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool {
         self.is_assignable_to_at_depth(source, target, 0)
@@ -28,6 +40,12 @@ impl<'a, 'store> Checker<'a, 'store> {
         &self,
         intersection: &TyIntersection<'a>,
     ) -> IntersectionResolution<'a> {
+        if self.intersection_has_disjoint_primitive_domains(intersection)
+            || self.intersection_has_conflicting_discriminant(intersection)
+        {
+            return IntersectionResolution::Never;
+        }
+
         let properties = self
             .ty
             .alloc_slice_from_iter(intersection.types.iter().flat_map(
@@ -41,21 +59,87 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .types
                 .iter()
                 .copied()
-                .filter(|ty| ty.is_primitive(self.arena())),
+                .filter(|ty| self.primitive_domain(*ty).is_some()),
         );
-        if primitives.iter().enumerate().any(|(index, left)| {
-            primitives[index + 1..].iter().any(|right| {
-                !self.is_assignable_to(*left, *right) && !self.is_assignable_to(*right, *left)
-            })
-        }) {
-            return IntersectionResolution::Never;
-        }
         let object = self.ty.alloc_object(properties, &[], &[], false);
         if primitives.is_empty() {
             IntersectionResolution::Object(object)
         } else {
             IntersectionResolution::Primitive { primitives, object }
         }
+    }
+
+    fn intersection_has_disjoint_primitive_domains(
+        &self,
+        intersection: &TyIntersection<'a>,
+    ) -> bool {
+        intersection.types.iter().enumerate().any(|(index, left)| {
+            intersection.types[index + 1..]
+                .iter()
+                .any(|right| self.primitive_types_are_disjoint(*left, *right))
+        })
+    }
+
+    fn intersection_has_conflicting_discriminant(&self, intersection: &TyIntersection<'a>) -> bool {
+        intersection.types.iter().enumerate().any(|(index, left)| {
+            let TyKind::Object(left) = self.ty_kind(*left) else {
+                return false;
+            };
+            intersection.types[index + 1..].iter().any(|right| {
+                let TyKind::Object(right) = self.ty_kind(*right) else {
+                    return false;
+                };
+                left.properties.iter().any(|left| {
+                    !left.optional
+                        && right.properties.iter().any(|right| {
+                            !right.optional
+                                && left.name == right.name
+                                && left.computed == right.computed
+                                && (self.is_unit_type(left.ty) || self.is_unit_type(right.ty))
+                                && self.primitive_types_are_disjoint(left.ty, right.ty)
+                        })
+                })
+            })
+        })
+    }
+
+    fn primitive_types_are_disjoint(&self, left: Ty<'a>, right: Ty<'a>) -> bool {
+        let (Some(left_domain), Some(right_domain)) =
+            (self.primitive_domain(left), self.primitive_domain(right))
+        else {
+            return false;
+        };
+        left_domain != right_domain
+            || (self.is_unit_type(left)
+                && self.is_unit_type(right)
+                && !self.arena().is_type_identical_to(left, right))
+    }
+
+    fn primitive_domain(&self, ty: Ty<'a>) -> Option<PrimitiveDomain> {
+        match self.ty_kind(ty) {
+            TyKind::String | TyKind::StringLiteral(_) | TyKind::TemplateLiteral(_) => {
+                Some(PrimitiveDomain::String)
+            }
+            TyKind::Number | TyKind::NumberLiteral(_) => Some(PrimitiveDomain::Number),
+            TyKind::Boolean | TyKind::BooleanLiteral(_) => Some(PrimitiveDomain::Boolean),
+            TyKind::Bigint | TyKind::BigIntLiteral(_) => Some(PrimitiveDomain::Bigint),
+            TyKind::Symbol | TyKind::UniqueSymbol(_) => Some(PrimitiveDomain::Symbol),
+            TyKind::Null => Some(PrimitiveDomain::Null),
+            TyKind::Undefined | TyKind::Void => Some(PrimitiveDomain::Undefined),
+            TyKind::PrimitiveObject => Some(PrimitiveDomain::Object),
+            _ => None,
+        }
+    }
+
+    fn is_unit_type(&self, ty: Ty<'a>) -> bool {
+        matches!(
+            self.ty_kind(ty),
+            TyKind::StringLiteral(_)
+                | TyKind::NumberLiteral(_)
+                | TyKind::BooleanLiteral(_)
+                | TyKind::BigIntLiteral(_)
+                | TyKind::UniqueSymbol(_)
+        )
     }
 
     fn is_assignable_to_at_depth(&self, source: Ty<'a>, target: Ty<'a>, depth: usize) -> bool {
@@ -926,6 +1010,16 @@ mod tests {
         assert!(is_assignable_to(
             ty.intersection([Ty::String, Ty::Number]),
             Ty::Boolean,
+        ));
+
+        // declare const impossible: { kind: "a" } & { kind: "b" };
+        // const value: number = impossible;
+        assert!(is_assignable_to(
+            ty.intersection([
+                ty.object([ty.property("kind", ty.string_literal("a"))]),
+                ty.object([ty.property("kind", ty.string_literal("b"))]),
+            ]),
+            Ty::Number,
         ));
 
         // Branded types
