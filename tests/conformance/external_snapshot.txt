@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/external
 files: passed=12 failed=29 panicked=0 total=41 pass_percentage=29.27%
 types: matched=2166 mismatched=332 total=2498 match_percentage=86.71%
-assign: matched=39277 mismatched=1118 total=40395 match_percentage=97.23%
+assign: matched=39289 mismatched=1106 total=40395 match_percentage=97.26%
 
 FAIL tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts matched_types=192 mismatched_types=2 total_types=194 match_percentage=98.97%
   - tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts:11 `PathImpl` type mismatch
@@ -1792,16 +1792,6 @@ FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::tests/object-opt
   - tests/object-optional-usage.ts:10 `profile` should be assignable to tests/object-optional-usage.ts:3 `OptionalDeep`
       source: { email: string; address: { city: string; }; }    (Object)
       target: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }    (Mapped)
-  - tests/object-optional-usage.ts:10 `profile` should not be assignable to tests/object-optional-usage.ts:19 `OptionalEverything`
-      typescript source: { email: string; address: { city: string; }; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { email: string; address: { city: string; }; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
-  - tests/object-optional-usage.ts:10 `profile` should not be assignable to tests/object-optional-usage.ts:21 `DirectFlat`
-      typescript source: { email: string; address: { city: string; }; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { email: string; address: { city: string; }; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
   - tests/object-optional-usage.ts:10 `profile` should be assignable to tests/object-optional-usage.ts:22 `OptionalDeep`
       source: { email: string; address: { city: string; }; }    (Object)
       target: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }    (Mapped)
@@ -1826,16 +1816,6 @@ FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::tests/object-opt
   - tests/object-optional-usage.ts:12 `address` should be assignable to tests/object-optional-usage.ts:3 `OptionalDeep`
       source: { city: string; }    (Object)
       target: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }    (Mapped)
-  - tests/object-optional-usage.ts:12 `address` should not be assignable to tests/object-optional-usage.ts:19 `OptionalEverything`
-      typescript source: { city: string; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { city: string; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
-  - tests/object-optional-usage.ts:12 `address` should not be assignable to tests/object-optional-usage.ts:21 `DirectFlat`
-      typescript source: { city: string; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { city: string; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
   - tests/object-optional-usage.ts:12 `address` should be assignable to tests/object-optional-usage.ts:22 `OptionalDeep`
       source: { city: string; }    (Object)
       target: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }    (Mapped)
@@ -1995,16 +1975,6 @@ FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::tests/object-opt
   - tests/object-optional-usage.ts:25 `id` should be assignable to tests/object-optional-usage.ts:22 `OptionalDeep`
       source: string    (String)
       target: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }    (Mapped)
-  - tests/object-optional-usage.ts:26 `profile` should not be assignable to tests/object-optional-usage.ts:19 `OptionalEverything`
-      typescript source: { email: string; address: { city: string; }; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { email: string; address: { city: string; }; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
-  - tests/object-optional-usage.ts:26 `profile` should not be assignable to tests/object-optional-usage.ts:21 `DirectFlat`
-      typescript source: { email: string; address: { city: string; }; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { email: string; address: { city: string; }; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
   - tests/object-optional-usage.ts:26 `profile` should not be assignable to tests/object-optional-usage.ts:38 `profile`
       source: { email: string; address: { city: string; }; }    (Object)
       target: { address: {}; }    (Object)
@@ -2023,16 +1993,6 @@ FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::tests/object-opt
   - tests/object-optional-usage.ts:27 `email` should be assignable to tests/object-optional-usage.ts:22 `OptionalDeep`
       source: string    (String)
       target: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }    (Mapped)
-  - tests/object-optional-usage.ts:28 `address` should not be assignable to tests/object-optional-usage.ts:19 `OptionalEverything`
-      typescript source: { city: string; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { city: string; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
-  - tests/object-optional-usage.ts:28 `address` should not be assignable to tests/object-optional-usage.ts:21 `DirectFlat`
-      typescript source: { city: string; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { city: string; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
   - tests/object-optional-usage.ts:28 `address` should not be assignable to tests/object-optional-usage.ts:39 `address`
       source: { city: string; }    (Object)
       target: {}    (Object)
@@ -2057,16 +2017,6 @@ FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::tests/object-opt
   - tests/object-optional-usage.ts:37 `name` should be assignable to tests/object-optional-usage.ts:22 `OptionalDeep`
       source: string    (String)
       target: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }    (Mapped)
-  - tests/object-optional-usage.ts:38 `profile` should not be assignable to tests/object-optional-usage.ts:19 `OptionalEverything`
-      typescript source: { address: {}; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { address: {}; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
-  - tests/object-optional-usage.ts:38 `profile` should not be assignable to tests/object-optional-usage.ts:21 `DirectFlat`
-      typescript source: { address: {}; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { address: {}; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
   - tests/object-optional-usage.ts:38 `profile` should not be assignable to tests/object-optional-usage.ts:39 `address`
       source: { address: {}; }    (Object)
       target: {}    (Object)
@@ -2091,16 +2041,6 @@ FAIL tests/conformance/external/ts-toolbelt/object-optional.ts::tests/object-opt
   - tests/object-optional-usage.ts:44 `id` should be assignable to tests/object-optional-usage.ts:22 `OptionalDeep`
       source: string    (String)
       target: { [K in keyof O]?: OptionalDeep<O[K]> | undefined; }    (Mapped)
-  - tests/object-optional-usage.ts:47 `profile` should not be assignable to tests/object-optional-usage.ts:19 `OptionalEverything`
-      typescript source: { address: {}; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { address: {}; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
-  - tests/object-optional-usage.ts:47 `profile` should not be assignable to tests/object-optional-usage.ts:21 `DirectFlat`
-      typescript source: { address: {}; }    (Object)
-      typescript target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Mapped)
-      oxc source: { address: {}; }    (Object)
-      oxc target: { id?: string | undefined; name?: string | undefined; profile?: { email: string; address: { city: string; }; } | undefined; }    (Object)
   - tests/object-optional-usage.ts:47 `profile` should not be assignable to tests/object-optional-usage.ts:39 `address`
       source: { address: {}; }    (Object)
       target: {}    (Object)

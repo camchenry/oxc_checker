@@ -128,13 +128,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.is_assignable_to_at_depth(constraint, target, next_depth)
                 })
             }
-            (TyKind::Object(source), TyKind::Object(target)) => self.properties_assignable_to(
-                &source.properties.iter(),
-                target.properties,
-                next_depth,
-            ),
+            (TyKind::Object(source), TyKind::Object(target)) => {
+                self.object_properties_assignable_to(&source.properties.iter(), target, next_depth)
+            }
             (TyKind::PrimitiveObject, TyKind::Object(target)) => {
-                self.properties_assignable_to(&[].iter(), target.properties, next_depth)
+                self.object_properties_assignable_to(&[].iter(), target, next_depth)
             }
             (TyKind::Object(source), TyKind::PrimitiveObject) => {
                 self.properties_assignable_to(&source.properties.iter(), &[], next_depth)
@@ -147,8 +145,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 | TyKind::ModuleNamespace(_),
                 TyKind::PrimitiveObject,
             ) => true,
-            (TyKind::ModuleNamespace(source), TyKind::Object(target)) => self
-                .properties_assignable_to(&source.properties.iter(), target.properties, next_depth),
+            (TyKind::ModuleNamespace(source), TyKind::Object(target)) => {
+                self.object_properties_assignable_to(&source.properties.iter(), target, next_depth)
+            }
             (TyKind::Object(source), TyKind::ModuleNamespace(target)) => self
                 .properties_assignable_to(
                     &source.properties.iter(),
@@ -183,9 +182,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                             TyKind::Object(object) => object.properties.iter(),
                             _ => [].iter(),
                         });
-                self.properties_assignable_to(
+                self.object_properties_assignable_to(
                     &combined_properties,
-                    target_object.properties,
+                    target_object,
                     next_depth,
                 )
             }
@@ -635,6 +634,34 @@ impl<'a, 'store> Checker<'a, 'store> {
         })
     }
 
+    fn object_properties_assignable_to<'properties>(
+        &self,
+        source_properties: &(impl Iterator<Item = &'properties TyProperty<'a>> + Clone),
+        target: &crate::types::TyObject<'a>,
+        depth: usize,
+    ) -> bool
+    where
+        'a: 'properties,
+    {
+        let target_is_weak = !target.properties.is_empty()
+            && target.properties.iter().all(|property| property.optional)
+            && target.signatures().is_empty()
+            && target.index_infos().is_empty();
+        if target_is_weak
+            && source_properties.clone().next().is_some()
+            && !source_properties.clone().any(|source_property| {
+                target
+                    .properties
+                    .iter()
+                    .any(|target_property| source_property.name == target_property.name)
+            })
+        {
+            return false;
+        }
+
+        self.properties_assignable_to(source_properties, target.properties, depth)
+    }
+
     fn properties_assignable_to<'properties>(
         &self,
         source_properties: &(impl Iterator<Item = &'properties TyProperty<'a>> + Clone),
@@ -857,6 +884,51 @@ mod tests {
         assert!(arena.is_type_identical_to(string_brand, identical_string_brand));
         assert!(is_assignable_to(string_brand, identical_string_brand));
         assert!(is_assignable_to(identical_string_brand, string_brand));
+    }
+
+    #[test]
+    fn test_union_assignability() {
+        let allocator = Allocator::default();
+        let store = test_store(&allocator);
+        let checker = Checker::new(&store);
+        let arena = checker.arena;
+        let ty = TypeBuilder::new(arena);
+        let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
+
+        let a_and_b = ty.intersection([
+            ty.object([ty.property("a", Ty::String)]),
+            ty.object([ty.property("b", Ty::String)]),
+        ]);
+        assert!(!is_assignable_to(
+            a_and_b,
+            ty.union([Ty::String, Ty::Number]),
+        ));
+        assert!(is_assignable_to(
+            a_and_b,
+            ty.union([ty.object([ty.property("a", Ty::String)]), Ty::Number,]),
+        ));
+        assert!(is_assignable_to(
+            a_and_b,
+            ty.union([
+                ty.object([ty.property("a", Ty::String), ty.property("b", Ty::String)]),
+                Ty::Number,
+            ]),
+        ));
+
+        // A source with properties must share a property with a weak target object.
+        assert!(!is_assignable_to(
+            ty.intersection([
+                ty.object([ty.property("a", ty.object([ty.property("x", Ty::String)]))]),
+                ty.object([ty.property("c", Ty::Number)]),
+            ]),
+            ty.union([
+                ty.object([TyProperty {
+                    optional: true,
+                    ..ty.property("x", Ty::Number)
+                }]),
+                Ty::Undefined,
+            ]),
+        ));
     }
 
     #[test]

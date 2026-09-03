@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/cases
 files: passed=102 failed=72 panicked=0 total=174 pass_percentage=58.62%
 types: matched=3672 mismatched=55 total=3727 match_percentage=98.52%
-assign: matched=88642 mismatched=1108 total=89750 match_percentage=98.77%
+assign: matched=88655 mismatched=1095 total=89750 match_percentage=98.78%
 
 PASS tests/conformance/cases/compiler/abstractIdentifierNameStrict.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/arrayTypes.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00%
@@ -124,9 +124,6 @@ FAIL tests/conformance/cases/compiler/chainExpression.ts matched_types=178 misma
   - :43 `optionalDictionaryLookup` should not be assignable to :43 `dictionary`
       source: Profile | undefined    (Union)
       target: Record<string, Profile | undefined> | undefined    (Union)
-  - :52 `optionalMaybeServiceCall` should not be assignable to :52 `maybeService`
-      source: Profile | undefined    (Union)
-      target: Service | undefined    (Union)
   - :55 `getFactory` should be assignable to :56 `optionalFactoryUser`
       source: (() => { user?: Profile; service?: Service; }) | undefined    (Union)
       target: Profile | undefined    (Union)
@@ -4660,36 +4657,6 @@ FAIL tests/conformance/cases/compiler/stringInference.ts matched_types=51 mismat
       oxc source: keyof User    (Keyof)
       oxc target: string    (String)
 FAIL tests/conformance/cases/compiler/structuralMappedProperties.ts matched_types=28 mismatched_types=0 total_types=28 match_percentage=100.00%
-  - :10 `recorded` should not be assignable to :6 `optionalCopy`
-      typescript source: Record<"value", string>    (Mapped)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: Record<"value", string>    (TypeReference)
-      oxc target: Partial<Source>    (TypeReference)
-  - :10 `recorded` should not be assignable to :7 `optionalCopy`
-      typescript source: Record<"value", string>    (Mapped)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: Record<"value", string>    (TypeReference)
-      oxc target: Partial<Source>    (TypeReference)
-  - :10 `recorded` should not be assignable to :8 `optionalCopy`
-      typescript source: Record<"value", string>    (Mapped)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: Record<"value", string>    (TypeReference)
-      oxc target: Partial<Source>    (TypeReference)
-  - :11 `recorded` should not be assignable to :6 `optionalCopy`
-      typescript source: Record<"value", string>    (Mapped)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: Record<"value", string>    (TypeReference)
-      oxc target: Partial<Source>    (TypeReference)
-  - :11 `recorded` should not be assignable to :7 `optionalCopy`
-      typescript source: Record<"value", string>    (Mapped)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: Record<"value", string>    (TypeReference)
-      oxc target: Partial<Source>    (TypeReference)
-  - :11 `recorded` should not be assignable to :8 `optionalCopy`
-      typescript source: Record<"value", string>    (Mapped)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: Record<"value", string>    (TypeReference)
-      oxc target: Partial<Source>    (TypeReference)
   - :13 `value` should be assignable to :2 `name`
       typescript source: Value    (Unknown)
       typescript target: string    (String)
@@ -4715,36 +4682,6 @@ FAIL tests/conformance/cases/compiler/structuralMappedProperties.ts matched_type
       typescript target: string    (String)
       oxc source: Value    (TypeParameter)
       oxc target: string    (String)
-  - :14 `boxed` should not be assignable to :6 `optionalCopy`
-      typescript source: { value: "ready"; }    (Object)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: { value: "ready"; }    (Object)
-      oxc target: Partial<Source>    (TypeReference)
-  - :14 `boxed` should not be assignable to :7 `optionalCopy`
-      typescript source: { value: "ready"; }    (Object)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: { value: "ready"; }    (Object)
-      oxc target: Partial<Source>    (TypeReference)
-  - :14 `boxed` should not be assignable to :8 `optionalCopy`
-      typescript source: { value: "ready"; }    (Object)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: { value: "ready"; }    (Object)
-      oxc target: Partial<Source>    (TypeReference)
-  - :15 `boxed` should not be assignable to :6 `optionalCopy`
-      typescript source: { value: "ready"; }    (Object)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: { value: "ready"; }    (Object)
-      oxc target: Partial<Source>    (TypeReference)
-  - :15 `boxed` should not be assignable to :7 `optionalCopy`
-      typescript source: { value: "ready"; }    (Object)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: { value: "ready"; }    (Object)
-      oxc target: Partial<Source>    (TypeReference)
-  - :15 `boxed` should not be assignable to :8 `optionalCopy`
-      typescript source: { value: "ready"; }    (Object)
-      typescript target: Partial<Source>    (Mapped)
-      oxc source: { value: "ready"; }    (Object)
-      oxc target: Partial<Source>    (TypeReference)
 FAIL tests/conformance/cases/compiler/symbolBasicTypes.ts matched_types=59 mismatched_types=0 total_types=59 match_percentage=100.00%
   - :10 `arrayCtor` should be assignable to :16 `keys`
       typescript source: ArrayConstructor    (Function)
