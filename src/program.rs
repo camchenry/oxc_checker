@@ -281,6 +281,8 @@ pub struct ProgramStoreBuilder<'a, H> {
     allocator: &'a Allocator,
     host: H,
     root_files: Vec<PathBuf>,
+    // TODO: Add to config type
+    exact_optional_property_types: bool,
     load_default_lib: bool,
     lib_selection: StandardLibrarySelection,
     prepared_programs: Option<&'a PreparedProgramSet<'a>>,
@@ -292,6 +294,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
             allocator,
             host,
             root_files: Vec::new(),
+            exact_optional_property_types: false,
             load_default_lib: true,
             lib_selection: StandardLibrarySelection::default(),
             prepared_programs: None,
@@ -308,6 +311,24 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
     #[must_use]
     pub fn add_root_file(mut self, path: impl Into<PathBuf>) -> Self {
         self.root_files.push(path.into());
+        self
+    }
+
+    /// Configure whether optional properties use their declared types exactly.
+    ///
+    /// ```
+    /// use oxc_allocator::Allocator;
+    /// use oxc_checker::program::{FsProgramHost, ProgramStoreBuilder};
+    ///
+    /// let allocator = Allocator::default();
+    /// let store = ProgramStoreBuilder::new(&allocator, FsProgramHost::new())
+    ///     .with_exact_optional_property_types(true)
+    ///     .build()?;
+    /// # Ok::<(), oxc_checker::program::ProgramStoreError>(())
+    /// ```
+    #[must_use]
+    pub fn with_exact_optional_property_types(mut self, enabled: bool) -> Self {
+        self.exact_optional_property_types = enabled;
         self
     }
 
@@ -340,6 +361,7 @@ impl<'a, H: ProgramHost> ProgramStoreBuilder<'a, H> {
 
     pub fn build(self) -> ProgramStoreResult<ProgramStore<'a>> {
         let mut store = ProgramStore::new(self.allocator);
+        store.exact_optional_property_types = self.exact_optional_property_types;
         // Inject the default standard library before user files so global
         // ambient declarations (Array, Promise, ...) are available to every
         // program in the store.
@@ -512,6 +534,7 @@ pub struct ProgramStore<'a> {
     paths: FxHashMap<PathBuf, ProgramId>,
     edges: Vec<ModuleEdge>,
     global_symbols: GlobalSymbolTable,
+    exact_optional_property_types: bool,
 }
 
 impl<'a> ProgramStore<'a> {
@@ -523,12 +546,18 @@ impl<'a> ProgramStore<'a> {
             paths: FxHashMap::default(),
             edges: Vec::new(),
             global_symbols: GlobalSymbolTable::default(),
+            exact_optional_property_types: false,
         }
     }
 
     #[inline]
     pub const fn allocator(&self) -> &'a Allocator {
         self.allocator
+    }
+
+    #[inline]
+    pub(crate) const fn exact_optional_property_types(&self) -> bool {
+        self.exact_optional_property_types
     }
 
     #[inline]

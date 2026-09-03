@@ -659,7 +659,15 @@ impl<'a, 'store> Checker<'a, 'store> {
                 return false;
             }
 
-            self.is_assignable_to_at_depth(source_property.ty, target_property.ty, depth)
+            let source_type = if source_property.optional
+                && target_property.optional
+                && !self.store.exact_optional_property_types()
+            {
+                self.remove_undefined(source_property.ty)
+            } else {
+                source_property.ty
+            };
+            self.is_assignable_to_at_depth(source_type, target_property.ty, depth)
         })
     }
 }
@@ -857,6 +865,7 @@ mod tests {
         let store = test_store(&allocator);
         let checker = Checker::new(&store);
         let arena = checker.arena;
+        let ty = TypeBuilder::new(arena);
         let is_assignable_to = |source, target| checker.is_assignable_to(source, target);
 
         // { a: number, b: string } is assignable to { a: number }
@@ -884,6 +893,42 @@ mod tests {
                 TypeBuilder::new(arena).property("b", Ty::String)
             ]),
             arena.object([])
+        ));
+
+        let optional_string = TyProperty {
+            optional: true,
+            ..ty.property("a", Ty::String)
+        };
+        let optional_string_or_undefined = TyProperty {
+            optional: true,
+            ..ty.property("a", ty.union([Ty::String, Ty::Undefined]))
+        };
+        assert!(is_assignable_to(
+            ty.object([optional_string_or_undefined]),
+            ty.object([optional_string]),
+        ));
+        assert!(!is_assignable_to(
+            ty.object([ty.property("a", ty.union([Ty::String, Ty::Undefined]))]),
+            ty.object([ty.property("a", Ty::String)]),
+        ));
+
+        let exact_store = ProgramStoreBuilder::new(&allocator, TestProgramHost)
+            .add_root_file("/test.ts")
+            .without_default_lib()
+            .with_exact_optional_property_types(true)
+            .build()
+            .unwrap();
+        let exact_checker = Checker::new(&exact_store);
+        let exact_ty = TypeBuilder::new(exact_checker.arena);
+        assert!(!exact_checker.is_assignable_to(
+            exact_ty.object([TyProperty {
+                optional: true,
+                ..exact_ty.property("a", exact_ty.union([Ty::String, Ty::Undefined]),)
+            }]),
+            exact_ty.object([TyProperty {
+                optional: true,
+                ..exact_ty.property("a", Ty::String)
+            }]),
         ));
     }
 

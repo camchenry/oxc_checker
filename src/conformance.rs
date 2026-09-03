@@ -1910,6 +1910,13 @@ fn parse_fixture_program<'a>(
     if let Some(prepared_programs) = prepared_programs {
         builder = builder.with_prepared_programs(prepared_programs);
     }
+    if let Some(exact_optional_property_types) =
+        compiler_case.settings.get("exactoptionalpropertytypes")
+    {
+        builder = builder.with_exact_optional_property_types(compiler_directive_bool(
+            exact_optional_property_types,
+        ));
+    }
     if compiler_case
         .settings
         .get("nolib")
