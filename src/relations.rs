@@ -200,15 +200,16 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .iter()
                     .any(|ty| self.is_assignable_to_at_depth(*ty, target, next_depth))
             }
-            (TyKind::Object(_), TyKind::Intersection(intersection)) => intersection
-                .types
-                .iter()
-                .all(|ty| self.is_assignable_to_at_depth(source, *ty, next_depth)),
             (TyKind::Intersection(_), TyKind::Intersection(_))
                 if self.arena().is_type_identical_to(source, target) =>
             {
                 true
             }
+            // For assignment to intersection, we need to check that the source type is assignable to all types in the intersection.
+            (_, TyKind::Intersection(intersection)) => intersection
+                .types
+                .iter()
+                .all(|ty| self.is_assignable_to_at_depth(source, *ty, next_depth)),
             (TyKind::Function(source), TyKind::Function(target)) => {
                 let source_mapper = if source.type_parameters.is_empty()
                     || target.type_parameters.is_empty()
@@ -820,6 +821,16 @@ mod tests {
                 ty.object([ty.property("b", Ty::String)])
             ]),
             ty.object([ty.property("a", Ty::String), ty.property("b", Ty::String)]),
+        ));
+
+        // `{ value: string } & { then(callback: (value: string) => void): void }` is
+        // assignable to `object & { then(callback: (value: string) => void): void }`.
+        let then_callback = ty.function([], [ty.parameter("value", Ty::String)], Ty::Void);
+        let then_method = ty.function([], [ty.parameter("callback", then_callback)], Ty::Void);
+        let thenable = ty.object([ty.property("then", then_method)]);
+        assert!(is_assignable_to(
+            ty.intersection([ty.object([ty.property("value", Ty::String)]), thenable,]),
+            ty.intersection([Ty::PrimitiveObject, thenable]),
         ));
 
         // Branded types
