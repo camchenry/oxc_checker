@@ -9,15 +9,16 @@ use oxc_ast::{
         ComputedMemberExpression, ConditionalExpression, Expression, FormalParameter,
         FormalParameterRest, FormalParameters, Function, IdentifierReference, ImportExpression,
         LogicalExpression, MethodDefinition, MethodDefinitionKind, NewExpression, NumberBase,
-        ObjectExpression, ObjectPropertyKind, PrivateFieldExpression, PropertyDefinition,
-        PropertyKey, SimpleAssignmentTarget, StaticMemberExpression, TSImportEqualsDeclaration,
-        TSImportType, TSImportTypeQualifier, TSInterfaceDeclaration, TSLiteral, TSMappedType,
-        TSMethodSignature, TSMethodSignatureKind, TSModuleDeclaration, TSModuleDeclarationName,
-        TSModuleReference, TSNamedTupleMember, TSPropertySignature, TSQualifiedName, TSSignature,
-        TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
-        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
-        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
-        TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
+        ObjectExpression, ObjectProperty, ObjectPropertyKind, PrivateFieldExpression,
+        PropertyDefinition, PropertyKey, PropertyKind, SimpleAssignmentTarget,
+        StaticMemberExpression, TSImportEqualsDeclaration, TSImportType, TSImportTypeQualifier,
+        TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature, TSMethodSignatureKind,
+        TSModuleDeclaration, TSModuleDeclarationName, TSModuleReference, TSNamedTupleMember,
+        TSPropertySignature, TSQualifiedName, TSSignature, TSThisParameter, TSTupleElement, TSType,
+        TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
+        TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
+        TSTypeReference, TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind,
+        VariableDeclarator,
     },
 };
 use oxc_cfg::{BlockNodeId, ControlFlowGraph};
@@ -5391,14 +5392,23 @@ impl<'a, 'store> Checker<'a, 'store> {
                         node_id,
                         property_context,
                     );
+                    let ty = self.get_type_of_object_property_accessor(
+                        program_id, object, property, ty, node_id,
+                    );
                     let property = TyProperty {
                         name,
                         flags: property_name_flags(&property.key),
                         ty,
                         computed: false,
                         optional: false,
-                        method: property.method,
-                        readonly: context.check_mode.const_context(),
+                        method: property.method && property.kind == PropertyKind::Init,
+                        readonly: context.check_mode.const_context()
+                            || property.kind == PropertyKind::Get
+                                && !object.properties.iter().any(|candidate| {
+                                    matches!(candidate, ObjectPropertyKind::ObjectProperty(candidate)
+                                        if candidate.kind == PropertyKind::Set
+                                            && property_key_name_str(&candidate.key) == Some(name))
+                                }),
                     };
                     spread_properties.retain(|existing| existing.name != name);
                     if let Some(existing) = explicit_properties
@@ -5456,6 +5466,49 @@ impl<'a, 'store> Checker<'a, 'store> {
             explicit_properties.into_iter().chain(spread_properties),
             spread_index_infos,
         )
+    }
+
+    fn get_type_of_object_property_accessor(
+        &self,
+        program_id: ProgramId,
+        object: &'a ObjectExpression<'a>,
+        property: &'a ObjectProperty<'a>,
+        inferred_type: Ty<'a>,
+        node_id: Option<NodeId>,
+    ) -> Ty<'a> {
+        let accessor_type = if property.kind == PropertyKind::Set {
+            let name = property_key_name_str(&property.key);
+            object
+                .properties
+                .iter()
+                .find_map(|candidate| {
+                    let ObjectPropertyKind::ObjectProperty(candidate) = candidate else {
+                        return None;
+                    };
+                    (candidate.kind == PropertyKind::Get
+                        && property_key_name_str(&candidate.key) == name)
+                        .then(|| {
+                            self.get_type_of_expression_with_node(
+                                program_id,
+                                &candidate.value,
+                                node_id,
+                                CheckMode::NONE,
+                            )
+                        })
+                })
+                .unwrap_or(inferred_type)
+        } else {
+            inferred_type
+        };
+
+        match (property.kind, self.ty_kind(accessor_type)) {
+            (PropertyKind::Get, TyKind::Function(function)) => function.return_type(),
+            (PropertyKind::Set, TyKind::Function(function)) => function
+                .parameters
+                .first()
+                .map_or_else(|| function.return_type(), |parameter| parameter.ty),
+            _ => inferred_type,
+        }
     }
 
     // TODO(refactor): move to types module and make a helper `impl` of `Ty`
@@ -8349,6 +8402,40 @@ impl<'a, 'store> Checker<'a, 'store> {
         parameter: &FormalParameter<'a>,
     ) -> Option<Ty<'a>> {
         let nodes = self.nodes(program_id);
+        let setter = nodes.ancestors(parameter_node_id).find_map(|node| {
+            let AstKind::ObjectProperty(property) = node.kind() else {
+                return None;
+            };
+            (property.kind == PropertyKind::Set).then_some(property)
+        });
+        if let Some(setter) = setter {
+            let name = property_key_name_str(&setter.key);
+            let object = nodes
+                .ancestors(parameter_node_id)
+                .find_map(|node| match node.kind() {
+                    AstKind::ObjectExpression(object) => Some(object),
+                    _ => None,
+                })?;
+            if let Some(getter_type) = object.properties.iter().find_map(|candidate| {
+                let ObjectPropertyKind::ObjectProperty(candidate) = candidate else {
+                    return None;
+                };
+                (candidate.kind == PropertyKind::Get
+                    && property_key_name_str(&candidate.key) == name)
+                    .then(|| {
+                        self.get_type_of_expression_with_node(
+                            program_id,
+                            &candidate.value,
+                            Some(parameter_node_id),
+                            CheckMode::NONE,
+                        )
+                    })
+            }) && let TyKind::Function(function) = self.ty_kind(getter_type)
+            {
+                return Some(function.return_type());
+            }
+        }
+
         let (function_span, parameter_index) =
             nodes
                 .ancestors(parameter_node_id)
@@ -11966,11 +12053,23 @@ impl<'a> Checker<'a, '_> {
                             | CheckMode::PRESERVE_LITERALS,
                     );
                 }
-                self.check_expression_with_context(
+                let ty = self.check_expression_with_context(
                     node.program_id,
                     AstKind::from_expression(&property.value),
                     Some(node.node_id),
                     context,
+                );
+                let AstKind::ObjectExpression(object) =
+                    self.nodes(node.program_id).parent_kind(node.node_id)
+                else {
+                    return ty;
+                };
+                self.get_type_of_object_property_accessor(
+                    node.program_id,
+                    object,
+                    property,
+                    ty,
+                    Some(node.node_id),
                 )
             }
             AstKind::ExpressionStatement(expr) => self.get_type_of_expression_with_node(
