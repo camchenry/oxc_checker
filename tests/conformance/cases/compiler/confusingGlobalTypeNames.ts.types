@@ -1,0 +1,254 @@
+interface Iterator<T> {
+>         ^^^^^^^^: any   (Any) (Identifier)
+
+interface Iterator<T> {
+>         ^^^^^^^^: any   (Any) (Identifier)
+
+interface Iterator<T> {
+>                  ^: any   (Any) (Identifier)
+
+  value: T;
+> ^^^^^: T   (TypeParameter) (Identifier)
+
+  value: T;
+>        ^: any   (Any) (Identifier)
+
+interface Map<K, V> {
+>         ^^^: any   (Any) (Identifier)
+
+interface Map<K, V> {
+>         ^^^: any   (Any) (Identifier)
+
+interface Map<K, V> {
+>             ^: any   (Any) (Identifier)
+
+interface Map<K, V> {
+>                ^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): Iterator<readonly [K, V]>;
+>  ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
+
+  [Symbol.iterator](): Iterator<readonly [K, V]>;
+>         ^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
+
+  [Symbol.iterator](): Iterator<readonly [K, V]>;
+>                      ^^^^^^^^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): Iterator<readonly [K, V]>;
+>                      ^^^^^^^^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): Iterator<readonly [K, V]>;
+>                                         ^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): Iterator<readonly [K, V]>;
+>                                            ^: any   (Any) (Identifier)
+
+declare const map: Map<string, number>;
+>             ^^^: Map<string, number>   (TypeReference) (Identifier)
+
+declare const map: Map<string, number>;
+>                  ^^^: any   (Any) (Identifier)
+
+declare const map: Map<string, number>;
+>                  ^^^: any   (Any) (Identifier)
+
+export const mapObject = Object.fromEntries(map);
+>            ^^^^^^^^^: { [k: string]: any; }   (Object) (Identifier)
+
+export const mapObject = Object.fromEntries(map);
+>                        ^^^^^^: ObjectConstructor   (TypeReference) (Identifier)
+
+export const mapObject = Object.fromEntries(map);
+>                               ^^^^^^^^^^^: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }   (Object) (Identifier)
+
+export const mapObject = Object.fromEntries(map);
+>                                           ^^^: Map<string, number>   (TypeReference) (Identifier)
+
+interface Iterable<T> {
+>         ^^^^^^^^: any   (Any) (Identifier)
+
+interface Iterable<T> {
+>         ^^^^^^^^: any   (Any) (Identifier)
+
+interface Iterable<T> {
+>                  ^: any   (Any) (Identifier)
+
+  local: T;
+> ^^^^^: T   (TypeParameter) (Identifier)
+
+  local: T;
+>        ^: any   (Any) (Identifier)
+
+declare function unwrap<T>(value: Iterable<T>): T;
+>                ^^^^^^: <T>(value: Iterable<T>) => T   (Function) (Identifier)
+
+declare function unwrap<T>(value: Iterable<T>): T;
+>                       ^: any   (Any) (Identifier)
+
+declare function unwrap<T>(value: Iterable<T>): T;
+>                          ^^^^^: Iterable<T>   (TypeReference) (Identifier)
+
+declare function unwrap<T>(value: Iterable<T>): T;
+>                                 ^^^^^^^^: any   (Any) (Identifier)
+
+declare function unwrap<T>(value: Iterable<T>): T;
+>                                 ^^^^^^^^: any   (Any) (Identifier)
+
+declare function unwrap<T>(value: Iterable<T>): T;
+>                                          ^: any   (Any) (Identifier)
+
+declare function unwrap<T>(value: Iterable<T>): T;
+>                                               ^: any   (Any) (Identifier)
+
+declare const iterable: Iterable<"iterable">;
+>             ^^^^^^^^: Iterable<"iterable">   (TypeReference) (Identifier)
+
+declare const iterable: Iterable<"iterable">;
+>                       ^^^^^^^^: any   (Any) (Identifier)
+
+declare const iterable: Iterable<"iterable">;
+>                       ^^^^^^^^: any   (Any) (Identifier)
+
+export const unwrapped = unwrap(iterable);
+>            ^^^^^^^^^: "iterable"   (StringLiteral) (Identifier)
+
+export const unwrapped = unwrap(iterable);
+>                        ^^^^^^: <T>(value: Iterable<T>) => T   (Function) (Identifier)
+
+export const unwrapped = unwrap(iterable);
+>                               ^^^^^^^^: Iterable<"iterable">   (TypeReference) (Identifier)
+
+interface Promise<T> {
+>         ^^^^^^^: any   (Any) (Identifier)
+
+interface Promise<T> {
+>         ^^^^^^^: any   (Any) (Identifier)
+
+interface Promise<T> {
+>                 ^: any   (Any) (Identifier)
+
+  value: T;
+> ^^^^^: T   (TypeParameter) (Identifier)
+
+  value: T;
+>        ^: any   (Any) (Identifier)
+
+declare const promise: Promise<number>;
+>             ^^^^^^^: Promise<number>   (TypeReference) (Identifier)
+
+declare const promise: Promise<number>;
+>                      ^^^^^^^: any   (Any) (Identifier)
+
+declare const promise: Promise<number>;
+>                      ^^^^^^^: any   (Any) (Identifier)
+
+export const awaited = await promise;
+>            ^^^^^^^: Promise<number>   (TypeReference) (Identifier)
+
+export const awaited = await promise;
+>                            ^^^^^^^: Promise<number>   (TypeReference) (Identifier)
+
+type Record<K, V> = {
+>    ^^^^^^: { key: K; value: V; }   (Object) (Identifier)
+
+type Record<K, V> = {
+>           ^: any   (Any) (Identifier)
+
+type Record<K, V> = {
+>              ^: any   (Any) (Identifier)
+
+  key: K;
+> ^^^: K   (TypeParameter) (Identifier)
+
+  key: K;
+>      ^: any   (Any) (Identifier)
+
+  value: V;
+> ^^^^^: V   (TypeParameter) (Identifier)
+
+  value: V;
+>        ^: any   (Any) (Identifier)
+
+declare const record: Record<"key", 42>;
+>             ^^^^^^: Record<"key", 42>   (TypeReference) (Identifier)
+
+declare const record: Record<"key", 42>;
+>                     ^^^^^^: any   (Any) (Identifier)
+
+export const recordKey = record.key;
+>            ^^^^^^^^^: "key"   (StringLiteral) (Identifier)
+
+export const recordKey = record.key;
+>                        ^^^^^^: Record<"key", 42>   (TypeReference) (Identifier)
+
+export const recordKey = record.key;
+>                               ^^^: "key"   (StringLiteral) (Identifier)
+
+export const recordValue = record.value;
+>            ^^^^^^^^^^^: 42   (NumberLiteral) (Identifier)
+
+export const recordValue = record.value;
+>                          ^^^^^^: Record<"key", 42>   (TypeReference) (Identifier)
+
+export const recordValue = record.value;
+>                                 ^^^^^: 42   (NumberLiteral) (Identifier)
+
+interface Object {
+>         ^^^^^^: any   (Any) (Identifier)
+
+interface Object {
+>         ^^^^^^: any   (Any) (Identifier)
+
+  local: "object";
+> ^^^^^: "object"   (StringLiteral) (Identifier)
+
+declare const object: Object;
+>             ^^^^^^: Object   (TypeReference) (Identifier)
+
+declare const object: Object;
+>                     ^^^^^^: any   (Any) (Identifier)
+
+declare const object: Object;
+>                     ^^^^^^: any   (Any) (Identifier)
+
+export const objectProperty = object.local;
+>            ^^^^^^^^^^^^^^: "object"   (StringLiteral) (Identifier)
+
+export const objectProperty = object.local;
+>                             ^^^^^^: Object   (TypeReference) (Identifier)
+
+export const objectProperty = object.local;
+>                                    ^^^^^: "object"   (StringLiteral) (Identifier)
+
+interface Array<T> {
+>         ^^^^^: any   (Any) (Identifier)
+
+interface Array<T> {
+>         ^^^^^: any   (Any) (Identifier)
+
+interface Array<T> {
+>               ^: any   (Any) (Identifier)
+
+  local: T;
+> ^^^^^: T   (TypeParameter) (Identifier)
+
+  local: T;
+>        ^: any   (Any) (Identifier)
+
+declare const array: Array<"array">;
+>             ^^^^^: Array<"array">   (TypeReference) (Identifier)
+
+declare const array: Array<"array">;
+>                    ^^^^^: any   (Any) (Identifier)
+
+declare const array: Array<"array">;
+>                    ^^^^^: any   (Any) (Identifier)
+
+export const arrayProperty = array.local;
+>            ^^^^^^^^^^^^^: "array"   (StringLiteral) (Identifier)
+
+export const arrayProperty = array.local;
+>                            ^^^^^: Array<"array">   (TypeReference) (Identifier)
+
+export const arrayProperty = array.local;
+>                                  ^^^^^: "array"   (StringLiteral) (Identifier)
