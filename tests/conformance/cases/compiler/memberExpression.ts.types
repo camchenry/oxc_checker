@@ -648,8 +648,7 @@ const uniqueKey: unique symbol = Symbol("uniqueKey");
 >                                ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
 
 type SymbolObject = {
->    ^^^^^^^^^^^^: { regular: string; [uniqueKey]: number; }   (Object) (Identifier)
-         expected: { [uniqueKey]: number; regular: string; }
+>    ^^^^^^^^^^^^: { [uniqueKey]: number; regular: string; }   (Object) (Identifier)
 
   [uniqueKey]: number;
 >  ^^^^^^^^^: number   (Number) (Identifier)

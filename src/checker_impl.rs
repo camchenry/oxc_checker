@@ -2193,18 +2193,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
-    fn is_late_bound_type_literal_member(member: &TSSignature<'_>) -> bool {
-        match member {
-            TSSignature::TSPropertySignature(property) => {
-                property.computed && matches!(property.key, PropertyKey::Identifier(_))
-            }
-            TSSignature::TSMethodSignature(method) => {
-                method.computed && matches!(method.key, PropertyKey::Identifier(_))
-            }
-            _ => false,
-        }
-    }
-
     // TODO(correctness): these quotes are still not correctly handled, need to check more cases
     fn property_signature_flags(property: &TSPropertySignature<'_>) -> TyPropertyFlags {
         let type_single_quoted = property.type_annotation.as_deref().is_some_and(|annotation| {
@@ -2256,13 +2244,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                     type_literal
                         .members
                         .iter()
-                        .filter(|member| !Self::is_late_bound_type_literal_member(member))
-                        .chain(
-                            type_literal
-                                .members
-                                .iter()
-                                .filter(|member| Self::is_late_bound_type_literal_member(member)),
-                        )
                         .filter_map(|member| match member {
                             TSSignature::TSPropertySignature(property) => {
                                 let name = self.resolved_property_key_name(program_id, &property.key)?;
