@@ -4455,6 +4455,62 @@ fn awaited_conditional_alias_extracts_thenable_callback_value() {
 }
 
 #[test]
+fn awaited_conditional_alias_infers_through_structural_callback_members() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        r#"
+    type ThenValue<T> = T extends { then(onfulfilled: infer F, ...args: infer _): any; } ?
+        F extends ((value: infer V, ...args: infer _) => any) ? V : never :
+        T;
+
+    type SingleParameter = ThenValue<{
+        then(onfulfilled: (value: number) => void): void;
+    }>;
+    type AdditionalParameter = ThenValue<{
+        then(onfulfilled: (value: number, extra: object) => void): void;
+    }>;
+    type NoValueParameter = ThenValue<{
+        then(onfulfilled: () => void): void;
+    }>;
+    type OptionalNullableCallback = ThenValue<{
+        then(onfulfilled?: ((value: number) => void) | null): void;
+    }>;
+    type OverloadedThen = ThenValue<{
+        then(onfulfilled: (value: string) => void): void;
+        then(onfulfilled: (value: number) => void): void;
+    }>;
+    type UnionCallback = ThenValue<{
+        then(onfulfilled: ((value: number) => void) | ((value: string) => void)): void;
+    }>;
+    type CallableCallback = ThenValue<{
+        then(onfulfilled: { (value: number): void }): void;
+    }>;
+    type AbsentCallback = ThenValue<{
+        then(): void;
+    }>;
+    "#,
+    );
+
+    for (name, expected) in [
+        ("SingleParameter", "number"),
+        ("AdditionalParameter", "number"),
+        ("NoValueParameter", "unknown"),
+        ("OptionalNullableCallback", "number"),
+        ("OverloadedThen", "number"),
+        ("UnionCallback", "number | string"),
+        ("CallableCallback", "number"),
+        ("AbsentCallback", "never"),
+    ] {
+        assert_eq!(
+            type_string(&ret, get_type_alias_type(&ret, name)),
+            expected,
+            "unexpected type for {name}"
+        );
+    }
+}
+
+#[test]
 fn awaited_conditional_alias_recursively_unwraps_simple_thenable_value() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

@@ -1730,10 +1730,18 @@ fn match_property_type_pairs<'a>(
     let mut pairs = Vec::new();
 
     for target_property in target_properties {
-        let Some(source_property) = source_properties.iter().find(|source_property| {
+        let matching_source = |source_property: &&TyProperty<'a>| {
             source_property.name == target_property.name
                 && source_property.computed == target_property.computed
-        }) else {
+        };
+        let source_property = match mode {
+            PropertyMatchMode::ExistingOnly => source_properties.iter().find(matching_source),
+            // Conditional inference follows overload inference and uses the last declaration.
+            PropertyMatchMode::RequireTarget => {
+                source_properties.iter().rev().find(matching_source)
+            }
+        };
+        let Some(source_property) = source_property else {
             match mode {
                 PropertyMatchMode::ExistingOnly | PropertyMatchMode::RequireTarget
                     if target_property.optional =>
