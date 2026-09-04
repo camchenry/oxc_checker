@@ -3,7 +3,7 @@
 # Cases root: src/lib
 files: passed=14 failed=65 panicked=0 total=79 pass_percentage=17.72%
 types: matched=60158 mismatched=662 total=60820 match_percentage=98.91%
-assign: matched=304969 mismatched=6542 total=311511 match_percentage=97.90%
+assign: matched=305000 mismatched=6511 total=311511 match_percentage=97.91%
 
 FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45%
   - src/lib/decorators.d.ts:20 `DecoratorMetadata` type mismatch
@@ -1050,11 +1050,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { (): DynamicsCompressorNode; (): DynamicsCompressorNode; }    (Function)
       oxc source: { new (context: BaseAudioContext, options?: DelayOptions): DelayNode; prototype: DelayNode; }    (Object)
       oxc target: { (): DynamicsCompressorNode; (): DynamicsCompressorNode; }    (Object)
-  - :4881 `createDynamicsCompressor` should be assignable to :32155 `listener`
-      typescript source: { (): DynamicsCompressorNode; (): DynamicsCompressorNode; }    (Function)
-      typescript target: (this: SVGFEGaussianBlurElement, ev: SVGElementEventMap[K]) => any    (Function)
-      oxc source: { (): DynamicsCompressorNode; (): DynamicsCompressorNode; }    (Object)
-      oxc target: (this: SVGFEGaussianBlurElement, ev: SVGElementEventMap[K]) => any    (Function)
   - :4881 `DynamicsCompressorNode` should not be assignable to :4881 `createDynamicsCompressor`
       typescript source: { new (context: BaseAudioContext, options?: DynamicsCompressorOptions): DynamicsCompressorNode; prototype: DynamicsCompressorNode; }    (Object)
       typescript target: { (): DynamicsCompressorNode; (): DynamicsCompressorNode; }    (Function)
@@ -1155,11 +1150,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { <K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGFEMergeElement, ev: SVGElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; <K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGFEMergeElement, ev: SVGElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; }    (Function)
       oxc source: { new (): AudioNode; prototype: AudioNode; }    (Object)
       oxc target: { <K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGFEMergeElement, ev: SVGElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; <K extends keyof SVGElementEventMap>(type: K, listener: (this: SVGFEMergeElement, ev: SVGElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void; }    (Object)
-  - :5040 `arrayBuffer` should be assignable to :32216 `listener`
-      typescript source: { (): Promise<ArrayBuffer>; (): Promise<ArrayBuffer>; }    (Function)
-      typescript target: (this: SVGFEMergeNodeElement, ev: SVGElementEventMap[K]) => any    (Function)
-      oxc source: { (): Promise<ArrayBuffer>; (): Promise<ArrayBuffer>; }    (Object)
-      oxc target: (this: SVGFEMergeNodeElement, ev: SVGElementEventMap[K]) => any    (Function)
   - :5052 `Blob` should not be assignable to :5058 `stream`
       typescript source: { new (blobParts?: BlobPart[], options?: BlobPropertyBag): Blob; prototype: Blob; }    (Object)
       typescript target: { (): ReadableStream<Uint8Array<ArrayBuffer>>; (): ReadableStream<Uint8Array<ArrayBuffer>>; }    (Function)
@@ -2272,11 +2262,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { (): DOMMatrix; (): DOMMatrix; }    (Function)
       oxc source: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }    (Object)
       oxc target: { (): DOMMatrix; (): DOMMatrix; }    (Object)
-  - :11646 `inverse` should be assignable to :34768 `onaudioprocess`
-      typescript source: { (): DOMMatrix; (): DOMMatrix; }    (Function)
-      typescript target: ((this: ScriptProcessorNode, ev: AudioProcessingEvent) => any) | null    (Union)
-      oxc source: { (): DOMMatrix; (): DOMMatrix; }    (Object)
-      oxc target: ((this: ScriptProcessorNode, ev: AudioProcessingEvent) => any) | null    (Union)
   - :11646 `DOMMatrix` should not be assignable to :11646 `inverse`
       typescript source: { new (init?: string | number[]): DOMMatrix; prototype: DOMMatrix; fromFloat32Array(array32: Float32Array<ArrayBuffer>): DOMMatrix; fromFloat64Array(array64: Float64Array<ArrayBuffer>): DOMMatrix; fromMatrix(other?: DOMMatrixInit): DOMMatrix; }    (Object)
       typescript target: { (): DOMMatrix; (): DOMMatrix; }    (Function)
@@ -5501,11 +5486,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { (): void; (): void; }    (Function)
       oxc source: { new (): HTMLTableSectionElement; prototype: HTMLTableSectionElement; }    (Object)
       oxc target: { (): void; (): void; }    (Object)
-  - :21100 `deleteCaption` should be assignable to :42088 `onload`
-      typescript source: { (): void; (): void; }    (Function)
-      typescript target: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null    (Union)
-      oxc source: { (): void; (): void; }    (Object)
-      oxc target: ((this: XMLHttpRequest, ev: ProgressEvent) => any) | null    (Union)
   - :21106 `deleteRow` should not be assignable to :21100 `deleteCaption`
       typescript source: { (index: number): void; (index: number): void; }    (Function)
       typescript target: { (): void; (): void; }    (Function)
@@ -6070,11 +6050,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
   - :22970 `InputEvent` should be assignable to :22970 `UIEvent`
       source: { new (type: string, eventInitDict?: InputEventInit): InputEvent; prototype: InputEvent; }    (Object)
       target: { new (type: string, eventInitDict?: UIEventInit): UIEvent; prototype: UIEvent; }    (Object)
-  - :23000 `getTargetRanges` should be assignable to :43832 `oncontextmenu`
-      typescript source: { (): StaticRange[]; (): StaticRange[]; }    (Function)
-      typescript target: ((this: Window, ev: PointerEvent) => any) | null    (Union)
-      oxc source: { (): StaticRange[]; (): StaticRange[]; }    (Object)
-      oxc target: ((this: Window, ev: PointerEvent) => any) | null    (Union)
   - :23000 `StaticRange` should not be assignable to :23000 `getTargetRanges`
       typescript source: { new (init: StaticRangeInit): StaticRange; prototype: StaticRange; }    (Object)
       typescript target: { (): StaticRange[]; (): StaticRange[]; }    (Function)
@@ -6131,11 +6106,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { (): Promise<LockManagerSnapshot>; (): Promise<LockManagerSnapshot>; }    (Function)
       oxc source: { new (): LockManager; prototype: LockManager; }    (Object)
       oxc target: { (): Promise<LockManagerSnapshot>; (): Promise<LockManagerSnapshot>; }    (Object)
-  - :23475 `query` should be assignable to :43908 `onmouseup`
-      typescript source: { (): Promise<LockManagerSnapshot>; (): Promise<LockManagerSnapshot>; }    (Function)
-      typescript target: ((this: Window, ev: MouseEvent) => any) | null    (Union)
-      oxc source: { (): Promise<LockManagerSnapshot>; (): Promise<LockManagerSnapshot>; }    (Object)
-      oxc target: ((this: Window, ev: MouseEvent) => any) | null    (Union)
   - :23500 `MIDIAccess` should be assignable to :23500 `EventTarget`
       source: { new (): MIDIAccess; prototype: MIDIAccess; }    (Object)
       target: { new (): EventTarget; prototype: EventTarget; }    (Object)
@@ -7499,11 +7469,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { (callbackfn: (value: any, key: string, parent: RTCStatsReport) => void, thisArg?: any): void; (callbackfn: (value: any, key: string, parent: RTCStatsReport) => void, thisArg?: any): void; }    (Function)
       oxc source: { new (): RTCStatsReport; prototype: RTCStatsReport; }    (Object)
       oxc target: { (callbackfn: (value: any, key: string, parent: RTCStatsReport) => void, thisArg?: any): void; (callbackfn: (value: any, key: string, parent: RTCStatsReport) => void, thisArg?: any): void; }    (Object)
-  - :29947 `forEach` should be assignable to :29947 `callbackfn`
-      typescript source: { (callbackfn: (value: any, key: string, parent: RTCStatsReport) => void, thisArg?: any): void; (callbackfn: (value: any, key: string, parent: RTCStatsReport) => void, thisArg?: any): void; }    (Function)
-      typescript target: (value: any, key: string, parent: RTCStatsReport) => void    (Function)
-      oxc source: { (callbackfn: (value: any, key: string, parent: RTCStatsReport) => void, thisArg?: any): void; (callbackfn: (value: any, key: string, parent: RTCStatsReport) => void, thisArg?: any): void; }    (Object)
-      oxc target: (value: any, key: string, parent: RTCStatsReport) => void    (Function)
   - :30016 `Range` should be assignable to :30016 `AbstractRange`
       source: { new (): Range; prototype: Range; readonly START_TO_START: 0; readonly START_TO_END: 1; readonly END_TO_END: 2; readonly END_TO_START: 3; }    (Object)
       target: { new (): AbstractRange; prototype: AbstractRange; }    (Object)
@@ -10327,11 +10292,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { (): Node | null; (): Node | null; }    (Function)
       oxc source: { new (): Node; prototype: Node; readonly ELEMENT_NODE: 1; readonly ATTRIBUTE_NODE: 2; readonly TEXT_NODE: 3; readonly CDATA_SECTION_NODE: 4; readonly ENTITY_REFERENCE_NODE: 5; readonly ENTITY_NODE: 6; readonly PROCESSING_INSTRUCTION_NODE: 7; readonly COMMENT_NODE: 8; readonly DOCUMENT_NODE: 9; readonly DOCUMENT_TYPE_NODE: 10; readonly DOCUMENT_FRAGMENT_NODE: 11; readonly NOTATION_NODE: 12; readonly DOCUMENT_POSITION_DISCONNECTED: 1; readonly DOCUMENT_POSITION_PRECEDING: 2; readonly DOCUMENT_POSITION_FOLLOWING: 4; readonly DOCUMENT_POSITION_CONTAINS: 8; readonly DOCUMENT_POSITION_CONTAINED_BY: 16; readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 32; }    (Object)
       oxc target: { (): Node | null; (): Node | null; }    (Object)
-  - :37222 `nextNode` should be assignable to :14483 `onloadend`
-      typescript source: { (): Node | null; (): Node | null; }    (Function)
-      typescript target: ((this: FileReader, ev: ProgressEvent<FileReader>) => any) | null    (Union)
-      oxc source: { (): Node | null; (): Node | null; }    (Object)
-      oxc target: ((this: FileReader, ev: ProgressEvent<FileReader>) => any) | null    (Union)
   - :37222 `Node` should not be assignable to :37222 `nextNode`
       typescript source: { new (): Node; prototype: Node; readonly ELEMENT_NODE: 1; readonly ATTRIBUTE_NODE: 2; readonly TEXT_NODE: 3; readonly CDATA_SECTION_NODE: 4; readonly ENTITY_REFERENCE_NODE: 5; readonly ENTITY_NODE: 6; readonly PROCESSING_INSTRUCTION_NODE: 7; readonly COMMENT_NODE: 8; readonly DOCUMENT_NODE: 9; readonly DOCUMENT_TYPE_NODE: 10; readonly DOCUMENT_FRAGMENT_NODE: 11; readonly NOTATION_NODE: 12; readonly DOCUMENT_POSITION_DISCONNECTED: 1; readonly DOCUMENT_POSITION_PRECEDING: 2; readonly DOCUMENT_POSITION_FOLLOWING: 4; readonly DOCUMENT_POSITION_CONTAINS: 8; readonly DOCUMENT_POSITION_CONTAINED_BY: 16; readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 32; }    (Object)
       typescript target: { (): Node | null; (): Node | null; }    (Function)
@@ -10362,11 +10322,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { (): Node | null; (): Node | null; }    (Function)
       oxc source: { new (): Node; prototype: Node; readonly ELEMENT_NODE: 1; readonly ATTRIBUTE_NODE: 2; readonly TEXT_NODE: 3; readonly CDATA_SECTION_NODE: 4; readonly ENTITY_REFERENCE_NODE: 5; readonly ENTITY_NODE: 6; readonly PROCESSING_INSTRUCTION_NODE: 7; readonly COMMENT_NODE: 8; readonly DOCUMENT_NODE: 9; readonly DOCUMENT_TYPE_NODE: 10; readonly DOCUMENT_FRAGMENT_NODE: 11; readonly NOTATION_NODE: 12; readonly DOCUMENT_POSITION_DISCONNECTED: 1; readonly DOCUMENT_POSITION_PRECEDING: 2; readonly DOCUMENT_POSITION_FOLLOWING: 4; readonly DOCUMENT_POSITION_CONTAINS: 8; readonly DOCUMENT_POSITION_CONTAINED_BY: 16; readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 32; }    (Object)
       oxc target: { (): Node | null; (): Node | null; }    (Object)
-  - :37240 `previousNode` should be assignable to :14485 `onloadstart`
-      typescript source: { (): Node | null; (): Node | null; }    (Function)
-      typescript target: ((this: FileReader, ev: ProgressEvent<FileReader>) => any) | null    (Union)
-      oxc source: { (): Node | null; (): Node | null; }    (Object)
-      oxc target: ((this: FileReader, ev: ProgressEvent<FileReader>) => any) | null    (Union)
   - :37240 `Node` should not be assignable to :37240 `previousNode`
       typescript source: { new (): Node; prototype: Node; readonly ELEMENT_NODE: 1; readonly ATTRIBUTE_NODE: 2; readonly TEXT_NODE: 3; readonly CDATA_SECTION_NODE: 4; readonly ENTITY_REFERENCE_NODE: 5; readonly ENTITY_NODE: 6; readonly PROCESSING_INSTRUCTION_NODE: 7; readonly COMMENT_NODE: 8; readonly DOCUMENT_NODE: 9; readonly DOCUMENT_TYPE_NODE: 10; readonly DOCUMENT_FRAGMENT_NODE: 11; readonly NOTATION_NODE: 12; readonly DOCUMENT_POSITION_DISCONNECTED: 1; readonly DOCUMENT_POSITION_PRECEDING: 2; readonly DOCUMENT_POSITION_FOLLOWING: 4; readonly DOCUMENT_POSITION_CONTAINS: 8; readonly DOCUMENT_POSITION_CONTAINED_BY: 16; readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 32; }    (Object)
       typescript target: { (): Node | null; (): Node | null; }    (Function)
@@ -10462,11 +10417,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { (): Promise<FontFace>; (): Promise<FontFace>; }    (Function)
       oxc source: { new (init?: VideoColorSpaceInit): VideoColorSpace; prototype: VideoColorSpace; }    (Object)
       oxc target: { (): Promise<FontFace>; (): Promise<FontFace>; }    (Object)
-  - :37836 `close` should be assignable to :14954 `onloadingerror`
-      typescript source: { (): void; (): void; }    (Function)
-      typescript target: ((this: FontFaceSet, ev: FontFaceSetLoadEvent) => any) | null    (Union)
-      oxc source: { (): void; (): void; }    (Object)
-      oxc target: ((this: FontFaceSet, ev: FontFaceSetLoadEvent) => any) | null    (Union)
   - :37842 `configure` should not be assignable to :37836 `close`
       typescript source: { (config: VideoDecoderConfig): void; (config: VideoDecoderConfig): void; }    (Function)
       typescript target: { (): void; (): void; }    (Function)
@@ -10682,11 +10632,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: WebGLSync    (Object)
       oxc source: { new (): WebGLSync; prototype: WebGLSync; }    (Object)
       oxc target: WebGLSync    (TypeReference)
-  - :39203 `createQuery` should be assignable to :16850 `onmouseenter`
-      typescript source: { (): WebGLQuery; (): WebGLQuery; }    (Function)
-      typescript target: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null    (Union)
-      oxc source: { (): WebGLQuery; (): WebGLQuery; }    (Object)
-      oxc target: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null    (Union)
   - :39203 `WebGLQuery` should not be assignable to :39203 `createQuery`
       typescript source: { new (): WebGLQuery; prototype: WebGLQuery; }    (Object)
       typescript target: { (): WebGLQuery; (): WebGLQuery; }    (Function)
@@ -15194,11 +15139,6 @@ FAIL src/lib/es2015.promise.d.ts matched_types=56 mismatched_types=0 total_types
       typescript target: (value: T | PromiseLike<T>) => void    (Function)
       oxc source: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }    (Object)
       oxc target: (value: T | PromiseLike<T>) => void    (Function)
-  - :21 `all` should be assignable to :13 `reject`
-      typescript source: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }    (Function)
-      typescript target: (reason?: any) => void    (Function)
-      oxc source: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }    (Object)
-      oxc target: (reason?: any) => void    (Function)
   - :21 `all` should not be assignable to :48 `resolve`
       typescript source: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }    (Function)
       typescript target: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
@@ -15224,11 +15164,6 @@ FAIL src/lib/es2015.promise.d.ts matched_types=56 mismatched_types=0 total_types
       typescript target: (value: T | PromiseLike<T>) => void    (Function)
       oxc source: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; }    (Object)
       oxc target: (value: T | PromiseLike<T>) => void    (Function)
-  - :32 `race` should be assignable to :13 `reject`
-      typescript source: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; }    (Function)
-      typescript target: (reason?: any) => void    (Function)
-      oxc source: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; }    (Object)
-      oxc target: (reason?: any) => void    (Function)
   - :32 `race` should not be assignable to :48 `resolve`
       typescript source: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; }    (Function)
       typescript target: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
@@ -15244,21 +15179,6 @@ FAIL src/lib/es2015.promise.d.ts matched_types=56 mismatched_types=0 total_types
       typescript target: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
       oxc source: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; <T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>; }    (Object)
       oxc target: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
-  - :42 `reject` should be assignable to :13 `executor`
-      typescript source: { <T = never>(reason?: any): Promise<T>; <T = never>(reason?: any): Promise<T>; }    (Function)
-      typescript target: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void    (Function)
-      oxc source: { <T = never>(reason?: any): Promise<T>; <T = never>(reason?: any): Promise<T>; }    (Object)
-      oxc target: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void    (Function)
-  - :42 `reject` should be assignable to :13 `resolve`
-      typescript source: { <T = never>(reason?: any): Promise<T>; <T = never>(reason?: any): Promise<T>; }    (Function)
-      typescript target: (value: T | PromiseLike<T>) => void    (Function)
-      oxc source: { <T = never>(reason?: any): Promise<T>; <T = never>(reason?: any): Promise<T>; }    (Object)
-      oxc target: (value: T | PromiseLike<T>) => void    (Function)
-  - :42 `reject` should be assignable to :13 `reject`
-      typescript source: { <T = never>(reason?: any): Promise<T>; <T = never>(reason?: any): Promise<T>; }    (Function)
-      typescript target: (reason?: any) => void    (Function)
-      oxc source: { <T = never>(reason?: any): Promise<T>; <T = never>(reason?: any): Promise<T>; }    (Object)
-      oxc target: (reason?: any) => void    (Function)
   - :48 `resolve` should be assignable to :13 `executor`
       typescript source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
       typescript target: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void    (Function)
@@ -15269,11 +15189,6 @@ FAIL src/lib/es2015.promise.d.ts matched_types=56 mismatched_types=0 total_types
       typescript target: (value: T | PromiseLike<T>) => void    (Function)
       oxc source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
       oxc target: (value: T | PromiseLike<T>) => void    (Function)
-  - :48 `resolve` should be assignable to :13 `reject`
-      typescript source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
-      typescript target: (reason?: any) => void    (Function)
-      oxc source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
-      oxc target: (reason?: any) => void    (Function)
   - :54 `resolve` should be assignable to :13 `executor`
       typescript source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
       typescript target: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void    (Function)
@@ -15284,11 +15199,6 @@ FAIL src/lib/es2015.promise.d.ts matched_types=56 mismatched_types=0 total_types
       typescript target: (value: T | PromiseLike<T>) => void    (Function)
       oxc source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
       oxc target: (value: T | PromiseLike<T>) => void    (Function)
-  - :54 `resolve` should be assignable to :13 `reject`
-      typescript source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
-      typescript target: (reason?: any) => void    (Function)
-      oxc source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
-      oxc target: (reason?: any) => void    (Function)
   - :60 `resolve` should be assignable to :13 `executor`
       typescript source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
       typescript target: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void    (Function)
@@ -15299,11 +15209,6 @@ FAIL src/lib/es2015.promise.d.ts matched_types=56 mismatched_types=0 total_types
       typescript target: (value: T | PromiseLike<T>) => void    (Function)
       oxc source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
       oxc target: (value: T | PromiseLike<T>) => void    (Function)
-  - :60 `resolve` should be assignable to :13 `reject`
-      typescript source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
-      typescript target: (reason?: any) => void    (Function)
-      oxc source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
-      oxc target: (reason?: any) => void    (Function)
 FAIL src/lib/es2015.proxy.d.ts matched_types=80 mismatched_types=0 total_types=80 match_percentage=100.00%
   - :6 `apply` should not be assignable to :13 `construct`
       source: { (target: T, thisArg: any, argArray: any[]): any; (target: T, thisArg: any, argArray: any[]): any; } | undefined    (Union)
@@ -17573,11 +17478,6 @@ FAIL src/lib/es2018.promise.d.ts matched_types=4 mismatched_types=2 total_types=
   - src/lib/es2018.promise.d.ts:11 `Promise` type mismatch
       expected: PromiseConstructor
       actual:   any
-  - :11 `finally` should be assignable to :11 `onfinally`
-      typescript source: { (onfinally?: (() => void) | undefined | null): Promise<T>; (onfinally?: (() => void) | undefined | null): Promise<T>; }    (Function)
-      typescript target: (() => void) | null | undefined    (Union)
-      oxc source: { (onfinally?: (() => void) | undefined | null): Promise<T>; (onfinally?: (() => void) | undefined | null): Promise<T>; }    (Object)
-      oxc target: (() => void) | null | undefined    (Union)
 FAIL src/lib/es2018.regexp.d.ts matched_types=7 mismatched_types=1 total_types=8 match_percentage=87.50%
   - src/lib/es2018.regexp.d.ts:13 `RegExp` type mismatch
       expected: RegExpConstructor
@@ -19167,11 +19067,6 @@ FAIL src/lib/es2021.weakref.d.ts matched_types=43 mismatched_types=0 total_types
       typescript target: WeakKey    (Union)
       oxc source: { (): T | undefined; (): T | undefined; }    (Object)
       oxc target: WeakKey    (TypeReference)
-  - :11 `deref` should be assignable to :57 `cleanupCallback`
-      typescript source: { (): T | undefined; (): T | undefined; }    (Function)
-      typescript target: (heldValue: T) => void    (Function)
-      oxc source: { (): T | undefined; (): T | undefined; }    (Object)
-      oxc target: (heldValue: T) => void    (Function)
   - :15 `prototype` should be assignable to :39 `target`
       typescript source: WeakRef<any>    (TypeReference)
       typescript target: WeakKey    (Union)
@@ -20983,16 +20878,6 @@ FAIL src/lib/es2024.promise.d.ts matched_types=17 mismatched_types=0 total_types
   - :2 `promise` should be assignable to :3 `value`
       source: Promise<T>    (TypeReference)
       target: T | PromiseLike<T>    (Union)
-  - :16 `withResolvers` should be assignable to :3 `resolve`
-      typescript source: { <T>(): PromiseWithResolvers<T>; <T>(): PromiseWithResolvers<T>; }    (Function)
-      typescript target: (value: T | PromiseLike<T>) => void    (Function)
-      oxc source: { <T>(): PromiseWithResolvers<T>; <T>(): PromiseWithResolvers<T>; }    (Object)
-      oxc target: (value: T | PromiseLike<T>) => void    (Function)
-  - :16 `withResolvers` should be assignable to :4 `reject`
-      typescript source: { <T>(): PromiseWithResolvers<T>; <T>(): PromiseWithResolvers<T>; }    (Function)
-      typescript target: (reason?: any) => void    (Function)
-      oxc source: { <T>(): PromiseWithResolvers<T>; <T>(): PromiseWithResolvers<T>; }    (Object)
-      oxc target: (reason?: any) => void    (Function)
 FAIL src/lib/es2024.regexp.d.ts matched_types=1 mismatched_types=1 total_types=2 match_percentage=50.00%
   - src/lib/es2024.regexp.d.ts:1 `RegExp` type mismatch
       expected: RegExpConstructor
@@ -22385,11 +22270,6 @@ FAIL src/lib/es5.d.ts matched_types=3399 mismatched_types=36 total_types=3435 ma
       typescript target: { (): boolean; (): boolean; }    (Function)
       oxc source: BooleanConstructor    (TypeReference)
       oxc target: { (): boolean; (): boolean; }    (Object)
-  - :567 `valueOf` should be assignable to :2851 `callbackfn`
-      typescript source: { (): number; (): number; }    (Function)
-      typescript target: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number    (Function)
-      oxc source: { (): number; (): number; }    (Object)
-      oxc target: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number    (Function)
   - :573 `Number` should be assignable to :2863 `reduce`
       typescript source: NumberConstructor    (Function)
       typescript target: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }    (Function)
@@ -22450,11 +22330,6 @@ FAIL src/lib/es5.d.ts matched_types=3399 mismatched_types=36 total_types=3435 ma
       typescript target: { (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Uint16Array<ArrayBuffer>; (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Uint16Array<ArrayBuffer>; }    (Function)
       oxc source: { (): string; (): string; }    (Object)
       oxc target: { (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Uint16Array<ArrayBuffer>; (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Uint16Array<ArrayBuffer>; }    (Object)
-  - :904 `toJSON` should be assignable to :3051 `predicate`
-      typescript source: { (key?: any): string; (key?: any): string; }    (Function)
-      typescript target: (value: number, index: number, array: this) => any    (Function)
-      oxc source: { (key?: any): string; (key?: any): string; }    (Object)
-      oxc target: (value: number, index: number, array: this) => any    (Function)
   - :1004 `compile` should not be assignable to :3133 `reduce`
       typescript source: { (pattern: string, flags?: string): this; (pattern: string, flags?: string): this; }    (Function)
       typescript target: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }    (Function)
@@ -22535,11 +22410,6 @@ FAIL src/lib/es5.d.ts matched_types=3399 mismatched_types=36 total_types=3435 ma
       typescript target: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; (): string; }    (Function)
       oxc source: { (...items: ConcatArray<T>[]): T[]; (...items: (T | ConcatArray<T>)[]): T[]; (...items: ConcatArray<T>[]): T[]; (...items: (T | ConcatArray<T>)[]): T[]; }    (Object)
       oxc target: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; (): string; }    (Object)
-  - :1206 `slice` should be assignable to :3313 `predicate`
-      typescript source: { (start?: number, end?: number): T[]; (start?: number, end?: number): T[]; }    (Function)
-      typescript target: (value: number, index: number, array: this) => unknown    (Function)
-      oxc source: { (start?: number, end?: number): T[]; (start?: number, end?: number): T[]; }    (Object)
-      oxc target: (value: number, index: number, array: this) => unknown    (Function)
   - :1304 `slice` should not be assignable to :3539 `from`
       typescript source: { (start?: number, end?: number): T[]; (start?: number, end?: number): T[]; }    (Function)
       typescript target: { (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (elements: Iterable<number>): Int32Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; (arrayLike: ArrayLike<number>): Int32Array<ArrayBuffer>; <T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array<ArrayBuffer>; }    (Function)
@@ -22980,11 +22850,6 @@ FAIL src/lib/es5.d.ts matched_types=3399 mismatched_types=36 total_types=3435 ma
       typescript target: { (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Int8Array<ArrayBuffer>; (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Int8Array<ArrayBuffer>; }    (Function)
       oxc source: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions): string; (): string; }    (Object)
       oxc target: { (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Int8Array<ArrayBuffer>; (predicate: (value: number, index: number, array: this) => any, thisArg?: any): Int8Array<ArrayBuffer>; }    (Object)
-  - :4354 `toString` should be assignable to :1924 `predicate`
-      typescript source: { (): string; (): string; }    (Function)
-      typescript target: (value: number, index: number, array: this) => any    (Function)
-      oxc source: { (): string; (): string; }    (Object)
-      oxc target: (value: number, index: number, array: this) => any    (Function)
   - :4354 `toString` should not be assignable to :4357 `valueOf`
       typescript source: { (): string; (): string; }    (Function)
       typescript target: { (): this; (): this; }    (Function)
@@ -23151,11 +23016,6 @@ FAIL src/lib/esnext.disposable.d.ts matched_types=104 mismatched_types=0 total_t
       typescript target: { (onDispose: () => void): void; (onDispose: () => void): void; }    (Function)
       oxc source: () => void    (Function)
       oxc target: { (onDispose: () => void): void; (onDispose: () => void): void; }    (Object)
-  - :93 `move` should be assignable to :63 `onDispose`
-      typescript source: { (): DisposableStack; (): DisposableStack; }    (Function)
-      typescript target: () => void    (Function)
-      oxc source: { (): DisposableStack; (): DisposableStack; }    (Object)
-      oxc target: () => void    (Function)
   - :130 `onDisposeAsync` should be assignable to :130 `defer`
       typescript source: () => PromiseLike<void> | void    (Function)
       typescript target: { (onDisposeAsync: () => PromiseLike<void> | void): void; (onDisposeAsync: () => PromiseLike<void> | void): void; }    (Function)
@@ -25068,11 +24928,6 @@ FAIL src/lib/scripthost.d.ts matched_types=132 mismatched_types=4 total_types=13
       typescript target: { (): number; (): number; }    (Function)
       oxc source: { (dimension1Index: number, ...dimensionNIndexes: number[]): T; (dimension1Index: number, ...dimensionNIndexes: number[]): T; }    (Object)
       oxc target: { (): number; (): number; }    (Object)
-  - :274 `ubound` should be assignable to :125 `Quit`
-      typescript source: { (dimension?: number): number; (dimension?: number): number; }    (Function)
-      typescript target: (exitCode?: number) => number    (Function)
-      oxc source: { (dimension?: number): number; (dimension?: number): number; }    (Object)
-      oxc target: (exitCode?: number) => number    (Function)
 FAIL src/lib/webworker.generated.d.ts matched_types=14293 mismatched_types=169 total_types=14462 match_percentage=98.83%
   - src/lib/webworker.generated.d.ts:506 `source` type mismatch
       expected: HTMLVideoElement | VideoFrame
@@ -27813,11 +27668,6 @@ FAIL src/lib/webworker.generated.d.ts matched_types=14293 mismatched_types=169 t
       typescript target: { <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Function)
       oxc source: { new (): IDBObjectStore; prototype: IDBObjectStore; }    (Object)
       oxc target: { <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; <K extends keyof IDBTransactionEventMap>(type: K, listener: (this: IDBTransaction, ev: IDBTransactionEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Object)
-  - :7205 `close` should be assignable to :14315 `listener`
-      typescript source: { (): void; (): void; }    (Function)
-      typescript target: (this: XMLHttpRequestEventTarget, ev: XMLHttpRequestEventTargetEventMap[K]) => any    (Function)
-      oxc source: { (): void; (): void; }    (Object)
-      oxc target: (this: XMLHttpRequestEventTarget, ev: XMLHttpRequestEventTargetEventMap[K]) => any    (Function)
   - :7208 `ImageBitmap` should not be assignable to :7205 `close`
       typescript source: { new (): ImageBitmap; prototype: ImageBitmap; }    (Object)
       typescript target: { (): void; (): void; }    (Function)
@@ -31592,11 +31442,6 @@ FAIL src/lib/webworker.generated.d.ts matched_types=14293 mismatched_types=169 t
       typescript target: { (): FileSystemDirectoryHandleAsyncIterator<string>; (): FileSystemDirectoryHandleAsyncIterator<string>; }    (Function)
       oxc source: { new (): FileSystemFileHandle; prototype: FileSystemFileHandle; }    (Object)
       oxc target: { (): FileSystemDirectoryHandleAsyncIterator<string>; (): FileSystemDirectoryHandleAsyncIterator<string>; }    (Object)
-  - :15580 `values` should be assignable to :10019 `callbackfn`
-      typescript source: { (): FileSystemDirectoryHandleAsyncIterator<FileSystemDirectoryHandle | FileSystemFileHandle>; (): FileSystemDirectoryHandleAsyncIterator<FileSystemDirectoryHandle | FileSystemFileHandle>; }    (Function)
-      typescript target: (value: CSSStyleValue[], key: string, parent: StylePropertyMapReadOnly) => void    (Function)
-      oxc source: { (): FileSystemDirectoryHandleAsyncIterator<FileSystemDirectoryHandle | FileSystemFileHandle>; (): FileSystemDirectoryHandleAsyncIterator<FileSystemDirectoryHandle | FileSystemFileHandle>; }    (Object)
-      oxc target: (value: CSSStyleValue[], key: string, parent: StylePropertyMapReadOnly) => void    (Function)
   - :15587 `ReadableStream` should be assignable to :10039 `algorithm`
       typescript source: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }    (Object)
       typescript target: AesCbcParams | AesCtrParams | AesGcmParams | RsaOaepParams | AlgorithmIdentifier    (Union)

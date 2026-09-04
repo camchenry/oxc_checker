@@ -1,0 +1,71 @@
+interface A {
+>         ^: any   (Any) (Identifier)
+
+interface A {
+>         ^: any   (Any) (Identifier)
+
+    a: string;
+>   ^: string   (String) (Identifier)
+
+interface Left {
+>         ^^^^: any   (Any) (Identifier)
+
+interface Left {
+>         ^^^^: any   (Any) (Identifier)
+
+    kind: "left";
+>   ^^^^: "left"   (StringLiteral) (Identifier)
+
+interface Right {
+>         ^^^^^: any   (Any) (Identifier)
+
+interface Right {
+>         ^^^^^: any   (Any) (Identifier)
+
+    kind: "right";
+>   ^^^^: "right"   (StringLiteral) (Identifier)
+
+declare const value: A & { b: number };
+>             ^^^^^: A & { b: number; }   (Intersection) (Identifier)
+
+declare const value: A & { b: number };
+>                    ^: any   (Any) (Identifier)
+
+declare const value: A & { b: number };
+>                    ^: any   (Any) (Identifier)
+
+declare const value: A & { b: number };
+>                          ^: number   (Number) (Identifier)
+
+declare const impossible: Left & Right;
+>             ^^^^^^^^^^: Left & Right   (Intersection) (Identifier)
+
+declare const impossible: Left & Right;
+>                         ^^^^: any   (Any) (Identifier)
+
+declare const impossible: Left & Right;
+>                         ^^^^: any   (Any) (Identifier)
+
+declare const impossible: Left & Right;
+>                                ^^^^^: any   (Any) (Identifier)
+
+declare const impossible: Left & Right;
+>                                ^^^^^: any   (Any) (Identifier)
+
+export const target: { a: string; b: number } = value;
+>            ^^^^^^: { a: string; b: number; }   (Object) (Identifier)
+
+export const target: { a: string; b: number } = value;
+>                      ^: string   (String) (Identifier)
+
+export const target: { a: string; b: number } = value;
+>                                 ^: number   (Number) (Identifier)
+
+export const target: { a: string; b: number } = value;
+>                                               ^^^^^: A & { b: number; }   (Intersection) (Identifier)
+
+export const numeric: number = impossible;
+>            ^^^^^^^: number   (Number) (Identifier)
+
+export const numeric: number = impossible;
+>                              ^^^^^^^^^^: Left & Right   (Intersection) (Identifier)

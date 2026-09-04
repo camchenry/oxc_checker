@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/external
 files: passed=12 failed=29 panicked=0 total=41 pass_percentage=29.27%
 types: matched=2166 mismatched=332 total=2498 match_percentage=86.71%
-assign: matched=39289 mismatched=1106 total=40395 match_percentage=97.26%
+assign: matched=39312 mismatched=1083 total=40395 match_percentage=97.32%
 
 FAIL tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts matched_types=192 mismatched_types=2 total_types=194 match_percentage=98.97%
   - tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts:11 `PathImpl` type mismatch
@@ -753,31 +753,16 @@ FAIL tests/conformance/external/remeda/data-first.ts::src/map.ts matched_types=4
       typescript target: LazyEvaluator<any, any>    (Function)
       oxc source: ObjectConstructor    (TypeReference)
       oxc target: LazyEvaluator<any, any>    (TypeReference)
-  - src/map.ts:11 `values` should be assignable to src/map.ts:8 `callbackfn`
-      typescript source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
-      typescript target: LazyEvaluator<any, any>    (Function)
-      oxc source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Object)
-      oxc target: LazyEvaluator<any, any>    (TypeReference)
   - src/map.ts:11 `values` should be assignable to src/map.ts:10 `map`
       typescript source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
       typescript target: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
       oxc source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Object)
       oxc target: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-  - src/map.ts:11 `values` should be assignable to src/map.ts:10 `callbackfn`
-      typescript source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
-      typescript target: LazyEvaluator<any, any>    (Function)
-      oxc source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Object)
-      oxc target: LazyEvaluator<any, any>    (TypeReference)
   - src/map.ts:11 `values` should be assignable to src/map.ts:11 `map`
       typescript source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
       typescript target: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
       oxc source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Object)
       oxc target: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
-  - src/map.ts:11 `values` should be assignable to src/map.ts:11 `callbackfn`
-      typescript source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
-      typescript target: LazyEvaluator<any, any>    (Function)
-      oxc source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Object)
-      oxc target: LazyEvaluator<any, any>    (TypeReference)
   - src/map.ts:11 `map` should be assignable to src/map.ts:11 `values`
       typescript source: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]    (Function)
       typescript target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
@@ -4202,21 +4187,6 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: (selector?: (state: any) => any) => any    (Function)
       oxc source: CreateStore    (TypeReference)
       oxc target: (selector?: (state: any) => any) => any    (Function)
-  - src/react.ts:1 `createStore` should be assignable to src/react.ts:34 `selector`
-      typescript source: CreateStore    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: CreateStore    (TypeReference)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:1 `createStore` should be assignable to src/react.ts:35 `selector`
-      typescript source: CreateStore    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: CreateStore    (TypeReference)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:1 `createStore` should be assignable to src/react.ts:35 `selector`
-      typescript source: CreateStore    (Function)
-      typescript target: (state: any) => any    (Function)
-      oxc source: CreateStore    (TypeReference)
-      oxc target: (state: any) => any    (Function)
   - src/react.ts:1 `createStore` should be assignable to src/react.ts:37 `useBoundStore`
       typescript source: CreateStore    (Function)
       typescript target: (selector?: (state: any) => any) => any    (Function)
@@ -4323,21 +4293,6 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: CreateStore    (Function)
       oxc source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
       oxc target: CreateStore    (TypeReference)
-  - src/react.ts:15 `UseBoundStore` should be assignable to src/react.ts:34 `useBoundStore`
-      source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
-      target: (selector?: (state: any) => any) => any    (Function)
-  - src/react.ts:15 `UseBoundStore` should be assignable to src/react.ts:34 `selector`
-      source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
-      target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:15 `UseBoundStore` should be assignable to src/react.ts:35 `selector`
-      source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
-      target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:15 `UseBoundStore` should be assignable to src/react.ts:35 `selector`
-      source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
-      target: (state: any) => any    (Function)
-  - src/react.ts:15 `UseBoundStore` should be assignable to src/react.ts:37 `useBoundStore`
-      source: { (): ExtractState<S>; <U>(selector: (state: ExtractState<S>) => U): U; } & S    (Intersection)
-      target: (selector?: (state: any) => any) => any    (Function)
   - src/react.ts:20 `Create` should be assignable to src/react.ts:29 `initializer`
       typescript source: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
       typescript target: StateCreator<any> | undefined    (Union)
@@ -4363,21 +4318,6 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: (selector?: (state: any) => any) => any    (Function)
       oxc source: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
       oxc target: (selector?: (state: any) => any) => any    (Function)
-  - src/react.ts:20 `Create` should be assignable to src/react.ts:34 `selector`
-      typescript source: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:20 `Create` should be assignable to src/react.ts:35 `selector`
-      typescript source: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:20 `Create` should be assignable to src/react.ts:35 `selector`
-      typescript source: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
-      typescript target: (state: any) => any    (Function)
-      oxc source: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Object)
-      oxc target: (state: any) => any    (Function)
   - src/react.ts:20 `Create` should be assignable to src/react.ts:37 `useBoundStore`
       typescript source: { <T, Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>): UseBoundStore<Mutate<StoreApi<T>, Mos>>; <T>(): <Mos extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [], Mos>) => UseBoundStore<Mutate<StoreApi<T>, Mos>>; }    (Function)
       typescript target: (selector?: (state: any) => any) => any    (Function)
@@ -4528,21 +4468,6 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: (selector?: (state: any) => any) => any    (Function)
       oxc source: Create    (TypeReference)
       oxc target: (selector?: (state: any) => any) => any    (Function)
-  - src/react.ts:29 `create` should be assignable to src/react.ts:34 `selector`
-      typescript source: Create    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: Create    (TypeReference)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:29 `create` should be assignable to src/react.ts:35 `selector`
-      typescript source: Create    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: Create    (TypeReference)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:29 `create` should be assignable to src/react.ts:35 `selector`
-      typescript source: Create    (Function)
-      typescript target: (state: any) => any    (Function)
-      oxc source: Create    (TypeReference)
-      oxc target: (state: any) => any    (Function)
   - src/react.ts:29 `create` should be assignable to src/react.ts:37 `useBoundStore`
       typescript source: Create    (Function)
       typescript target: (selector?: (state: any) => any) => any    (Function)
@@ -4663,21 +4588,6 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: (selector?: (state: any) => any) => any    (Function)
       oxc source: Create    (TypeReference)
       oxc target: (selector?: (state: any) => any) => any    (Function)
-  - src/react.ts:31 `create` should be assignable to src/react.ts:34 `selector`
-      typescript source: Create    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: Create    (TypeReference)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:31 `create` should be assignable to src/react.ts:35 `selector`
-      typescript source: Create    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: Create    (TypeReference)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:31 `create` should be assignable to src/react.ts:35 `selector`
-      typescript source: Create    (Function)
-      typescript target: (state: any) => any    (Function)
-      oxc source: Create    (TypeReference)
-      oxc target: (state: any) => any    (Function)
   - src/react.ts:31 `create` should be assignable to src/react.ts:37 `useBoundStore`
       typescript source: Create    (Function)
       typescript target: (selector?: (state: any) => any) => any    (Function)
@@ -4753,21 +4663,6 @@ FAIL tests/conformance/external/zustand/store-api.ts::src/react.ts matched_types
       typescript target: (selector?: (state: any) => any) => any    (Function)
       oxc source: CreateStore    (TypeReference)
       oxc target: (selector?: (state: any) => any) => any    (Function)
-  - src/react.ts:33 `createStore` should be assignable to src/react.ts:34 `selector`
-      typescript source: CreateStore    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: CreateStore    (TypeReference)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:33 `createStore` should be assignable to src/react.ts:35 `selector`
-      typescript source: CreateStore    (Function)
-      typescript target: ((state: any) => any) | undefined    (Union)
-      oxc source: CreateStore    (TypeReference)
-      oxc target: ((state: any) => any) | undefined    (Union)
-  - src/react.ts:33 `createStore` should be assignable to src/react.ts:35 `selector`
-      typescript source: CreateStore    (Function)
-      typescript target: (state: any) => any    (Function)
-      oxc source: CreateStore    (TypeReference)
-      oxc target: (state: any) => any    (Function)
   - src/react.ts:33 `createStore` should be assignable to src/react.ts:37 `useBoundStore`
       typescript source: CreateStore    (Function)
       typescript target: (selector?: (state: any) => any) => any    (Function)

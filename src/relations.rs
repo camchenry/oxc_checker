@@ -1,5 +1,5 @@
 use crate::{
-    TupleElement, TyProperty,
+    SignatureKind, TupleElement, TyProperty,
     checker::Checker,
     limits::ASSIGNABILITY_MAX_DEPTH,
     mapper::TypeMapper,
@@ -48,12 +48,13 @@ impl<'a, 'store> Checker<'a, 'store> {
 
         let properties = self
             .ty
-            .alloc_slice_from_iter(intersection.types.iter().flat_map(
-                |ty| match self.ty_kind(*ty) {
+            .alloc_slice_from_iter(intersection.types.iter().flat_map(|ty| {
+                let ty = self.resolve_type_reference_for_relation(*ty, 0);
+                match self.ty_kind(ty) {
                     TyKind::Object(object) => object.properties.iter().copied(),
                     _ => [].iter().copied(),
-                },
-            ));
+                }
+            }));
         let primitives = self.ty.alloc_slice_from_iter(
             intersection
                 .types
@@ -69,6 +70,19 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    fn resolve_type_reference_for_relation(&self, ty: Ty<'a>, depth: usize) -> Ty<'a> {
+        let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
+            return ty;
+        };
+        self.expand_type_alias_for_relation(ty, depth + 1)
+            .or_else(|| {
+                reference.target.map(|symbol| {
+                    self.apparent_type_for_conditional_match(symbol.program_id, ty, depth + 1)
+                })
+            })
+            .unwrap_or(ty)
+    }
+
     fn intersection_has_disjoint_primitive_domains(
         &self,
         intersection: &TyIntersection<'a>,
@@ -82,11 +96,13 @@ impl<'a, 'store> Checker<'a, 'store> {
 
     fn intersection_has_conflicting_discriminant(&self, intersection: &TyIntersection<'a>) -> bool {
         intersection.types.iter().enumerate().any(|(index, left)| {
-            let TyKind::Object(left) = self.ty_kind(*left) else {
+            let left = self.resolve_type_reference_for_relation(*left, 0);
+            let TyKind::Object(left) = self.ty_kind(left) else {
                 return false;
             };
             intersection.types[index + 1..].iter().any(|right| {
-                let TyKind::Object(right) = self.ty_kind(*right) else {
+                let right = self.resolve_type_reference_for_relation(*right, 0);
+                let TyKind::Object(right) = self.ty_kind(right) else {
                     return false;
                 };
                 left.properties.iter().any(|left| {
@@ -267,6 +283,18 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.is_assignable_to_at_depth(constraint, target, next_depth)
                 })
             }
+            (TyKind::Object(source), TyKind::Function(_)) => {
+                // TODO(correctness): Compare overload matrices with erased type parameters.
+                let mut signatures = source
+                    .signatures()
+                    .iter()
+                    .filter(|signature| signature.kind == SignatureKind::Call)
+                    .peekable();
+                signatures.peek().is_some()
+                    && signatures.all(|signature| {
+                        self.is_assignable_to_at_depth(signature.ty, target, next_depth)
+                    })
+            }
             (TyKind::Object(source), TyKind::Object(target)) => {
                 self.object_properties_assignable_to(&source.properties.iter(), target, next_depth)
             }
@@ -325,27 +353,20 @@ impl<'a, 'store> Checker<'a, 'store> {
                     next_depth,
                 )
             }
-            (TyKind::Intersection(intersection), TyKind::TypeParameter(_)) => intersection
-                .types
-                .iter()
-                .any(|ty| self.is_assignable_to_at_depth(*ty, target, next_depth)),
-            (TyKind::Intersection(intersection), other) if other.is_primitive() => {
-                // Allow branded types to be assignable to their base type.
-                intersection
-                    .types
-                    .iter()
-                    .any(|ty| self.is_assignable_to_at_depth(*ty, target, next_depth))
-            }
             (TyKind::Intersection(_), TyKind::Intersection(_))
                 if self.arena().is_type_identical_to(source, target) =>
             {
                 true
             }
             // For assignment to intersection, we need to check that the source type is assignable to all types in the intersection.
-            (_, TyKind::Intersection(intersection)) => intersection
+            (_, TyKind::Intersection(intersection)) => intersection.types.iter().all(|ty| {
+                let target = self.resolve_type_reference_for_relation(*ty, next_depth);
+                self.is_assignable_to_at_depth(source, target, next_depth)
+            }),
+            (TyKind::Intersection(intersection), _) => intersection
                 .types
                 .iter()
-                .all(|ty| self.is_assignable_to_at_depth(source, *ty, next_depth)),
+                .any(|ty| self.is_assignable_to_at_depth(*ty, target, next_depth)),
             (TyKind::Function(source), TyKind::Function(target)) => {
                 let source_mapper = if source.type_parameters.is_empty()
                     || target.type_parameters.is_empty()
@@ -597,8 +618,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 | TyKind::ModuleNamespace(_)
                 | TyKind::Infer(_)
                 | TyKind::Conditional(_)
-                | TyKind::IndexedAccess(_)
-                | TyKind::Intersection(_),
+                | TyKind::IndexedAccess(_),
                 _,
             ) => {
                 // panic!("I don't know how to check assignability of\nsource: {source:?}\ntarget: {target:?}")
