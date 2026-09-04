@@ -593,6 +593,62 @@ impl<'a, 'store> Checker<'a, 'store> {
                 if source.readonly && !target.readonly {
                     return false;
                 }
+                if !source
+                    .elements
+                    .iter()
+                    .any(|element| matches!(element, TupleElement::Rest(_)))
+                    && let Some((target_rest_index, TupleElement::Rest(target_rest))) =
+                        target.elements.iter().enumerate().next_back()
+                {
+                    if target.elements[..target_rest_index].iter().enumerate().any(
+                        |(index, target_element)| {
+                            matches!(target_element, TupleElement::Regular(_))
+                                && !matches!(
+                                    source.elements.get(index),
+                                    Some(TupleElement::Regular(_))
+                                )
+                        },
+                    ) {
+                        return false;
+                    }
+
+                    let target_rest_element = target_rest
+                        .array_element_type(self.arena())
+                        .unwrap_or(*target_rest);
+                    return source
+                        .elements
+                        .iter()
+                        .enumerate()
+                        .all(|(index, source_element)| {
+                            let target_element = target.elements.get(index);
+                            match (source_element, target_element) {
+                                (
+                                    TupleElement::Regular(source),
+                                    Some(TupleElement::Regular(target)),
+                                )
+                                | (
+                                    TupleElement::Regular(source),
+                                    Some(TupleElement::Optional(target)),
+                                )
+                                | (
+                                    TupleElement::Optional(source),
+                                    Some(TupleElement::Optional(target)),
+                                ) => self.is_assignable_to_at_depth(*source, *target, next_depth),
+                                (TupleElement::Optional(_), Some(TupleElement::Regular(_))) => {
+                                    false
+                                }
+                                (
+                                    TupleElement::Regular(source) | TupleElement::Optional(source),
+                                    _,
+                                ) => self.is_assignable_to_at_depth(
+                                    *source,
+                                    target_rest_element,
+                                    next_depth,
+                                ),
+                                (TupleElement::Rest(_), _) => unreachable!(),
+                            }
+                        });
+                }
                 source.elements.len() == target.elements.len()
                     && source.elements.iter().zip(target.elements.iter()).all(
                         |(source_element, target_element)| match (source_element, target_element) {
@@ -1433,6 +1489,28 @@ mod tests {
             ty.tuple(vec![
                 TupleElement::Regular(Ty::Number),
                 TupleElement::Regular(Ty::Number)
+            ])
+        ));
+
+        // ["message", string] is assignable to [string, ...string[]]
+        assert!(is_assignable_to(
+            ty.tuple(vec![
+                TupleElement::Regular(ty.string_literal("message")),
+                TupleElement::Regular(Ty::String)
+            ]),
+            ty.tuple(vec![
+                TupleElement::Regular(Ty::String),
+                TupleElement::Rest(ty.array(Ty::String))
+            ])
+        ));
+        assert!(!is_assignable_to(
+            ty.tuple(vec![
+                TupleElement::Regular(ty.string_literal("message")),
+                TupleElement::Regular(Ty::Number)
+            ]),
+            ty.tuple(vec![
+                TupleElement::Regular(Ty::String),
+                TupleElement::Rest(ty.array(Ty::String))
             ])
         ));
 
