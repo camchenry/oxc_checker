@@ -47,8 +47,7 @@ declare const userName: string;
 >             ^^^^^^^^: string   (String) (Identifier)
 
 const characters = [...userName];
->     ^^^^^^^^^^: any[]   (Array) (Identifier)
-        expected: string[]
+>     ^^^^^^^^^^: string[]   (Array) (Identifier)
 
 const characters = [...userName];
 >                      ^^^^^^^^: string   (String) (Identifier)

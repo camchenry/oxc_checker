@@ -9784,6 +9784,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .array_element_type(self.arena())
                     .or_else(|| {
                         argument_type
+                            .is_string_like(self.arena())
+                            .then_some(self.ty.string())
+                    })
+                    .or_else(|| {
+                        argument_type
                             .is_any_like(self.arena())
                             .then_some(argument_type)
                     })
