@@ -11079,9 +11079,73 @@ impl<'a, 'store> Checker<'a, 'store> {
             return argument_type;
         }
 
-        // TODO(correctness): type args
-        self.ty.type_reference(reference.name, [])
+        let Some(element_type) =
+            self.get_iterable_element_type_for_inference(program_id, argument_type, 0)
+        else {
+            return argument_type;
+        };
+
+        self.ty.type_reference(reference.name, [element_type])
     }
+
+    fn get_iterable_element_type_for_inference(
+        &self,
+        program_id: ProgramId,
+        iterable_type: Ty<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+
+        let iterator_method = self.get_property_type_of_static_member_type(
+            program_id,
+            iterable_type,
+            "Symbol.iterator",
+        )?;
+        self.get_signatures_of_type_in_program(program_id, iterator_method, SignatureKind::Call)
+            .into_iter()
+            .filter(|signature| {
+                function_minimum_argument_count(self.arena(), signature.function(self.arena())) == 0
+            })
+            .find_map(|signature| {
+                self.get_iterator_element_type_for_inference(
+                    program_id,
+                    signature.function(self.arena()).return_type(),
+                    depth + 1,
+                )
+            })
+    }
+
+    fn get_iterator_element_type_for_inference(
+        &self,
+        program_id: ProgramId,
+        iterator_type: Ty<'a>,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+
+        let TyKind::TypeReference(reference) = self.ty_kind(iterator_type) else {
+            return None;
+        };
+        if reference.name == "Iterator" && self.is_global_lib_type_reference(program_id, reference)
+        {
+            return reference.type_arguments.first().copied();
+        }
+
+        self.get_interface_heritage_types(program_id, reference)
+            .into_iter()
+            .find_map(|(heritage_program_id, heritage_type)| {
+                self.get_iterator_element_type_for_inference(
+                    heritage_program_id,
+                    heritage_type,
+                    depth + 1,
+                )
+            })
+    }
+
     fn get_interface_heritage_types(
         &self,
         program_id: ProgramId,

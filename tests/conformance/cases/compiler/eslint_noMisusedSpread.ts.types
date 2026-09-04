@@ -119,8 +119,7 @@ declare const map: Map<string, number>;
 >                  ^^^: MapConstructor   (TypeReference) (Identifier)
 
 const mapObject = Object.fromEntries(map);
->     ^^^^^^^^^: { [k: string]: any; }   (Object) (Identifier)
-       expected: { [k: string]: number; }
+>     ^^^^^^^^^: { [k: string]: number; }   (Object) (Identifier)
 
 const mapObject = Object.fromEntries(map);
 >                 ^^^^^^: ObjectConstructor   (TypeReference) (Identifier)
