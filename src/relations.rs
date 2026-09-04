@@ -597,6 +597,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     && source.elements.iter().zip(target.elements.iter()).all(
                         |(source_element, target_element)| match (source_element, target_element) {
                             (TupleElement::Regular(source), TupleElement::Regular(target))
+                            | (TupleElement::Regular(source), TupleElement::Optional(target))
                             | (TupleElement::Rest(source), TupleElement::Rest(target))
                             | (TupleElement::Optional(source), TupleElement::Optional(target)) => {
                                 self.is_assignable_to_at_depth(*source, *target, next_depth)
@@ -1411,6 +1412,28 @@ mod tests {
                 TupleElement::Regular(Ty::Number)
             ]),
             ty.array(Ty::Number)
+        ));
+
+        // [number, number] is assignable to [number, number?], but not vice versa
+        assert!(is_assignable_to(
+            ty.tuple(vec![
+                TupleElement::Regular(Ty::Number),
+                TupleElement::Regular(Ty::Number)
+            ]),
+            ty.tuple(vec![
+                TupleElement::Regular(Ty::Number),
+                TupleElement::Optional(Ty::Number)
+            ])
+        ));
+        assert!(!is_assignable_to(
+            ty.tuple(vec![
+                TupleElement::Regular(Ty::Number),
+                TupleElement::Optional(Ty::Number)
+            ]),
+            ty.tuple(vec![
+                TupleElement::Regular(Ty::Number),
+                TupleElement::Regular(Ty::Number)
+            ])
         ));
 
         // readonly number[] is not assignable to number[]

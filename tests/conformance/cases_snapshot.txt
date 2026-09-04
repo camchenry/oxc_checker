@@ -3,7 +3,7 @@
 # Cases root: tests/conformance/cases
 files: passed=102 failed=73 panicked=0 total=175 pass_percentage=58.29%
 types: matched=3690 mismatched=55 total=3745 match_percentage=98.53%
-assign: matched=88975 mismatched=1099 total=90074 match_percentage=98.78%
+assign: matched=88985 mismatched=1089 total=90074 match_percentage=98.79%
 
 PASS tests/conformance/cases/compiler/abstractIdentifierNameStrict.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
 PASS tests/conformance/cases/compiler/arrayTypes.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00%
@@ -3129,32 +3129,6 @@ FAIL tests/conformance/cases/compiler/metaProperty.ts matched_types=17 mismatche
       oxc target: typeof Base    (TypeQuery)
 PASS tests/conformance/cases/compiler/namedAliasFormalParameterDisplay.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00%
 FAIL tests/conformance/cases/compiler/namedTuples.ts matched_types=37 mismatched_types=0 total_types=37 match_percentage=100.00%
-  - :2 `Point` should be assignable to :5 `OptionalPoint`
-      typescript source: [x: number, y: number]    (TypeReference)
-      typescript target: [x: number, y?: number | undefined]    (TypeReference)
-      oxc source: [x: number, y: number]    (Tuple)
-      oxc target: [x: number, y?: number | undefined]    (Tuple)
-  - :2 `Point` should be assignable to :6 `pointWithX`
-      typescript source: [x: number, y: number]    (TypeReference)
-      typescript target: OptionalPoint    (TypeReference)
-      oxc source: [x: number, y: number]    (Tuple)
-      oxc target: OptionalPoint    (TypeReference)
-  - :2 `Point` should be assignable to :7 `pointWithY`
-      typescript source: [x: number, y: number]    (TypeReference)
-      typescript target: OptionalPoint    (TypeReference)
-      oxc source: [x: number, y: number]    (Tuple)
-      oxc target: OptionalPoint    (TypeReference)
-  - :3 `point` should be assignable to :5 `OptionalPoint`
-      typescript source: Point    (TypeReference)
-      typescript target: [x: number, y?: number | undefined]    (TypeReference)
-      oxc source: Point    (TypeReference)
-      oxc target: [x: number, y?: number | undefined]    (Tuple)
-  - :3 `point` should be assignable to :6 `pointWithX`
-      source: Point    (TypeReference)
-      target: OptionalPoint    (TypeReference)
-  - :3 `point` should be assignable to :7 `pointWithY`
-      source: Point    (TypeReference)
-      target: OptionalPoint    (TypeReference)
   - :15 `MessageTuple` should be assignable to :9 `Command`
       typescript source: [kind: "message", payload: string]    (TypeReference)
       typescript target: [name: string, ...args: string[]]    (TypeReference)
@@ -3205,17 +3179,6 @@ FAIL tests/conformance/cases/compiler/namedTuples.ts matched_types=37 mismatched
       typescript target: Command    (TypeReference)
       oxc source: TupleEvent    (TypeReference)
       oxc target: Command    (TypeReference)
-  - :22 `point` should be assignable to :5 `OptionalPoint`
-      typescript source: Point    (TypeReference)
-      typescript target: [x: number, y?: number | undefined]    (TypeReference)
-      oxc source: Point    (TypeReference)
-      oxc target: [x: number, y?: number | undefined]    (Tuple)
-  - :22 `point` should be assignable to :6 `pointWithX`
-      source: Point    (TypeReference)
-      target: OptionalPoint    (TypeReference)
-  - :22 `point` should be assignable to :7 `pointWithY`
-      source: Point    (TypeReference)
-      target: OptionalPoint    (TypeReference)
   - :24 `event` should be assignable to :9 `Command`
       typescript source: TupleEvent    (Union)
       typescript target: [name: string, ...args: string[]]    (TypeReference)
@@ -3930,11 +3893,6 @@ FAIL tests/conformance/cases/compiler/overloadRanking.ts matched_types=40 mismat
       typescript target: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }    (Function)
       oxc source: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }    (Object)
       oxc target: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }    (Object)
-  - :12 `args` should be assignable to :14 `args`
-      typescript source: [string, number]    (TypeReference)
-      typescript target: [string, (number | undefined)?]    (TypeReference)
-      oxc source: [string, number]    (Tuple)
-      oxc target: [string, (number | undefined)?]    (Tuple)
   - :14 `optionalTupleRestOverload` should not be assignable to :2 `literalOverload`
       typescript source: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }    (Function)
       typescript target: { (x: string): "wide"; (x: "ready"): "literal"; }    (Function)
