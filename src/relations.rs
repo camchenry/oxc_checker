@@ -21,7 +21,7 @@ enum IntersectionResolution<'a> {
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum IntersectionReferenceResolution {
-    Preserve,
+    ResolveInterfaceProperties,
     Resolve,
 }
 
@@ -47,21 +47,14 @@ impl<'a, 'store> Checker<'a, 'store> {
         intersection: &TyIntersection<'a>,
         reference_resolution: IntersectionReferenceResolution,
     ) -> IntersectionResolution<'a> {
-        if self.intersection_has_disjoint_primitive_domains(intersection)
-            || self.intersection_has_conflicting_discriminant(intersection, reference_resolution)
-        {
+        if self.intersection_reduces_to_never(intersection, reference_resolution) {
             return IntersectionResolution::Never;
         }
 
         let properties = self
             .ty
             .alloc_slice_from_iter(intersection.types.iter().flat_map(|ty| {
-                let ty = match reference_resolution {
-                    IntersectionReferenceResolution::Preserve => *ty,
-                    IntersectionReferenceResolution::Resolve => {
-                        self.resolve_type_reference_for_relation(*ty, 0)
-                    }
-                };
+                let ty = self.resolve_type_reference_for_relation(*ty, 0, reference_resolution);
                 match self.ty_kind(ty) {
                     TyKind::Object(object) => object.properties.iter().copied(),
                     _ => [].iter().copied(),
@@ -82,17 +75,37 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
-    fn resolve_type_reference_for_relation(&self, ty: Ty<'a>, depth: usize) -> Ty<'a> {
+    fn intersection_reduces_to_never(
+        &self,
+        intersection: &TyIntersection<'a>,
+        reference_resolution: IntersectionReferenceResolution,
+    ) -> bool {
+        self.intersection_has_disjoint_primitive_domains(intersection)
+            || self.intersection_has_conflicting_discriminant(intersection, reference_resolution)
+    }
+
+    fn resolve_type_reference_for_relation(
+        &self,
+        ty: Ty<'a>,
+        depth: usize,
+        reference_resolution: IntersectionReferenceResolution,
+    ) -> Ty<'a> {
         let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
             return ty;
         };
-        self.expand_type_alias_for_relation(ty, depth + 1)
-            .or_else(|| {
-                reference.target.map(|symbol| {
-                    self.apparent_type_for_conditional_match(symbol.program_id, ty, depth + 1)
+        match reference_resolution {
+            IntersectionReferenceResolution::ResolveInterfaceProperties => self
+                .resolve_interface_reference_properties_for_relation(ty)
+                .unwrap_or(ty),
+            IntersectionReferenceResolution::Resolve => self
+                .expand_type_alias_for_relation(ty, depth + 1)
+                .or_else(|| {
+                    reference.target.map(|symbol| {
+                        self.apparent_type_for_conditional_match(symbol.program_id, ty, depth + 1)
+                    })
                 })
-            })
-            .unwrap_or(ty)
+                .unwrap_or(ty),
+        }
     }
 
     fn intersection_has_disjoint_primitive_domains(
@@ -112,22 +125,13 @@ impl<'a, 'store> Checker<'a, 'store> {
         reference_resolution: IntersectionReferenceResolution,
     ) -> bool {
         intersection.types.iter().enumerate().any(|(index, left)| {
-            let left = match reference_resolution {
-                IntersectionReferenceResolution::Preserve => *left,
-                IntersectionReferenceResolution::Resolve => {
-                    self.resolve_type_reference_for_relation(*left, 0)
-                }
-            };
+            let left = self.resolve_type_reference_for_relation(*left, 0, reference_resolution);
             let TyKind::Object(left) = self.ty_kind(left) else {
                 return false;
             };
             intersection.types[index + 1..].iter().any(|right| {
-                let right = match reference_resolution {
-                    IntersectionReferenceResolution::Preserve => *right,
-                    IntersectionReferenceResolution::Resolve => {
-                        self.resolve_type_reference_for_relation(*right, 0)
-                    }
-                };
+                let right =
+                    self.resolve_type_reference_for_relation(*right, 0, reference_resolution);
                 let TyKind::Object(right) = self.ty_kind(right) else {
                     return false;
                 };
@@ -276,12 +280,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         let target_kind = self.ty_kind(target);
 
         if let TyKind::Intersection(intersection) = source_kind
-            && matches!(
-                self.resolve_intersection_type(
-                    intersection,
-                    IntersectionReferenceResolution::Preserve,
-                ),
-                IntersectionResolution::Never
+            && self.intersection_reduces_to_never(
+                intersection,
+                IntersectionReferenceResolution::ResolveInterfaceProperties,
             )
         {
             source_kind = TyKind::Never;
@@ -391,10 +392,16 @@ impl<'a, 'store> Checker<'a, 'store> {
                 true
             }
             // For assignment to intersection, we need to check that the source type is assignable to all types in the intersection.
-            (_, TyKind::Intersection(intersection)) => intersection
-                .types
-                .iter()
-                .all(|ty| self.is_assignable_to_at_depth(source, *ty, next_depth)),
+            (_, TyKind::Intersection(intersection)) => intersection.types.iter().all(|ty| {
+                self.is_assignable_to_at_depth(source, *ty, next_depth) || {
+                    let resolved = self.resolve_type_reference_for_relation(
+                        *ty,
+                        next_depth,
+                        IntersectionReferenceResolution::ResolveInterfaceProperties,
+                    );
+                    resolved != *ty && self.is_assignable_to_at_depth(source, resolved, next_depth)
+                }
+            }),
             (TyKind::Intersection(intersection), _) => intersection
                 .types
                 .iter()

@@ -4943,19 +4943,7 @@ impl<'a, 'store> Checker<'a, 'store> {
     ) -> Option<Ty<'a>> {
         let (symbol, declaration) =
             self.get_type_reference_symbol_and_declaration(program_id, reference)?;
-        let symbol_has_interface_declaration = self
-            .semantic(symbol.program_id)
-            .scoping()
-            .symbol_declarations(symbol.symbol_id)
-            .any(|declaration| {
-                matches!(
-                    self.nodes(symbol.program_id).kind(declaration),
-                    AstKind::TSInterfaceDeclaration(_)
-                ) || matches!(
-                    self.nodes(symbol.program_id).parent_kind(declaration),
-                    AstKind::TSInterfaceDeclaration(_)
-                )
-            });
+        let symbol_has_interface_declaration = self.symbol_has_interface_declaration(symbol);
         let symbol_is_from_lib = self
             .store
             .entry(symbol.program_id)
@@ -4972,6 +4960,72 @@ impl<'a, 'store> Checker<'a, 'store> {
             reference,
             depth,
         )
+    }
+
+    fn symbol_has_interface_declaration(&self, symbol: SymbolRef) -> bool {
+        self.semantic(symbol.program_id)
+            .scoping()
+            .symbol_declarations(symbol.symbol_id)
+            .any(|declaration| {
+                matches!(
+                    self.nodes(symbol.program_id).kind(declaration),
+                    AstKind::TSInterfaceDeclaration(_)
+                ) || matches!(
+                    self.nodes(symbol.program_id).parent_kind(declaration),
+                    AstKind::TSInterfaceDeclaration(_)
+                )
+            })
+    }
+
+    /// Resolves only the directly declared properties of an interface type reference.
+    ///
+    /// Returns `None` for other types and for interfaces without property signatures.
+    pub(crate) fn resolve_interface_reference_properties_for_relation(
+        &self,
+        ty: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
+            return None;
+        };
+        let symbol = reference.target?;
+        if !self.symbol_has_interface_declaration(symbol) {
+            return None;
+        }
+
+        let declarations =
+            self.interface_declarations_for_type_reference(symbol.program_id, reference);
+        let mut properties = Vec::new();
+        for &(program_id, interface) in &declarations {
+            let mapper = self.interface_member_mapper(
+                program_id,
+                interface.type_parameters.as_deref(),
+                reference,
+            );
+            for signature in &interface.body.body {
+                let TSSignature::TSPropertySignature(property) = signature else {
+                    continue;
+                };
+                let Some(name) = property_key_name_str(&property.key) else {
+                    continue;
+                };
+                let ty = property.type_annotation.as_deref().map_or_else(
+                    || self.ty.any(),
+                    |annotation| {
+                        self.get_type_from_ts_type(program_id, &annotation.type_annotation)
+                    },
+                );
+                properties.push(TyProperty {
+                    name,
+                    flags: Self::property_signature_flags(property),
+                    ty: self.instantiate_type(ty, &mapper),
+                    computed: property.computed,
+                    optional: property.optional,
+                    method: false,
+                    readonly: property.readonly,
+                });
+            }
+        }
+        (!properties.is_empty()).then(|| self.ty.object(properties))
     }
 
     fn apparent_type_declaration_for_conditional_match(
