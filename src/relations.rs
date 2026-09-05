@@ -328,6 +328,20 @@ impl<'a, 'store> Checker<'a, 'store> {
             (TyKind::Object(source), TyKind::Object(target)) => {
                 self.object_properties_assignable_to(&source.properties.iter(), target, next_depth)
             }
+            (
+                TyKind::String
+                | TyKind::StringLiteral(_)
+                | TyKind::TemplateLiteral(_)
+                | TyKind::Number
+                | TyKind::NumberLiteral(_)
+                | TyKind::Boolean
+                | TyKind::BooleanLiteral(_)
+                | TyKind::Bigint
+                | TyKind::BigIntLiteral(_)
+                | TyKind::Symbol
+                | TyKind::UniqueSymbol(_),
+                TyKind::Object(target),
+            ) => self.primitive_properties_assignable_to(source, target, next_depth),
             (TyKind::PrimitiveObject, TyKind::Object(target)) => {
                 self.object_properties_assignable_to(&[].iter(), target, next_depth)
             }
@@ -885,6 +899,50 @@ impl<'a, 'store> Checker<'a, 'store> {
                 self.is_assignable_to_at_depth(source_type, target_property.ty, depth)
             })
         })
+    }
+
+    /// Compares the apparent wrapper properties of a primitive source with an object target.
+    fn primitive_properties_assignable_to(
+        &self,
+        source: Ty<'a>,
+        target: &TyObject<'a>,
+        depth: usize,
+    ) -> bool {
+        // Primitive wrapper interfaces are not callable. Index signature comparison requires
+        // resolving the wrapper's index infos, which property comparison alone cannot establish.
+        if target.properties.is_empty()
+            || !target.signatures().is_empty()
+            || !target.index_infos().is_empty()
+        {
+            return false;
+        }
+
+        let global_type_name = match self.ty_kind(source) {
+            TyKind::String | TyKind::StringLiteral(_) | TyKind::TemplateLiteral(_) => "String",
+            TyKind::Number | TyKind::NumberLiteral(_) => "Number",
+            TyKind::Boolean | TyKind::BooleanLiteral(_) => "Boolean",
+            TyKind::Bigint | TyKind::BigIntLiteral(_) => "BigInt",
+            TyKind::Symbol | TyKind::UniqueSymbol(_) => "Symbol",
+            _ => return false,
+        };
+        let Some(symbol) = self.global_symbols.type_symbol(global_type_name) else {
+            return false;
+        };
+        let target_is_weak = !target.properties.is_empty()
+            && target.properties.iter().all(|property| property.optional);
+        if target_is_weak
+            && !target.properties.iter().any(|property| {
+                self.get_property_type_of_global_interface_type(
+                    symbol.program_id,
+                    source,
+                    property.name,
+                )
+                .is_some()
+            })
+        {
+            return false;
+        }
+        self.type_properties_assignable_to(symbol.program_id, source, target.properties, depth)
     }
 
     fn object_properties_assignable_to<'properties>(
