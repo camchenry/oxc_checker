@@ -17,7 +17,7 @@ use std::{
 use oxc_allocator::Allocator;
 use oxc_ast::{
     AstKind,
-    ast::{BindingPattern, Expression, MethodDefinitionKind, PropertyKey, Statement},
+    ast::{BindingPattern, MethodDefinitionKind, PropertyKey, Statement},
 };
 use oxc_ast_visit::{
     Visit,
@@ -2556,14 +2556,16 @@ fn actual_identifier_record<'a>(
             Cow::Owned(member.id.static_name().to_string()),
             checker.get_type_at_location(node_ref),
         ),
-        AstKind::TSModuleDeclaration(module) => {
-            let (span, text) = ts_module_declaration_name_span_and_text(&module.id);
-            (
-                span,
-                Cow::Borrowed(text),
-                checker.get_type_at_location(node_ref),
-            )
-        }
+        AstKind::TSNamespaceDeclaration(module) => (
+            module.id.span,
+            Cow::Borrowed(module.id.name.as_str()),
+            checker.get_type_at_location(node_ref),
+        ),
+        AstKind::TSExternalModuleDeclaration(module) => (
+            module.id.span,
+            Cow::Borrowed(module.id.value.as_str()),
+            checker.get_type_at_location(node_ref),
+        ),
         AstKind::TSTypeParameter(parameter) => (
             parameter.name.span,
             Cow::Borrowed(parameter.name.name.as_str()),
@@ -2579,7 +2581,8 @@ fn actual_identifier_record<'a>(
             (span, text, checker.get_type_at_location(node_ref))
         }
         AstKind::TSInterfaceHeritage(heritage) => {
-            let Expression::Identifier(identifier) = &heritage.expression else {
+            let oxc_ast::ast::TSTypeName::IdentifierReference(identifier) = &heritage.type_name
+            else {
                 return None;
             };
             (
@@ -2696,19 +2699,6 @@ fn identifier_property_key_span_and_text<'a>(key: &'a PropertyKey<'a>) -> Option
         }
         PropertyKey::Identifier(identifier) => Some((identifier.span, identifier.name.as_str())),
         _ => None,
-    }
-}
-
-fn ts_module_declaration_name_span_and_text<'a>(
-    name: &'a oxc_ast::ast::TSModuleDeclarationName<'a>,
-) -> (Span, &'a str) {
-    match name {
-        oxc_ast::ast::TSModuleDeclarationName::Identifier(identifier) => {
-            (identifier.span, &identifier.name)
-        }
-        oxc_ast::ast::TSModuleDeclarationName::StringLiteral(literal) => {
-            (literal.span, &literal.value)
-        }
     }
 }
 

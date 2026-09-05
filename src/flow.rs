@@ -985,7 +985,12 @@ impl<'a> Checker<'a, '_> {
         if let AstKind::VariableDeclarator(declarator) = self.nodes(program_id).kind(write_node_id)
         {
             return declarator.init.as_ref().map(|initializer| {
-                let flags = if declarator.kind == oxc_ast::ast::VariableDeclarationKind::Const {
+                let is_const = matches!(
+                    self.nodes(program_id).parent_kind(write_node_id),
+                    AstKind::VariableDeclaration(declaration)
+                        if declaration.kind.is_const()
+                );
+                let flags = if is_const {
                     CheckMode::CONTEXT_FREE | CheckMode::PRESERVE_LITERALS
                 } else {
                     CheckMode::CONTEXT_FREE

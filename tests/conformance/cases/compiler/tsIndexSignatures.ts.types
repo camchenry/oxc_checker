@@ -20,13 +20,11 @@ type C = {
 >  ^^^: string   (String) (Identifier)
 
 type Multi = {
->    ^^^^^: {}   (Object) (Identifier)
+>    ^^^^^: { [key: string]: object; }   (Object) (Identifier)
+  expected: {}
 
   [key: string, key2: number]: object;
 >  ^^^: string   (String) (Identifier)
-
-  [key: string, key2: number]: object;
->               ^^^^: number   (Number) (Identifier)
 
 type Multi2 = {
 >    ^^^^^^: { [key: string]: string; [key2: number]: string; [key3: symbol]: string; }   (Object) (Identifier)

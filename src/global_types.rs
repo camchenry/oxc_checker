@@ -243,7 +243,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     | AstKind::ImportSpecifier(_)
                     | AstKind::ImportDefaultSpecifier(_)
                     | AstKind::ImportNamespaceSpecifier(_) => true,
-                    AstKind::TSModuleDeclaration(_) => include_namespaces,
+                    AstKind::TSNamespaceDeclaration(_) => include_namespaces,
                     AstKind::BindingIdentifier(_) => {
                         matches!(
                             self.nodes(symbol.program_id).parent_kind(declaration),
@@ -253,7 +253,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         ) || (include_namespaces
                             && matches!(
                                 self.nodes(symbol.program_id).parent_kind(declaration),
-                                AstKind::TSModuleDeclaration(_)
+                                AstKind::TSNamespaceDeclaration(_)
                             ))
                     }
                     _ => false,

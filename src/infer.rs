@@ -1498,7 +1498,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         } else {
             let body = match function {
                 FunctionKind::Function(f) => f.body.as_deref(),
-                FunctionKind::ArrowFunction(f) => Some(f.body.as_ref()),
+                FunctionKind::ArrowFunction(f) => f.get_function_body(),
             };
             let Some(body) = body else {
                 return self.ty.error(TypeErrorKind::MissingFunctionBody);

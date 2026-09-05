@@ -50,9 +50,6 @@ interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResu
 >                                             ^^^^^^^^^^: typeof globalThis   (GlobalThis) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
->                                                        ^^^^^^^^^^^^^^: any   (Error) (Identifier)
-
-interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}
 >                                                                       ^: any   (Any) (Identifier)
 
 interface Iterator<T, TResult, TNext> extends globalThis.IteratorObject<T, TResult, TNext> {}

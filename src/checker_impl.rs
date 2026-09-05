@@ -13,12 +13,11 @@ use oxc_ast::{
         PropertyDefinition, PropertyKey, PropertyKind, SimpleAssignmentTarget,
         StaticMemberExpression, TSImportEqualsDeclaration, TSImportType, TSImportTypeQualifier,
         TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature, TSMethodSignatureKind,
-        TSModuleDeclaration, TSModuleDeclarationName, TSModuleReference, TSNamedTupleMember,
-        TSPropertySignature, TSQualifiedName, TSSignature, TSThisParameter, TSTupleElement, TSType,
-        TSTypeAnnotation, TSTypeName, TSTypeOperatorOperator, TSTypeParameter,
-        TSTypeParameterDeclaration, TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName,
-        TSTypeReference, TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind,
-        VariableDeclarator,
+        TSModuleReference, TSNamedTupleMember, TSNamespaceDeclaration, TSPropertySignature,
+        TSQualifiedName, TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation,
+        TSTypeName, TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
+        TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
+        TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
     },
 };
 use oxc_cfg::{BlockNodeId, ControlFlowGraph};
@@ -1372,7 +1371,8 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.nodes(program_id).ancestor_kinds(node_id).any(|kind| {
             matches!(
                 kind,
-                AstKind::ExportNamedDeclaration(_)
+                AstKind::ExportDeclaration(_)
+                    | AstKind::ExportNamedDeclaration(_)
                     | AstKind::ExportDefaultDeclaration(_)
                     | AstKind::ExportAllDeclaration(_)
             )
@@ -2348,25 +2348,20 @@ impl<'a, 'store> Checker<'a, 'store> {
                             let TSSignature::TSIndexSignature(index_signature) = member else {
                                 return None;
                             };
-                            if index_signature.parameters.len() != 1 {
-                                return None;
-                            }
-                            Some(index_signature.parameters.iter().map(|index_sig_name| {
-                                IndexInfo::new(
-                                    index_sig_name.name.as_str(),
-                                    self.get_type_from_ts_type_annotation(
-                                        program_id,
-                                        Some(&index_sig_name.type_annotation),
-                                    ),
-                                    self.get_type_from_ts_type_annotation(
-                                        program_id,
-                                        Some(&index_signature.type_annotation),
-                                    ),
-                                    index_signature.readonly,
-                                )
-                            }))
-                        })
-                        .flatten(),
+                            let parameter = &index_signature.parameter;
+                            Some(IndexInfo::new(
+                                parameter.name.as_str(),
+                                self.get_type_from_ts_type_annotation(
+                                    program_id,
+                                    Some(&parameter.type_annotation),
+                                ),
+                                self.get_type_from_ts_type_annotation(
+                                    program_id,
+                                    Some(&index_signature.type_annotation),
+                                ),
+                                index_signature.readonly,
+                            ))
+                        }),
                 ),
                 TSType::TSArrayType(array) => self.ty.array(
                     self.get_type_from_ts_type(program_id, &array.element_type),
@@ -2775,9 +2770,9 @@ impl<'a, 'store> Checker<'a, 'store> {
             .symbol_declaration(namespace_symbol.symbol_id);
         let module = loop {
             match self.nodes(namespace_symbol.program_id).kind(declaration) {
-                AstKind::TSModuleDeclaration(module) => break module,
-                AstKind::ExportNamedDeclaration(export) => {
-                    declaration = export.declaration.as_ref()?.node_id();
+                AstKind::TSNamespaceDeclaration(module) => break module,
+                AstKind::ExportDeclaration(export) => {
+                    declaration = export.declaration.node_id();
                 }
                 AstKind::BindingIdentifier(_) => {
                     declaration = self
@@ -2814,9 +2809,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         type_arguments: &[Ty<'a>],
     ) -> Option<Ty<'a>> {
         match self.nodes(symbol.program_id).kind(declaration) {
-            AstKind::ExportNamedDeclaration(export) => self.get_type_of_ts_import_type_declaration(
+            AstKind::ExportDeclaration(export) => self.get_type_of_ts_import_type_declaration(
                 symbol,
-                export.declaration.as_ref()?.node_id(),
+                export.declaration.node_id(),
                 type_arguments,
             ),
             AstKind::TSTypeAliasDeclaration(alias) => {
@@ -2852,10 +2847,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                     display_type_argument_count,
                 ))
             }
-            AstKind::TSModuleDeclaration(module) => {
-                let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
-                    return None;
-                };
+            AstKind::TSNamespaceDeclaration(module) => {
+                let identifier = &module.id;
                 Some(self.ty.type_query(
                     identifier.name.as_str(),
                     self.ty.any(),
@@ -5328,7 +5321,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     _ => None,
                 })
         }?;
-        let super_class = class.super_class.as_ref()?;
+        let super_class = class.heritage_expression()?;
         let super_type = self.get_type_of_expression_with_node(
             program_id,
             super_class,
@@ -5341,8 +5334,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             _ => return None,
         };
         let type_arguments = class
-            .super_type_arguments
-            .iter()
+            .heritage_type_arguments()
+            .into_iter()
             .flat_map(|arguments| arguments.params.iter())
             .map(|argument| self.get_type_from_ts_type(program_id, argument));
 
@@ -8051,10 +8044,10 @@ impl<'a, 'store> Checker<'a, 'store> {
             .symbol_declaration(symbol.symbol_id);
         matches!(
             self.nodes(symbol.program_id).kind(declaration),
-            AstKind::TSModuleDeclaration(_)
+            AstKind::TSNamespaceDeclaration(_)
         ) || matches!(
             self.nodes(symbol.program_id).parent_kind(declaration),
-            AstKind::TSModuleDeclaration(_)
+            AstKind::TSNamespaceDeclaration(_)
         )
     }
 
@@ -8251,12 +8244,11 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         class: &'a Class<'a>,
     ) -> Vec<Ty<'a>> {
-        let Some(Expression::Identifier(identifier)) = class.super_class.as_ref() else {
+        let Some(Expression::Identifier(identifier)) = class.heritage_expression() else {
             return Vec::new();
         };
         let mut type_arguments = class
-            .super_type_arguments
-            .as_ref()
+            .heritage_type_arguments()
             .into_iter()
             .flat_map(|arguments| arguments.params.iter())
             .map(|argument| self.get_type_argument_from_ts_type(program_id, argument))
@@ -9643,11 +9635,9 @@ impl<'a, 'store> Checker<'a, 'store> {
     fn get_type_of_namespace_declaration(
         &self,
         program_id: ProgramId,
-        module: &'a TSModuleDeclaration<'a>,
+        module: &'a TSNamespaceDeclaration<'a>,
     ) -> Ty<'a> {
-        let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
-            return self.ty.none();
-        };
+        let identifier = &module.id;
         let namespace_type = identifier.symbol_id.get().map_or_else(
             || self.ty.module_namespace(identifier.name.as_str(), []),
             |symbol_id| {
@@ -9744,10 +9734,10 @@ impl<'a, 'store> Checker<'a, 'store> {
         &self,
         program_id: ProgramId,
         declaration: NodeId,
-    ) -> Option<&'a TSModuleDeclaration<'a>> {
+    ) -> Option<&'a TSNamespaceDeclaration<'a>> {
         match self.nodes(program_id).kind(declaration) {
-            AstKind::TSModuleDeclaration(module) => Some(module),
-            AstKind::BindingIdentifier(_) | AstKind::ExportNamedDeclaration(_) => self
+            AstKind::TSNamespaceDeclaration(module) => Some(module),
+            AstKind::BindingIdentifier(_) | AstKind::ExportDeclaration(_) => self
                 .namespace_declaration_at(
                     program_id,
                     self.nodes(program_id).parent_id(declaration),
@@ -9772,7 +9762,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                     if ancestor_id == module_declaration {
                         return exported;
                     }
-                    exported |= matches!(node.kind(), AstKind::ExportNamedDeclaration(_));
+                    exported |= matches!(
+                        node.kind(),
+                        AstKind::ExportDeclaration(_) | AstKind::ExportNamedDeclaration(_)
+                    );
                 }
                 false
             })
@@ -10188,7 +10181,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.nodes(program_id)
             .iter_enumerated()
             .filter_map(|(node_id, node)| {
-                let AstKind::TSModuleDeclaration(module) = node.kind() else {
+                let AstKind::TSNamespaceDeclaration(module) = node.kind() else {
                     return None;
                 };
                 let module_path = self.namespace_path_for_module(program_id, node_id)?;
@@ -10208,13 +10201,11 @@ impl<'a, 'store> Checker<'a, 'store> {
         for kind in self.nodes(program_id).ancestor_kinds(node_id) {
             match kind {
                 AstKind::Program(_) => return Some(path),
-                AstKind::TSModuleDeclaration(module) => {
-                    let TSModuleDeclarationName::Identifier(identifier) = &module.id else {
-                        return None;
-                    };
-                    path.push(identifier.name.as_str());
+                AstKind::TSNamespaceDeclaration(module) => {
+                    path.push(module.id.name.as_str());
                 }
                 AstKind::TSModuleBlock(_) => {}
+                AstKind::ExportDeclaration(_) => {}
                 _ => return None,
             }
         }
@@ -10227,13 +10218,10 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         node_id: NodeId,
     ) -> Option<Vec<&str>> {
-        let AstKind::TSModuleDeclaration(module) = self.nodes(program_id).kind(node_id) else {
+        let AstKind::TSNamespaceDeclaration(module) = self.nodes(program_id).kind(node_id) else {
             return None;
         };
-        let mut path = match &module.id {
-            TSModuleDeclarationName::Identifier(identifier) => vec![identifier.name.as_str()],
-            _ => return None,
-        };
+        let mut path = vec![module.id.name.as_str()];
         path.extend(self.namespace_path_for_node(program_id, node_id)?);
         Some(path)
     }
@@ -10378,12 +10366,10 @@ impl<'a, 'store> Checker<'a, 'store> {
             AstKind::TSEnumDeclaration(declaration) => {
                 self.get_type_of_enum_declaration(symbol.program_id, declaration)
             }
-            AstKind::TSModuleDeclaration(module) => match &module.id {
-                TSModuleDeclarationName::Identifier(_) => {
-                    self.get_type_of_namespace_declaration(symbol.program_id, module)
-                }
-                TSModuleDeclarationName::StringLiteral(_) => self.ty.none(),
-            },
+            AstKind::TSNamespaceDeclaration(module) => {
+                self.get_type_of_namespace_declaration(symbol.program_id, module)
+            }
+            AstKind::TSExternalModuleDeclaration(_) => self.ty.none(),
             AstKind::BindingIdentifier(_) => self
                 .get_type_of_binding_identifier_from_binding_pattern(
                     symbol.program_id,
@@ -10602,7 +10588,11 @@ impl<'a, 'store> Checker<'a, 'store> {
             let Some(expression) = declarator.init.as_ref() else {
                 return self.ty.any();
             };
-            let flags = if declarator.kind.is_const() {
+            let kind = match self.nodes(program_id).parent_kind(declaration) {
+                AstKind::VariableDeclaration(variable) => variable.kind,
+                _ => VariableDeclarationKind::Var,
+            };
+            let flags = if kind.is_const() {
                 CheckMode::PRESERVE_LITERALS
             } else {
                 CheckMode::NONE
@@ -10613,7 +10603,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 Some(declaration),
                 flags,
             );
-            if declarator.kind != VariableDeclarationKind::Const
+            if !kind.is_const()
                 && matches!(ty, Ty::Null | Ty::Undefined)
                 && self.is_null_or_undefined_initializer(expression)
             {
@@ -11337,7 +11327,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     )
                     .to_mapper(self.arena());
                 interface.extends.iter().filter_map(move |heritage| {
-                    let Expression::Identifier(identifier) = &heritage.expression else {
+                    let TSTypeName::IdentifierReference(identifier) = &heritage.type_name else {
                         return None;
                     };
                     let mut type_arguments = heritage
@@ -12168,7 +12158,7 @@ impl<'a> Checker<'a, '_> {
                     )
                 })
                 .unwrap_or_else(|| self.ty.any()),
-            AstKind::TSModuleDeclaration(module) => {
+            AstKind::TSNamespaceDeclaration(module) => {
                 self.get_type_of_namespace_declaration(node.program_id, module)
             }
             AstKind::TSTypeParameter(parameter) => self.ty.type_parameter_type(
@@ -12177,10 +12167,10 @@ impl<'a> Checker<'a, '_> {
             AstKind::TSMappedType(_) => self.ty.any(),
             AstKind::TSClassImplements(_) => self.ty.any(),
             AstKind::TSInterfaceHeritage(heritage) => {
-                let Expression::Identifier(identifier) = &heritage.expression else {
+                let TSTypeName::IdentifierReference(identifier) = &heritage.type_name else {
                     return self.ty.any();
                 };
-                self.symbol_for_identifier_reference(node.program_id, identifier)
+                self.symbol_for_identifier_reference(node.program_id, identifier.as_ref())
                     .or_else(|| {
                         self.get_value_symbol_for_name(node.program_id, identifier.name.as_str())
                     })
