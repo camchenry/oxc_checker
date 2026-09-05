@@ -57,9 +57,9 @@ use crate::{
         TupleElement, TupleReadonly, Ty, TyFunction, TyKind, TyMapped, TyParameter, TyProperty,
         TyPropertyFlags, TyTypeParameter, TyTypePredicate, TyTypeReference, TypeErrorKind,
         binding_pattern_to_parameter_name, function_maximum_argument_count,
-        function_minimum_argument_count, function_parameter_type_at_call_index,
-        property_name_flags, return_type_and_type_predicate_from_annotation_with_resolver,
-        type_predicate_return_type, visit_type,
+        function_minimum_argument_count, property_name_flags,
+        return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
+        visit_type,
     },
 };
 
@@ -1196,9 +1196,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.get_enclosing_base_class_instance_type(program_id, node_id)
                 })
                 .unwrap_or_else(|| self.ty.error(TypeErrorKind::UnresolvedType)),
-            AstKind::Class(class) if class.is_expression() => {
-                self.get_type_of_class_expression(program_id, class)
-            }
+            AstKind::Class(class) if class.is_expression() => self.get_type_of_class_constructor(
+                program_id,
+                class,
+                self.type_parameters_from_declaration(program_id, class.type_parameters.as_deref()),
+                false,
+                false,
+            ),
             AstKind::ImportMeta(_) => self.type_reference_with_display_type_argument_count(
                 program_id,
                 "ImportMeta",
@@ -6557,7 +6561,8 @@ impl<'a, 'store> Checker<'a, 'store> {
         argument_types.extend(tagged_template.quasi.expressions.iter().enumerate().map(
             |(index, expression)| {
                 let argument_index = index + 1;
-                let parameter_type = self.get_call_parameter_type_at(function, argument_index);
+                let parameter_type =
+                    self.function_parameter_type_at_call_index(function, argument_index);
                 let flags =
                     if parameter_type.is_some_and(|ty| self.could_contain_type_variables(ty)) {
                         CheckMode::PRESERVE_LITERALS
@@ -6707,8 +6712,11 @@ impl<'a, 'store> Checker<'a, 'store> {
         candidate: &ResolvedSignatureCandidate<'a>,
         index: usize,
     ) -> Option<Ty<'a>> {
-        self.get_call_parameter_type_at(candidate.signature.function(self.arena()), index)
-            .map(|ty| self.instantiate_type(ty, candidate.inference.mapper()))
+        self.function_parameter_type_at_call_index(
+            candidate.signature.function(self.arena()),
+            index,
+        )
+        .map(|ty| self.instantiate_type(ty, candidate.inference.mapper()))
     }
 
     fn get_signatures_of_type_in_program(
@@ -7139,13 +7147,60 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
-    // TODO(inline)
-    fn get_call_parameter_type_at(
+    /// Returns the parameter type corresponding to a call argument index, expanding rest parameter
+    /// arrays and tuples as needed.
+    pub(crate) fn function_parameter_type_at_call_index(
         &self,
         function: &TyFunction<'a>,
         index: usize,
     ) -> Option<Ty<'a>> {
-        function_parameter_type_at_call_index(self.arena(), function, index)
+        if let Some(rest_index) = function
+            .parameters
+            .iter()
+            .position(|parameter| parameter.rest)
+            && index >= rest_index
+        {
+            return self.rest_parameter_type_at_call_index(
+                function.parameters[rest_index].ty,
+                index - rest_index,
+            );
+        }
+
+        function.parameters.get(index).map(|parameter| parameter.ty)
+    }
+
+    fn rest_parameter_type_at_call_index(&self, ty: Ty<'a>, index: usize) -> Option<Ty<'a>> {
+        if let TyKind::Union(union) = self.ty_kind(ty) {
+            let types = union
+                .types
+                .iter()
+                .filter_map(|ty| self.rest_parameter_type_at_call_index(*ty, index))
+                .collect::<Vec<_>>();
+            return (!types.is_empty()).then(|| self.ty.union(types));
+        }
+
+        let TyKind::Tuple(tuple) = self.ty_kind(ty) else {
+            return Some(ty.array_element_type(self.arena()).unwrap_or(ty));
+        };
+
+        let mut current_index = 0;
+        for element in &tuple.elements {
+            match element {
+                TupleElement::Regular(ty) | TupleElement::Optional(ty) => {
+                    if current_index == index {
+                        return Some(*ty);
+                    }
+                    current_index += 1;
+                }
+                TupleElement::Rest(ty) => {
+                    if index >= current_index {
+                        return Some(ty.array_element_type(self.arena()).unwrap_or(*ty));
+                    }
+                }
+            }
+        }
+
+        None
     }
 
     fn get_type_of_new_expression(
@@ -7271,7 +7326,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             let Some(argument) = argument else {
                 continue;
             };
-            let Some(parameter_type) = self.get_call_parameter_type_at(function, index) else {
+            let Some(parameter_type) = self.function_parameter_type_at_call_index(function, index)
+            else {
                 return false;
             };
             let flags = flags
@@ -8027,17 +8083,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
-    // TODO(inline)
-    fn get_type_of_class_expression(&self, program_id: ProgramId, class: &'a Class<'a>) -> Ty<'a> {
-        self.get_type_of_class_constructor(
-            program_id,
-            class,
-            self.type_parameters_from_declaration(program_id, class.type_parameters.as_deref()),
-            false,
-            false,
-        )
-    }
-
     fn get_type_of_class_declaration(&self, program_id: ProgramId, class: &'a Class<'a>) -> Ty<'a> {
         class.id.as_ref().map_or_else(
             || self.ty.any(),
@@ -8733,7 +8778,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             .into_iter()
             .next()?;
         let function = signature.function(self.arena());
-        let parameter_type = self.get_call_parameter_type_at(function, argument_index)?;
+        let parameter_type =
+            self.function_parameter_type_at_call_index(function, argument_index)?;
         let parameter_type = self.inference_contextual_parameter_type(function, parameter_type);
         let substitutions =
             self.explicit_call_type_parameter_substitutions(program_id, function, call_kind);
@@ -9007,7 +9053,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             .into_iter()
             .next()?;
         let callee_function = callee_signature.function(self.arena());
-        let parameter_type = self.get_call_parameter_type_at(callee_function, argument_index)?;
+        let parameter_type =
+            self.function_parameter_type_at_call_index(callee_function, argument_index)?;
 
         let argument_types = call_expression
             .arguments
@@ -9018,7 +9065,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                 let argument_type = if argument.span() == contextual_argument_span {
                     contextual_argument_type()
                 } else {
-                    let parameter_type = self.get_call_parameter_type_at(callee_function, index);
+                    let parameter_type =
+                        self.function_parameter_type_at_call_index(callee_function, index);
                     let flags =
                         if parameter_type.is_some_and(|ty| self.could_contain_type_variables(ty)) {
                             CheckMode::PRESERVE_LITERALS

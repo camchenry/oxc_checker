@@ -875,27 +875,6 @@ pub(crate) fn function_maximum_argument_count<'a>(
         .map(|rest_count| rest_index + rest_count)
 }
 
-pub(crate) fn function_parameter_type_at_call_index<'a>(
-    arena: CheckerArena<'a>,
-    function: &TyFunction<'a>,
-    index: usize,
-) -> Option<Ty<'a>> {
-    if let Some(rest_index) = function
-        .parameters
-        .iter()
-        .position(|parameter| parameter.rest)
-        && index >= rest_index
-    {
-        return rest_parameter_type_at_call_index(
-            arena,
-            function.parameters[rest_index].ty,
-            index - rest_index,
-        );
-    }
-
-    function.parameters.get(index).map(|parameter| parameter.ty)
-}
-
 fn rest_tuple_minimum_argument_count<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) -> usize {
     let TyKind::Tuple(tuple) = arena.ty_kind(ty) else {
         return 0;
@@ -921,44 +900,6 @@ fn rest_tuple_maximum_argument_count<'a>(arena: CheckerArena<'a>, ty: Ty<'a>) ->
     } else {
         Some(tuple.elements.len())
     }
-}
-
-fn rest_parameter_type_at_call_index<'a>(
-    arena: CheckerArena<'a>,
-    ty: Ty<'a>,
-    index: usize,
-) -> Option<Ty<'a>> {
-    if let TyKind::Union(union) = arena.ty_kind(ty) {
-        let types = union
-            .types
-            .iter()
-            .filter_map(|ty| rest_parameter_type_at_call_index(arena, *ty, index))
-            .collect::<Vec<_>>();
-        return (!types.is_empty()).then(|| arena.union(types));
-    }
-
-    let TyKind::Tuple(tuple) = arena.ty_kind(ty) else {
-        return Some(ty.array_element_type(arena).unwrap_or(ty));
-    };
-
-    let mut current_index = 0;
-    for element in &tuple.elements {
-        match element {
-            TupleElement::Regular(ty) | TupleElement::Optional(ty) => {
-                if current_index == index {
-                    return Some(*ty);
-                }
-                current_index += 1;
-            }
-            TupleElement::Rest(ty) => {
-                if index >= current_index {
-                    return Some(ty.array_element_type(arena).unwrap_or(*ty));
-                }
-            }
-        }
-    }
-
-    None
 }
 
 #[derive(Debug, Eq)]

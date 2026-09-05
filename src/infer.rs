@@ -25,8 +25,7 @@ use crate::{
     types::{
         CheckerArena, LabeledTupleElement, MappedModifier, SignatureKind, TupleElement,
         TupleReadonly, Ty, TyFunction, TyInfer, TyKind, TyMapped, TyProperty, TyTemplateLiteral,
-        TyTypeParameter, TypeBuilder, TypeErrorKind, function_parameter_type_at_call_index,
-        visit_type,
+        TyTypeParameter, TypeBuilder, TypeErrorKind, visit_type,
     },
 };
 
@@ -1388,8 +1387,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             .enumerate()
             .filter_map(|(index, argument)| {
                 let argument = argument.as_expression()?;
-                let parameter_type =
-                    function_parameter_type_at_call_index(self.arena(), function, index)?;
+                let parameter_type = self.function_parameter_type_at_call_index(function, index)?;
                 let flags = flags
                     | if self.could_contain_type_variables(parameter_type) {
                         CheckMode::PRESERVE_LITERALS
@@ -1448,7 +1446,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         let type_pairs = argument_types
             .into_iter()
             .filter_map(|(index, argument_type)| {
-                function_parameter_type_at_call_index(self.arena(), function, index)
+                self.function_parameter_type_at_call_index(function, index)
                     .map(|parameter_type| (parameter_type, argument_type))
             });
         self.infer_type_parameter_resolution_from_type_pairs(
