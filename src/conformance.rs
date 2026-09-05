@@ -213,6 +213,48 @@ struct FileResult {
 struct OxcRecordCollection {
     records: Vec<TypeRecord>,
     panicked_paths: BTreeSet<String>,
+    allocations: ConformanceAllocationStats,
+}
+
+impl OxcRecordCollection {
+    fn extend(&mut self, collection: Self) {
+        self.allocations.extend(&collection.allocations);
+        self.records.extend(collection.records);
+        self.panicked_paths.extend(collection.panicked_paths);
+    }
+}
+
+/// Arena allocation requests made while processing physical conformance input files.
+///
+/// Per-batch embedded-library preparation is outside the measured region. Each worker owns its
+/// allocator, so merging these counters is independent of parallel scheduling.
+#[derive(Default)]
+struct ConformanceAllocationStats {
+    total: usize,
+    file_count: usize,
+    max_per_file: usize,
+}
+
+impl ConformanceAllocationStats {
+    fn record_file(&mut self, allocations: usize) {
+        self.total = self.total.saturating_add(allocations);
+        self.file_count = self.file_count.saturating_add(1);
+        self.max_per_file = self.max_per_file.max(allocations);
+    }
+
+    fn extend(&mut self, other: &Self) {
+        self.total = self.total.saturating_add(other.total);
+        self.file_count = self.file_count.saturating_add(other.file_count);
+        self.max_per_file = self.max_per_file.max(other.max_per_file);
+    }
+
+    fn average_per_file(&self) -> f64 {
+        if self.file_count == 0 {
+            0.0
+        } else {
+            self.total as f64 / self.file_count as f64
+        }
+    }
 }
 
 impl FileResult {
@@ -254,10 +296,15 @@ struct ComparisonStats {
     matched_assignments: usize,
     mismatched_assignments: usize,
     total_assignments: usize,
+    allocations: ConformanceAllocationStats,
 }
 
 impl ComparisonStats {
-    fn from_results(results: &[FileResult], panicked_files: usize) -> Self {
+    fn from_results(
+        results: &[FileResult],
+        panicked_files: usize,
+        allocations: ConformanceAllocationStats,
+    ) -> Self {
         let total_files = results.len() + panicked_files;
         let failed_files = results.iter().filter(|result| !result.passed()).count();
         let passed_files = results.len() - failed_files;
@@ -282,6 +329,7 @@ impl ComparisonStats {
             matched_assignments,
             mismatched_assignments,
             total_assignments,
+            allocations,
         }
     }
 
@@ -1059,7 +1107,11 @@ fn run_single_file_conformance(case_path: &Path, refresh_tsc: bool) -> Conforman
     let tsc_records = filter_panicked_records(tsc_records, &collected.panicked_paths);
     let oxc_records = filter_panicked_records(collected.records, &collected.panicked_paths);
     let results = compare_records(&tsc_records, &oxc_records);
-    let stats = ComparisonStats::from_results(&results, collected.panicked_paths.len());
+    let stats = ComparisonStats::from_results(
+        &results,
+        collected.panicked_paths.len(),
+        collected.allocations,
+    );
     print!("{}", format_type_record_report(suite, &stats, &results));
 
     let summary = stats.summary();
@@ -1131,7 +1183,11 @@ fn run_type_record_conformance(
     let oxc_records = filter_panicked_records(collected.records, &collected.panicked_paths);
     write_type_outputs(suite, &cases_root, &oxc_records, &tsc_records);
     let results = compare_records(&tsc_records, &oxc_records);
-    let stats = ComparisonStats::from_results(&results, collected.panicked_paths.len());
+    let stats = ComparisonStats::from_results(
+        &results,
+        collected.panicked_paths.len(),
+        collected.allocations,
+    );
     write_snapshot(&snapshot_path, suite, &stats, &results);
 
     let summary = stats.summary();
@@ -1376,10 +1432,7 @@ fn collect_oxc_records(
                         Some(&prepared_programs),
                         Some(expectations),
                     );
-                    batch_collection.records.extend(collection.records);
-                    batch_collection
-                        .panicked_paths
-                        .extend(collection.panicked_paths);
+                    batch_collection.extend(collection);
                     if let Some(check_started_at) = check_started_at {
                         timing.record_check(check_started_at.elapsed());
                     }
@@ -1390,8 +1443,7 @@ fn collect_oxc_records(
             .collect::<Vec<_>>()
             .into_iter()
             .fold(OxcRecordCollection::default(), |mut collection, batch| {
-                collection.records.extend(batch.records);
-                collection.panicked_paths.extend(batch.panicked_paths);
+                collection.extend(batch);
                 collection
             })
     };
@@ -1626,6 +1678,30 @@ fn panicked_record_path(
 }
 
 fn collect_oxc_records_from_source_with_programs<'a>(
+    cases_root: &Path,
+    path: &Path,
+    source_text: &str,
+    allocator: &'a Allocator,
+    prepared_programs: Option<&'a program::PreparedProgramSet<'a>>,
+    expectations: Option<&ConformanceExpectations>,
+) -> OxcRecordCollection {
+    let allocations_before = allocator.get_allocation_stats().0;
+    let mut collection = collect_oxc_records_from_source_with_programs_impl(
+        cases_root,
+        path,
+        source_text,
+        allocator,
+        prepared_programs,
+        expectations,
+    );
+    let allocations_after = allocator.get_allocation_stats().0;
+    collection
+        .allocations
+        .record_file(allocations_after.saturating_sub(allocations_before));
+    collection
+}
+
+fn collect_oxc_records_from_source_with_programs_impl<'a>(
     cases_root: &Path,
     path: &Path,
     source_text: &str,
@@ -3492,6 +3568,13 @@ fn format_type_record_report(
     ));
     snapshot.push_str("# Generated by `cargo conformance`.\n");
     snapshot.push_str(&format!("# Cases root: {}\n", suite.cases_root));
+    snapshot.push_str(&format!(
+        "allocs: total={} files={} max_per_file={} average_per_file={:.2}\n",
+        stats.allocations.total,
+        stats.allocations.file_count,
+        stats.allocations.max_per_file,
+        stats.allocations.average_per_file()
+    ));
     snapshot.push_str(&format!(
         "files: passed={} failed={} panicked={} total={} pass_percentage={:.2}%\n",
         stats.passed_files,

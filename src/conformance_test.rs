@@ -630,7 +630,7 @@ fn assignment_mismatches_have_separate_totals_and_no_file_summary() {
         ..expected_target.clone()
     };
     let results = compare_records(&[expected, expected_target], &[actual, actual_target]);
-    let stats = ComparisonStats::from_results(&results, 0);
+    let stats = ComparisonStats::from_results(&results, 0, ConformanceAllocationStats::default());
     let report = format_type_record_report(&CASES_SUITE, &stats, &results);
 
     assert_eq!(stats.matched_types, 2);
@@ -700,7 +700,7 @@ fn compare_records_skips_assignability_when_an_endpoint_type_mismatches() {
         &[expected_source, expected_target.clone()],
         &[actual_source, expected_target],
     );
-    let stats = ComparisonStats::from_results(&results, 0);
+    let stats = ComparisonStats::from_results(&results, 0, ConformanceAllocationStats::default());
 
     assert_eq!(stats.mismatched_types, 1);
     assert_eq!(stats.matched_assignments, 0);
@@ -811,10 +811,29 @@ fn panicked_fixture_is_excluded_from_record_comparison() {
         BTreeSet::from(["compiler/ClassDeclaration26.ts".to_string()])
     );
 
-    let stats = ComparisonStats::from_results(&[], collection.panicked_paths.len());
+    let stats =
+        ComparisonStats::from_results(&[], collection.panicked_paths.len(), collection.allocations);
     assert_eq!(stats.mismatched_types, 0);
     assert_eq!(stats.total_types, 0);
     assert_eq!(stats.panicked_files, 1);
+}
+
+#[test]
+fn allocation_stats_aggregate_per_input_file() {
+    let mut allocations = ConformanceAllocationStats::default();
+    allocations.record_file(3);
+    allocations.record_file(8);
+    allocations.record_file(4);
+    let stats = ComparisonStats::from_results(&[], 0, allocations);
+    let report = format_type_record_report(&CASES_SUITE, &stats, &[]);
+
+    assert_eq!(stats.allocations.total, 15);
+    assert_eq!(stats.allocations.file_count, 3);
+    assert_eq!(stats.allocations.max_per_file, 8);
+    assert_eq!(stats.allocations.average_per_file(), 5.0);
+    assert!(
+        report.contains("allocations: total=15 files=3 max_per_file=8 average_per_file=5.00\n")
+    );
 }
 
 #[test]

@@ -64,8 +64,8 @@ unnecessary_wraps = "deny"
 default = []
 bench = ["dep:criterion", "dep:libc", "dep:serde", "dep:serde_json"]
 allocation-stats = ["bench", "oxc_allocator/track_allocations"]
-conformance = ["dep:rayon", "dep:serde", "dep:serde_json", "dep:simdutf8", "dep:terminal_size"]
-conformance-tsc = ["dep:rayon", "dep:serde", "dep:serde_json", "dep:simdutf8", "dep:terminal_size"]
+conformance = ["dep:rayon", "dep:serde", "dep:serde_json", "dep:simdutf8", "dep:terminal_size", "oxc_allocator/track_allocations"]
+conformance-tsc = ["dep:rayon", "dep:serde", "dep:serde_json", "dep:simdutf8", "dep:terminal_size", "oxc_allocator/track_allocations"]
 
 [dependencies]
 oxc_ast = "0.142.0"
