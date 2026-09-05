@@ -470,14 +470,26 @@ impl<'a, 'store> Checker<'a, 'store> {
                     return false;
                 }
 
-                // Each parameter must be assignable to the corresponding parameter in the target function
+                // Each parameter must be assignable to the corresponding parameter in the target
+                // function. An `any[]` rest parameter contributes `any` when compared with a
+                // non-rest position.
+                let parameter_type_at_position =
+                    |parameter: &crate::types::TyParameter<'a>, other_is_rest: bool| {
+                        (parameter.rest && !other_is_rest)
+                            .then(|| parameter.ty.array_element_type(self.arena()))
+                            .flatten()
+                            .filter(Ty::is_any)
+                            .unwrap_or(parameter.ty)
+                    };
                 let parameters_match = source.parameters.iter().zip(target.parameters.iter()).all(
                     |(source_parameter, target_parameter)| {
-                        self.is_assignable_to_at_depth(
-                            target_parameter.ty,
-                            self.instantiate_type(source_parameter.ty, &source_mapper),
-                            next_depth,
-                        )
+                        let source_type = self.instantiate_type(
+                            parameter_type_at_position(source_parameter, target_parameter.rest),
+                            &source_mapper,
+                        );
+                        let target_type =
+                            parameter_type_at_position(target_parameter, source_parameter.rest);
+                        self.is_assignable_to_at_depth(target_type, source_type, next_depth)
                     },
                 );
                 if !parameters_match {
@@ -1419,6 +1431,27 @@ mod tests {
                 [ty.parameter("rest", number_array).rest(true)],
                 Ty::Void
             )
+        ));
+
+        let any_rest = ty.function(
+            [],
+            [ty.parameter("data", arena.array(Ty::Any)).rest(true)],
+            Ty::Void,
+        );
+        let callback = ty.function(
+            [],
+            [ty.parameter("callback", ty.function([], [], Ty::Void))],
+            Ty::Void,
+        );
+        assert!(is_assignable_to(any_rest, callback));
+        assert!(is_assignable_to(callback, any_rest));
+        assert!(!is_assignable_to(
+            ty.function(
+                [],
+                [ty.parameter("items", arena.array(Ty::Never)).rest(true)],
+                Ty::Number,
+            ),
+            any_rest,
         ));
 
         // '(value: string) => void' is not assignable to type '(value: string) => string'

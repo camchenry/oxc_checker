@@ -4,7 +4,7 @@
 allocs: total=475973 files=108 max_per_file=277862 average_per_file=4407.16
 files: passed=14 failed=65 panicked=0 total=79 pass_percentage=17.72%
 types: matched=60157 mismatched=663 total=60820 match_percentage=98.91%
-assign: matched=304993 mismatched=6511 total=311504 match_percentage=97.91%
+assign: matched=304997 mismatched=6507 total=311504 match_percentage=97.91%
 
 FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45%
   - src/lib/decorators.d.ts:20 `DecoratorMetadata` type mismatch
@@ -13281,11 +13281,6 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { (name: string, value: string): void; (name: string, value: string): void; }    (Function)
       oxc source: { new (body?: BodyInit | null, init?: ResponseInit): Response; prototype: Response; error(): Response; json(data: any, init?: ResponseInit): Response; redirect(url: string | URL, status?: number): Response; }    (Object)
       oxc target: { (name: string, value: string): void; (name: string, value: string): void; }    (Object)
-  - :42842 `info` should be assignable to :21885 `callbackfn`
-      typescript source: { (...data: any[]): void; (...data: any[]): void; }    (Function)
-      typescript target: (value: Highlight, key: string, parent: HighlightRegistry) => void    (Function)
-      oxc source: { (...data: any[]): void; (...data: any[]): void; }    (Object)
-      oxc target: (value: Highlight, key: string, parent: HighlightRegistry) => void    (Function)
   - :42932 `FileSystemEntry` should not be assignable to :22019 `update`
       typescript source: { new (): FileSystemEntry; prototype: FileSystemEntry; }    (Object)
       typescript target: { (value: any): IDBRequest<IDBValidKey>; (value: any): IDBRequest<IDBValidKey>; }    (Function)
@@ -18981,16 +18976,6 @@ FAIL src/lib/es2021.string.d.ts matched_types=10 mismatched_types=1 total_types=
   - src/lib/es2021.string.d.ts:1 `String` type mismatch
       expected: StringConstructor
       actual:   any
-  - :7 `replaceAll` should be assignable to :14 `replacer`
-      typescript source: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }    (Function)
-      typescript target: (substring: string, ...args: any[]) => string    (Function)
-      oxc source: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }    (Object)
-      oxc target: (substring: string, ...args: any[]) => string    (Function)
-  - :14 `replaceAll` should be assignable to :14 `replacer`
-      typescript source: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }    (Function)
-      typescript target: (substring: string, ...args: any[]) => string    (Function)
-      oxc source: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }    (Object)
-      oxc target: (substring: string, ...args: any[]) => string    (Function)
   - :14 `replacer` should be assignable to :7 `replaceAll`
       typescript source: (substring: string, ...args: any[]) => string    (Function)
       typescript target: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }    (Function)
@@ -30834,11 +30819,6 @@ FAIL src/lib/webworker.generated.d.ts matched_types=14293 mismatched_types=169 t
       typescript target: { (contents?: number): Promise<void>; (contents?: number): Promise<void>; }    (Function)
       oxc source: { new (body?: BodyInit | null, init?: ResponseInit): Response; prototype: Response; error(): Response; json(data: any, init?: ResponseInit): Response; redirect(url: string | URL, status?: number): Response; }    (Object)
       oxc target: { (contents?: number): Promise<void>; (contents?: number): Promise<void>; }    (Object)
-  - :14749 `warn` should be assignable to :7809 `onshow`
-      typescript source: { (...data: any[]): void; (...data: any[]): void; }    (Function)
-      typescript target: ((this: Notification, ev: Event) => any) | null    (Union)
-      oxc source: { (...data: any[]): void; (...data: any[]): void; }    (Object)
-      oxc target: ((this: Notification, ev: Event) => any) | null    (Union)
   - :14759 `EncodedAudioChunk` should not be assignable to :7839 `close`
       typescript source: { new (init: EncodedAudioChunkInit): EncodedAudioChunk; prototype: EncodedAudioChunk; }    (Object)
       typescript target: { (): void; (): void; }    (Function)

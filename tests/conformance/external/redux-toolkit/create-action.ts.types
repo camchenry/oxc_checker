@@ -1296,7 +1296,7 @@ export const namedAction = setName('Ada')
                           expected: ActionCreatorWithOptionalPayload<string | undefined, "user/nameChanged">
 
 export const addTodo = createAction(
->            ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TypeReference) (Identifier)
+>            ^^^^^^^: PayloadActionCreator<{ title: string; priority: any; }, "todos/add", (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>   (TypeReference) (Identifier)
             expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
 
 export const addTodo = createAction(
@@ -1338,7 +1338,7 @@ export const preparedTodoAction = addTodo('read fixture', 2)
                        expected: PayloadAction<{ title: string; priority: any; }, "todos/add", { createdAt: number; }, boolean>
 
 export const preparedTodoAction = addTodo('read fixture', 2)
->                                 ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TypeReference) (Identifier)
+>                                 ^^^^^^^: PayloadActionCreator<{ title: string; priority: any; }, "todos/add", (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>   (TypeReference) (Identifier)
                                  expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
 
 export const preparedPayload = preparedTodoAction.payload
@@ -1443,8 +1443,7 @@ export type IncrementAction = ReturnType<typeof increment>
                                                  expected: ActionCreatorWithPayload<number, "counter/increment">
 
 export type TodoAction = ReturnType<typeof addTodo>
->           ^^^^^^^^^^: { payload: undefined; type: "todos/add"; }   (Object) (Identifier)
-              expected: { payload: { title: string; priority: any; }; type: "todos/add"; } & { meta: { createdAt: number; }; } & { error: boolean; }
+>           ^^^^^^^^^^: { payload: { title: string; priority: any; }; type: "todos/add"; } & { meta: { createdAt: number; }; } & { error: boolean; }   (Intersection) (Identifier)
 
 export type TodoAction = ReturnType<typeof addTodo>
 >                        ^^^^^^^^^^: any   (Any) (Identifier)
@@ -1453,7 +1452,7 @@ export type TodoAction = ReturnType<typeof addTodo>
 >                        ^^^^^^^^^^: any   (Error) (Identifier)
 
 export type TodoAction = ReturnType<typeof addTodo>
->                                          ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TypeReference) (Identifier)
+>                                          ^^^^^^^: PayloadActionCreator<{ title: string; priority: any; }, "todos/add", (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>   (TypeReference) (Identifier)
                                           expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
 
 export type IncrementFromMatcher = ActionFromMatcher<typeof increment>
@@ -1580,5 +1579,5 @@ export const creatorCheck = isActionCreator(addTodo)
 >                           ^^^^^^^^^^^^^^^: (action: unknown) => action is BaseActionCreator<unknown, string> & Function   (Function) (Identifier)
 
 export const creatorCheck = isActionCreator(addTodo)
->                                           ^^^^^^^: PayloadActionCreator<void, "todos/add">   (TypeReference) (Identifier)
+>                                           ^^^^^^^: PayloadActionCreator<{ title: string; priority: any; }, "todos/add", (title: string, priority: any) => { payload: { title: string; priority: any; }; meta: { createdAt: number; }; error: boolean; }>   (TypeReference) (Identifier)
                                            expected: ActionCreatorWithPreparedPayload<[title: string, priority?: any], { title: string; priority: any; }, "todos/add", boolean, { createdAt: number; }>
