@@ -1,7 +1,6 @@
-- Read the README, it's important
 - Use `typescript-go` codebase as an architectural and correctness reference when needed
 - If something should be addressed later, leave a TODO. for example:`TODO(perf)`, `TODO`, `TODO(correctness)`
 - Altitude: Make sure each change is implemented at the right depth, not as a fragile bandaid. Special cases layered on shared infrastructure are a sign the fix isn't deep enough — prefer generalizing the underlying mechanism over adding special cases or overfitting to the test data.
   - Examples: Only checking global types by name, hard-coding very specific combinations of types, only partially implementing enough functionality to pass a test
-- Comments: In general, use comments sparingly within functions unless it isn't clear why we are doing something. Comments should also be used to help separate distinct steps of a larger process. Doc comments should be used whenever possible.
+- Comments: Use comments occasionally within functions to explain why we are doing something. Comments should also be used to help separate distinct steps of a larger process. Always write documentation comments.
 - Diffs: Sometimes files may already be partially staged as work is reviewed while in progress. This is fine and you don't need to unstage.
