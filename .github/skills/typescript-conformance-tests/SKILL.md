@@ -12,7 +12,9 @@ Use the conformance harness to compare TypeScript nightly API type records again
 
 Run `cargo conformance full` after making checker changes. This full verification can be skipped for changes limited to documentation, tests, or other work that cannot affect checker behavior.
 
-The full upstream suite currently takes approximately 7–8 minutes. During development, run the narrowest relevant command first, then run the required full verification at the end.
+The full upstream suite currently takes less than 30 seconds. During development, run the narrowest relevant command first, then run the required full verification at the end. Do not avoid the full run on the assumption that it is expensive.
+
+For checker regressions, prefer adding the focused case to an existing conformance fixture, or create a new conformance fixture when that gives the semantic rule a clearer home. Prefer these fixture tests over Rust-only regression tests when either form would provide equivalent coverage, because conformance fixtures avoid additional Rust test compilation and compare behavior with TypeScript directly.
 
 ## Setup
 
