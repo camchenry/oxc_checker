@@ -362,21 +362,42 @@ impl ComparisonStats {
     }
 
     fn summary(&self) -> String {
+        let panic_suffix = if self.panicked_files == 0 {
+            String::new()
+        } else {
+            format!(", {} panicked", format_count(self.panicked_files))
+        };
+        let files = format!(
+            "{}/{}",
+            format_count(self.passed_files),
+            format_count(self.total_files)
+        );
+        let types = format!(
+            "{}/{}",
+            format_count(self.matched_types),
+            format_count(self.total_types)
+        );
+        let assignments = format!(
+            "{}/{}",
+            format_count(self.matched_assignments),
+            format_count(self.total_assignments)
+        );
         format!(
-            "files: {} passed, {} failed, {} panicked, {} total ({:.2}%)\ntypes: {} matched, {} mismatched, {} total ({:.2}%)\nassign: {} matched, {} mismatched, {} total ({:.2}%)",
-            self.passed_files,
-            self.failed_files,
-            self.panicked_files,
-            self.total_files,
+            "  {0:<7} {1:<15} {2:<7} {3:>6.2}%  ({4} failed{panic_suffix})\n  {5:<7} {6:<15} {7:<7} {8:>6.2}%  ({9} mismatched)\n  {10:<7} {11:<15} {7:<7} {12:>6.2}%  ({13} mismatched)",
+            "Files",
+            files,
+            "passed",
             self.file_pass_percentage(),
-            self.matched_types,
-            self.mismatched_types,
-            self.total_types,
+            format_count(self.failed_files),
+            "Types",
+            types,
+            "matched",
             self.type_match_percentage(),
-            self.matched_assignments,
-            self.mismatched_assignments,
-            self.total_assignments,
-            self.assignment_match_percentage()
+            format_count(self.mismatched_types),
+            "Assign",
+            assignments,
+            self.assignment_match_percentage(),
+            format_count(self.mismatched_assignments),
         )
     }
 }
@@ -838,21 +859,22 @@ fn full_conformance() -> ConformanceResult {
         suites.push(suite);
     }
 
-    for (suite, result) in run_type_record_conformance_suites(&suites) {
+    for (_, result) in run_type_record_conformance_suites(&suites) {
         if let Err(err) = result {
-            failures.push(format!(
-                "{} type-record comparison failed:\n{}",
-                suite.name,
-                err.into_message()
-            ));
+            failures.push(err.into_message());
         }
     }
 
     if failures.is_empty() {
         Ok(())
     } else {
+        let suite_label = if failures.len() == 1 {
+            "suite"
+        } else {
+            "suites"
+        };
         Err(ConformanceError::new(format!(
-            "conformance failed across {} suite(s):\n\n{}",
+            "conformance failed in {} {suite_label}:\n\n{}",
             failures.len(),
             failures.join("\n\n")
         )))
@@ -1132,15 +1154,12 @@ fn run_single_file_conformance(case_path: &Path, refresh_tsc: bool) -> Conforman
 
     let summary = stats.summary();
     if stats.failed_files == 0 {
-        eprintln!(
-            "{} single-file type-record conformance passed:\n{summary}",
-            suite.name
-        );
+        eprintln!("Conformance: {} (single file)\n{summary}", suite.name);
         Ok(())
     } else {
         Err(ConformanceError::new(format!(
-            "{} single-file type-record conformance failed:\n{summary}",
-            suite.name
+            "Conformance: {} (single file)\n{summary}",
+            suite.name,
         )))
     }
 }
@@ -1209,14 +1228,11 @@ fn run_type_record_conformance(
     let summary = stats.summary();
 
     if stats.failed_files == 0 {
-        eprintln!(
-            "{} type-record conformance passed:\n{summary}\n{delta}",
-            suite.name
-        );
+        eprintln!("Conformance: {}\n{summary}\n{delta}", suite.name);
         Ok(())
     } else {
         Err(ConformanceError::new(format!(
-            "{} type-record conformance failed:\n{summary}\n{delta}",
+            "Conformance: {}\n{summary}\n{delta}",
             suite.name,
         )))
     }
@@ -3589,51 +3605,61 @@ fn format_conformance_snapshot_delta(previous: &str, current: &str) -> String {
         .cloned()
         .collect::<Vec<_>>();
 
-    let mut output = String::from("conformance delta vs previous snapshot:\n");
-    output.push_str(&format!(
-        "  files: passed {}, failed {}, panicked {}, total {}\n",
-        signed_delta(current.files.first, previous.files.first),
-        signed_delta(current.files.second, previous.files.second),
-        signed_delta(
-            current
-                .files
-                .total
-                .saturating_sub(current.file_statuses.len()),
-            previous
-                .files
-                .total
-                .saturating_sub(previous.file_statuses.len()),
-        ),
-        signed_delta(current.files.total, previous.files.total),
-    ));
-    write_metric_delta(
-        &mut output,
-        "types",
-        ("matched", previous.types.first, current.types.first),
-        ("mismatched", previous.types.second, current.types.second),
-        previous.types.total,
-        current.types.total,
+    let mut changes = String::new();
+    write_delta_line(
+        &mut changes,
+        "Files",
+        &[
+            ("passed", current.files.first, previous.files.first),
+            ("failed", current.files.second, previous.files.second),
+            (
+                "panicked",
+                current
+                    .files
+                    .total
+                    .saturating_sub(current.file_statuses.len()),
+                previous
+                    .files
+                    .total
+                    .saturating_sub(previous.file_statuses.len()),
+            ),
+            ("total", current.files.total, previous.files.total),
+        ],
     );
-    write_metric_delta(
-        &mut output,
-        "assign",
-        (
-            "matched",
-            previous.assignments.first,
-            current.assignments.first,
-        ),
-        (
-            "mismatched",
-            previous.assignments.second,
-            current.assignments.second,
-        ),
-        previous.assignments.total,
-        current.assignments.total,
+    write_delta_line(
+        &mut changes,
+        "Types",
+        &[
+            ("matched", current.types.first, previous.types.first),
+            ("mismatched", current.types.second, previous.types.second),
+            ("total", current.types.total, previous.types.total),
+        ],
     );
-    write_file_delta(&mut output, "regressions (PASS -> FAIL)", &regressions);
-    write_file_delta(&mut output, "improvements (FAIL -> PASS)", &improvements);
-    write_file_delta(&mut output, "added files", &added);
-    write_file_delta(&mut output, "removed files", &removed);
+    write_delta_line(
+        &mut changes,
+        "Assign",
+        &[
+            (
+                "matched",
+                current.assignments.first,
+                previous.assignments.first,
+            ),
+            (
+                "mismatched",
+                current.assignments.second,
+                previous.assignments.second,
+            ),
+            (
+                "total",
+                current.assignments.total,
+                previous.assignments.total,
+            ),
+        ],
+    );
+    write_file_delta(&mut changes, "Regressions", &regressions);
+    write_file_delta(&mut changes, "Improvements", &improvements);
+    write_file_delta(&mut changes, "Added files", &added);
+    write_file_delta(&mut changes, "Removed files", &removed);
 
     let categories = previous
         .mismatch_categories
@@ -3641,32 +3667,53 @@ fn format_conformance_snapshot_delta(previous: &str, current: &str) -> String {
         .chain(current.mismatch_categories.keys())
         .copied()
         .collect::<BTreeSet<_>>();
-    let changed_categories = categories
-        .into_iter()
-        .filter_map(|category| {
-            let previous_count = previous
-                .mismatch_categories
-                .get(category)
-                .copied()
-                .unwrap_or_default();
-            let current_count = current
-                .mismatch_categories
-                .get(category)
-                .copied()
-                .unwrap_or_default();
-            (previous_count != current_count)
-                .then(|| (category, signed_delta(current_count, previous_count)))
-        })
-        .collect::<Vec<_>>();
-    if changed_categories.is_empty() {
-        output.push_str("  mismatch categories: unchanged\n");
-    } else {
-        output.push_str("  mismatch categories:\n");
-        for (category, delta) in changed_categories {
-            output.push_str(&format!("    {category}: {delta}\n"));
-        }
-    }
+    let changed_categories = categories.into_iter().filter_map(|category| {
+        let previous_count = previous
+            .mismatch_categories
+            .get(category)
+            .copied()
+            .unwrap_or_default();
+        let current_count = current
+            .mismatch_categories
+            .get(category)
+            .copied()
+            .unwrap_or_default();
+        (previous_count != current_count)
+            .then(|| format!("{category} {}", signed_delta(current_count, previous_count)))
+    });
+    write_joined_changes(&mut changes, "Mismatches", changed_categories);
 
+    if changes.is_empty() {
+        "  Delta    no changes\n".to_string()
+    } else {
+        format!("  Delta vs previous snapshot\n{changes}")
+    }
+}
+
+fn write_delta_line(output: &mut String, label: &str, values: &[(&str, usize, usize)]) {
+    let changes = values
+        .iter()
+        .filter(|&&(_, current, previous)| current != previous)
+        .map(|&(name, current, previous)| format!("{name} {}", signed_delta(current, previous)));
+    write_joined_changes(output, label, changes);
+}
+
+fn write_joined_changes(output: &mut String, label: &str, changes: impl Iterator<Item = String>) {
+    let changes = changes.collect::<Vec<_>>();
+    if !changes.is_empty() {
+        output.push_str(&format!("    {label:<9} {}\n", changes.join(", ")));
+    }
+}
+
+fn format_count(value: usize) -> String {
+    let digits = value.to_string();
+    let mut output = String::with_capacity(digits.len() + digits.len() / 3);
+    for (index, digit) in digits.chars().enumerate() {
+        if index > 0 && (digits.len() - index).is_multiple_of(3) {
+            output.push(',');
+        }
+        output.push(digit);
+    }
     output
 }
 
@@ -3745,28 +3792,13 @@ fn changed_file_statuses(
         .collect()
 }
 
-fn write_metric_delta(
-    output: &mut String,
-    label: &str,
-    first: (&str, usize, usize),
-    second: (&str, usize, usize),
-    previous_total: usize,
-    current_total: usize,
-) {
-    output.push_str(&format!(
-        "  {label}: {} {}, {} {}, total {}\n",
-        first.0,
-        signed_delta(first.2, first.1),
-        second.0,
-        signed_delta(second.2, second.1),
-        signed_delta(current_total, previous_total),
-    ));
-}
-
 fn write_file_delta(output: &mut String, label: &str, paths: &[String]) {
-    output.push_str(&format!("  {label}: {}\n", paths.len()));
+    if paths.is_empty() {
+        return;
+    }
+    output.push_str(&format!("    {label} ({})\n", paths.len()));
     for path in paths {
-        output.push_str(&format!("    {path}\n"));
+        output.push_str(&format!("      {path}\n"));
     }
 }
 

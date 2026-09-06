@@ -86,6 +86,32 @@ fn conformance_target_rejects_unknown_arguments() {
 }
 
 #[test]
+fn conformance_summary_is_compact_and_aligned() {
+    let stats = ComparisonStats {
+        passed_files: 113,
+        failed_files: 68,
+        panicked_files: 0,
+        total_files: 181,
+        matched_types: 3_770,
+        mismatched_types: 47,
+        total_types: 3_817,
+        matched_assignments: 90_176,
+        mismatched_assignments: 934,
+        total_assignments: 91_110,
+        allocations: ConformanceAllocationStats::default(),
+    };
+
+    assert_eq!(
+        stats.summary(),
+        concat!(
+            "  Files   113/181         passed   62.43%  (68 failed)\n",
+            "  Types   3,770/3,817     matched  98.77%  (47 mismatched)\n",
+            "  Assign  90,176/91,110   matched  98.97%  (934 mismatched)",
+        )
+    );
+}
+
+#[test]
 fn conformance_snapshot_delta_reports_regressions_and_category_changes() {
     let previous = concat!(
         "files: passed=2 failed=1 panicked=0 total=3 pass_percentage=66.67%\n",
@@ -112,23 +138,35 @@ fn conformance_snapshot_delta_reports_regressions_and_category_changes() {
     assert_eq!(
         delta,
         concat!(
-            "conformance delta vs previous snapshot:\n",
-            "  files: passed +0, failed +0, panicked +1, total +1\n",
-            "  types: matched +2, mismatched +1, total +3\n",
-            "  assign: matched +5, mismatched +1, total +6\n",
-            "  regressions (PASS -> FAIL): 1\n",
-            "    tests/a.ts\n",
-            "  improvements (FAIL -> PASS): 1\n",
-            "    tests/b.ts\n",
-            "  added files: 1\n",
-            "    tests/added.ts\n",
-            "  removed files: 1\n",
-            "    tests/removed.ts\n",
-            "  mismatch categories:\n",
-            "    assignability: +1\n",
-            "    missing from oxc: +1\n",
-            "    type mismatch: -1\n",
+            "  Delta vs previous snapshot\n",
+            "    Files     panicked +1, total +1\n",
+            "    Types     matched +2, mismatched +1, total +3\n",
+            "    Assign    matched +5, mismatched +1, total +6\n",
+            "    Regressions (1)\n",
+            "      tests/a.ts\n",
+            "    Improvements (1)\n",
+            "      tests/b.ts\n",
+            "    Added files (1)\n",
+            "      tests/added.ts\n",
+            "    Removed files (1)\n",
+            "      tests/removed.ts\n",
+            "    Mismatches assignability +1, missing from oxc +1, type mismatch -1\n",
         )
+    );
+}
+
+#[test]
+fn conformance_snapshot_delta_collapses_unchanged_results() {
+    let snapshot = concat!(
+        "files: passed=1 failed=0 panicked=0 total=1 pass_percentage=100.00%\n",
+        "types: matched=3 mismatched=0 total=3 match_percentage=100.00%\n",
+        "assign: matched=9 mismatched=0 total=9 match_percentage=100.00%\n\n",
+        "PASS tests/a.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%\n",
+    );
+
+    assert_eq!(
+        format_conformance_snapshot_delta(snapshot, snapshot),
+        "  Delta    no changes\n"
     );
 }
 
