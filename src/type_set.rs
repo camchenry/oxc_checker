@@ -99,8 +99,10 @@ impl<'a> UnionAccumulator<'a> {
             normalize_null_undefined_order(&mut self.types);
         }
 
-        if self.types.len() == 1 {
-            return self.types[0];
+        match self.types.as_slice() {
+            [] => return Ty::Never,
+            [ty] => return *ty,
+            _ => {}
         }
 
         self.arena.intern_union(self.types)
