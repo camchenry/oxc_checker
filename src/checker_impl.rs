@@ -30,6 +30,8 @@ use oxc_syntax::{
     symbol::SymbolFlags,
 };
 use rustc_hash::{FxHashMap, FxHashSet};
+use smallvec::SmallVec;
+use std::ops::ControlFlow;
 
 use crate::{
     TemplateLiteralElement, binding_pattern_default_initializer_symbol_id,
@@ -73,6 +75,9 @@ fn array_expression_element_span(element: &ArrayExpressionElement<'_>) -> Option
 pub const UNDEFINED_IDENT: Ident = static_ident!("undefined");
 
 const GLOBAL_THIS_IDENT: Ident = static_ident!("globalThis");
+
+/// Signature results with inline storage for the common one- and two-signature cases.
+type SignatureList<'a> = SmallVec<[Signature<'a>; 2]>;
 
 #[derive(Debug, Clone, Copy)]
 pub(crate) enum FunctionKind<'a> {
@@ -6275,17 +6280,17 @@ impl<'a, 'store> Checker<'a, 'store> {
                     );
                 }
 
-                let has_call_signatures = !self
-                    .get_signatures_of_type_in_program(program_id, object_type, SignatureKind::Call)
-                    .is_empty();
+                let has_call_signatures = self.has_signatures_of_type_in_program(
+                    program_id,
+                    object_type,
+                    SignatureKind::Call,
+                );
                 let has_construct_signatures = !has_call_signatures
-                    && !self
-                        .get_signatures_of_type_in_program(
-                            program_id,
-                            object_type,
-                            SignatureKind::Construct,
-                        )
-                        .is_empty();
+                    && self.has_signatures_of_type_in_program(
+                        program_id,
+                        object_type,
+                        SignatureKind::Construct,
+                    );
                 return self.get_property_type_of_global_function_augmented_type(
                     program_id,
                     has_call_signatures,
@@ -6717,9 +6722,9 @@ impl<'a, 'store> Checker<'a, 'store> {
         program_id: ProgramId,
         ty: Ty<'a>,
         kind: SignatureKind,
-    ) -> Vec<Signature<'a>> {
+    ) -> SignatureList<'a> {
         // todo(perf): fast-path for 1 signature case?
-        let signatures = self.get_signatures_of_type(ty, kind);
+        let signatures = self.collect_signatures_of_type(ty, kind);
         if !signatures.is_empty() {
             return signatures;
         }
@@ -6730,19 +6735,35 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.get_signatures_of_type_reference(program_id, reference, kind)
     }
 
+    fn has_signatures_of_type_in_program(
+        &self,
+        program_id: ProgramId,
+        ty: Ty<'a>,
+        kind: SignatureKind,
+    ) -> bool {
+        if self.has_signatures_of_type(ty, kind) {
+            return true;
+        }
+
+        let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
+            return false;
+        };
+        self.has_signatures_of_type_reference(program_id, reference, kind)
+    }
+
     fn get_signatures_of_type_reference(
         &self,
         program_id: ProgramId,
         reference: &TyTypeReference<'a>,
         kind: SignatureKind,
-    ) -> Vec<Signature<'a>> {
+    ) -> SignatureList<'a> {
         let interface_signatures = self
             .interface_declarations_for_type_reference(program_id, reference)
             .into_iter()
             .flat_map(|(program_id, interface)| {
                 self.get_signatures_of_interface_declaration(program_id, interface, reference, kind)
             })
-            .collect::<Vec<_>>();
+            .collect::<SignatureList<'a>>();
         if !interface_signatures.is_empty() {
             return interface_signatures;
         }
@@ -6750,9 +6771,80 @@ impl<'a, 'store> Checker<'a, 'store> {
         let Some((symbol, declaration)) =
             self.get_type_reference_symbol_and_declaration(program_id, reference)
         else {
-            return Vec::new();
+            return SmallVec::new();
         };
         self.get_signatures_of_type_declaration(symbol.program_id, declaration, reference, kind)
+    }
+
+    fn has_signatures_of_type_reference(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+        kind: SignatureKind,
+    ) -> bool {
+        let Some((symbol, declaration)) =
+            self.get_type_reference_symbol_and_declaration(program_id, reference)
+        else {
+            return false;
+        };
+        let Some(symbol_program) = self.store.entry(symbol.program_id) else {
+            return false;
+        };
+
+        let interface_has_signature =
+            if !symbol_program.is_lib() && symbol_program.module_record().has_module_syntax {
+                self.semantic(symbol.program_id)
+                    .scoping()
+                    .symbol_declarations(symbol.symbol_id)
+                    .filter_map(|declaration| {
+                        match self.nodes(symbol.program_id).kind(declaration) {
+                            AstKind::TSInterfaceDeclaration(interface) => Some(interface),
+                            AstKind::BindingIdentifier(_) => {
+                                let parent = self.nodes(symbol.program_id).parent_id(declaration);
+                                match self.nodes(symbol.program_id).kind(parent) {
+                                    AstKind::TSInterfaceDeclaration(interface) => Some(interface),
+                                    _ => None,
+                                }
+                            }
+                            _ => None,
+                        }
+                    })
+                    .any(|interface| Self::interface_has_signature(interface, kind))
+            } else {
+                self.interface_declarations_for_name(reference.name)
+                    .iter()
+                    .any(|(program_id, interface)| {
+                        self.store.entry(*program_id).is_some_and(|entry| {
+                            (entry.is_lib() || !entry.module_record().has_module_syntax)
+                                && Self::interface_has_signature(interface, kind)
+                        })
+                    })
+            };
+        interface_has_signature
+            || self.has_signatures_of_type_declaration(
+                symbol.program_id,
+                declaration,
+                reference,
+                kind,
+            )
+    }
+
+    fn interface_has_signature(
+        interface: &TSInterfaceDeclaration<'a>,
+        kind: SignatureKind,
+    ) -> bool {
+        interface.body.body.iter().any(|signature| {
+            matches!(
+                (signature, kind),
+                (
+                    TSSignature::TSCallSignatureDeclaration(_),
+                    SignatureKind::Call
+                ) | (
+                    TSSignature::TSConstructSignatureDeclaration(_),
+                    SignatureKind::Construct
+                )
+            )
+        })
     }
 
     fn get_signatures_of_interface_declaration(
@@ -6761,7 +6853,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         interface: &'a TSInterfaceDeclaration<'a>,
         reference: &TyTypeReference<'a>,
         kind: SignatureKind,
-    ) -> Vec<Signature<'a>> {
+    ) -> SignatureList<'a> {
         let substitutions = self.type_parameter_substitutions_for_reference(
             program_id,
             interface.type_parameters.as_deref(),
@@ -6783,7 +6875,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         declaration: NodeId,
         reference: &TyTypeReference<'a>,
         kind: SignatureKind,
-    ) -> Vec<Signature<'a>> {
+    ) -> SignatureList<'a> {
         match self.nodes(program_id).kind(declaration) {
             AstKind::TSInterfaceDeclaration(interface) => {
                 self.get_signatures_of_interface_declaration(program_id, interface, reference, kind)
@@ -6796,7 +6888,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         reference,
                     )
                     .to_mapper(self.arena());
-                self.get_signatures_of_type(
+                self.collect_signatures_of_type(
                     self.instantiate_type(
                         self.get_type_from_ts_type(program_id, &alias.type_annotation),
                         &mapper,
@@ -6808,7 +6900,42 @@ impl<'a, 'store> Checker<'a, 'store> {
                 let parent_id = self.nodes(program_id).parent_id(declaration);
                 self.get_signatures_of_type_declaration(program_id, parent_id, reference, kind)
             }
-            _ => Vec::new(),
+            _ => SmallVec::new(),
+        }
+    }
+
+    fn has_signatures_of_type_declaration(
+        &self,
+        program_id: ProgramId,
+        declaration: NodeId,
+        reference: &TyTypeReference<'a>,
+        kind: SignatureKind,
+    ) -> bool {
+        match self.nodes(program_id).kind(declaration) {
+            AstKind::TSInterfaceDeclaration(interface) => {
+                Self::interface_has_signature(interface, kind)
+            }
+            AstKind::TSTypeAliasDeclaration(alias) => {
+                let mapper = self
+                    .type_parameter_substitutions_for_reference(
+                        program_id,
+                        alias.type_parameters.as_deref(),
+                        reference,
+                    )
+                    .to_mapper(self.arena());
+                self.has_signatures_of_type(
+                    self.instantiate_type(
+                        self.get_type_from_ts_type(program_id, &alias.type_annotation),
+                        &mapper,
+                    ),
+                    kind,
+                )
+            }
+            AstKind::BindingIdentifier(_) => {
+                let parent_id = self.nodes(program_id).parent_id(declaration);
+                self.has_signatures_of_type_declaration(program_id, parent_id, reference, kind)
+            }
+            _ => false,
         }
     }
 
@@ -6999,7 +7126,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             Some(call_expression.node_id.get()),
             CheckMode::CONTEXT_FREE,
         );
-        self.get_signatures_of_type(callee_type, SignatureKind::Call)
+        self.collect_signatures_of_type(callee_type, SignatureKind::Call)
             .into_iter()
             .filter_map(|signature| {
                 self.resolve_signature_candidate(
@@ -12328,38 +12455,64 @@ impl<'a> Checker<'a, '_> {
         None
     }
 
-    pub fn get_signatures_of_type(&self, t: Ty<'a>, kind: SignatureKind) -> Vec<Signature<'a>> {
-        match self.ty_kind(t) {
+    fn has_signatures_of_type(&self, ty: Ty<'a>, kind: SignatureKind) -> bool {
+        self.visit_signatures_of_type(ty, kind, &mut |_| ControlFlow::Break(()))
+            .is_break()
+    }
+
+    fn collect_signatures_of_type(&self, t: Ty<'a>, kind: SignatureKind) -> SignatureList<'a> {
+        let mut signatures = SmallVec::new();
+        let _ = self.visit_signatures_of_type(t, kind, &mut |signature| {
+            signatures.push(signature);
+            ControlFlow::Continue(())
+        });
+        signatures
+    }
+
+    fn visit_signatures_of_type(
+        &self,
+        ty: Ty<'a>,
+        kind: SignatureKind,
+        visitor: &mut impl FnMut(Signature<'a>) -> ControlFlow<()>,
+    ) -> ControlFlow<()> {
+        match self.ty_kind(ty) {
             TyKind::Function(_) if kind == SignatureKind::Call => {
-                vec![Signature::new(SignatureKind::Call, t)]
+                visitor(Signature::new(SignatureKind::Call, ty))
             }
-            TyKind::Object(object) => object
-                .signatures()
-                .iter()
-                .copied()
-                .filter(|signature| signature.kind == kind)
-                .collect(),
+            TyKind::Object(object) => {
+                for signature in object
+                    .signatures()
+                    .iter()
+                    .copied()
+                    .filter(|signature| signature.kind == kind)
+                {
+                    visitor(signature)?;
+                }
+                ControlFlow::Continue(())
+            }
             TyKind::Intersection(intersection) => {
                 // TODO(overloads): TypeScript Go combines intersection signatures with
                 // `CompositeSignature` metadata. Concatenation is conservative enough for
                 // first-pass call resolution but loses combined type predicate/diagnostic data.
-                intersection
-                    .types
-                    .iter()
-                    .flat_map(|ty| self.get_signatures_of_type(*ty, kind))
-                    .collect()
+                for ty in &intersection.types {
+                    self.visit_signatures_of_type(*ty, kind, visitor)?;
+                }
+                ControlFlow::Continue(())
             }
             TyKind::Union(union) => {
                 // TODO(overloads): union call signatures need TypeScript Go's matching-signature
                 // synthesis. Returning all candidates can over-accept some invalid union calls.
-                union
-                    .types
-                    .iter()
-                    .flat_map(|ty| self.get_signatures_of_type(*ty, kind))
-                    .collect()
+                for ty in &union.types {
+                    self.visit_signatures_of_type(*ty, kind, visitor)?;
+                }
+                ControlFlow::Continue(())
             }
-            _ => Vec::new(),
+            _ => ControlFlow::Continue(()),
         }
+    }
+
+    pub fn get_signatures_of_type(&self, t: Ty<'a>, kind: SignatureKind) -> Vec<Signature<'a>> {
+        self.collect_signatures_of_type(t, kind).into_vec()
     }
 
     pub fn get_index_infos_of_type(&self, t: Ty<'a>) -> Vec<IndexInfo<'a>> {
