@@ -299,6 +299,22 @@ struct ComparisonStats {
     allocations: ConformanceAllocationStats,
 }
 
+#[derive(Default)]
+struct ConformanceSnapshotSummary {
+    files: SnapshotMetricCounts,
+    types: SnapshotMetricCounts,
+    assignments: SnapshotMetricCounts,
+    file_statuses: BTreeMap<String, bool>,
+    mismatch_categories: BTreeMap<&'static str, usize>,
+}
+
+#[derive(Default)]
+struct SnapshotMetricCounts {
+    first: usize,
+    second: usize,
+    total: usize,
+}
+
 impl ComparisonStats {
     fn from_results(
         results: &[FileResult],
@@ -1188,17 +1204,20 @@ fn run_type_record_conformance(
         collected.panicked_paths.len(),
         collected.allocations,
     );
-    write_snapshot(&snapshot_path, suite, &stats, &results);
+    let delta = write_snapshot(&snapshot_path, suite, &stats, &results);
 
     let summary = stats.summary();
 
     if stats.failed_files == 0 {
-        eprintln!("{} type-record conformance passed:\n{summary}", suite.name);
+        eprintln!(
+            "{} type-record conformance passed:\n{summary}\n{delta}",
+            suite.name
+        );
         Ok(())
     } else {
         Err(ConformanceError::new(format!(
-            "{} type-record conformance failed:\n{summary}",
-            suite.name
+            "{} type-record conformance failed:\n{summary}\n{delta}",
+            suite.name,
         )))
     }
 }
@@ -3527,8 +3546,12 @@ fn write_snapshot(
     suite: &ConformanceSuite,
     stats: &ComparisonStats,
     results: &[FileResult],
-) {
+) -> String {
     let snapshot = format_type_record_report(suite, stats, results);
+    let delta = std::fs::read_to_string(snapshot_path).map_or_else(
+        |_| "conformance delta: previous snapshot unavailable".to_string(),
+        |previous| format_conformance_snapshot_delta(&previous, &snapshot),
+    );
 
     if let Some(parent) = snapshot_path.parent() {
         std::fs::create_dir_all(parent).unwrap_or_else(|err| {
@@ -3544,6 +3567,212 @@ fn write_snapshot(
             snapshot_path.display()
         )
     });
+
+    delta
+}
+
+fn format_conformance_snapshot_delta(previous: &str, current: &str) -> String {
+    let previous = parse_conformance_snapshot(previous);
+    let current = parse_conformance_snapshot(current);
+    let regressions = changed_file_statuses(&previous, &current, true, false);
+    let improvements = changed_file_statuses(&previous, &current, false, true);
+    let added = current
+        .file_statuses
+        .keys()
+        .filter(|path| !previous.file_statuses.contains_key(*path))
+        .cloned()
+        .collect::<Vec<_>>();
+    let removed = previous
+        .file_statuses
+        .keys()
+        .filter(|path| !current.file_statuses.contains_key(*path))
+        .cloned()
+        .collect::<Vec<_>>();
+
+    let mut output = String::from("conformance delta vs previous snapshot:\n");
+    output.push_str(&format!(
+        "  files: passed {}, failed {}, panicked {}, total {}\n",
+        signed_delta(current.files.first, previous.files.first),
+        signed_delta(current.files.second, previous.files.second),
+        signed_delta(
+            current
+                .files
+                .total
+                .saturating_sub(current.file_statuses.len()),
+            previous
+                .files
+                .total
+                .saturating_sub(previous.file_statuses.len()),
+        ),
+        signed_delta(current.files.total, previous.files.total),
+    ));
+    write_metric_delta(
+        &mut output,
+        "types",
+        ("matched", previous.types.first, current.types.first),
+        ("mismatched", previous.types.second, current.types.second),
+        previous.types.total,
+        current.types.total,
+    );
+    write_metric_delta(
+        &mut output,
+        "assign",
+        (
+            "matched",
+            previous.assignments.first,
+            current.assignments.first,
+        ),
+        (
+            "mismatched",
+            previous.assignments.second,
+            current.assignments.second,
+        ),
+        previous.assignments.total,
+        current.assignments.total,
+    );
+    write_file_delta(&mut output, "regressions (PASS -> FAIL)", &regressions);
+    write_file_delta(&mut output, "improvements (FAIL -> PASS)", &improvements);
+    write_file_delta(&mut output, "added files", &added);
+    write_file_delta(&mut output, "removed files", &removed);
+
+    let categories = previous
+        .mismatch_categories
+        .keys()
+        .chain(current.mismatch_categories.keys())
+        .copied()
+        .collect::<BTreeSet<_>>();
+    let changed_categories = categories
+        .into_iter()
+        .filter_map(|category| {
+            let previous_count = previous
+                .mismatch_categories
+                .get(category)
+                .copied()
+                .unwrap_or_default();
+            let current_count = current
+                .mismatch_categories
+                .get(category)
+                .copied()
+                .unwrap_or_default();
+            (previous_count != current_count)
+                .then(|| (category, signed_delta(current_count, previous_count)))
+        })
+        .collect::<Vec<_>>();
+    if changed_categories.is_empty() {
+        output.push_str("  mismatch categories: unchanged\n");
+    } else {
+        output.push_str("  mismatch categories:\n");
+        for (category, delta) in changed_categories {
+            output.push_str(&format!("    {category}: {delta}\n"));
+        }
+    }
+
+    output
+}
+
+fn parse_conformance_snapshot(snapshot: &str) -> ConformanceSnapshotSummary {
+    let mut summary = ConformanceSnapshotSummary::default();
+    for line in snapshot.lines() {
+        if line.starts_with("files: ") {
+            summary.files = parse_snapshot_metric_counts(line, "passed=", "failed=");
+        } else if line.starts_with("types: ") {
+            summary.types = parse_snapshot_metric_counts(line, "matched=", "mismatched=");
+        } else if line.starts_with("assign: ") {
+            summary.assignments = parse_snapshot_metric_counts(line, "matched=", "mismatched=");
+        } else if let Some(path) = snapshot_file_path(line, "PASS ") {
+            summary.file_statuses.insert(path.to_string(), true);
+        } else if let Some(path) = snapshot_file_path(line, "FAIL ") {
+            summary.file_statuses.insert(path.to_string(), false);
+        } else if line.starts_with("  - ") {
+            let category = if line.ends_with(" type mismatch") {
+                Some("type mismatch")
+            } else if line.ends_with(" missing from oxc output") {
+                Some("missing from oxc")
+            } else if line.ends_with(" extra in oxc output") {
+                Some("extra in oxc")
+            } else if line.contains(" assignable to ") {
+                Some("assignability")
+            } else {
+                None
+            };
+            if let Some(category) = category {
+                *summary.mismatch_categories.entry(category).or_default() += 1;
+            }
+        }
+    }
+    summary
+}
+
+fn parse_snapshot_metric_counts(
+    line: &str,
+    first_key: &str,
+    second_key: &str,
+) -> SnapshotMetricCounts {
+    SnapshotMetricCounts {
+        first: snapshot_metric_value(line, first_key),
+        second: snapshot_metric_value(line, second_key),
+        total: snapshot_metric_value(line, "total="),
+    }
+}
+
+fn snapshot_metric_value(line: &str, key: &str) -> usize {
+    line.split_ascii_whitespace()
+        .find_map(|part| part.strip_prefix(key))
+        .and_then(|value| value.parse().ok())
+        .unwrap_or_default()
+}
+
+fn snapshot_file_path<'a>(line: &'a str, status: &str) -> Option<&'a str> {
+    line.strip_prefix(status)?
+        .split_once(" matched_types=")
+        .map(|(path, _)| path)
+}
+
+fn changed_file_statuses(
+    previous: &ConformanceSnapshotSummary,
+    current: &ConformanceSnapshotSummary,
+    previous_status: bool,
+    current_status: bool,
+) -> Vec<String> {
+    previous
+        .file_statuses
+        .iter()
+        .filter(|(path, status)| {
+            **status == previous_status
+                && current.file_statuses.get(*path).copied() == Some(current_status)
+        })
+        .map(|(path, _)| path.clone())
+        .collect()
+}
+
+fn write_metric_delta(
+    output: &mut String,
+    label: &str,
+    first: (&str, usize, usize),
+    second: (&str, usize, usize),
+    previous_total: usize,
+    current_total: usize,
+) {
+    output.push_str(&format!(
+        "  {label}: {} {}, {} {}, total {}\n",
+        first.0,
+        signed_delta(first.2, first.1),
+        second.0,
+        signed_delta(second.2, second.1),
+        signed_delta(current_total, previous_total),
+    ));
+}
+
+fn write_file_delta(output: &mut String, label: &str, paths: &[String]) {
+    output.push_str(&format!("  {label}: {}\n", paths.len()));
+    for path in paths {
+        output.push_str(&format!("    {path}\n"));
+    }
+}
+
+fn signed_delta(current: usize, previous: usize) -> String {
+    let delta = current as i128 - previous as i128;
+    format!("{delta:+}")
 }
 
 fn format_type_record_report(

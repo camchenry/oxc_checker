@@ -98,4 +98,6 @@ Each run writes the snapshot for every selected suite:
 
 Snapshots record every case file, whether it passed or failed, and any errors or mismatches. Local custom cases, external library fixtures, and standard library declarations also generate human-readable `.ts.types` files and machine-readable `.ts.types.jsonl` files.
 
+At the end of each suite run, the harness compares the new report with the snapshot that existed before the run. The `conformance delta vs previous snapshot` section reports aggregate type and assignment changes, pass-to-fail regressions, fail-to-pass improvements, added or removed files, panic-count changes, and mismatch-category changes. Treat the pre-run checked-in snapshot as the baseline; running the same suite again after its snapshot has already been updated will report an unchanged delta.
+
 Commit the snapshots, generated type outputs, and `tests/conformance/tsc-types/*.jsonl` records needed to track the conformance change. External fixtures must include provenance notes with the source repository, commit SHA, copied paths, and any trimming or stubbing performed.

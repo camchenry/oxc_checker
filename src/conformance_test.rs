@@ -86,6 +86,53 @@ fn conformance_target_rejects_unknown_arguments() {
 }
 
 #[test]
+fn conformance_snapshot_delta_reports_regressions_and_category_changes() {
+    let previous = concat!(
+        "files: passed=2 failed=1 panicked=0 total=3 pass_percentage=66.67%\n",
+        "types: matched=8 mismatched=2 total=10 match_percentage=80.00%\n",
+        "assign: matched=20 mismatched=1 total=21 match_percentage=95.24%\n\n",
+        "PASS tests/a.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%\n",
+        "FAIL tests/b.ts matched_types=2 mismatched_types=1 total_types=3 match_percentage=66.67%\n",
+        "  - tests/b.ts:1 `b` type mismatch\n",
+        "PASS tests/removed.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%\n",
+    );
+    let current = concat!(
+        "files: passed=2 failed=1 panicked=1 total=4 pass_percentage=50.00%\n",
+        "types: matched=10 mismatched=3 total=13 match_percentage=76.92%\n",
+        "assign: matched=25 mismatched=2 total=27 match_percentage=92.59%\n\n",
+        "FAIL tests/a.ts matched_types=3 mismatched_types=1 total_types=4 match_percentage=75.00%\n",
+        "  - tests/a.ts:1 `a` missing from oxc output\n",
+        "PASS tests/b.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%\n",
+        "PASS tests/added.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%\n",
+        "  - :1 `source` should be assignable to :2 `target`\n",
+    );
+
+    let delta = format_conformance_snapshot_delta(previous, current);
+
+    assert_eq!(
+        delta,
+        concat!(
+            "conformance delta vs previous snapshot:\n",
+            "  files: passed +0, failed +0, panicked +1, total +1\n",
+            "  types: matched +2, mismatched +1, total +3\n",
+            "  assign: matched +5, mismatched +1, total +6\n",
+            "  regressions (PASS -> FAIL): 1\n",
+            "    tests/a.ts\n",
+            "  improvements (FAIL -> PASS): 1\n",
+            "    tests/b.ts\n",
+            "  added files: 1\n",
+            "    tests/added.ts\n",
+            "  removed files: 1\n",
+            "    tests/removed.ts\n",
+            "  mismatch categories:\n",
+            "    assignability: +1\n",
+            "    missing from oxc: +1\n",
+            "    type mismatch: -1\n",
+        )
+    );
+}
+
+#[test]
 fn collection_progress_fits_active_files_on_one_line() {
     let state = ConformanceCollectionProgressState {
         completed_paths: 4,
