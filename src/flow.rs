@@ -18,7 +18,7 @@ use rustc_hash::{FxHashMap, FxHashSet};
 use crate::{
     checker::{Checker, NodeRef, SymbolRef},
     checker_impl::CheckMode,
-    flow_graph::{self, ArrayMutationKind, BranchEffect},
+    flow_graph::{ArrayMutationKind, BranchEffect},
     program::ProgramId,
     type_set::UnionAccumulator,
     types::TypeErrorKind,
@@ -207,7 +207,7 @@ impl<'a> Checker<'a, '_> {
         let nodes = self.nodes(node.program_id);
         let cfg = self.cfg(node.program_id);
         let query_block = nodes.cfg_id(node.node_id);
-        let entry = flow_graph::flow_container_entry(cfg, query_block);
+        let entry = self.flow_container_entry(node.program_id, query_block);
 
         let mut outputs = FxHashMap::default();
         let mut pending = VecDeque::from([entry]);

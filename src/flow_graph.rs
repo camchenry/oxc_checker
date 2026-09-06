@@ -65,6 +65,7 @@ pub(crate) struct ProgramFlowGraph {
     writes_by_symbol: FxHashMap<SymbolId, Box<[WriteEvent]>>,
     array_mutations_by_symbol: FxHashMap<SymbolId, Box<[ArrayMutationEvent]>>,
     array_mutation_spans_by_container: FxHashMap<(SymbolId, BlockNodeId), Box<[Span]>>,
+    container_entries_by_block: FxHashMap<BlockNodeId, BlockNodeId>,
     disabled_containers: FxHashSet<BlockNodeId>,
     dominators_by_entry: FxHashMap<BlockNodeId, Dominators<BlockNodeId>>,
 }
@@ -105,11 +106,48 @@ impl ProgramFlowGraph {
         self.array_mutations_by_symbol
             .insert(symbol_id, mutations.to_vec().into_boxed_slice());
     }
+
+    pub(crate) fn cached_container_entry(&self, block_id: BlockNodeId) -> Option<BlockNodeId> {
+        self.container_entries_by_block.get(&block_id).copied()
+    }
+
+    pub(crate) fn cache_container_entry(
+        &mut self,
+        block_id: BlockNodeId,
+        container_entry: BlockNodeId,
+    ) {
+        self.container_entries_by_block
+            .insert(block_id, container_entry);
+    }
 }
 
 impl Checker<'_, '_> {
+    /// Return the enclosing flow container, caching the reachability search per CFG block.
+    pub(crate) fn flow_container_entry(
+        &self,
+        program_id: ProgramId,
+        block: BlockNodeId,
+    ) -> BlockNodeId {
+        let cached_entry = self
+            .flow_graph_cache
+            .borrow()
+            .get(&program_id)
+            .and_then(|graph| graph.cached_container_entry(block));
+        if let Some(entry) = cached_entry {
+            return entry;
+        }
+
+        let entry = compute_flow_container_entry(self.cfg(program_id), block);
+        self.flow_graph_cache
+            .borrow_mut()
+            .entry(program_id)
+            .or_default()
+            .cache_container_entry(block, entry);
+        entry
+    }
+
     pub(crate) fn flow_analysis_disabled(&self, node: NodeRef) -> bool {
-        let container = flow_container_entry(self.cfg(node.program_id), self.cfg_id(node));
+        let container = self.flow_container_entry(node.program_id, self.cfg_id(node));
         self.flow_graph_cache
             .borrow()
             .get(&node.program_id)
@@ -117,7 +155,7 @@ impl Checker<'_, '_> {
     }
 
     fn disable_flow_analysis(&self, node: NodeRef) {
-        let container = flow_container_entry(self.cfg(node.program_id), self.cfg_id(node));
+        let container = self.flow_container_entry(node.program_id, self.cfg_id(node));
 
         self.flow_graph_cache
             .borrow_mut()
@@ -232,7 +270,7 @@ impl Checker<'_, '_> {
         node: NodeRef,
         symbol_id: SymbolId,
     ) -> bool {
-        let container = flow_container_entry(self.cfg(node.program_id), self.cfg_id(node));
+        let container = self.flow_container_entry(node.program_id, self.cfg_id(node));
         if self
             .flow_graph_cache
             .borrow()
@@ -253,7 +291,9 @@ impl Checker<'_, '_> {
                 .cached_array_mutations(symbol_id)
                 .unwrap_or_default()
                 .iter()
-                .filter(|mutation| flow_container_entry(cfg, mutation.block_id) == container)
+                .filter(|mutation| {
+                    compute_flow_container_entry(cfg, mutation.block_id) == container
+                })
                 .map(|mutation| mutation.span)
                 .collect::<Vec<_>>()
                 .into_boxed_slice();
@@ -388,7 +428,7 @@ impl Checker<'_, '_> {
         block: BlockNodeId,
     ) -> Option<FxHashSet<BlockNodeId>> {
         let cfg = self.cfg(program_id);
-        let entry = flow_container_entry(cfg, block);
+        let entry = self.flow_container_entry(program_id, block);
         let mut cache = self.flow_graph_cache.borrow_mut();
         cache
             .entry(program_id)
@@ -401,7 +441,7 @@ impl Checker<'_, '_> {
     }
 }
 
-pub(crate) fn flow_container_entry(
+fn compute_flow_container_entry(
     cfg: &oxc_cfg::ControlFlowGraph,
     block: BlockNodeId,
 ) -> BlockNodeId {
