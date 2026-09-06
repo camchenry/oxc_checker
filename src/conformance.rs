@@ -50,7 +50,6 @@ struct ConformanceSuite {
 }
 
 const CONFORMANCE_THREAD_STACK_SIZE: usize = 256 * 1024 * 1024;
-const MIN_FILES_PER_PREPARED_BATCH: usize = 4;
 const VIRTUAL_MODULE_MARKER: &str = "\nexport {};";
 
 const TYPESCRIPT_SUITE: ConformanceSuite = ConformanceSuite {
@@ -414,15 +413,6 @@ struct ParsedFixture<'a> {
     store: program::ProgramStore<'a>,
 }
 
-struct ReadyConformanceFile {
-    path: PathBuf,
-    source_text: String,
-}
-
-struct ReadyConformanceBatch {
-    files: Vec<ReadyConformanceFile>,
-}
-
 struct SharedConformanceCollection {
     worker_count: usize,
     progress: Arc<ConformanceCollectionProgress>,
@@ -477,9 +467,7 @@ impl ConformanceCollectionProgress {
 struct ConformanceCollectionTiming {
     enabled: bool,
     started_at: Instant,
-    reader_nanos: AtomicU64,
     read_nanos: AtomicU64,
-    send_wait_nanos: AtomicU64,
     check_nanos: AtomicU64,
     bytes_read: AtomicUsize,
 }
@@ -489,9 +477,7 @@ impl ConformanceCollectionTiming {
         Self {
             enabled: std::env::var_os("OXC_CONFORMANCE_TIMING").is_some(),
             started_at: Instant::now(),
-            reader_nanos: AtomicU64::new(0),
             read_nanos: AtomicU64::new(0),
-            send_wait_nanos: AtomicU64::new(0),
             check_nanos: AtomicU64::new(0),
             bytes_read: AtomicUsize::new(0),
         }
@@ -511,24 +497,10 @@ impl ConformanceCollectionTiming {
         self.bytes_read.fetch_add(bytes, Ordering::Relaxed);
     }
 
-    fn record_send_wait(&self, elapsed: Duration) {
-        if self.enabled {
-            self.send_wait_nanos
-                .fetch_add(duration_nanos(elapsed), Ordering::Relaxed);
-        }
-    }
-
     fn record_check(&self, elapsed: Duration) {
         if self.enabled {
             self.check_nanos
                 .fetch_add(duration_nanos(elapsed), Ordering::Relaxed);
-        }
-    }
-
-    fn record_reader(&self, elapsed: Duration) {
-        if self.enabled {
-            self.reader_nanos
-                .store(duration_nanos(elapsed), Ordering::Relaxed);
         }
     }
 
@@ -538,23 +510,19 @@ impl ConformanceCollectionTiming {
         }
 
         let wall = self.started_at.elapsed();
-        let reader = nanos_duration(self.reader_nanos.load(Ordering::Relaxed));
         let read = nanos_duration(self.read_nanos.load(Ordering::Relaxed));
-        let send_wait = nanos_duration(self.send_wait_nanos.load(Ordering::Relaxed));
         let check = nanos_duration(self.check_nanos.load(Ordering::Relaxed));
         let estimated_parallel_check = check.div_f64(worker_count as f64);
         let bytes_read = self.bytes_read.load(Ordering::Relaxed);
 
         eprintln!(
-            "{} collection timing: files={} workers={} bytes_read={} wall={:.3}s reader_wall={:.3}s read_sum={:.3}s send_wait={:.3}s check_sum={:.3}s check_sum/workers={:.3}s",
+            "{} collection timing: files={} workers={} bytes_read={} wall={:.3}s read_sum={:.3}s check_sum={:.3}s check_sum/workers={:.3}s",
             suite.name,
             total_paths,
             worker_count,
             bytes_read,
             wall.as_secs_f64(),
-            reader.as_secs_f64(),
             read.as_secs_f64(),
-            send_wait.as_secs_f64(),
             check.as_secs_f64(),
             estimated_parallel_check.as_secs_f64(),
         );
@@ -1397,12 +1365,14 @@ fn collect_oxc_records(
     shared: Option<&SharedConformanceCollection>,
     expectations: &ConformanceExpectations,
 ) -> OxcRecordCollection {
-    let paths = discover_compiler_cases(suite, cases_root);
+    let paths = Arc::new(discover_compiler_cases(suite, cases_root));
     let total_paths = paths.len();
-    let worker_count = shared.map_or_else(
-        || conformance_worker_count(total_paths),
-        |shared| shared.worker_count,
-    );
+    let worker_count = shared
+        .map_or_else(
+            || conformance_worker_count(total_paths),
+            |shared| shared.worker_count,
+        )
+        .min(total_paths);
 
     if total_paths == 0 {
         return OxcRecordCollection::default();
@@ -1413,82 +1383,75 @@ fn collect_oxc_records(
         |shared| Arc::clone(&shared.progress),
     );
     let timing = Arc::new(ConformanceCollectionTiming::new());
-    let (ready_sender, ready_receiver) =
-        mpsc::sync_channel(conformance_read_ahead_capacity(worker_count));
-    let reader_progress = Arc::clone(&progress);
-    let reader_timing = Arc::clone(&timing);
-    let reader = std::thread::Builder::new()
-        .name("conformance-reader".to_string())
-        .spawn(move || {
-            let reader_started_at = reader_timing.is_enabled().then(Instant::now);
-            let mut ready_files = Vec::new();
-            for path in paths {
-                let read_started_at = reader_timing.is_enabled().then(Instant::now);
-                let source_text = if let Ok(source_text) = read_to_string_simd_utf8(&path) {
-                    source_text
-                } else {
-                    reader_progress.finish(None);
-                    continue;
-                };
-                if let Some(read_started_at) = read_started_at {
-                    reader_timing.record_read(read_started_at.elapsed(), source_text.len());
-                }
-
-                ready_files.push(ReadyConformanceFile { path, source_text });
-            }
-
-            let batch_count = conformance_batch_count(ready_files.len(), worker_count);
-            for batch in balance_conformance_batches(ready_files, batch_count) {
-                let send_started_at = reader_timing.is_enabled().then(Instant::now);
-                if ready_sender.send(batch).is_err() {
-                    break;
-                }
-                if let Some(send_started_at) = send_started_at {
-                    reader_timing.record_send_wait(send_started_at.elapsed());
-                }
-            }
-            if let Some(reader_started_at) = reader_started_at {
-                reader_timing.record_reader(reader_started_at.elapsed());
-            }
-        })
-        .unwrap_or_else(|err| panic!("failed to spawn conformance reader thread: {err}"));
-
+    let next_path = Arc::new(AtomicUsize::new(0));
     let collect_records = || {
         let timing = Arc::clone(&timing);
         let progress = Arc::clone(&progress);
-        ready_receiver
-            .into_iter()
-            .par_bridge()
-            .map(|ready_batch| {
-                let allocator = Allocator::default();
-                let prepared_programs = program::PreparedProgramSet::embedded_libraries(&allocator)
-                    .unwrap_or_else(|err| panic!("failed to prepare embedded libraries: {err}"));
-                let mut batch_collection = OxcRecordCollection::default();
-                for ready_file in ready_batch.files {
-                    progress.start(&ready_file.path);
-                    let check_started_at = timing.is_enabled().then(Instant::now);
-                    let collection = collect_oxc_records_from_source_with_programs(
-                        cases_root,
-                        &ready_file.path,
-                        &ready_file.source_text,
-                        &allocator,
-                        Some(&prepared_programs),
-                        Some(expectations),
-                    );
-                    batch_collection.extend(collection);
-                    if let Some(check_started_at) = check_started_at {
-                        timing.record_check(check_started_at.elapsed());
+        let (collection_sender, collection_receiver) = mpsc::channel();
+        rayon::scope(|scope| {
+            for _ in 0..worker_count {
+                let paths = Arc::clone(&paths);
+                let next_path = Arc::clone(&next_path);
+                let timing = Arc::clone(&timing);
+                let progress = Arc::clone(&progress);
+                let collection_sender = collection_sender.clone();
+                scope.spawn(move |_| {
+                    let mut collection = OxcRecordCollection::default();
+                    let first_path_index = next_path.fetch_add(1, Ordering::Relaxed);
+                    if let Some(first_path) = paths.get(first_path_index) {
+                        progress.start(first_path);
+                        let allocator = Allocator::default();
+                        let prepared_programs =
+                            program::PreparedProgramSet::embedded_libraries(&allocator)
+                                .unwrap_or_else(|err| {
+                                    panic!("failed to prepare embedded libraries: {err}")
+                                });
+                        if let Some(file_collection) = collect_oxc_records_for_worker_file(
+                            cases_root,
+                            first_path,
+                            &allocator,
+                            &prepared_programs,
+                            expectations,
+                            &timing,
+                            &progress,
+                        ) {
+                            collection.extend(file_collection);
+                        }
+
+                        loop {
+                            let path_index = next_path.fetch_add(1, Ordering::Relaxed);
+                            let Some(path) = paths.get(path_index) else {
+                                break;
+                            };
+
+                            progress.start(path);
+                            if let Some(file_collection) = collect_oxc_records_for_worker_file(
+                                cases_root,
+                                path,
+                                &allocator,
+                                &prepared_programs,
+                                expectations,
+                                &timing,
+                                &progress,
+                            ) {
+                                collection.extend(file_collection);
+                            }
+                        }
                     }
-                    progress.finish(Some(&ready_file.path));
-                }
-                batch_collection
-            })
-            .collect::<Vec<_>>()
-            .into_iter()
-            .fold(OxcRecordCollection::default(), |mut collection, batch| {
-                collection.extend(batch);
+                    collection_sender
+                        .send(collection)
+                        .unwrap_or_else(|_| panic!("conformance worker result receiver dropped"));
+                });
+            }
+        });
+        drop(collection_sender);
+        collection_receiver.into_iter().fold(
+            OxcRecordCollection::default(),
+            |mut collection, worker| {
+                collection.extend(worker);
                 collection
-            })
+            },
+        )
     };
     let mut collection = if shared.is_some() {
         collect_records()
@@ -1501,10 +1464,6 @@ fn collect_oxc_records(
             .unwrap_or_else(|err| panic!("failed to build conformance worker pool: {err}"));
         pool.install(collect_records)
     };
-
-    reader.join().unwrap_or_else(|payload| {
-        panic!("{}", thread_panic_error(payload.as_ref()).into_message())
-    });
 
     eprintln!();
     timing.report(suite, total_paths, worker_count);
@@ -1519,37 +1478,38 @@ fn collect_oxc_records(
     collection
 }
 
-#[expect(clippy::expect_used)]
-fn balance_conformance_batches(
-    mut files: Vec<ReadyConformanceFile>,
-    batch_count: usize,
-) -> Vec<ReadyConformanceBatch> {
-    files.sort_unstable_by_key(|file| std::cmp::Reverse(file.source_text.len()));
-    let mut batches = (0..batch_count.min(files.len()))
-        .map(|_| (0_usize, Vec::new()))
-        .collect::<Vec<_>>();
-    for file in files {
-        let (size, batch) = batches
-            .iter_mut()
-            .min_by_key(|(size, _)| *size)
-            .expect("at least one conformance batch");
-        *size += file.source_text.len();
-        batch.push(file);
+fn collect_oxc_records_for_worker_file<'a>(
+    cases_root: &Path,
+    path: &Path,
+    allocator: &'a Allocator,
+    prepared_programs: &'a program::PreparedProgramSet<'a>,
+    expectations: &ConformanceExpectations,
+    timing: &ConformanceCollectionTiming,
+    progress: &ConformanceCollectionProgress,
+) -> Option<OxcRecordCollection> {
+    let read_started_at = timing.is_enabled().then(Instant::now);
+    let Ok(source_text) = read_to_string_simd_utf8(path) else {
+        progress.finish(Some(path));
+        return None;
+    };
+    if let Some(read_started_at) = read_started_at {
+        timing.record_read(read_started_at.elapsed(), source_text.len());
     }
-    batches
-        .into_iter()
-        .map(|(_, files)| ReadyConformanceBatch { files })
-        .collect()
-}
 
-fn conformance_batch_count(file_count: usize, worker_count: usize) -> usize {
-    file_count
-        .div_ceil(MIN_FILES_PER_PREPARED_BATCH)
-        .min(worker_count)
-}
-
-fn conformance_read_ahead_capacity(worker_count: usize) -> usize {
-    worker_count.saturating_mul(2).max(1)
+    let check_started_at = timing.is_enabled().then(Instant::now);
+    let collection = collect_oxc_records_from_source_with_programs(
+        cases_root,
+        path,
+        &source_text,
+        allocator,
+        Some(prepared_programs),
+        Some(expectations),
+    );
+    if let Some(check_started_at) = check_started_at {
+        timing.record_check(check_started_at.elapsed());
+    }
+    progress.finish(Some(path));
+    Some(collection)
 }
 
 fn conformance_worker_count(total_paths: usize) -> usize {

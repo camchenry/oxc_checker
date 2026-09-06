@@ -1,39 +1,5 @@
 use super::*;
 
-#[test]
-fn prepared_batch_count_amortizes_catalogs_and_caps_at_workers() {
-    assert_eq!(conformance_batch_count(0, 8), 0);
-    assert_eq!(conformance_batch_count(1, 8), 1);
-    assert_eq!(conformance_batch_count(9, 8), 3);
-    assert_eq!(conformance_batch_count(55, 8), 8);
-}
-
-#[test]
-fn conformance_batches_are_balanced_by_source_size() {
-    let files = [10, 9, 8, 7]
-        .into_iter()
-        .enumerate()
-        .map(|(index, size)| ReadyConformanceFile {
-            path: PathBuf::from(format!("{index}.ts")),
-            source_text: "x".repeat(size),
-        })
-        .collect();
-
-    let batches = balance_conformance_batches(files, 2);
-    let sizes = batches
-        .iter()
-        .map(|batch| {
-            batch
-                .files
-                .iter()
-                .map(|file| file.source_text.len())
-                .sum::<usize>()
-        })
-        .collect::<Vec<_>>();
-
-    assert_eq!(sizes, vec![17, 17]);
-}
-
 fn target_from_args(args: &[&str]) -> ConformanceResult<ConformanceTarget> {
     conformance_target_from_arguments(
         Path::new(env!("CARGO_MANIFEST_DIR")),
