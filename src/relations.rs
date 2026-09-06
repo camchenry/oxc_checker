@@ -1,5 +1,5 @@
 use crate::{
-    SignatureKind, TupleElement, TyProperty,
+    IndexInfo, Signature, SignatureKind, TupleElement, TyProperty,
     checker::Checker,
     limits::ASSIGNABILITY_MAX_DEPTH,
     mapper::TypeMapper,
@@ -51,15 +51,55 @@ impl<'a, 'store> Checker<'a, 'store> {
             return IntersectionResolution::Never;
         }
 
-        let properties = self
-            .ty
-            .alloc_slice_from_iter(intersection.types.iter().flat_map(|ty| {
-                let ty = self.resolve_type_reference_for_relation(*ty, 0, reference_resolution);
-                match self.ty_kind(ty) {
-                    TyKind::Object(object) => object.properties.iter().copied(),
-                    _ => [].iter().copied(),
+        let mut properties: Vec<TyProperty<'a>> = Vec::new();
+        let mut signatures: Vec<Signature<'a>> = Vec::new();
+        let mut index_infos: Vec<IndexInfo<'a>> = Vec::new();
+        for ty in &intersection.types {
+            let ty = self.resolve_type_reference_for_relation(*ty, 0, reference_resolution);
+            match self.ty_kind(ty) {
+                TyKind::Object(object) => {
+                    for property in object.properties {
+                        if let Some(existing) = properties.iter_mut().find(|existing| {
+                            existing.name == property.name && existing.computed == property.computed
+                        }) {
+                            existing.ty = self.ty.intersection([existing.ty, property.ty]);
+                            existing.optional &= property.optional;
+                            existing.readonly &= property.readonly;
+                            existing.method &= property.method;
+                        } else {
+                            properties.push(*property);
+                        }
+                    }
+                    for signature in object.signatures() {
+                        if !signatures.contains(signature) {
+                            signatures.push(*signature);
+                        }
+                    }
+                    for info in object.index_infos() {
+                        if let Some(existing) = index_infos
+                            .iter_mut()
+                            .find(|existing| existing.key_type == info.key_type)
+                        {
+                            existing.value_type =
+                                self.ty.intersection([existing.value_type, info.value_type]);
+                            existing.readonly &= info.readonly;
+                        } else {
+                            index_infos.push(*info);
+                        }
+                    }
                 }
-            }));
+                TyKind::Function(_) => {
+                    let signature = Signature::new(SignatureKind::Call, ty);
+                    if !signatures.contains(&signature) {
+                        signatures.push(signature);
+                    }
+                }
+                _ => {}
+            }
+        }
+        let properties = self.ty.alloc_slice_from_iter(properties);
+        let signatures = self.ty.alloc_slice_from_iter(signatures);
+        let index_infos = self.ty.alloc_slice_from_iter(index_infos);
         let primitives = self.ty.alloc_slice_from_iter(
             intersection
                 .types
@@ -67,7 +107,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .copied()
                 .filter(|ty| self.primitive_domain(*ty).is_some()),
         );
-        let object = self.ty.alloc_object(properties, &[], &[], false);
+        let object = self
+            .ty
+            .alloc_object(properties, signatures, index_infos, false);
         if primitives.is_empty() {
             IntersectionResolution::Object(object)
         } else {
@@ -1224,6 +1266,67 @@ mod tests {
         assert!(arena.is_type_identical_to(string_brand, identical_string_brand));
         assert!(is_assignable_to(string_brand, identical_string_brand));
         assert!(is_assignable_to(identical_string_brand, string_brand));
+    }
+
+    #[test]
+    fn test_resolve_intersection_type_synthesizes_members() {
+        let allocator = Allocator::default();
+        let store = test_store(&allocator);
+        let checker = Checker::new(&store);
+        let arena = checker.arena;
+        let ty = TypeBuilder::new(arena);
+
+        let mut optional_readonly_method = ty.property("value", Ty::String);
+        optional_readonly_method.optional = true;
+        optional_readonly_method.readonly = true;
+        optional_readonly_method.method = true;
+        let value_literal = ty.string_literal("x");
+        let call = ty.function([], [], Ty::Number);
+        let construct = ty.function([], [], Ty::String);
+        let object = arena.object_with_signatures_and_index_infos(
+            [optional_readonly_method],
+            [Signature::new(SignatureKind::Construct, construct)],
+            [IndexInfo::synthetic(Ty::String, Ty::String, true)],
+        );
+        let second_object = arena.object_with_index_infos(
+            [ty.property("value", value_literal)],
+            [IndexInfo::synthetic(Ty::String, value_literal, false)],
+        );
+        let intersection_type = ty.intersection([object, call, second_object]);
+        let TyKind::Intersection(intersection) = checker.ty_kind(intersection_type) else {
+            panic!("expected an intersection type");
+        };
+
+        let IntersectionResolution::Object(resolved) = checker
+            .resolve_intersection_type(intersection, IntersectionReferenceResolution::Resolve)
+        else {
+            panic!("expected a resolved object");
+        };
+        assert_eq!(resolved.properties.len(), 1);
+        let property = resolved.properties[0];
+        assert!(checker.is_assignable_to(property.ty, value_literal));
+        assert!(checker.is_assignable_to(value_literal, property.ty));
+        assert!(!property.optional);
+        assert!(!property.readonly);
+        assert!(!property.method);
+        assert_eq!(resolved.signatures().len(), 2);
+        assert!(
+            resolved
+                .signatures()
+                .iter()
+                .any(|signature| signature.kind == SignatureKind::Call)
+        );
+        assert!(
+            resolved
+                .signatures()
+                .iter()
+                .any(|signature| signature.kind == SignatureKind::Construct)
+        );
+        assert_eq!(resolved.index_infos().len(), 1);
+        let index_info = resolved.index_infos()[0];
+        assert!(checker.is_assignable_to(index_info.value_type, value_literal));
+        assert!(checker.is_assignable_to(value_literal, index_info.value_type));
+        assert!(!index_info.readonly);
     }
 
     #[test]

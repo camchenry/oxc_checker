@@ -69,3 +69,75 @@ export const numeric: number = impossible;
 
 export const numeric: number = impossible;
 >                              ^^^^^^^^^^: Left & Right   (Intersection) (Identifier)
+
+declare const wideThenNarrow: { value: string } & { value: "x" };
+>             ^^^^^^^^^^^^^^: { value: string; } & { value: "x"; }   (Intersection) (Identifier)
+
+declare const wideThenNarrow: { value: string } & { value: "x" };
+>                               ^^^^^: string   (String) (Identifier)
+
+declare const wideThenNarrow: { value: string } & { value: "x" };
+>                                                   ^^^^^: "x"   (StringLiteral) (Identifier)
+
+declare const narrowThenWide: { value: "x" } & { value: string };
+>             ^^^^^^^^^^^^^^: { value: "x"; } & { value: string; }   (Intersection) (Identifier)
+
+declare const narrowThenWide: { value: "x" } & { value: string };
+>                               ^^^^^: "x"   (StringLiteral) (Identifier)
+
+declare const narrowThenWide: { value: "x" } & { value: string };
+>                                                ^^^^^: string   (String) (Identifier)
+
+export const narrowFromWideThenNarrow: { value: "x" } = wideThenNarrow;
+>            ^^^^^^^^^^^^^^^^^^^^^^^^: { value: "x"; }   (Object) (Identifier)
+
+export const narrowFromWideThenNarrow: { value: "x" } = wideThenNarrow;
+>                                        ^^^^^: "x"   (StringLiteral) (Identifier)
+
+export const narrowFromWideThenNarrow: { value: "x" } = wideThenNarrow;
+>                                                       ^^^^^^^^^^^^^^: { value: string; } & { value: "x"; }   (Intersection) (Identifier)
+
+export const narrowFromNarrowThenWide: { value: "x" } = narrowThenWide;
+>            ^^^^^^^^^^^^^^^^^^^^^^^^: { value: "x"; }   (Object) (Identifier)
+
+export const narrowFromNarrowThenWide: { value: "x" } = narrowThenWide;
+>                                        ^^^^^: "x"   (StringLiteral) (Identifier)
+
+export const narrowFromNarrowThenWide: { value: "x" } = narrowThenWide;
+>                                                       ^^^^^^^^^^^^^^: { value: "x"; } & { value: string; }   (Intersection) (Identifier)
+
+declare const optionalThenRequired: { value?: "x" } & { value: string };
+>             ^^^^^^^^^^^^^^^^^^^^: { value?: "x"; } & { value: string; }   (Intersection) (Identifier)
+
+declare const optionalThenRequired: { value?: "x" } & { value: string };
+>                                     ^^^^^: "x" | undefined   (Union) (Identifier)
+
+declare const optionalThenRequired: { value?: "x" } & { value: string };
+>                                                       ^^^^^: string   (String) (Identifier)
+
+declare const requiredThenOptional: { value: string } & { value?: "x" };
+>             ^^^^^^^^^^^^^^^^^^^^: { value: string; } & { value?: "x"; }   (Intersection) (Identifier)
+
+declare const requiredThenOptional: { value: string } & { value?: "x" };
+>                                     ^^^^^: string   (String) (Identifier)
+
+declare const requiredThenOptional: { value: string } & { value?: "x" };
+>                                                         ^^^^^: "x" | undefined   (Union) (Identifier)
+
+export const requiredFromOptionalThenRequired: { value: string } = optionalThenRequired;
+>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { value: string; }   (Object) (Identifier)
+
+export const requiredFromOptionalThenRequired: { value: string } = optionalThenRequired;
+>                                                ^^^^^: string   (String) (Identifier)
+
+export const requiredFromOptionalThenRequired: { value: string } = optionalThenRequired;
+>                                                                  ^^^^^^^^^^^^^^^^^^^^: { value?: "x"; } & { value: string; }   (Intersection) (Identifier)
+
+export const requiredFromRequiredThenOptional: { value: string } = requiredThenOptional;
+>            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { value: string; }   (Object) (Identifier)
+
+export const requiredFromRequiredThenOptional: { value: string } = requiredThenOptional;
+>                                                ^^^^^: string   (String) (Identifier)
+
+export const requiredFromRequiredThenOptional: { value: string } = requiredThenOptional;
+>                                                                  ^^^^^^^^^^^^^^^^^^^^: { value: string; } & { value?: "x"; }   (Intersection) (Identifier)
