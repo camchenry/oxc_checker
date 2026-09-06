@@ -667,7 +667,7 @@ fn assignability_pairs_sample_large_files_directionally() {
 }
 
 #[test]
-fn assignment_mismatches_have_separate_totals_and_no_file_summary() {
+fn assignment_mismatches_have_separate_totals_in_file_summary() {
     let target = TypeRecordKey {
         start: 10,
         end: 16,
@@ -732,7 +732,9 @@ fn assignment_mismatches_have_separate_totals_and_no_file_summary() {
         .lines()
         .find(|line| line.starts_with("FAIL "))
         .unwrap();
-    assert!(!file_header.contains("matched_assignments"));
+    assert!(file_header.contains(
+        "matched_assignments=0 mismatched_assignments=1 total_assignments=1 assignment_match_percentage=0.00%"
+    ));
 }
 
 #[test]

@@ -6,7 +6,7 @@ files: passed=14 failed=65 panicked=0 total=79 pass_percentage=17.72%
 types: matched=60157 mismatched=663 total=60820 match_percentage=98.91%
 assign: matched=304997 mismatched=6507 total=311504 match_percentage=97.91%
 
-FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45%
+FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45% matched_assignments=713 mismatched_assignments=8 total_assignments=721 assignment_match_percentage=98.89%
   - src/lib/decorators.d.ts:20 `DecoratorMetadata` type mismatch
       expected: Record<PropertyKey, unknown> & object
       actual:   DecoratorMetadataObject
@@ -50,7 +50,7 @@ FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=18
       typescript target: { (initializer: (this: This) => void): void; (initializer: (this: This) => void): void; }    (Function)
       oxc source: (this: This) => void    (Function)
       oxc target: { (initializer: (this: This) => void): void; (initializer: (this: This) => void): void; }    (Object)
-FAIL src/lib/decorators.legacy.d.ts matched_types=25 mismatched_types=0 total_types=25 match_percentage=100.00%
+FAIL src/lib/decorators.legacy.d.ts matched_types=25 mismatched_types=0 total_types=25 match_percentage=100.00% matched_assignments=571 mismatched_assignments=54 total_assignments=625 assignment_match_percentage=91.36%
   - :1 `ClassDecorator` should be assignable to :2 `target`
       typescript source: <TFunction extends Function>(target: TFunction) => TFunction | void    (Function)
       typescript target: Object    (Object)
@@ -321,7 +321,7 @@ FAIL src/lib/decorators.legacy.d.ts matched_types=25 mismatched_types=0 total_ty
       typescript target: Object    (Object)
       oxc source: number    (Number)
       oxc target: Object    (TypeReference)
-FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_types=36271 match_percentage=99.80%
+FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_types=36271 match_percentage=99.80% matched_assignments=141446 mismatched_assignments=3140 total_assignments=144586 assignment_match_percentage=97.83%
   - src/lib/dom.generated.d.ts:42525 `Global` type mismatch
       expected: { new <T extends ValueType = keyof ValueTypeMap>(descriptor: GlobalDescriptor<T>, v?: ValueTypeMap[T]): Global<T>; prototype: Global; }
       actual:   { new <T extends ValueType = ValueType>(descriptor: GlobalDescriptor<T>, v?: ValueTypeMap[T]): Global<T>; prototype: Global; }
@@ -14596,7 +14596,7 @@ FAIL src/lib/dom.generated.d.ts matched_types=36197 mismatched_types=74 total_ty
       typescript target: { (): FileSystemDirectoryHandleAsyncIterator<string>; (): FileSystemDirectoryHandleAsyncIterator<string>; }    (Function)
       oxc source: { new (): FileSystemFileHandle; prototype: FileSystemFileHandle; }    (Object)
       oxc target: { (): FileSystemDirectoryHandleAsyncIterator<string>; (): FileSystemDirectoryHandleAsyncIterator<string>; }    (Object)
-FAIL src/lib/es2015.collection.d.ts matched_types=174 mismatched_types=2 total_types=176 match_percentage=98.86%
+FAIL src/lib/es2015.collection.d.ts matched_types=174 mismatched_types=2 total_types=176 match_percentage=98.86% matched_assignments=684 mismatched_assignments=6 total_assignments=690 assignment_match_percentage=99.13%
   - src/lib/es2015.collection.d.ts:35 `entries` type mismatch
       expected: readonly (readonly [K, V])[] | null | undefined
       actual:   readonly readonly [K, V][] | null | undefined
@@ -14633,7 +14633,7 @@ FAIL src/lib/es2015.collection.d.ts matched_types=174 mismatched_types=2 total_t
       typescript target: { (key: K): V | undefined; (key: K): V | undefined; }    (Function)
       oxc source: { (value: T): boolean; (value: T): boolean; }    (Object)
       oxc target: { (key: K): V | undefined; (key: K): V | undefined; }    (Object)
-FAIL src/lib/es2015.core.d.ts matched_types=323 mismatched_types=31 total_types=354 match_percentage=91.24%
+FAIL src/lib/es2015.core.d.ts matched_types=323 mismatched_types=31 total_types=354 match_percentage=91.24% matched_assignments=1194 mismatched_assignments=29 total_assignments=1223 assignment_match_percentage=97.63%
   - src/lib/es2015.core.d.ts:1 `Array` type mismatch
       expected: ArrayConstructor
       actual:   any
@@ -14872,7 +14872,7 @@ FAIL src/lib/es2015.core.d.ts matched_types=323 mismatched_types=31 total_types=
       typescript target: { (o: any): symbol[]; (o: any): symbol[]; }    (Function)
       oxc source: typeof Intl    (TypeQuery)
       oxc target: { (o: any): symbol[]; (o: any): symbol[]; }    (Object)
-FAIL src/lib/es2015.generator.d.ts matched_types=48 mismatched_types=1 total_types=49 match_percentage=97.96%
+FAIL src/lib/es2015.generator.d.ts matched_types=48 mismatched_types=1 total_types=49 match_percentage=97.96% matched_assignments=2302 mismatched_assignments=2 total_assignments=2304 assignment_match_percentage=99.91%
   - src/lib/es2015.generator.d.ts:5 `value` type mismatch
       expected: TNext | undefined
       actual:   any
@@ -14886,7 +14886,7 @@ FAIL src/lib/es2015.generator.d.ts matched_types=48 mismatched_types=1 total_typ
       typescript target: { (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; }    (Function)
       oxc source: { (value: TReturn): IteratorResult<T, TReturn>; (value: TReturn): IteratorResult<T, TReturn>; }    (Object)
       oxc target: { (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; (...[value]: [] | [TNext]): IteratorResult<T, TReturn>; }    (Object)
-FAIL src/lib/es2015.iterable.d.ts matched_types=563 mismatched_types=55 total_types=618 match_percentage=91.10%
+FAIL src/lib/es2015.iterable.d.ts matched_types=563 mismatched_types=55 total_types=618 match_percentage=91.10% matched_assignments=2073 mismatched_assignments=14 total_assignments=2087 assignment_match_percentage=99.33%
   - src/lib/es2015.iterable.d.ts:23 `Iterator` type mismatch
       expected: IteratorConstructor
       actual:   any
@@ -15118,7 +15118,7 @@ FAIL src/lib/es2015.iterable.d.ts matched_types=563 mismatched_types=55 total_ty
       typescript target: { (): SetIterator<T>; (): SetIterator<T>; }    (Function)
       oxc source: { (): ArrayIterator<number>; (): ArrayIterator<number>; }    (Object)
       oxc target: { (): SetIterator<T>; (): SetIterator<T>; }    (Object)
-FAIL src/lib/es2015.promise.d.ts matched_types=56 mismatched_types=0 total_types=56 match_percentage=100.00%
+FAIL src/lib/es2015.promise.d.ts matched_types=56 mismatched_types=0 total_types=56 match_percentage=100.00% matched_assignments=3118 mismatched_assignments=18 total_assignments=3136 assignment_match_percentage=99.43%
   - :5 `prototype` should be assignable to :13 `value`
       source: Promise<any>    (TypeReference)
       target: T | PromiseLike<T>    (Union)
@@ -15205,7 +15205,7 @@ FAIL src/lib/es2015.promise.d.ts matched_types=56 mismatched_types=0 total_types
       typescript target: (value: T | PromiseLike<T>) => void    (Function)
       oxc source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
       oxc target: (value: T | PromiseLike<T>) => void    (Function)
-FAIL src/lib/es2015.proxy.d.ts matched_types=80 mismatched_types=0 total_types=80 match_percentage=100.00%
+FAIL src/lib/es2015.proxy.d.ts matched_types=80 mismatched_types=0 total_types=80 match_percentage=100.00% matched_assignments=5987 mismatched_assignments=413 total_assignments=6400 assignment_match_percentage=93.55%
   - :6 `apply` should not be assignable to :13 `construct`
       source: { (target: T, thisArg: any, argArray: any[]): any; (target: T, thisArg: any, argArray: any[]): any; } | undefined    (Union)
       target: { (target: T, argArray: any[], newTarget: Function): object; (target: T, argArray: any[], newTarget: Function): object; } | undefined    (Union)
@@ -16555,7 +16555,7 @@ FAIL src/lib/es2015.proxy.d.ts matched_types=80 mismatched_types=0 total_types=8
       typescript target: object | null    (Union)
       oxc source: ProxyConstructor    (TypeReference)
       oxc target: object | null    (Union)
-FAIL src/lib/es2015.reflect.d.ts matched_types=115 mismatched_types=0 total_types=115 match_percentage=100.00%
+FAIL src/lib/es2015.reflect.d.ts matched_types=115 mismatched_types=0 total_types=115 match_percentage=100.00% matched_assignments=437 mismatched_assignments=23 total_assignments=460 assignment_match_percentage=95.00%
   - :1 `Reflect` should not be assignable to :9 `apply`
       typescript source: typeof Reflect    (Object)
       typescript target: { <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; <T, A extends readonly any[], R>(target: (this: T, ...args: A) => R, thisArgument: T, argumentsList: Readonly<A>): R; (target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any; }    (Function)
@@ -16671,7 +16671,7 @@ FAIL src/lib/es2015.reflect.d.ts matched_types=115 mismatched_types=0 total_type
       typescript target: { (target: object, proto: object | null): boolean; (target: object, proto: object | null): boolean; }    (Function)
       oxc source: object    (PrimitiveObject)
       oxc target: { (target: object, proto: object | null): boolean; (target: object, proto: object | null): boolean; }    (Object)
-FAIL src/lib/es2015.symbol.d.ts matched_types=10 mismatched_types=0 total_types=10 match_percentage=100.00%
+FAIL src/lib/es2015.symbol.d.ts matched_types=10 mismatched_types=0 total_types=10 match_percentage=100.00% matched_assignments=95 mismatched_assignments=5 total_assignments=100 assignment_match_percentage=95.00%
   - :5 `Symbol` should be assignable to :18 `for`
       typescript source: SymbolConstructor    (Function)
       typescript target: { (key: string): symbol; (key: string): symbol; }    (Function)
@@ -16697,7 +16697,7 @@ FAIL src/lib/es2015.symbol.d.ts matched_types=10 mismatched_types=0 total_types=
       typescript target: { (key: string): symbol; (key: string): symbol; }    (Function)
       oxc source: SymbolConstructor    (TypeReference)
       oxc target: { (key: string): symbol; (key: string): symbol; }    (Object)
-FAIL src/lib/es2015.symbol.wellknown.d.ts matched_types=190 mismatched_types=24 total_types=214 match_percentage=88.79%
+FAIL src/lib/es2015.symbol.wellknown.d.ts matched_types=190 mismatched_types=24 total_types=214 match_percentage=88.79% matched_assignments=683 mismatched_assignments=9 total_assignments=692 assignment_match_percentage=98.70%
   - src/lib/es2015.symbol.wellknown.d.ts:65 `Symbol` type mismatch
       expected: SymbolConstructor
       actual:   any
@@ -16807,7 +16807,7 @@ FAIL src/lib/es2015.symbol.wellknown.d.ts matched_types=190 mismatched_types=24 
   - :307 `species` should be assignable to :214 `species`
       source: unique symbol    (UniqueSymbol)
       target: unique symbol    (UniqueSymbol)
-FAIL src/lib/es2016.array.include.d.ts matched_types=56 mismatched_types=10 total_types=66 match_percentage=84.85%
+FAIL src/lib/es2016.array.include.d.ts matched_types=56 mismatched_types=10 total_types=66 match_percentage=84.85% matched_assignments=3098 mismatched_assignments=38 total_assignments=3136 assignment_match_percentage=98.79%
   - src/lib/es2016.array.include.d.ts:1 `Array` type mismatch
       expected: ArrayConstructor
       actual:   any
@@ -17028,7 +17028,7 @@ FAIL src/lib/es2016.array.include.d.ts matched_types=56 mismatched_types=10 tota
       typescript target: { (searchElement: T, fromIndex?: number): boolean; (searchElement: T, fromIndex?: number): boolean; }    (Function)
       oxc source: { (searchElement: number, fromIndex?: number): boolean; (searchElement: number, fromIndex?: number): boolean; }    (Object)
       oxc target: { (searchElement: T, fromIndex?: number): boolean; (searchElement: T, fromIndex?: number): boolean; }    (Object)
-FAIL src/lib/es2016.intl.d.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%
+FAIL src/lib/es2016.intl.d.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00% matched_assignments=7 mismatched_assignments=2 total_assignments=9 assignment_match_percentage=77.78%
   - :1 `Intl` should not be assignable to :12 `getCanonicalLocales`
       typescript source: typeof Intl    (Object)
       typescript target: { (locale?: string | readonly string[]): string[]; (locale?: string | readonly string[]): string[]; }    (Function)
@@ -17039,9 +17039,9 @@ FAIL src/lib/es2016.intl.d.ts matched_types=3 mismatched_types=0 total_types=3 m
       typescript target: typeof Intl    (Object)
       oxc source: { (locale?: string | readonly string[]): string[]; (locale?: string | readonly string[]): string[]; }    (Object)
       oxc target: typeof Intl    (TypeQuery)
-PASS src/lib/es2017.arraybuffer.d.ts matched_types=2 mismatched_types=0 total_types=2 match_percentage=100.00%
-PASS src/lib/es2017.date.d.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
-FAIL src/lib/es2017.intl.d.ts matched_types=22 mismatched_types=2 total_types=24 match_percentage=91.67%
+PASS src/lib/es2017.arraybuffer.d.ts matched_types=2 mismatched_types=0 total_types=2 match_percentage=100.00% matched_assignments=4 mismatched_assignments=0 total_assignments=4 assignment_match_percentage=100.00%
+PASS src/lib/es2017.date.d.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
+FAIL src/lib/es2017.intl.d.ts matched_types=22 mismatched_types=2 total_types=24 match_percentage=91.67% matched_assignments=481 mismatched_assignments=3 total_assignments=484 assignment_match_percentage=99.38%
   - src/lib/es2017.intl.d.ts:19 `type` type mismatch
       expected: keyof DateTimeFormatPartTypesRegistry
       actual:   DateTimeFormatPartTypes
@@ -17063,7 +17063,7 @@ FAIL src/lib/es2017.intl.d.ts matched_types=22 mismatched_types=2 total_types=24
       typescript target: typeof Intl    (Object)
       oxc source: { (date?: Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; (date?: Date | number): DateTimeFormatPart[]; }    (Object)
       oxc target: typeof Intl    (TypeQuery)
-FAIL src/lib/es2017.object.d.ts matched_types=32 mismatched_types=0 total_types=32 match_percentage=100.00%
+FAIL src/lib/es2017.object.d.ts matched_types=32 mismatched_types=0 total_types=32 match_percentage=100.00% matched_assignments=986 mismatched_assignments=38 total_assignments=1024 assignment_match_percentage=96.29%
   - :6 `values` should not be assignable to :6 `o`
       typescript source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
       typescript target: ArrayLike<T> | { [s: string]: T; }    (Union)
@@ -17242,8 +17242,8 @@ FAIL src/lib/es2017.object.d.ts matched_types=32 mismatched_types=0 total_types=
   - :30 `x` should be assignable to :24 `o`
       source: string    (String)
       target: {}    (Object)
-PASS src/lib/es2017.sharedmemory.d.ts matched_types=185 mismatched_types=0 total_types=185 match_percentage=100.00%
-FAIL src/lib/es2017.string.d.ts matched_types=4 mismatched_types=3 total_types=7 match_percentage=57.14%
+PASS src/lib/es2017.sharedmemory.d.ts matched_types=185 mismatched_types=0 total_types=185 match_percentage=100.00% matched_assignments=740 mismatched_assignments=0 total_assignments=740 assignment_match_percentage=100.00%
+FAIL src/lib/es2017.string.d.ts matched_types=4 mismatched_types=3 total_types=7 match_percentage=57.14% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
   - src/lib/es2017.string.d.ts:1 `String` type mismatch
       expected: StringConstructor
       actual:   any
@@ -17253,8 +17253,8 @@ FAIL src/lib/es2017.string.d.ts matched_types=4 mismatched_types=3 total_types=7
   - src/lib/es2017.string.d.ts:26 `padEnd` type mismatch
       expected: { (targetLength: number, padString?: string): string; (maxLength: number, fillString?: string): string; }
       actual:   { (maxLength: number, fillString?: string): string; (maxLength: number, fillString?: string): string; }
-PASS src/lib/es2017.typedarrays.d.ts matched_types=27 mismatched_types=0 total_types=27 match_percentage=100.00%
-FAIL src/lib/es2018.asyncgenerator.d.ts matched_types=53 mismatched_types=1 total_types=54 match_percentage=98.15%
+PASS src/lib/es2017.typedarrays.d.ts matched_types=27 mismatched_types=0 total_types=27 match_percentage=100.00% matched_assignments=729 mismatched_assignments=0 total_assignments=729 assignment_match_percentage=100.00%
+FAIL src/lib/es2018.asyncgenerator.d.ts matched_types=53 mismatched_types=1 total_types=54 match_percentage=98.15% matched_assignments=2807 mismatched_assignments=2 total_assignments=2809 assignment_match_percentage=99.93%
   - src/lib/es2018.asyncgenerator.d.ts:5 `value` type mismatch
       expected: TNext | undefined
       actual:   any
@@ -17268,7 +17268,7 @@ FAIL src/lib/es2018.asyncgenerator.d.ts matched_types=53 mismatched_types=1 tota
       typescript target: { (...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>; (...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>; }    (Function)
       oxc source: { (value: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; (value: TReturn | PromiseLike<TReturn>): Promise<IteratorResult<T, TReturn>>; }    (Object)
       oxc target: { (...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>; (...[value]: [] | [TNext]): Promise<IteratorResult<T, TReturn>>; }    (Object)
-FAIL src/lib/es2018.asynciterable.d.ts matched_types=65 mismatched_types=1 total_types=66 match_percentage=98.48%
+FAIL src/lib/es2018.asynciterable.d.ts matched_types=65 mismatched_types=1 total_types=66 match_percentage=98.48% matched_assignments=4212 mismatched_assignments=13 total_assignments=4225 assignment_match_percentage=99.69%
   - src/lib/es2018.asynciterable.d.ts:14 `value` type mismatch
       expected: TNext | undefined
       actual:   any
@@ -17313,7 +17313,7 @@ FAIL src/lib/es2018.asynciterable.d.ts matched_types=65 mismatched_types=1 total
   - :34 `asyncIterator` should be assignable to :27 `asyncIterator`
       source: unique symbol    (UniqueSymbol)
       target: unique symbol    (UniqueSymbol)
-FAIL src/lib/es2018.intl.d.ts matched_types=63 mismatched_types=4 total_types=67 match_percentage=94.03%
+FAIL src/lib/es2018.intl.d.ts matched_types=63 mismatched_types=4 total_types=67 match_percentage=94.03% matched_assignments=3938 mismatched_assignments=31 total_assignments=3969 assignment_match_percentage=99.22%
   - src/lib/es2018.intl.d.ts:28 `resolvedOptions` type mismatch
       expected: () => ResolvedPluralRulesOptions
       actual:   { (): ResolvedPluralRulesOptions; (): ResolvedPluralRulesOptions; }
@@ -17467,18 +17467,18 @@ FAIL src/lib/es2018.intl.d.ts matched_types=63 mismatched_types=4 total_types=67
       typescript target: { localeMatcher?: "lookup" | "best fit"; } | undefined    (Union)
       oxc source: { (number?: number | bigint): NumberFormatPart[]; (value: number | bigint | StringNumericLiteral): NumberFormatPart[]; (number?: number | bigint): NumberFormatPart[]; }    (Object)
       oxc target: { localeMatcher?: "lookup" | "best fit"; } | undefined    (Union)
-FAIL src/lib/es2018.promise.d.ts matched_types=4 mismatched_types=2 total_types=6 match_percentage=66.67%
+FAIL src/lib/es2018.promise.d.ts matched_types=4 mismatched_types=2 total_types=6 match_percentage=66.67% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
   - src/lib/es2018.promise.d.ts:4 `Promise` type mismatch
       expected: PromiseConstructor
       actual:   any
   - src/lib/es2018.promise.d.ts:11 `Promise` type mismatch
       expected: PromiseConstructor
       actual:   any
-FAIL src/lib/es2018.regexp.d.ts matched_types=7 mismatched_types=1 total_types=8 match_percentage=87.50%
+FAIL src/lib/es2018.regexp.d.ts matched_types=7 mismatched_types=1 total_types=8 match_percentage=87.50% matched_assignments=49 mismatched_assignments=0 total_assignments=49 assignment_match_percentage=100.00%
   - src/lib/es2018.regexp.d.ts:13 `RegExp` type mismatch
       expected: RegExpConstructor
       actual:   any
-FAIL src/lib/es2019.array.d.ts matched_types=70 mismatched_types=2 total_types=72 match_percentage=97.22%
+FAIL src/lib/es2019.array.d.ts matched_types=70 mismatched_types=2 total_types=72 match_percentage=97.22% matched_assignments=4894 mismatched_assignments=6 total_assignments=4900 assignment_match_percentage=99.88%
   - src/lib/es2019.array.d.ts:3 `recur` type mismatch
       expected: Arr extends readonly (infer InnerArr)[] ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]> : Arr
       actual:   Arr extends ReadonlyArray<infer InnerArr> ? FlatArray<InnerArr, [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20][Depth]> : Arr
@@ -17515,17 +17515,17 @@ FAIL src/lib/es2019.array.d.ts matched_types=70 mismatched_types=2 total_types=7
       typescript target: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>    (Function)
       oxc source: { <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; <A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[]; }    (Object)
       oxc target: (this: This, value: T, index: number, array: T[]) => U | ReadonlyArray<U>    (Function)
-PASS src/lib/es2019.intl.d.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%
-PASS src/lib/es2019.object.d.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
-FAIL src/lib/es2019.string.d.ts matched_types=4 mismatched_types=1 total_types=5 match_percentage=80.00%
+PASS src/lib/es2019.intl.d.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
+PASS src/lib/es2019.object.d.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00% matched_assignments=144 mismatched_assignments=0 total_assignments=144 assignment_match_percentage=100.00%
+FAIL src/lib/es2019.string.d.ts matched_types=4 mismatched_types=1 total_types=5 match_percentage=80.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
   - src/lib/es2019.string.d.ts:1 `String` type mismatch
       expected: StringConstructor
       actual:   any
-FAIL src/lib/es2019.symbol.d.ts matched_types=1 mismatched_types=1 total_types=2 match_percentage=50.00%
+FAIL src/lib/es2019.symbol.d.ts matched_types=1 mismatched_types=1 total_types=2 match_percentage=50.00% matched_assignments=1 mismatched_assignments=0 total_assignments=1 assignment_match_percentage=100.00%
   - src/lib/es2019.symbol.d.ts:1 `Symbol` type mismatch
       expected: SymbolConstructor
       actual:   any
-FAIL src/lib/es2020.bigint.d.ts matched_types=547 mismatched_types=6 total_types=553 match_percentage=98.92%
+FAIL src/lib/es2020.bigint.d.ts matched_types=547 mismatched_types=6 total_types=553 match_percentage=98.92% matched_assignments=2151 mismatched_assignments=19 total_assignments=2170 assignment_match_percentage=99.12%
   - src/lib/es2020.bigint.d.ts:97 `locales` type mismatch
       expected: Intl.LocalesArgument
       actual:   Intl.LocalesArgument | undefined
@@ -17639,7 +17639,7 @@ FAIL src/lib/es2020.bigint.d.ts matched_types=547 mismatched_types=6 total_types
       typescript target: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }    (Function)
       oxc source: typeof Intl    (TypeQuery)
       oxc target: { (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (arrayLike: ArrayLike<bigint>): BigInt64Array<ArrayBuffer>; <U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; (elements: Iterable<bigint>): BigInt64Array<ArrayBuffer>; <T>(elements: Iterable<T>, mapfn?: (v: T, k: number) => bigint, thisArg?: any): BigInt64Array<ArrayBuffer>; }    (Object)
-FAIL src/lib/es2020.date.d.ts matched_types=12 mismatched_types=10 total_types=22 match_percentage=54.55%
+FAIL src/lib/es2020.date.d.ts matched_types=12 mismatched_types=10 total_types=22 match_percentage=54.55% matched_assignments=108 mismatched_assignments=36 total_assignments=144 assignment_match_percentage=75.00%
   - src/lib/es2020.date.d.ts:3 `Date` type mismatch
       expected: DateConstructor
       actual:   any
@@ -17850,7 +17850,7 @@ FAIL src/lib/es2020.date.d.ts matched_types=12 mismatched_types=10 total_types=2
       typescript target: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }    (Function)
       oxc source: typeof Intl    (TypeQuery)
       oxc target: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; }    (Object)
-FAIL src/lib/es2020.intl.d.ts matched_types=201 mismatched_types=42 total_types=243 match_percentage=82.72%
+FAIL src/lib/es2020.intl.d.ts matched_types=201 mismatched_types=42 total_types=243 match_percentage=82.72% matched_assignments=695 mismatched_assignments=7 total_assignments=702 assignment_match_percentage=99.00%
   - src/lib/es2020.intl.d.ts:80 `LocalesArgument` type mismatch
       expected: string | Locale | readonly (string | Locale)[] | undefined
       actual:   UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined
@@ -18008,7 +18008,7 @@ FAIL src/lib/es2020.intl.d.ts matched_types=201 mismatched_types=42 total_types=
       typescript target: string    (String)
       oxc source: DisplayNamesFallback    (TypeReference)
       oxc target: string    (String)
-FAIL src/lib/es2020.number.d.ts matched_types=4 mismatched_types=4 total_types=8 match_percentage=50.00%
+FAIL src/lib/es2020.number.d.ts matched_types=4 mismatched_types=4 total_types=8 match_percentage=50.00% matched_assignments=12 mismatched_assignments=4 total_assignments=16 assignment_match_percentage=75.00%
   - src/lib/es2020.number.d.ts:3 `Number` type mismatch
       expected: NumberConstructor
       actual:   any
@@ -18041,8 +18041,8 @@ FAIL src/lib/es2020.number.d.ts matched_types=4 mismatched_types=4 total_types=8
       typescript target: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; }    (Function)
       oxc source: typeof Intl    (TypeQuery)
       oxc target: { (locales?: string | string[], options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions): string; }    (Object)
-PASS src/lib/es2020.promise.d.ts matched_types=36 mismatched_types=0 total_types=36 match_percentage=100.00%
-FAIL src/lib/es2020.sharedmemory.d.ts matched_types=85 mismatched_types=1 total_types=86 match_percentage=98.84%
+PASS src/lib/es2020.promise.d.ts matched_types=36 mismatched_types=0 total_types=36 match_percentage=100.00% matched_assignments=1296 mismatched_assignments=0 total_assignments=1296 assignment_match_percentage=100.00%
+FAIL src/lib/es2020.sharedmemory.d.ts matched_types=85 mismatched_types=1 total_types=86 match_percentage=98.84% matched_assignments=7172 mismatched_assignments=53 total_assignments=7225 assignment_match_percentage=99.27%
   - src/lib/es2020.sharedmemory.d.ts:3 `Atomics` type mismatch
       expected: Atomics
       actual:   any
@@ -18311,7 +18311,7 @@ FAIL src/lib/es2020.sharedmemory.d.ts matched_types=85 mismatched_types=1 total_
       typescript target: { (typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number; }    (Function)
       oxc source: { (typedArray: Int8Array<ArrayBufferLike> | Uint8Array<ArrayBufferLike> | Int16Array<ArrayBufferLike> | Uint16Array<ArrayBufferLike> | Int32Array<ArrayBufferLike> | Uint32Array<ArrayBufferLike>, index: number, value: number): number; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; (typedArray: BigInt64Array<ArrayBufferLike> | BigUint64Array<ArrayBufferLike>, index: number, value: bigint): bigint; }    (Object)
       oxc target: { (typedArray: Int32Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number; (typedArray: BigInt64Array<ArrayBufferLike>, index: number, count?: number): number; }    (Object)
-FAIL src/lib/es2020.string.d.ts matched_types=14 mismatched_types=8 total_types=22 match_percentage=63.64%
+FAIL src/lib/es2020.string.d.ts matched_types=14 mismatched_types=8 total_types=22 match_percentage=63.64% matched_assignments=154 mismatched_assignments=42 total_assignments=196 assignment_match_percentage=78.57%
   - src/lib/es2020.string.d.ts:5 `String` type mismatch
       expected: StringConstructor
       actual:   any
@@ -18546,7 +18546,7 @@ FAIL src/lib/es2020.string.d.ts matched_types=14 mismatched_types=8 total_types=
       typescript target: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; }    (Function)
       oxc source: typeof Intl    (TypeQuery)
       oxc target: { (that: string): number; (that: string, locales?: string | string[], options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; (that: string, locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions): number; }    (Object)
-FAIL src/lib/es2020.symbol.wellknown.d.ts matched_types=16 mismatched_types=1 total_types=17 match_percentage=94.12%
+FAIL src/lib/es2020.symbol.wellknown.d.ts matched_types=16 mismatched_types=1 total_types=17 match_percentage=94.12% matched_assignments=254 mismatched_assignments=2 total_assignments=256 assignment_match_percentage=99.22%
   - src/lib/es2020.symbol.wellknown.d.ts:16 `RegExp` type mismatch
       expected: RegExpConstructor
       actual:   any
@@ -18556,7 +18556,7 @@ FAIL src/lib/es2020.symbol.wellknown.d.ts matched_types=16 mismatched_types=1 to
   - :22 `matchAll` should be assignable to :9 `matchAll`
       source: unique symbol    (UniqueSymbol)
       target: unique symbol    (UniqueSymbol)
-FAIL src/lib/es2021.intl.d.ts matched_types=68 mismatched_types=5 total_types=73 match_percentage=93.15%
+FAIL src/lib/es2021.intl.d.ts matched_types=68 mismatched_types=5 total_types=73 match_percentage=93.15% matched_assignments=4544 mismatched_assignments=80 total_assignments=4624 assignment_match_percentage=98.27%
   - src/lib/es2021.intl.d.ts:18 `DateTimeFormat` type mismatch
       expected: DateTimeFormatConstructor
       actual:   any
@@ -18950,7 +18950,7 @@ FAIL src/lib/es2021.intl.d.ts matched_types=68 mismatched_types=5 total_types=73
   - :146 `options` should be assignable to :128 `options`
       source: Pick<ListFormatOptions, "localeMatcher"> | undefined    (Union)
       target: ListFormatOptions | undefined    (Union)
-FAIL src/lib/es2021.promise.d.ts matched_types=34 mismatched_types=0 total_types=34 match_percentage=100.00%
+FAIL src/lib/es2021.promise.d.ts matched_types=34 mismatched_types=0 total_types=34 match_percentage=100.00% matched_assignments=1151 mismatched_assignments=5 total_assignments=1156 assignment_match_percentage=99.57%
   - :2 `errors` should be assignable to :6 `errors`
       typescript source: any[]    (TypeReference)
       typescript target: Iterable<any>    (TypeReference)
@@ -18972,7 +18972,7 @@ FAIL src/lib/es2021.promise.d.ts matched_types=34 mismatched_types=0 total_types
   - :22 `values` should be assignable to :7 `errors`
       source: T    (TypeParameter)
       target: Iterable<any>    (TypeReference)
-FAIL src/lib/es2021.string.d.ts matched_types=10 mismatched_types=1 total_types=11 match_percentage=90.91%
+FAIL src/lib/es2021.string.d.ts matched_types=10 mismatched_types=1 total_types=11 match_percentage=90.91% matched_assignments=98 mismatched_assignments=2 total_assignments=100 assignment_match_percentage=98.00%
   - src/lib/es2021.string.d.ts:1 `String` type mismatch
       expected: StringConstructor
       actual:   any
@@ -18986,7 +18986,7 @@ FAIL src/lib/es2021.string.d.ts matched_types=10 mismatched_types=1 total_types=
       typescript target: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }    (Function)
       oxc source: (substring: string, ...args: any[]) => string    (Function)
       oxc target: { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; }    (Object)
-FAIL src/lib/es2021.weakref.d.ts matched_types=43 mismatched_types=0 total_types=43 match_percentage=100.00%
+FAIL src/lib/es2021.weakref.d.ts matched_types=43 mismatched_types=0 total_types=43 match_percentage=100.00% matched_assignments=1789 mismatched_assignments=60 total_assignments=1849 assignment_match_percentage=96.76%
   - :3 `WeakRef` should be assignable to :39 `target`
       typescript source: WeakRefConstructor    (Object)
       typescript target: WeakKey    (Union)
@@ -19273,7 +19273,7 @@ FAIL src/lib/es2021.weakref.d.ts matched_types=43 mismatched_types=0 total_types
       typescript target: WeakKey    (Union)
       oxc source: FinalizationRegistryConstructor    (TypeReference)
       oxc target: WeakKey    (TypeReference)
-FAIL src/lib/es2022.array.d.ts matched_types=53 mismatched_types=12 total_types=65 match_percentage=81.54%
+FAIL src/lib/es2022.array.d.ts matched_types=53 mismatched_types=12 total_types=65 match_percentage=81.54% matched_assignments=2727 mismatched_assignments=82 total_assignments=2809 assignment_match_percentage=97.08%
   - src/lib/es2022.array.d.ts:1 `Array` type mismatch
       expected: ArrayConstructor
       actual:   any
@@ -19720,7 +19720,7 @@ FAIL src/lib/es2022.array.d.ts matched_types=53 mismatched_types=12 total_types=
       typescript target: { (index: number): number | undefined; (index: number): number | undefined; }    (Function)
       oxc source: { (index: number): bigint | undefined; (index: number): bigint | undefined; }    (Object)
       oxc target: { (index: number): number | undefined; (index: number): number | undefined; }    (Object)
-FAIL src/lib/es2022.error.d.ts matched_types=77 mismatched_types=3 total_types=80 match_percentage=96.25%
+FAIL src/lib/es2022.error.d.ts matched_types=77 mismatched_types=3 total_types=80 match_percentage=96.25% matched_assignments=5809 mismatched_assignments=120 total_assignments=5929 assignment_match_percentage=97.98%
   - src/lib/es2022.error.d.ts:7 `Error` type mismatch
       expected: ErrorConstructor
       actual:   any
@@ -20330,7 +20330,7 @@ FAIL src/lib/es2022.error.d.ts matched_types=77 mismatched_types=3 total_types=8
       typescript target: TypeErrorConstructor    (Function)
       oxc source: URIErrorConstructor    (TypeReference)
       oxc target: TypeErrorConstructor    (TypeReference)
-FAIL src/lib/es2022.intl.d.ts matched_types=49 mismatched_types=3 total_types=52 match_percentage=94.23%
+FAIL src/lib/es2022.intl.d.ts matched_types=49 mismatched_types=3 total_types=52 match_percentage=94.23% matched_assignments=2369 mismatched_assignments=32 total_assignments=2401 assignment_match_percentage=98.67%
   - src/lib/es2022.intl.d.ts:29 `segment` type mismatch
       expected: (input: string) => Segments
       actual:   { (input: string): Segments; (input: string): Segments; }
@@ -20492,21 +20492,21 @@ FAIL src/lib/es2022.intl.d.ts matched_types=49 mismatched_types=3 total_types=52
       typescript target: LocalesArgument    (Union)
       oxc source: "calendar" | "collation" | "currency" | "numberingSystem" | "timeZone" | "unit"    (Union)
       oxc target: LocalesArgument    (TypeReference)
-FAIL src/lib/es2022.object.d.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
+FAIL src/lib/es2022.object.d.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00% matched_assignments=24 mismatched_assignments=1 total_assignments=25 assignment_match_percentage=96.00%
   - :7 `o` should not be assignable to :7 `hasOwn`
       typescript source: object    (Unknown)
       typescript target: { (o: object, v: PropertyKey): boolean; (o: object, v: PropertyKey): boolean; }    (Function)
       oxc source: object    (PrimitiveObject)
       oxc target: { (o: object, v: PropertyKey): boolean; (o: object, v: PropertyKey): boolean; }    (Object)
-FAIL src/lib/es2022.regexp.d.ts matched_types=11 mismatched_types=1 total_types=12 match_percentage=91.67%
+FAIL src/lib/es2022.regexp.d.ts matched_types=11 mismatched_types=1 total_types=12 match_percentage=91.67% matched_assignments=121 mismatched_assignments=0 total_assignments=121 assignment_match_percentage=100.00%
   - src/lib/es2022.regexp.d.ts:15 `RegExp` type mismatch
       expected: RegExpConstructor
       actual:   any
-FAIL src/lib/es2022.string.d.ts matched_types=2 mismatched_types=1 total_types=3 match_percentage=66.67%
+FAIL src/lib/es2022.string.d.ts matched_types=2 mismatched_types=1 total_types=3 match_percentage=66.67% matched_assignments=4 mismatched_assignments=0 total_assignments=4 assignment_match_percentage=100.00%
   - src/lib/es2022.string.d.ts:1 `String` type mismatch
       expected: StringConstructor
       actual:   any
-FAIL src/lib/es2023.array.d.ts matched_types=496 mismatched_types=45 total_types=541 match_percentage=91.68%
+FAIL src/lib/es2023.array.d.ts matched_types=496 mismatched_types=45 total_types=541 match_percentage=91.68% matched_assignments=1846 mismatched_assignments=8 total_assignments=1854 assignment_match_percentage=99.57%
   - src/lib/es2023.array.d.ts:1 `Array` type mismatch
       expected: ArrayConstructor
       actual:   any
@@ -20682,8 +20682,8 @@ FAIL src/lib/es2023.array.d.ts matched_types=496 mismatched_types=45 total_types
       typescript target: { (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; }    (Function)
       oxc source: { (compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>; (compareFn?: (a: number, b: number) => number): Uint32Array<ArrayBuffer>; }    (Object)
       oxc target: { (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; (start: number, deleteCount: number, ...items: T[]): T[]; (start: number, deleteCount?: number): T[]; }    (Object)
-PASS src/lib/es2023.collection.d.ts matched_types=2 mismatched_types=0 total_types=2 match_percentage=100.00%
-FAIL src/lib/es2023.intl.d.ts matched_types=45 mismatched_types=2 total_types=47 match_percentage=95.74%
+PASS src/lib/es2023.collection.d.ts matched_types=2 mismatched_types=0 total_types=2 match_percentage=100.00% matched_assignments=4 mismatched_assignments=0 total_assignments=4 assignment_match_percentage=100.00%
+FAIL src/lib/es2023.intl.d.ts matched_types=45 mismatched_types=2 total_types=47 match_percentage=95.74% matched_assignments=1999 mismatched_assignments=26 total_assignments=2025 assignment_match_percentage=98.72%
   - src/lib/es2023.intl.d.ts:33 `type` type mismatch
       expected: keyof NumberFormatRangePartTypeRegistry
       actual:   NumberFormatRangePartTypes
@@ -20820,7 +20820,7 @@ FAIL src/lib/es2023.intl.d.ts matched_types=45 mismatched_types=2 total_types=47
       typescript target: { (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string; (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string; }    (Function)
       oxc source: { (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[]; (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): NumberRangeFormatPart[]; }    (Object)
       oxc target: { (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string; (start: number | bigint | StringNumericLiteral, end: number | bigint | StringNumericLiteral): string; }    (Object)
-FAIL src/lib/es2024.arraybuffer.d.ts matched_types=13 mismatched_types=4 total_types=17 match_percentage=76.47%
+FAIL src/lib/es2024.arraybuffer.d.ts matched_types=13 mismatched_types=4 total_types=17 match_percentage=76.47% matched_assignments=164 mismatched_assignments=5 total_assignments=169 assignment_match_percentage=97.04%
   - src/lib/es2024.arraybuffer.d.ts:1 `ArrayBuffer` type mismatch
       expected: ArrayBufferConstructor
       actual:   any
@@ -20858,17 +20858,17 @@ FAIL src/lib/es2024.arraybuffer.d.ts matched_types=13 mismatched_types=4 total_t
       typescript target: { maxByteLength?: number; } | undefined    (Union)
       oxc source: { (newByteLength?: number): ArrayBuffer; (newByteLength?: number): ArrayBuffer; }    (Object)
       oxc target: { maxByteLength?: number; } | undefined    (Union)
-PASS src/lib/es2024.collection.d.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00%
-PASS src/lib/es2024.object.d.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00%
-FAIL src/lib/es2024.promise.d.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00%
+PASS src/lib/es2024.collection.d.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00% matched_assignments=225 mismatched_assignments=0 total_assignments=225 assignment_match_percentage=100.00%
+PASS src/lib/es2024.object.d.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00% matched_assignments=289 mismatched_assignments=0 total_assignments=289 assignment_match_percentage=100.00%
+FAIL src/lib/es2024.promise.d.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00% matched_assignments=288 mismatched_assignments=1 total_assignments=289 assignment_match_percentage=99.65%
   - :2 `promise` should be assignable to :3 `value`
       source: Promise<T>    (TypeReference)
       target: T | PromiseLike<T>    (Union)
-FAIL src/lib/es2024.regexp.d.ts matched_types=1 mismatched_types=1 total_types=2 match_percentage=50.00%
+FAIL src/lib/es2024.regexp.d.ts matched_types=1 mismatched_types=1 total_types=2 match_percentage=50.00% matched_assignments=1 mismatched_assignments=0 total_assignments=1 assignment_match_percentage=100.00%
   - src/lib/es2024.regexp.d.ts:1 `RegExp` type mismatch
       expected: RegExpConstructor
       actual:   any
-FAIL src/lib/es2024.sharedmemory.d.ts matched_types=30 mismatched_types=3 total_types=33 match_percentage=90.91%
+FAIL src/lib/es2024.sharedmemory.d.ts matched_types=30 mismatched_types=3 total_types=33 match_percentage=90.91% matched_assignments=893 mismatched_assignments=7 total_assignments=900 assignment_match_percentage=99.22%
   - src/lib/es2024.sharedmemory.d.ts:3 `Atomics` type mismatch
       expected: Atomics
       actual:   any
@@ -20913,7 +20913,7 @@ FAIL src/lib/es2024.sharedmemory.d.ts matched_types=30 mismatched_types=3 total_
       typescript target: { maxByteLength?: number; } | undefined    (Union)
       oxc source: { (newByteLength?: number): void; (newByteLength?: number): void; }    (Object)
       oxc target: { maxByteLength?: number; } | undefined    (Union)
-FAIL src/lib/es2024.string.d.ts matched_types=2 mismatched_types=1 total_types=3 match_percentage=66.67%
+FAIL src/lib/es2024.string.d.ts matched_types=2 mismatched_types=1 total_types=3 match_percentage=66.67% matched_assignments=2 mismatched_assignments=2 total_assignments=4 assignment_match_percentage=50.00%
   - src/lib/es2024.string.d.ts:1 `String` type mismatch
       expected: StringConstructor
       actual:   any
@@ -20927,7 +20927,7 @@ FAIL src/lib/es2024.string.d.ts matched_types=2 mismatched_types=1 total_types=3
       typescript target: { (): boolean; (): boolean; }    (Function)
       oxc source: { (): string; (): string; }    (Object)
       oxc target: { (): boolean; (): boolean; }    (Object)
-FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_types=93 match_percentage=89.25%
+FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_types=93 match_percentage=89.25% matched_assignments=6733 mismatched_assignments=156 total_assignments=6889 assignment_match_percentage=97.74%
   - src/lib/es2025.collection.d.ts:7 `Iterator` type mismatch
       expected: IteratorConstructor
       actual:   typeof Iterator
@@ -21738,7 +21738,7 @@ FAIL src/lib/es2025.collection.d.ts matched_types=83 mismatched_types=10 total_t
       typescript target: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }    (Function)
       oxc source: { (other: ReadonlySetLike<unknown>): boolean; (other: ReadonlySetLike<unknown>): boolean; }    (Object)
       oxc target: { <U>(other: ReadonlySetLike<U>): Set<T | U>; <U>(other: ReadonlySetLike<U>): Set<T | U>; }    (Object)
-FAIL src/lib/es2025.float16.d.ts matched_types=284 mismatched_types=3 total_types=287 match_percentage=98.95%
+FAIL src/lib/es2025.float16.d.ts matched_types=284 mismatched_types=3 total_types=287 match_percentage=98.95% matched_assignments=1111 mismatched_assignments=16 total_assignments=1127 assignment_match_percentage=98.58%
   - src/lib/es2025.float16.d.ts:296 `NumberFormatOptions` type mismatch
       expected: any
       actual:   Intl.NumberFormatOptions
@@ -21828,7 +21828,7 @@ FAIL src/lib/es2025.float16.d.ts matched_types=284 mismatched_types=3 total_type
       typescript target: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }    (Function)
       oxc source: { (x: number): number; (x: number): number; }    (Object)
       oxc target: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }    (Object)
-FAIL src/lib/es2025.intl.d.ts matched_types=113 mismatched_types=7 total_types=120 match_percentage=94.17%
+FAIL src/lib/es2025.intl.d.ts matched_types=113 mismatched_types=7 total_types=120 match_percentage=94.17% matched_assignments=428 mismatched_assignments=3 total_assignments=431 assignment_match_percentage=99.30%
   - src/lib/es2025.intl.d.ts:67 `type` type mismatch
       expected: "compact" | "currency" | "decimal" | "exponentInteger" | "exponentMinusSign" | "exponentSeparator" | "fraction" | "group" | "infinity" | "integer" | "minusSign" | "nan" | "percent" | "percentSign" | "plusSign" | "unit" | "unknown"
       actual:   Exclude<NumberFormatPartTypes, "literal">
@@ -21863,7 +21863,7 @@ FAIL src/lib/es2025.intl.d.ts matched_types=113 mismatched_types=7 total_types=1
       typescript target: string    (String)
       oxc source: DurationFormatStyle    (TypeReference)
       oxc target: string    (String)
-FAIL src/lib/es2025.iterator.d.ts matched_types=138 mismatched_types=21 total_types=159 match_percentage=86.79%
+FAIL src/lib/es2025.iterator.d.ts matched_types=138 mismatched_types=21 total_types=159 match_percentage=86.79% matched_assignments=494 mismatched_assignments=0 total_assignments=494 assignment_match_percentage=100.00%
   - src/lib/es2025.iterator.d.ts:15 `IteratorObject` missing from oxc output
       expected: any
       actual:   <missing>
@@ -21927,9 +21927,9 @@ FAIL src/lib/es2025.iterator.d.ts matched_types=138 mismatched_types=21 total_ty
   - src/lib/es2025.iterator.d.ts:126 `Iterator` type mismatch
       expected: IteratorConstructor
       actual:   typeof Iterator
-PASS src/lib/es2025.promise.d.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00%
-PASS src/lib/es2025.regexp.d.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%
-FAIL src/lib/es5.d.ts matched_types=3399 mismatched_types=36 total_types=3435 match_percentage=98.95%
+PASS src/lib/es2025.promise.d.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00% matched_assignments=225 mismatched_assignments=0 total_assignments=225 assignment_match_percentage=100.00%
+PASS src/lib/es2025.regexp.d.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
+FAIL src/lib/es5.d.ts matched_types=3399 mismatched_types=36 total_types=3435 match_percentage=98.95% matched_assignments=13320 mismatched_assignments=168 total_assignments=13488 assignment_match_percentage=98.75%
   - src/lib/es5.d.ts:15 `eval` type mismatch
       expected: { (x: string): any; (x: string): any; }
       actual:   (x: string) => any
@@ -22874,8 +22874,8 @@ FAIL src/lib/es5.d.ts matched_types=3399 mismatched_types=36 total_types=3435 ma
       typescript target: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }    (Function)
       oxc source: { (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; (locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions): string; (): string; (locales?: string | string[], options?: Intl.DateTimeFormatOptions): string; }    (Object)
       oxc target: { (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number): number; (callbackfn: (previousValue: number, currentValue: number, currentIndex: number, array: this) => number, initialValue: number): number; <U>(callbackfn: (previousValue: U, currentValue: number, currentIndex: number, array: this) => U, initialValue: U): U; }    (Object)
-PASS src/lib/esnext.array.d.ts matched_types=36 mismatched_types=0 total_types=36 match_percentage=100.00%
-FAIL src/lib/esnext.collection.d.ts matched_types=33 mismatched_types=2 total_types=35 match_percentage=94.29%
+PASS src/lib/esnext.array.d.ts matched_types=36 mismatched_types=0 total_types=36 match_percentage=100.00% matched_assignments=1296 mismatched_assignments=0 total_assignments=1296 assignment_match_percentage=100.00%
+FAIL src/lib/esnext.collection.d.ts matched_types=33 mismatched_types=2 total_types=35 match_percentage=94.29% matched_assignments=1073 mismatched_assignments=16 total_assignments=1089 assignment_match_percentage=98.53%
   - src/lib/esnext.collection.d.ts:3 `Map` type mismatch
       expected: MapConstructor
       actual:   any
@@ -22962,7 +22962,7 @@ FAIL src/lib/esnext.collection.d.ts matched_types=33 mismatched_types=2 total_ty
       typescript target: { (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }    (Function)
       oxc source: (key: K) => V    (Function)
       oxc target: { (key: K, callback: (key: K) => V): V; (key: K, callback: (key: K) => V): V; }    (Object)
-FAIL src/lib/esnext.date.d.ts matched_types=2 mismatched_types=2 total_types=4 match_percentage=50.00%
+FAIL src/lib/esnext.date.d.ts matched_types=2 mismatched_types=2 total_types=4 match_percentage=50.00% matched_assignments=2 mismatched_assignments=2 total_assignments=4 assignment_match_percentage=50.00%
   - src/lib/esnext.date.d.ts:3 `Date` type mismatch
       expected: DateConstructor
       actual:   any
@@ -22979,7 +22979,7 @@ FAIL src/lib/esnext.date.d.ts matched_types=2 mismatched_types=2 total_types=4 m
       typescript target: { (): Temporal.Instant; (): Temporal.Instant; }    (Function)
       oxc source: typeof Temporal    (TypeQuery)
       oxc target: { (): Temporal.Instant; (): Temporal.Instant; }    (Object)
-FAIL src/lib/esnext.decorators.d.ts matched_types=5 mismatched_types=1 total_types=6 match_percentage=83.33%
+FAIL src/lib/esnext.decorators.d.ts matched_types=5 mismatched_types=1 total_types=6 match_percentage=83.33% matched_assignments=23 mismatched_assignments=2 total_assignments=25 assignment_match_percentage=92.00%
   - src/lib/esnext.decorators.d.ts:8 `Function` type mismatch
       expected: FunctionConstructor
       actual:   any
@@ -22989,7 +22989,7 @@ FAIL src/lib/esnext.decorators.d.ts matched_types=5 mismatched_types=1 total_typ
   - :9 `metadata` should be assignable to :5 `metadata`
       source: unique symbol    (UniqueSymbol)
       target: unique symbol    (UniqueSymbol)
-FAIL src/lib/esnext.disposable.d.ts matched_types=104 mismatched_types=0 total_types=104 match_percentage=100.00%
+FAIL src/lib/esnext.disposable.d.ts matched_types=104 mismatched_types=0 total_types=104 match_percentage=100.00% matched_assignments=412 mismatched_assignments=4 total_assignments=416 assignment_match_percentage=99.04%
   - :45 `dispose` should not be assignable to :160 `move`
       typescript source: { (): void; (): void; }    (Function)
       typescript target: { (): AsyncDisposableStack; (): AsyncDisposableStack; }    (Function)
@@ -23010,8 +23010,8 @@ FAIL src/lib/esnext.disposable.d.ts matched_types=104 mismatched_types=0 total_t
       typescript target: { (onDisposeAsync: () => PromiseLike<void> | void): void; (onDisposeAsync: () => PromiseLike<void> | void): void; }    (Function)
       oxc source: () => PromiseLike<void> | void    (Function)
       oxc target: { (onDisposeAsync: () => PromiseLike<void> | void): void; (onDisposeAsync: () => PromiseLike<void> | void): void; }    (Object)
-PASS src/lib/esnext.error.d.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
-FAIL src/lib/esnext.intl.d.ts matched_types=46 mismatched_types=8 total_types=54 match_percentage=85.19%
+PASS src/lib/esnext.error.d.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00% matched_assignments=25 mismatched_assignments=0 total_assignments=25 assignment_match_percentage=100.00%
+FAIL src/lib/esnext.intl.d.ts matched_types=46 mismatched_types=8 total_types=54 match_percentage=85.19% matched_assignments=1850 mismatched_assignments=266 total_assignments=2116 assignment_match_percentage=87.43%
   - src/lib/esnext.intl.d.ts:4 `PlainDate` type mismatch
       expected: Temporal.PlainDateConstructor
       actual:   Temporal.PlainDate
@@ -24366,11 +24366,11 @@ FAIL src/lib/esnext.intl.d.ts matched_types=46 mismatched_types=8 total_types=54
       typescript target: { (): string[] | undefined; (): string[] | undefined; }    (Function)
       oxc source: { (): WeekInfo; (): WeekInfo; }    (Object)
       oxc target: { (): string[] | undefined; (): string[] | undefined; }    (Object)
-FAIL src/lib/esnext.sharedmemory.d.ts matched_types=2 mismatched_types=1 total_types=3 match_percentage=66.67%
+FAIL src/lib/esnext.sharedmemory.d.ts matched_types=2 mismatched_types=1 total_types=3 match_percentage=66.67% matched_assignments=4 mismatched_assignments=0 total_assignments=4 assignment_match_percentage=100.00%
   - src/lib/esnext.sharedmemory.d.ts:1 `Atomics` type mismatch
       expected: Atomics
       actual:   any
-FAIL src/lib/esnext.temporal.d.ts matched_types=946 mismatched_types=25 total_types=971 match_percentage=97.43%
+FAIL src/lib/esnext.temporal.d.ts matched_types=946 mismatched_types=25 total_types=971 match_percentage=97.43% matched_assignments=3670 mismatched_assignments=40 total_assignments=3710 assignment_match_percentage=98.92%
   - src/lib/esnext.temporal.d.ts:155 `locales` type mismatch
       expected: Intl.LocalesArgument
       actual:   Intl.LocalesArgument | undefined
@@ -24644,7 +24644,7 @@ FAIL src/lib/esnext.temporal.d.ts matched_types=946 mismatched_types=25 total_ty
       typescript target: { (): never; (): never; }    (Function)
       oxc source: { (item: PlainMonthDayToPlainDateOptions): PlainDate; (item: PlainMonthDayToPlainDateOptions): PlainDate; }    (Object)
       oxc target: { (): never; (): never; }    (Object)
-FAIL src/lib/esnext.typedarrays.d.ts matched_types=28 mismatched_types=3 total_types=31 match_percentage=90.32%
+FAIL src/lib/esnext.typedarrays.d.ts matched_types=28 mismatched_types=3 total_types=31 match_percentage=90.32% matched_assignments=742 mismatched_assignments=42 total_assignments=784 assignment_match_percentage=94.64%
   - src/lib/esnext.typedarrays.d.ts:1 `Uint8Array` type mismatch
       expected: Uint8ArrayConstructor
       actual:   any
@@ -24864,7 +24864,7 @@ FAIL src/lib/esnext.typedarrays.d.ts matched_types=28 mismatched_types=3 total_t
       typescript target: { alphabet?: "base64" | "base64url" | undefined; lastChunkHandling?: "loose" | "strict" | "stop-before-partial" | undefined; } | undefined    (Union)
       oxc source: { (string: string): Uint8Array<ArrayBuffer>; (string: string): Uint8Array<ArrayBuffer>; }    (Object)
       oxc target: { alphabet?: "base64" | "base64url" | undefined; lastChunkHandling?: "loose" | "strict" | "stop-before-partial" | undefined; } | undefined    (Union)
-FAIL src/lib/scripthost.d.ts matched_types=132 mismatched_types=4 total_types=136 match_percentage=97.06%
+FAIL src/lib/scripthost.d.ts matched_types=132 mismatched_types=4 total_types=136 match_percentage=97.06% matched_assignments=510 mismatched_assignments=8 total_assignments=518 assignment_match_percentage=98.46%
   - src/lib/scripthost.d.ts:209 `SafeArray` type mismatch
       expected: { new <T = any>(): { SafeArray_typekey: SafeArray<T>; }; }
       actual:   typeof SafeArray
@@ -24917,7 +24917,7 @@ FAIL src/lib/scripthost.d.ts matched_types=132 mismatched_types=4 total_types=13
       typescript target: { (): number; (): number; }    (Function)
       oxc source: { (dimension1Index: number, ...dimensionNIndexes: number[]): T; (dimension1Index: number, ...dimensionNIndexes: number[]): T; }    (Object)
       oxc target: { (): number; (): number; }    (Object)
-FAIL src/lib/webworker.generated.d.ts matched_types=14293 mismatched_types=169 total_types=14462 match_percentage=98.83%
+FAIL src/lib/webworker.generated.d.ts matched_types=14293 mismatched_types=169 total_types=14462 match_percentage=98.83% matched_assignments=55349 mismatched_assignments=1336 total_assignments=56685 assignment_match_percentage=97.64%
   - src/lib/webworker.generated.d.ts:506 `source` type mismatch
       expected: HTMLVideoElement | VideoFrame
       actual:   VideoFrame
@@ -31431,7 +31431,7 @@ FAIL src/lib/webworker.generated.d.ts matched_types=14293 mismatched_types=169 t
       typescript target: AesCbcParams | AesCtrParams | AesGcmParams | RsaOaepParams | AlgorithmIdentifier    (Union)
       oxc source: { new (underlyingSource: UnderlyingByteSource, strategy?: { highWaterMark?: number; }): ReadableStream<Uint8Array<ArrayBuffer>>; new <R = any>(underlyingSource: UnderlyingDefaultSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; prototype: ReadableStream; }    (Object)
       oxc target: AlgorithmIdentifier | RsaOaepParams | AesCtrParams | AesCbcParams | AesGcmParams    (Union)
-FAIL src/lib/webworker.importscripts.d.ts matched_types=1 mismatched_types=1 total_types=2 match_percentage=50.00%
+FAIL src/lib/webworker.importscripts.d.ts matched_types=1 mismatched_types=1 total_types=2 match_percentage=50.00% matched_assignments=1 mismatched_assignments=0 total_assignments=1 assignment_match_percentage=100.00%
   - src/lib/webworker.importscripts.d.ts:5 `importScripts` type mismatch
       expected: { (...urls: string[]): void; (...urls: string[]): void; }
       actual:   (...urls: string[]) => void

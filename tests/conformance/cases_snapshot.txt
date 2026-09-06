@@ -6,11 +6,11 @@ files: passed=113 failed=68 panicked=0 total=181 pass_percentage=62.43%
 types: matched=3770 mismatched=47 total=3817 match_percentage=98.77%
 assign: matched=90176 mismatched=934 total=91110 match_percentage=98.97%
 
-PASS tests/conformance/cases/compiler/abstractIdentifierNameStrict.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/arrayTypes.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/assignmentExpressions.ts matched_types=47 mismatched_types=0 total_types=47 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/basicClassProperties.ts matched_types=60 mismatched_types=0 total_types=60 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/basicFunctionGenericInference.ts matched_types=58 mismatched_types=0 total_types=58 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/abstractIdentifierNameStrict.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/arrayTypes.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00% matched_assignments=121 mismatched_assignments=0 total_assignments=121 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/assignmentExpressions.ts matched_types=47 mismatched_types=0 total_types=47 match_percentage=100.00% matched_assignments=2209 mismatched_assignments=0 total_assignments=2209 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/basicClassProperties.ts matched_types=60 mismatched_types=0 total_types=60 match_percentage=100.00% matched_assignments=3600 mismatched_assignments=0 total_assignments=3600 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/basicFunctionGenericInference.ts matched_types=58 mismatched_types=0 total_types=58 match_percentage=100.00% matched_assignments=3340 mismatched_assignments=24 total_assignments=3364 assignment_match_percentage=99.29%
   - :24 `defaultOnlyReadU` should be assignable to :1 `foo`
       source: <T = string, U = T>() => U    (Function)
       target: <T>(x: T) => T    (Function)
@@ -99,11 +99,11 @@ FAIL tests/conformance/cases/compiler/basicFunctionGenericInference.ts matched_t
   - :28 `defaultOnlyReadU` should be assignable to :34 `defaultReadTBeforeU`
       source: <T = string, U = T>() => U    (Function)
       target: <T = number, U = T>() => [T, U]    (Function)
-PASS tests/conformance/cases/compiler/basicGenericTypeReferences.ts matched_types=52 mismatched_types=0 total_types=52 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/basicPrimitives.ts matched_types=28 mismatched_types=0 total_types=28 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/binaryExpressions.ts matched_types=24 mismatched_types=0 total_types=24 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/callbackReturnInference.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/chainExpression.ts matched_types=178 mismatched_types=0 total_types=178 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/basicGenericTypeReferences.ts matched_types=52 mismatched_types=0 total_types=52 match_percentage=100.00% matched_assignments=2704 mismatched_assignments=0 total_assignments=2704 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/basicPrimitives.ts matched_types=28 mismatched_types=0 total_types=28 match_percentage=100.00% matched_assignments=784 mismatched_assignments=0 total_assignments=784 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/binaryExpressions.ts matched_types=24 mismatched_types=0 total_types=24 match_percentage=100.00% matched_assignments=576 mismatched_assignments=0 total_assignments=576 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/callbackReturnInference.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00% matched_assignments=289 mismatched_assignments=0 total_assignments=289 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/chainExpression.ts matched_types=178 mismatched_types=0 total_types=178 match_percentage=100.00% matched_assignments=699 mismatched_assignments=13 total_assignments=712 assignment_match_percentage=98.17%
   - :1 `Profile` should not be assignable to :44 `dictionary`
       source: { name: string; age?: number; greet?: (message: string) => string; tags?: string[]; nested?: { count: number; getCount?: () => number; values?: Array<{ label: string; }>; }; }    (Object)
       target: Record<string, Profile | undefined> | undefined    (Union)
@@ -143,11 +143,11 @@ FAIL tests/conformance/cases/compiler/chainExpression.ts matched_types=178 misma
   - :63 `greet` should be assignable to :63 `maybeUser`
       source: ((message: string) => string) | undefined    (Union)
       target: Profile | undefined    (Union)
-PASS tests/conformance/cases/compiler/conditionalInferTypes.ts matched_types=108 mismatched_types=0 total_types=108 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/conditionalTypes.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::array.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::iterable.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::iterator.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/conditionalInferTypes.ts matched_types=108 mismatched_types=0 total_types=108 match_percentage=100.00% matched_assignments=432 mismatched_assignments=0 total_assignments=432 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/conditionalTypes.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00% matched_assignments=144 mismatched_assignments=0 total_assignments=144 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::array.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::iterable.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00% matched_assignments=225 mismatched_assignments=0 total_assignments=225 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::iterator.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00% matched_assignments=318 mismatched_assignments=6 total_assignments=324 assignment_match_percentage=98.15%
   - iterator.ts:6 `Symbol` should be assignable to iterator.ts:11 `mapObject`
       typescript source: SymbolConstructor    (Function)
       typescript target: { [k: string]: any; }    (Object)
@@ -174,11 +174,11 @@ FAIL tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::iterator.ts m
   - iterator.ts:11 `map` should be assignable to iterator.ts:11 `mapObject`
       source: Map<string, number>    (TypeReference)
       target: { [k: string]: any; }    (Object)
-PASS tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::object.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::promise.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::record.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/defaultedTypeAssertions.ts matched_types=74 mismatched_types=0 total_types=74 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/duplicateClassDeclarationLocation.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::object.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00% matched_assignments=49 mismatched_assignments=0 total_assignments=49 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::promise.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00% matched_assignments=64 mismatched_assignments=0 total_assignments=64 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/confusingGlobalTypeNames.ts::record.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00% matched_assignments=225 mismatched_assignments=0 total_assignments=225 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/defaultedTypeAssertions.ts matched_types=74 mismatched_types=0 total_types=74 match_percentage=100.00% matched_assignments=5476 mismatched_assignments=0 total_assignments=5476 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/duplicateClassDeclarationLocation.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00% matched_assignments=26 mismatched_assignments=10 total_assignments=36 assignment_match_percentage=72.22%
   - :1 `C` should be assignable to :2 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
@@ -229,11 +229,11 @@ FAIL tests/conformance/cases/compiler/duplicateClassDeclarationLocation.ts match
       typescript target: typeof D    (Object)
       oxc source: typeof C    (Class)
       oxc target: typeof D    (Class)
-PASS tests/conformance/cases/compiler/emptyObjectIntersectionAlias.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/enumArrayInference.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_awaitThenable.ts::a.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_awaitThenable.ts::b.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_awaitThenable.ts::c.ts matched_types=18 mismatched_types=4 total_types=22 match_percentage=81.82%
+PASS tests/conformance/cases/compiler/emptyObjectIntersectionAlias.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/enumArrayInference.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00% matched_assignments=64 mismatched_assignments=0 total_assignments=64 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_awaitThenable.ts::a.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_awaitThenable.ts::b.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00% matched_assignments=36 mismatched_assignments=0 total_assignments=36 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_awaitThenable.ts::c.ts matched_types=18 mismatched_types=4 total_types=22 match_percentage=81.82% matched_assignments=312 mismatched_assignments=12 total_assignments=324 assignment_match_percentage=96.30%
   - tests/conformance/cases/compiler/eslint_awaitThenable.ts::c.ts:3 `value` type mismatch
       expected: number
       actual:   any
@@ -306,7 +306,7 @@ FAIL tests/conformance/cases/compiler/eslint_awaitThenable.ts::c.ts matched_type
       typescript target: () => Promise<void>    (Function)
       oxc source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
       oxc target: () => Promise<void>    (Function)
-FAIL tests/conformance/cases/compiler/eslint_awaitThenable.ts::d.ts matched_types=33 mismatched_types=6 total_types=39 match_percentage=84.62%
+FAIL tests/conformance/cases/compiler/eslint_awaitThenable.ts::d.ts matched_types=33 mismatched_types=6 total_types=39 match_percentage=84.62% matched_assignments=1060 mismatched_assignments=29 total_assignments=1089 assignment_match_percentage=97.34%
   - tests/conformance/cases/compiler/eslint_awaitThenable.ts::d.ts:3 `value` type mismatch
       expected: number
       actual:   any
@@ -470,36 +470,36 @@ FAIL tests/conformance/cases/compiler/eslint_awaitThenable.ts::d.ts matched_type
       typescript target: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
       oxc source: () => Promise<void>    (Function)
       oxc target: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
-PASS tests/conformance/cases/compiler/eslint_awaitThenable.ts::e.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_awaitThenable.ts::f.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_consistentReturn.ts::a.ts matched_types=10 mismatched_types=0 total_types=10 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_consistentReturn.ts::b.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::a.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::b.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::c.ts matched_types=2 mismatched_types=2 total_types=4 match_percentage=50.00%
+PASS tests/conformance/cases/compiler/eslint_awaitThenable.ts::e.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00% matched_assignments=49 mismatched_assignments=0 total_assignments=49 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_awaitThenable.ts::f.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00% matched_assignments=225 mismatched_assignments=0 total_assignments=225 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_consistentReturn.ts::a.ts matched_types=10 mismatched_types=0 total_types=10 match_percentage=100.00% matched_assignments=100 mismatched_assignments=0 total_assignments=100 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_consistentReturn.ts::b.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::a.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::b.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::c.ts matched_types=2 mismatched_types=2 total_types=4 match_percentage=50.00% matched_assignments=4 mismatched_assignments=0 total_assignments=4 assignment_match_percentage=100.00%
   - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::c.ts:4 `x` type mismatch
       expected: 1
       actual:   any
   - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::c.ts:4 `T` missing from oxc output
       expected: number
       actual:   <missing>
-FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::d.ts matched_types=2 mismatched_types=2 total_types=4 match_percentage=50.00%
+FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::d.ts matched_types=2 mismatched_types=2 total_types=4 match_percentage=50.00% matched_assignments=4 mismatched_assignments=0 total_assignments=4 assignment_match_percentage=100.00%
   - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::d.ts:4 `x` type mismatch
       expected: 1
       actual:   any
   - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::d.ts:4 `T` missing from oxc output
       expected: number
       actual:   <missing>
-FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::e.ts matched_types=2 mismatched_types=2 total_types=4 match_percentage=50.00%
+FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::e.ts matched_types=2 mismatched_types=2 total_types=4 match_percentage=50.00% matched_assignments=4 mismatched_assignments=0 total_assignments=4 assignment_match_percentage=100.00%
   - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::e.ts:4 `T` missing from oxc output
       expected: number
       actual:   <missing>
   - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::e.ts:5 `x` type mismatch
       expected: 1
       actual:   any
-PASS tests/conformance/cases/compiler/eslint_dotNotation.ts::a.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_dotNotation.ts::b.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_dotNotation.ts::c.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_dotNotation.ts::a.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00% matched_assignments=36 mismatched_assignments=0 total_assignments=36 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_dotNotation.ts::b.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00% matched_assignments=36 mismatched_assignments=0 total_assignments=36 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_dotNotation.ts::c.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00% matched_assignments=32 mismatched_assignments=4 total_assignments=36 assignment_match_percentage=88.89%
   - c.ts:1 `X` should not be assignable to c.ts:5 `x`
       typescript source: typeof X    (Object)
       typescript target: X    (TypeReference)
@@ -520,9 +520,9 @@ FAIL tests/conformance/cases/compiler/eslint_dotNotation.ts::c.ts matched_types=
       typescript target: X    (TypeReference)
       oxc source: typeof X    (Class)
       oxc target: X    (TypeReference)
-PASS tests/conformance/cases/compiler/eslint_noArrayDelete.ts::a.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noArrayDelete.ts::b.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::a.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noArrayDelete.ts::a.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noArrayDelete.ts::b.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::a.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00% matched_assignments=259 mismatched_assignments=30 total_assignments=289 assignment_match_percentage=89.62%
   - a.ts:2 `'' + {};` should be assignable to a.ts:5 `value`
       source: string    (String)
       target: MyClass    (TypeReference)
@@ -631,7 +631,7 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::a.ts matched_typ
   - a.ts:15 `[{}, new MyClass()].join('');` should be assignable to a.ts:9 `value`
       source: string    (String)
       target: MyClass    (TypeReference)
-FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::b.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::b.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00% matched_assignments=269 mismatched_assignments=20 total_assignments=289 assignment_match_percentage=93.08%
   - b.ts:5 `toString` should be assignable to b.ts:17 `literalWithToString`
       source: () => string    (Function)
       target: { toString: () => string; }    (Object)
@@ -716,7 +716,7 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::b.ts matched_typ
   - b.ts:18 `toString` should be assignable to b.ts:21 `literalWithToString`
       source: () => string    (Function)
       target: { toString: () => string; }    (Object)
-FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::c.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::c.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00% matched_assignments=142 mismatched_assignments=2 total_assignments=144 assignment_match_percentage=98.61%
   - c.ts:7 `String` should be assignable to c.ts:3 `toString`
       typescript source: StringConstructor    (Function)
       typescript target: () => string    (Function)
@@ -727,8 +727,8 @@ FAIL tests/conformance/cases/compiler/eslint_noBaseToString.ts::c.ts matched_typ
       typescript target: () => string    (Function)
       oxc source: StringConstructor    (TypeReference)
       oxc target: () => string    (Function)
-PASS tests/conformance/cases/compiler/eslint_noBaseToString.ts::d.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::a.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noBaseToString.ts::d.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::a.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00% matched_assignments=315 mismatched_assignments=9 total_assignments=324 assignment_match_percentage=97.22%
   - a.ts:2 `alert` should be assignable to a.ts:6 `postMessage`
       source: (message?: any) => void    (Function)
       target: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }    (Intersection)
@@ -756,7 +756,7 @@ FAIL tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::a.ts 
   - a.ts:14 `log` should be assignable to a.ts:6 `postMessage`
       source: (...data: any[]) => void    (Function)
       target: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }    (Intersection)
-FAIL tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::b.ts matched_types=33 mismatched_types=0 total_types=33 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::b.ts matched_types=33 mismatched_types=0 total_types=33 match_percentage=100.00% matched_assignments=1076 mismatched_assignments=13 total_assignments=1089 assignment_match_percentage=98.81%
   - b.ts:2 `alert` should be assignable to b.ts:10 `postMessage`
       source: (message?: any) => void    (Function)
       target: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }    (Intersection)
@@ -796,11 +796,11 @@ FAIL tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::b.ts 
   - b.ts:26 `error` should be assignable to b.ts:10 `postMessage`
       source: (...data: any[]) => void    (Function)
       target: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }    (Intersection)
-FAIL tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::c.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::c.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00% matched_assignments=35 mismatched_assignments=1 total_assignments=36 assignment_match_percentage=97.22%
   - c.ts:1 `window` should not be assignable to c.ts:1 `postMessage`
       source: Window & typeof globalThis    (Intersection)
       target: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }    (Intersection)
-FAIL tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::d.ts matched_types=16 mismatched_types=0 total_types=16 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::d.ts matched_types=16 mismatched_types=0 total_types=16 match_percentage=100.00% matched_assignments=249 mismatched_assignments=7 total_assignments=256 assignment_match_percentage=97.27%
   - d.ts:2 `window` should not be assignable to d.ts:2 `postMessage`
       source: Window & typeof globalThis    (Intersection)
       target: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }    (Intersection)
@@ -822,10 +822,10 @@ FAIL tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::d.ts 
   - d.ts:14 `alert` should be assignable to d.ts:2 `postMessage`
       source: (message?: any) => void    (Function)
       target: { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; } & { (message: any, targetOrigin: string, transfer?: Transferable[]): void; (message: any, options?: WindowPostMessageOptions): void; }    (Intersection)
-PASS tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::e.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noDuplicateTypeConstituents.ts::a.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noDuplicateTypeConstituents.ts::b.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::a.ts matched_types=23 mismatched_types=0 total_types=23 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noConfusingVoidExpression.ts::e.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00% matched_assignments=121 mismatched_assignments=0 total_assignments=121 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noDuplicateTypeConstituents.ts::a.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00% matched_assignments=169 mismatched_assignments=0 total_assignments=169 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noDuplicateTypeConstituents.ts::b.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00% matched_assignments=169 mismatched_assignments=0 total_assignments=169 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::a.ts matched_types=23 mismatched_types=0 total_types=23 match_percentage=100.00% matched_assignments=505 mismatched_assignments=24 total_assignments=529 assignment_match_percentage=95.46%
   - a.ts:7 `then` should be assignable to a.ts:4 `returnsPromise`
       typescript source: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>    (Function)
       typescript target: () => Promise<string>    (Function)
@@ -918,7 +918,7 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::a.ts matched
   - a.ts:11 `finally` should be assignable to a.ts:11 `reject`
       source: (onfinally?: (() => void) | undefined | null) => Promise<never>    (Function)
       target: <T = never>(reason?: any) => Promise<T>    (Function)
-FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts matched_types=27 mismatched_types=0 total_types=27 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts matched_types=27 mismatched_types=0 total_types=27 match_percentage=100.00% matched_assignments=699 mismatched_assignments=30 total_assignments=729 assignment_match_percentage=95.88%
   - b.ts:10 `then` should be assignable to b.ts:4 `returnsPromise`
       typescript source: <TResult1, TResult2>(onfulfilled?: ((value: string) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined) => Promise<TResult1 | TResult2>    (Function)
       typescript target: () => Promise<string>    (Function)
@@ -1049,7 +1049,7 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::b.ts matched
       typescript target: <T = never>(reason?: any) => Promise<T>    (Function)
       oxc source: { <T>(values: Iterable<T | PromiseLike<T>>): Promise<Awaited<T>[]>; <T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>; }    (Object)
       oxc target: <T = never>(reason?: any) => Promise<T>    (Function)
-FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::c.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::c.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00% matched_assignments=162 mismatched_assignments=7 total_assignments=169 assignment_match_percentage=95.86%
   - c.ts:3 `createPromiseLike` should be assignable to c.ts:8 `then`
       source: () => PromiseLike<string>    (Function)
       target: (onFulfilled: () => void, onRejected: () => void) => MyThenable    (Function)
@@ -1073,7 +1073,7 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::c.ts matched
       typescript target: MyThenable    (Object)
       oxc source: PromiseLike<string>    (TypeReference)
       oxc target: MyThenable    (TypeReference)
-FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::d.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::d.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00% matched_assignments=163 mismatched_assignments=6 total_assignments=169 assignment_match_percentage=96.45%
   - d.ts:1 `createPromiseLike` should be assignable to d.ts:6 `then`
       source: () => PromiseLike<string>    (Function)
       target: (onFulfilled: () => void, onRejected: () => void) => MyThenable    (Function)
@@ -1092,16 +1092,16 @@ FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::d.ts matched
   - d.ts:3 `createPromiseLike` should be assignable to d.ts:11 `createMyThenable`
       source: () => PromiseLike<string>    (Function)
       target: () => MyThenable    (Function)
-FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::e.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::e.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00% matched_assignments=34 mismatched_assignments=2 total_assignments=36 assignment_match_percentage=94.44%
   - e.ts:8 `reject` should be assignable to e.ts:3 `returnsPromise`
       source: <T = never>(reason?: any) => Promise<T>    (Function)
       target: () => Promise<string>    (Function)
   - e.ts:8 `reject` should be assignable to e.ts:6 `returnsPromise`
       source: <T = never>(reason?: any) => Promise<T>    (Function)
       target: () => Promise<string>    (Function)
-PASS tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::f.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noForInArray.ts::a.ts matched_types=16 mismatched_types=0 total_types=16 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_noForInArray.ts::b.ts matched_types=31 mismatched_types=6 total_types=37 match_percentage=83.78%
+PASS tests/conformance/cases/compiler/eslint_noFloatingPromises.ts::f.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noForInArray.ts::a.ts matched_types=16 mismatched_types=0 total_types=16 match_percentage=100.00% matched_assignments=256 mismatched_assignments=0 total_assignments=256 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noForInArray.ts::b.ts matched_types=31 mismatched_types=6 total_types=37 match_percentage=83.78% matched_assignments=961 mismatched_assignments=0 total_assignments=961 assignment_match_percentage=100.00%
   - tests/conformance/cases/compiler/eslint_noForInArray.ts::b.ts:3 `value` type mismatch
       expected: string
       actual:   any
@@ -1120,9 +1120,9 @@ FAIL tests/conformance/cases/compiler/eslint_noForInArray.ts::b.ts matched_types
   - tests/conformance/cases/compiler/eslint_noForInArray.ts::b.ts:16 `value` type mismatch
       expected: string
       actual:   any
-PASS tests/conformance/cases/compiler/eslint_noMeaninglessVoidOperator.ts::a.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noMeaninglessVoidOperator.ts::b.ts matched_types=10 mismatched_types=0 total_types=10 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::a.ts matched_types=10 mismatched_types=0 total_types=10 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noMeaninglessVoidOperator.ts::a.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noMeaninglessVoidOperator.ts::b.ts matched_types=10 mismatched_types=0 total_types=10 match_percentage=100.00% matched_assignments=100 mismatched_assignments=0 total_assignments=100 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::a.ts matched_types=10 mismatched_types=0 total_types=10 match_percentage=100.00% matched_assignments=98 mismatched_assignments=2 total_assignments=100 assignment_match_percentage=98.00%
   - a.ts:1 `resolve` should not be assignable to a.ts:9 `filter`
       typescript source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
       typescript target: { <S>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }    (Function)
@@ -1133,7 +1133,7 @@ FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::a.ts matched_
       typescript target: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
       oxc source: { <S>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }    (Object)
       oxc target: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
-FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::b.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::b.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00% matched_assignments=142 mismatched_assignments=2 total_assignments=144 assignment_match_percentage=98.61%
   - b.ts:1 `resolve` should not be assignable to b.ts:11 `filter`
       typescript source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
       typescript target: { <S>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }    (Function)
@@ -1144,7 +1144,7 @@ FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::b.ts matched_
       typescript target: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
       oxc source: { <S>(predicate: (value: number, index: number, array: number[]) => value is S, thisArg?: any): S[]; (predicate: (value: number, index: number, array: number[]) => unknown, thisArg?: any): number[]; }    (Object)
       oxc target: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
-FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::c.ts matched_types=33 mismatched_types=0 total_types=33 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::c.ts matched_types=33 mismatched_types=0 total_types=33 match_percentage=100.00% matched_assignments=1080 mismatched_assignments=9 total_assignments=1089 assignment_match_percentage=99.17%
   - c.ts:5 `resolve` should be assignable to c.ts:17 `setThing`
       source: (value: void | PromiseLike<void>) => void    (Function)
       target: () => void    (Function)
@@ -1186,7 +1186,7 @@ FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::c.ts matched_
       typescript target: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Function)
       oxc source: () => Promise<void>    (Function)
       oxc target: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Object)
-FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::d.ts matched_types=39 mismatched_types=2 total_types=41 match_percentage=95.12%
+FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::d.ts matched_types=39 mismatched_types=2 total_types=41 match_percentage=95.12% matched_assignments=1501 mismatched_assignments=20 total_assignments=1521 assignment_match_percentage=98.69%
   - tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::d.ts:2 `value` type mismatch
       expected: number
       actual:   any
@@ -1293,9 +1293,9 @@ FAIL tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::d.ts matched_
       typescript target: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Function)
       oxc source: () => Promise<void>    (Function)
       oxc target: { <K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void; (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void; }    (Object)
-PASS tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::e.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::f.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_noMisusedSpread.ts::a.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::e.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00% matched_assignments=225 mismatched_assignments=0 total_assignments=225 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noMisusedPromises.ts::f.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00% matched_assignments=225 mismatched_assignments=0 total_assignments=225 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noMisusedSpread.ts::a.ts matched_types=15 mismatched_types=0 total_types=15 match_percentage=100.00% matched_assignments=206 mismatched_assignments=19 total_assignments=225 assignment_match_percentage=91.56%
   - a.ts:1 `promise` should be assignable to a.ts:2 `spreadPromise`
       typescript source: Promise<number>    (TypeReference)
       typescript target: { then<TResult1, TResult2>(onfulfilled?: ((value: number) => TResult1 | PromiseLike<TResult1>) | null | undefined, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null | undefined): Promise<TResult1 | TResult2>; catch<TResult>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null | undefined): Promise<number | TResult>; [Symbol.toStringTag]: string; finally(onfinally?: (() => void) | undefined | null): Promise<number>; }    (Object)
@@ -1367,7 +1367,7 @@ FAIL tests/conformance/cases/compiler/eslint_noMisusedSpread.ts::a.ts matched_ty
   - a.ts:11 `userName` should be assignable to a.ts:5 `getObjectSpread`
       source: string    (String)
       target: {}    (Object)
-FAIL tests/conformance/cases/compiler/eslint_noMisusedSpread.ts::b.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noMisusedSpread.ts::b.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00% matched_assignments=59 mismatched_assignments=5 total_assignments=64 assignment_match_percentage=92.19%
   - b.ts:6 `instance` should be assignable to b.ts:7 `instanceSpread`
       source: Box    (TypeReference)
       target: { value: number; }    (Object)
@@ -1383,7 +1383,7 @@ FAIL tests/conformance/cases/compiler/eslint_noMisusedSpread.ts::b.ts matched_ty
   - b.ts:7 `instance` should be assignable to b.ts:7 `instanceSpread`
       source: Box    (TypeReference)
       target: { value: number; }    (Object)
-FAIL tests/conformance/cases/compiler/eslint_noMisusedSpread.ts::c.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noMisusedSpread.ts::c.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00% matched_assignments=306 mismatched_assignments=18 total_assignments=324 assignment_match_percentage=94.44%
   - c.ts:4 `getObject` should be assignable to c.ts:8 `fromEntries`
       typescript source: () => Record<string, string>    (Function)
       typescript target: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }    (Function)
@@ -1470,8 +1470,8 @@ FAIL tests/conformance/cases/compiler/eslint_noMisusedSpread.ts::c.ts matched_ty
       typescript target: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }    (Function)
       oxc source: { (separator: string | RegExp, limit?: number): string[]; (splitter: { [Symbol.split](string: string, limit?: number): string[]; }, limit?: number): string[]; }    (Object)
       oxc target: { <T = any>(entries: Iterable<readonly [PropertyKey, T]>): { [k: string]: T; }; (entries: Iterable<readonly any[]>): any; }    (Object)
-PASS tests/conformance/cases/compiler/eslint_noMixedEnums.ts::a.ts matched_types=16 mismatched_types=0 total_types=16 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_noMixedEnums.ts::b.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noMixedEnums.ts::a.ts matched_types=16 mismatched_types=0 total_types=16 match_percentage=100.00% matched_assignments=256 mismatched_assignments=0 total_assignments=256 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noMixedEnums.ts::b.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00% matched_assignments=46 mismatched_assignments=3 total_assignments=49 assignment_match_percentage=93.88%
   - b.ts:1 `Status` should not be assignable to b.ts:7 `values`
       typescript source: typeof Status    (Object)
       typescript target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
@@ -1487,7 +1487,7 @@ FAIL tests/conformance/cases/compiler/eslint_noMixedEnums.ts::b.ts matched_types
       typescript target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
       oxc source: typeof Status    (TypeQuery)
       oxc target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Object)
-FAIL tests/conformance/cases/compiler/eslint_noMixedEnums.ts::c.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noMixedEnums.ts::c.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00% matched_assignments=61 mismatched_assignments=3 total_assignments=64 assignment_match_percentage=95.31%
   - c.ts:1 `Status` should not be assignable to c.ts:8 `values`
       typescript source: typeof Status    (Object)
       typescript target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
@@ -1503,10 +1503,10 @@ FAIL tests/conformance/cases/compiler/eslint_noMixedEnums.ts::c.ts matched_types
       typescript target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
       oxc source: typeof Status    (TypeQuery)
       oxc target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Object)
-PASS tests/conformance/cases/compiler/eslint_noRedundantTypeConstituents.ts::a.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noRedundantTypeConstituents.ts::b.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts matched_types=20 mismatched_types=0 total_types=20 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts matched_types=29 mismatched_types=2 total_types=31 match_percentage=93.55%
+PASS tests/conformance/cases/compiler/eslint_noRedundantTypeConstituents.ts::a.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00% matched_assignments=144 mismatched_assignments=0 total_assignments=144 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noRedundantTypeConstituents.ts::b.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00% matched_assignments=144 mismatched_assignments=0 total_assignments=144 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTemplateExpression.ts::a.ts matched_types=20 mismatched_types=0 total_types=20 match_percentage=100.00% matched_assignments=400 mismatched_assignments=0 total_assignments=400 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts matched_types=29 mismatched_types=2 total_types=31 match_percentage=93.55% matched_assignments=837 mismatched_assignments=4 total_assignments=841 assignment_match_percentage=99.52%
   - tests/conformance/cases/compiler/eslint_noUnnecessaryTemplateExpression.ts::b.ts:13 `ABCUnion` type mismatch
       expected: "A" | "B" | "C"
       actual:   `${ABC}`
@@ -1533,9 +1533,9 @@ FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTemplateExpression.ts:
       typescript target: "A"    (StringLiteral)
       oxc source: ABC.A    (TypeReference)
       oxc target: "A"    (StringLiteral)
-PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::a.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::b.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::c.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::a.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::b.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00% matched_assignments=25 mismatched_assignments=0 total_assignments=25 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::c.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00% matched_assignments=30 mismatched_assignments=6 total_assignments=36 assignment_match_percentage=83.33%
   - c.ts:1 `C` should be assignable to c.ts:4 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
@@ -1566,10 +1566,10 @@ FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::c.ts
       typescript target: typeof D    (Object)
       oxc source: typeof C    (Class)
       oxc target: typeof D    (Class)
-PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::d.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts matched_types=10 mismatched_types=0 total_types=10 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::d.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::e.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00% matched_assignments=36 mismatched_assignments=0 total_assignments=36 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::f.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00% matched_assignments=49 mismatched_assignments=0 total_assignments=49 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts matched_types=10 mismatched_types=0 total_types=10 match_percentage=100.00% matched_assignments=80 mismatched_assignments=20 total_assignments=100 assignment_match_percentage=80.00%
   - g.ts:1 `C` should be assignable to g.ts:5 `D`
       typescript source: typeof C    (Object)
       typescript target: typeof D    (Object)
@@ -1662,15 +1662,15 @@ FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::g.ts
       typescript target: typeof D    (Object)
       oxc source: typeof C    (Class)
       oxc target: typeof D    (Class)
-PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::h.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts matched_types=16 mismatched_types=0 total_types=16 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts matched_types=19 mismatched_types=0 total_types=19 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeArguments.ts::h.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noUnnecessaryTypeAssertion.ts::a.ts matched_types=16 mismatched_types=0 total_types=16 match_percentage=100.00% matched_assignments=256 mismatched_assignments=0 total_assignments=256 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeConversion.ts::a.ts matched_types=19 mismatched_types=0 total_types=19 match_percentage=100.00% matched_assignments=360 mismatched_assignments=1 total_assignments=361 assignment_match_percentage=99.72%
   - a.ts:1 `String` should be assignable to a.ts:2 `toString`
       typescript source: StringConstructor    (Function)
       typescript target: () => string    (Function)
       oxc source: StringConstructor    (TypeReference)
       oxc target: () => string    (Function)
-FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts matched_types=28 mismatched_types=0 total_types=28 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeConversion.ts::b.ts matched_types=28 mismatched_types=0 total_types=28 match_percentage=100.00% matched_assignments=779 mismatched_assignments=5 total_assignments=784 assignment_match_percentage=99.36%
   - b.ts:2 `String` should be assignable to b.ts:1 `foo`
       typescript source: StringConstructor    (Function)
       typescript target: (bar: string | number) => void    (Function)
@@ -1696,14 +1696,14 @@ FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeConversion.ts::b.t
       typescript target: (bar: string | number) => void    (Function)
       oxc source: BigIntConstructor    (TypeReference)
       oxc target: (bar: string | number) => void    (Function)
-FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts matched_types=29 mismatched_types=0 total_types=29 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeParameters.ts::a.ts matched_types=29 mismatched_types=0 total_types=29 match_percentage=100.00% matched_assignments=839 mismatched_assignments=2 total_assignments=841 assignment_match_percentage=99.76%
   - a.ts:1 `second` should be assignable to a.ts:6 `parse`
       source: <A, B>(a: A, b: B) => B    (Function)
       target: (text: string, reviver?: (this: any, key: string, value: any) => any) => any    (Function)
   - a.ts:1 `second` should be assignable to a.ts:9 `printProperty`
       source: <A, B>(a: A, b: B) => B    (Function)
       target: <T, K extends keyof T>(obj: T, key: K) => void    (Function)
-FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts matched_types=39 mismatched_types=0 total_types=39 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeParameters.ts::b.ts matched_types=39 mismatched_types=0 total_types=39 match_percentage=100.00% matched_assignments=1516 mismatched_assignments=5 total_assignments=1521 assignment_match_percentage=99.67%
   - b.ts:1 `second` should be assignable to b.ts:6 `parse`
       source: <B>(a: unknown, b: B) => B    (Function)
       target: (text: string, reviver?: (this: any, key: string, value: any) => any) => any    (Function)
@@ -1719,11 +1719,11 @@ FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeParameters.ts::b.t
   - b.ts:20 `getProperty` should be assignable to b.ts:9 `printProperty`
       source: <T, K extends keyof T>(obj: T, key: K) => T[K]    (Function)
       target: <T>(obj: T, key: keyof T) => void    (Function)
-FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noUnnecessaryTypeParameters.ts::c.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00% matched_assignments=63 mismatched_assignments=1 total_assignments=64 assignment_match_percentage=98.44%
   - c.ts:1 `length` should be assignable to c.ts:3 `length2`
       source: <T>(array: ReadonlyArray<T>) => number    (Function)
       target: (array: ReadonlyArray<unknown>) => number    (Function)
-FAIL tests/conformance/cases/compiler/eslint_noUnsafeArguments.ts::a.ts matched_types=45 mismatched_types=0 total_types=45 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noUnsafeArguments.ts::a.ts matched_types=45 mismatched_types=0 total_types=45 match_percentage=100.00% matched_assignments=2001 mismatched_assignments=24 total_assignments=2025 assignment_match_percentage=98.81%
   - a.ts:1 `foo` should be assignable to a.ts:17 `bar`
       source: (arg1: string, arg2: number, arg3: string) => void    (Function)
       target: (arg1: string, arg2: number, ...rest: string[]) => void    (Function)
@@ -1796,7 +1796,7 @@ FAIL tests/conformance/cases/compiler/eslint_noUnsafeArguments.ts::a.ts matched_
   - a.ts:19 `bar` should be assignable to a.ts:15 `foo`
       source: (arg1: string, arg2: number, ...rest: string[]) => void    (Function)
       target: (arg1: string, arg2: number, arg3: string) => void    (Function)
-FAIL tests/conformance/cases/compiler/eslint_noUnsafeArguments.ts::b.ts matched_types=28 mismatched_types=0 total_types=28 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_noUnsafeArguments.ts::b.ts matched_types=28 mismatched_types=0 total_types=28 match_percentage=100.00% matched_assignments=772 mismatched_assignments=12 total_assignments=784 assignment_match_percentage=98.47%
   - b.ts:1 `foo` should be assignable to b.ts:8 `bar`
       source: (arg1: string, arg2: number, arg3: string) => void    (Function)
       target: (arg1: string, arg2: number, ...rest: string[]) => void    (Function)
@@ -1833,9 +1833,9 @@ FAIL tests/conformance/cases/compiler/eslint_noUnsafeArguments.ts::b.ts matched_
   - b.ts:10 `bar` should be assignable to b.ts:6 `foo`
       source: (arg1: string, arg2: number, ...rest: string[]) => void    (Function)
       target: (arg1: string, arg2: number, arg3: string) => void    (Function)
-PASS tests/conformance/cases/compiler/eslint_noUnsafeArguments.ts::c.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::a.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::b.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_noUnsafeArguments.ts::c.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00% matched_assignments=64 mismatched_assignments=0 total_assignments=64 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::a.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00% matched_assignments=49 mismatched_assignments=0 total_assignments=49 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::b.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=69 mismatched_assignments=12 total_assignments=81 assignment_match_percentage=85.19%
   - b.ts:1 `arg` should be assignable to b.ts:5 `stringWithKindProp`
       source: "foo"    (StringLiteral)
       target: string & { _kind?: 'MyString'; }    (Intersection)
@@ -1872,16 +1872,16 @@ FAIL tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::b.t
   - b.ts:6 `msg3` should be assignable to b.ts:6 `stringWithKindProp`
       source: string    (String)
       target: string & { _kind?: 'MyString'; }    (Intersection)
-PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::c.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::d.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::e.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::f.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::g.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::h.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::i.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::j.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/expressionInference.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/flowTypes.ts matched_types=73 mismatched_types=0 total_types=73 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::c.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00% matched_assignments=25 mismatched_assignments=0 total_assignments=25 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::d.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00% matched_assignments=25 mismatched_assignments=0 total_assignments=25 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::e.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::f.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::g.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::h.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::i.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00% matched_assignments=25 mismatched_assignments=0 total_assignments=25 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/eslint_restrictTemplateExpressions.ts::j.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/expressionInference.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00% matched_assignments=64 mismatched_assignments=0 total_assignments=64 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/flowTypes.ts matched_types=73 mismatched_types=0 total_types=73 match_percentage=100.00% matched_assignments=5297 mismatched_assignments=32 total_assignments=5329 assignment_match_percentage=99.40%
   - :5 `console` should be assignable to :54 `maybeAction`
       typescript source: Console    (Object)
       typescript target: object | null    (Union)
@@ -2042,8 +2042,8 @@ FAIL tests/conformance/cases/compiler/flowTypes.ts matched_types=73 mismatched_t
       typescript target: object    (Unknown)
       oxc source: Console    (TypeReference)
       oxc target: object    (PrimitiveObject)
-PASS tests/conformance/cases/compiler/functionExpandoProperties.ts matched_types=61 mismatched_types=0 total_types=61 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/functionReturnTypes.ts matched_types=30 mismatched_types=0 total_types=30 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/functionExpandoProperties.ts matched_types=61 mismatched_types=0 total_types=61 match_percentage=100.00% matched_assignments=3721 mismatched_assignments=0 total_assignments=3721 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/functionReturnTypes.ts matched_types=30 mismatched_types=0 total_types=30 match_percentage=100.00% matched_assignments=892 mismatched_assignments=8 total_assignments=900 assignment_match_percentage=99.11%
   - :29 `Error` should be assignable to :2 `empty`
       typescript source: ErrorConstructor    (Function)
       typescript target: () => void    (Function)
@@ -2080,15 +2080,15 @@ FAIL tests/conformance/cases/compiler/functionReturnTypes.ts matched_types=30 mi
       typescript target: <T>(x: T) => asserts x is T    (Function)
       oxc source: ErrorConstructor    (TypeReference)
       oxc target: <T>(x: T) => asserts x is T    (Function)
-PASS tests/conformance/cases/compiler/generators.ts matched_types=39 mismatched_types=0 total_types=39 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/genericInference1.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/globalExcludeMethodParameter.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/importEquals.ts::assigned.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/importEquals.ts::main.ts matched_types=20 mismatched_types=0 total_types=20 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/importEquals.ts::named.ts matched_types=1 mismatched_types=0 total_types=1 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/importExpression.ts::main.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/importExpression.ts::module.ts matched_types=1 mismatched_types=0 total_types=1 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/importType.ts::main.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/generators.ts matched_types=39 mismatched_types=0 total_types=39 match_percentage=100.00% matched_assignments=1521 mismatched_assignments=0 total_assignments=1521 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/genericInference1.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00% matched_assignments=25 mismatched_assignments=0 total_assignments=25 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/globalExcludeMethodParameter.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00% matched_assignments=25 mismatched_assignments=0 total_assignments=25 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/importEquals.ts::assigned.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/importEquals.ts::main.ts matched_types=20 mismatched_types=0 total_types=20 match_percentage=100.00% matched_assignments=400 mismatched_assignments=0 total_assignments=400 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/importEquals.ts::named.ts matched_types=1 mismatched_types=0 total_types=1 match_percentage=100.00% matched_assignments=1 mismatched_assignments=0 total_assignments=1 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/importExpression.ts::main.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/importExpression.ts::module.ts matched_types=1 mismatched_types=0 total_types=1 match_percentage=100.00% matched_assignments=1 mismatched_assignments=0 total_assignments=1 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/importType.ts::main.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00% matched_assignments=43 mismatched_assignments=6 total_assignments=49 assignment_match_percentage=87.76%
   - main.ts:1 `ImportedValue` should not be assignable to main.ts:3 `Nested`
       typescript source: { value: string; }    (Object)
       typescript target: typeof Nested    (Object)
@@ -2119,16 +2119,16 @@ FAIL tests/conformance/cases/compiler/importType.ts::main.ts matched_types=7 mis
       typescript target: 42    (NumberLiteral)
       oxc source: typeof Nested    (TypeQuery)
       oxc target: 42    (NumberLiteral)
-PASS tests/conformance/cases/compiler/importType.ts::module.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/importTypes.ts::a.ts matched_types=9 mismatched_types=1 total_types=10 match_percentage=90.00%
+PASS tests/conformance/cases/compiler/importType.ts::module.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/importTypes.ts::a.ts matched_types=9 mismatched_types=1 total_types=10 match_percentage=90.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
   - tests/conformance/cases/compiler/importTypes.ts::a.ts:8 `process` type mismatch
       expected: <T>(x: T) => 1 | T
       actual:   any
-PASS tests/conformance/cases/compiler/importTypes.ts::index.ts matched_types=27 mismatched_types=0 total_types=27 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/indexedAccessInference.ts matched_types=21 mismatched_types=0 total_types=21 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/intersectionReferenceProperties.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/intrinsicTypes.ts matched_types=22 mismatched_types=0 total_types=22 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/iterationSymbolTypes.ts matched_types=34 mismatched_types=12 total_types=46 match_percentage=73.91%
+PASS tests/conformance/cases/compiler/importTypes.ts::index.ts matched_types=27 mismatched_types=0 total_types=27 match_percentage=100.00% matched_assignments=729 mismatched_assignments=0 total_assignments=729 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/indexedAccessInference.ts matched_types=21 mismatched_types=0 total_types=21 match_percentage=100.00% matched_assignments=441 mismatched_assignments=0 total_assignments=441 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/intersectionReferenceProperties.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00% matched_assignments=324 mismatched_assignments=0 total_assignments=324 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/intrinsicTypes.ts matched_types=22 mismatched_types=0 total_types=22 match_percentage=100.00% matched_assignments=484 mismatched_assignments=0 total_assignments=484 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/iterationSymbolTypes.ts matched_types=34 mismatched_types=12 total_types=46 match_percentage=73.91% matched_assignments=1148 mismatched_assignments=8 total_assignments=1156 assignment_match_percentage=99.31%
   - tests/conformance/cases/compiler/iterationSymbolTypes.ts:5 `chunk` type mismatch
       expected: Awaited<TQueryFnData>
       actual:   any
@@ -2205,7 +2205,7 @@ FAIL tests/conformance/cases/compiler/iterationSymbolTypes.ts matched_types=34 m
       typescript target: StructuralTextStream    (Object)
       oxc source: InheritedTextStream    (TypeReference)
       oxc target: StructuralTextStream    (TypeReference)
-FAIL tests/conformance/cases/compiler/mappedTypeInference.ts matched_types=39 mismatched_types=0 total_types=39 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/mappedTypeInference.ts matched_types=39 mismatched_types=0 total_types=39 match_percentage=100.00% matched_assignments=1493 mismatched_assignments=28 total_assignments=1521 assignment_match_percentage=98.16%
   - :2 `unwrap` should be assignable to :3 `unwrapReadonly`
       source: <T>(value: { [P in keyof T]: T[P]; }) => T    (Function)
       target: <T>(value: { readonly [P in keyof T]: T[P]; }) => T    (Function)
@@ -2290,7 +2290,7 @@ FAIL tests/conformance/cases/compiler/mappedTypeInference.ts matched_types=39 mi
   - :10 `pickish` should be assignable to :9 `unwrapReadonly`
       source: <T, K extends keyof T>(value: { [P in K]: T[P]; }) => T    (Function)
       target: <T>(value: { readonly [P in keyof T]: T[P]; }) => T    (Function)
-FAIL tests/conformance/cases/compiler/memberExpression.ts matched_types=270 mismatched_types=0 total_types=270 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/memberExpression.ts matched_types=270 mismatched_types=0 total_types=270 match_percentage=100.00% matched_assignments=1077 mismatched_assignments=3 total_assignments=1080 assignment_match_percentage=99.72%
   - :33 `user` should not be assignable to :115 `callableApply`
       typescript source: User    (Object)
       typescript target: { <T, R>(this: (this: T) => R, thisArg: T): R; <T, A extends any[], R>(this: (this: T, ...args: A) => R, thisArg: T, args: A): R; }    (Function)
@@ -2306,8 +2306,8 @@ FAIL tests/conformance/cases/compiler/memberExpression.ts matched_types=270 mism
       typescript target: typeof Counter    (Object)
       oxc source: typeof DerivedCounter    (Class)
       oxc target: typeof Counter    (Class)
-PASS tests/conformance/cases/compiler/mergedInterfaceDeclarationLocation.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/metaProperty.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/mergedInterfaceDeclarationLocation.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00% matched_assignments=25 mismatched_assignments=0 total_assignments=25 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/metaProperty.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00% matched_assignments=210 mismatched_assignments=79 total_assignments=289 assignment_match_percentage=72.66%
   - :2 `moduleMeta` should not be assignable to :7 `baseTarget`
       typescript source: ImportMeta    (Object)
       typescript target: typeof Base    (Object)
@@ -2689,10 +2689,10 @@ FAIL tests/conformance/cases/compiler/metaProperty.ts matched_types=17 mismatche
       typescript target: typeof Base    (Object)
       oxc source: () => void    (Function)
       oxc target: typeof Base    (TypeQuery)
-PASS tests/conformance/cases/compiler/namedAliasFormalParameterDisplay.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/namedTuples.ts matched_types=37 mismatched_types=0 total_types=37 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/namedUnionAliasChainDisplay.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/namespaceValueSide.ts matched_types=30 mismatched_types=0 total_types=30 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/namedAliasFormalParameterDisplay.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00% matched_assignments=169 mismatched_assignments=0 total_assignments=169 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/namedTuples.ts matched_types=37 mismatched_types=0 total_types=37 match_percentage=100.00% matched_assignments=1369 mismatched_assignments=0 total_assignments=1369 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/namedUnionAliasChainDisplay.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00% matched_assignments=64 mismatched_assignments=0 total_assignments=64 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/namespaceValueSide.ts matched_types=30 mismatched_types=0 total_types=30 match_percentage=100.00% matched_assignments=894 mismatched_assignments=6 total_assignments=900 assignment_match_percentage=99.33%
   - :10 `Nested` should be assignable to :25 `Nested`
       typescript source: typeof Nested    (Object)
       typescript target: typeof Values.Nested    (Object)
@@ -2723,7 +2723,7 @@ FAIL tests/conformance/cases/compiler/namespaceValueSide.ts matched_types=30 mis
       typescript target: typeof Deep    (Object)
       oxc source: typeof Values.Nested.Deep    (TypeQuery)
       oxc target: typeof Deep    (TypeQuery)
-FAIL tests/conformance/cases/compiler/newable.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/newable.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00% matched_assignments=136 mismatched_assignments=8 total_assignments=144 assignment_match_percentage=94.44%
   - :1 `f6` should be assignable to :3 `new a();`
       source: <T extends string | (new () => {})>(a: T) => void    (Function)
       target: {}    (Object)
@@ -2748,7 +2748,7 @@ FAIL tests/conformance/cases/compiler/newable.ts matched_types=12 mismatched_typ
   - :7 `y` should be assignable to :3 `new a();`
       source: number    (Number)
       target: {}    (Object)
-FAIL tests/conformance/cases/compiler/nonNullable.ts matched_types=21 mismatched_types=0 total_types=21 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/nonNullable.ts matched_types=21 mismatched_types=0 total_types=21 match_percentage=100.00% matched_assignments=434 mismatched_assignments=7 total_assignments=441 assignment_match_percentage=98.41%
   - :2 `T1` should be assignable to :5 `T4`
       source: string    (String)
       target: {}    (Object)
@@ -2778,8 +2778,8 @@ FAIL tests/conformance/cases/compiler/nonNullable.ts matched_types=21 mismatched
   - :8 `T7` should be assignable to :5 `T4`
       source: string    (String)
       target: {}    (Object)
-PASS tests/conformance/cases/compiler/nonThenablePromiseAwait.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/overloadRanking.ts matched_types=40 mismatched_types=0 total_types=40 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/nonThenablePromiseAwait.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00% matched_assignments=64 mismatched_assignments=0 total_assignments=64 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/overloadRanking.ts matched_types=40 mismatched_types=0 total_types=40 match_percentage=100.00% matched_assignments=1343 mismatched_assignments=257 total_assignments=1600 assignment_match_percentage=83.94%
   - :2 `literalOverload` should not be assignable to :5 `genericOverload`
       typescript source: { (x: string): "wide"; (x: "ready"): "literal"; }    (Function)
       typescript target: { <T>(x: T): T[]; (x: string): string; }    (Function)
@@ -4065,13 +4065,13 @@ FAIL tests/conformance/cases/compiler/overloadRanking.ts matched_types=40 mismat
       typescript target: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }    (Function)
       oxc source: { (args_0: string, args_1?: number | undefined): "optional"; (args_0: string, args_1: number, args_2: boolean): "three"; }    (Object)
       oxc target: { (args_0: string): "one"; (args_0: string, args_1: number): "two"; }    (Object)
-PASS tests/conformance/cases/compiler/privateInExpressions.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/satisfiesExpression.ts matched_types=127 mismatched_types=0 total_types=127 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/sequenceExpressions.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/shadowedGlobalSymbols.ts::array.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/shadowedGlobalSymbols.ts::parameter.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/shadowedGlobalSymbols.ts::undefined.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/standardLibraryNamespaceFunctionMerge.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/privateInExpressions.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00% matched_assignments=324 mismatched_assignments=0 total_assignments=324 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/satisfiesExpression.ts matched_types=127 mismatched_types=0 total_types=127 match_percentage=100.00% matched_assignments=508 mismatched_assignments=0 total_assignments=508 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/sequenceExpressions.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00% matched_assignments=49 mismatched_assignments=0 total_assignments=49 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/shadowedGlobalSymbols.ts::array.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/shadowedGlobalSymbols.ts::parameter.ts matched_types=6 mismatched_types=0 total_types=6 match_percentage=100.00% matched_assignments=36 mismatched_assignments=0 total_assignments=36 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/shadowedGlobalSymbols.ts::undefined.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/standardLibraryNamespaceFunctionMerge.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=12 mismatched_assignments=4 total_assignments=16 assignment_match_percentage=75.00%
   - :1 `CSS` should not be assignable to :2 `Hz`
       typescript source: typeof CSS    (Object)
       typescript target: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }    (Function)
@@ -4092,7 +4092,7 @@ FAIL tests/conformance/cases/compiler/standardLibraryNamespaceFunctionMerge.ts m
       typescript target: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }    (Function)
       oxc source: { new (value: number, unit: string): CSSUnitValue; prototype: CSSUnitValue; }    (Object)
       oxc target: { (value: number): CSSUnitValue; (value: number): CSSUnitValue; }    (Object)
-FAIL tests/conformance/cases/compiler/stringInference.ts matched_types=51 mismatched_types=0 total_types=51 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/stringInference.ts matched_types=51 mismatched_types=0 total_types=51 match_percentage=100.00% matched_assignments=2599 mismatched_assignments=2 total_assignments=2601 assignment_match_percentage=99.92%
   - :7 `UserKeys` should be assignable to :2 `name`
       typescript source: keyof User    (Union)
       typescript target: string    (String)
@@ -4103,7 +4103,7 @@ FAIL tests/conformance/cases/compiler/stringInference.ts matched_types=51 mismat
       typescript target: string    (String)
       oxc source: keyof User    (Keyof)
       oxc target: string    (String)
-FAIL tests/conformance/cases/compiler/structuralMappedProperties.ts matched_types=28 mismatched_types=0 total_types=28 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/structuralMappedProperties.ts matched_types=28 mismatched_types=0 total_types=28 match_percentage=100.00% matched_assignments=779 mismatched_assignments=5 total_assignments=784 assignment_match_percentage=99.36%
   - :13 `value` should be assignable to :2 `name`
       typescript source: Value    (Unknown)
       typescript target: string    (String)
@@ -4129,7 +4129,7 @@ FAIL tests/conformance/cases/compiler/structuralMappedProperties.ts matched_type
       typescript target: string    (String)
       oxc source: Value    (TypeParameter)
       oxc target: string    (String)
-FAIL tests/conformance/cases/compiler/symbolBasicTypes.ts matched_types=59 mismatched_types=0 total_types=59 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/symbolBasicTypes.ts matched_types=59 mismatched_types=0 total_types=59 match_percentage=100.00% matched_assignments=3470 mismatched_assignments=11 total_assignments=3481 assignment_match_percentage=99.68%
   - :10 `arrayCtor` should be assignable to :16 `keys`
       typescript source: ArrayConstructor    (Function)
       typescript target: { (o: object): string[]; (o: {}): string[]; }    (Function)
@@ -4185,10 +4185,10 @@ FAIL tests/conformance/cases/compiler/symbolBasicTypes.ts matched_types=59 misma
       typescript target: { (o: object): string[]; (o: {}): string[]; }    (Function)
       oxc source: { [key: string]: bigint; }    (Object)
       oxc target: { (o: object): string[]; (o: {}): string[]; }    (Object)
-PASS tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::asyncMap.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::classProperties.ts matched_types=46 mismatched_types=0 total_types=46 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::destructuredClass.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::every.ts matched_types=16 mismatched_types=0 total_types=16 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::asyncMap.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::classProperties.ts matched_types=46 mismatched_types=0 total_types=46 match_percentage=100.00% matched_assignments=2116 mismatched_assignments=0 total_assignments=2116 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::destructuredClass.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::every.ts matched_types=16 mismatched_types=0 total_types=16 match_percentage=100.00% matched_assignments=252 mismatched_assignments=4 total_assignments=256 assignment_match_percentage=98.44%
   - every.ts:2 `Ship` should not be assignable to every.ts:6 `every`
       typescript source: typeof Ship    (Object)
       typescript target: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }    (Function)
@@ -4209,9 +4209,9 @@ FAIL tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::every.ts matc
       typescript target: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }    (Function)
       oxc source: typeof Board    (Class)
       oxc target: { <S>(predicate: (value: Ship, index: number, array: Ship[]) => value is S, thisArg?: any): this is S[]; (predicate: (value: Ship, index: number, array: Ship[]) => unknown, thisArg?: any): boolean; }    (Object)
-PASS tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::stringMap.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolFunctionInference.ts::arrow.ts matched_types=1 mismatched_types=0 total_types=1 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/symbolFunctionInference.ts::async.ts matched_types=24 mismatched_types=0 total_types=24 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolClassAndArrayTypes.ts::stringMap.ts matched_types=5 mismatched_types=0 total_types=5 match_percentage=100.00% matched_assignments=25 mismatched_assignments=0 total_assignments=25 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolFunctionInference.ts::arrow.ts matched_types=1 mismatched_types=0 total_types=1 match_percentage=100.00% matched_assignments=1 mismatched_assignments=0 total_assignments=1 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/symbolFunctionInference.ts::async.ts matched_types=24 mismatched_types=0 total_types=24 match_percentage=100.00% matched_assignments=568 mismatched_assignments=8 total_assignments=576 assignment_match_percentage=98.61%
   - async.ts:3 `empty` should be assignable to async.ts:9 `resolve`
       typescript source: () => Promise<void>    (Function)
       typescript target: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Function)
@@ -4252,12 +4252,12 @@ FAIL tests/conformance/cases/compiler/symbolFunctionInference.ts::async.ts match
       typescript target: <T>(value: T) => Promise<T>    (Function)
       oxc source: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }    (Object)
       oxc target: <T>(value: T) => Promise<T>    (Function)
-PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::annotation.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::callbackReturn.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::declared.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::objectCallbacks.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::optional.ts matched_types=2 mismatched_types=0 total_types=2 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/symbolFunctionParameters.ts::predicates.ts matched_types=23 mismatched_types=0 total_types=23 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::annotation.ts matched_types=8 mismatched_types=0 total_types=8 match_percentage=100.00% matched_assignments=64 mismatched_assignments=0 total_assignments=64 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::callbackReturn.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00% matched_assignments=289 mismatched_assignments=0 total_assignments=289 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::declared.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::objectCallbacks.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00% matched_assignments=324 mismatched_assignments=0 total_assignments=324 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::optional.ts matched_types=2 mismatched_types=0 total_types=2 match_percentage=100.00% matched_assignments=4 mismatched_assignments=0 total_assignments=4 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/symbolFunctionParameters.ts::predicates.ts matched_types=23 mismatched_types=0 total_types=23 match_percentage=100.00% matched_assignments=525 mismatched_assignments=4 total_assignments=529 assignment_match_percentage=99.24%
   - predicates.ts:4 `assertion` should not be assignable to predicates.ts:6 `thisAssertion`
       source: (value: unknown) => asserts value is string    (Function)
       target: (this: unknown) => asserts this is { ready: true; }    (Function)
@@ -4270,19 +4270,19 @@ FAIL tests/conformance/cases/compiler/symbolFunctionParameters.ts::predicates.ts
   - predicates.ts:7 `bareAssertion` should not be assignable to predicates.ts:8 `bareThisAssertion`
       source: (value: unknown) => asserts value    (Function)
       target: (this: unknown) => asserts this    (Function)
-PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::tupleCallbacks.ts matched_types=14 mismatched_types=0 total_types=14 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::class.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/symbolGenericCalls.ts::constraints.ts matched_types=32 mismatched_types=0 total_types=32 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolFunctionParameters.ts::tupleCallbacks.ts matched_types=14 mismatched_types=0 total_types=14 match_percentage=100.00% matched_assignments=196 mismatched_assignments=0 total_assignments=196 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::class.ts matched_types=13 mismatched_types=0 total_types=13 match_percentage=100.00% matched_assignments=169 mismatched_assignments=0 total_assignments=169 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/symbolGenericCalls.ts::constraints.ts matched_types=32 mismatched_types=0 total_types=32 match_percentage=100.00% matched_assignments=1023 mismatched_assignments=1 total_assignments=1024 assignment_match_percentage=99.90%
   - constraints.ts:5 `other` should be assignable to constraints.ts:5 `value`
       source: U | undefined    (Union)
       target: T | undefined    (Union)
-PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::explicit.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::genericOverload.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::inference.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::nonNull.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::object.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::references.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/symbolGenericInference.ts matched_types=151 mismatched_types=0 total_types=151 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::explicit.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00% matched_assignments=49 mismatched_assignments=0 total_assignments=49 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::genericOverload.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00% matched_assignments=144 mismatched_assignments=0 total_assignments=144 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::inference.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00% matched_assignments=121 mismatched_assignments=0 total_assignments=121 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::nonNull.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00% matched_assignments=144 mismatched_assignments=0 total_assignments=144 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::object.ts matched_types=7 mismatched_types=0 total_types=7 match_percentage=100.00% matched_assignments=49 mismatched_assignments=0 total_assignments=49 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/symbolGenericCalls.ts::references.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00% matched_assignments=324 mismatched_assignments=0 total_assignments=324 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/symbolGenericInference.ts matched_types=151 mismatched_types=0 total_types=151 match_percentage=100.00% matched_assignments=597 mismatched_assignments=7 total_assignments=604 assignment_match_percentage=98.84%
   - :13 `contextualObjectResult` should not be assignable to :38 `selectOverload`
       typescript source: { kind: "event"; value: string; }    (Object)
       typescript target: { (x: string): string; (x: number): number; }    (Function)
@@ -4318,7 +4318,7 @@ FAIL tests/conformance/cases/compiler/symbolGenericInference.ts matched_types=15
       typescript target: <T>(value: T | null) => T    (Function)
       oxc source: { (x: string): string; (x: number): number; }    (Object)
       oxc target: <T>(value: T | null) => T    (Function)
-FAIL tests/conformance/cases/compiler/taggedTemplateExpressions.ts matched_types=23 mismatched_types=0 total_types=23 match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/taggedTemplateExpressions.ts matched_types=23 mismatched_types=0 total_types=23 match_percentage=100.00% matched_assignments=521 mismatched_assignments=8 total_assignments=529 assignment_match_percentage=98.49%
   - :4 `genericTag` should be assignable to :2 `stringTag`
       source: <T>(template: any, value: T) => T    (Function)
       target: (template: any, ...values: any[]) => string    (Function)
@@ -4343,8 +4343,8 @@ FAIL tests/conformance/cases/compiler/taggedTemplateExpressions.ts matched_types
   - :9 `genericTag` should be assignable to :8 `literalTag`
       source: <T>(template: any, value: T) => T    (Function)
       target: (template: any, ...values: any[]) => "literal"    (Function)
-PASS tests/conformance/cases/compiler/transparentAliasInTypeAliasDisplay.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/tsIndexSignatures.ts matched_types=11 mismatched_types=2 total_types=13 match_percentage=84.62%
+PASS tests/conformance/cases/compiler/transparentAliasInTypeAliasDisplay.ts matched_types=3 mismatched_types=0 total_types=3 match_percentage=100.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/tsIndexSignatures.ts matched_types=11 mismatched_types=2 total_types=13 match_percentage=84.62% matched_assignments=119 mismatched_assignments=2 total_assignments=121 assignment_match_percentage=98.35%
   - tests/conformance/cases/compiler/tsIndexSignatures.ts:13 `Multi` type mismatch
       expected: {}
       actual:   { [key: string]: object; }
@@ -4361,9 +4361,9 @@ FAIL tests/conformance/cases/compiler/tsIndexSignatures.ts matched_types=11 mism
       typescript target: { [key: string]: string; [key2: number]: string; [key3: symbol]: string; }    (Object)
       oxc source: typeof A    (Class)
       oxc target: { [key: string]: string; [key2: number]: string; [key3: symbol]: string; }    (Object)
-PASS tests/conformance/cases/compiler/tupleTypes.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/typeCast.ts matched_types=39 mismatched_types=0 total_types=39 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/typePredicates.ts matched_types=54 mismatched_types=0 total_types=54 match_percentage=100.00%
+PASS tests/conformance/cases/compiler/tupleTypes.ts matched_types=18 mismatched_types=0 total_types=18 match_percentage=100.00% matched_assignments=324 mismatched_assignments=0 total_assignments=324 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/typeCast.ts matched_types=39 mismatched_types=0 total_types=39 match_percentage=100.00% matched_assignments=1521 mismatched_assignments=0 total_assignments=1521 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/typePredicates.ts matched_types=54 mismatched_types=0 total_types=54 match_percentage=100.00% matched_assignments=2902 mismatched_assignments=14 total_assignments=2916 assignment_match_percentage=99.52%
   - :4 `ThisIsReady` should be assignable to :2 `AssertString`
       source: (this: { ready: boolean; }) => this is { ready: true; }    (Function)
       target: (value: unknown) => asserts value is string    (Function)
@@ -4414,12 +4414,12 @@ FAIL tests/conformance/cases/compiler/typePredicates.ts matched_types=54 mismatc
   - :20 `methodSignatures` should be assignable to :11 `this`
       source: MethodSignatureCoverage<string>    (TypeReference)
       target: MethodSignatureCoverage<T>    (TypeReference)
-PASS tests/conformance/cases/compiler/unaryExpressions.ts matched_types=42 mismatched_types=0 total_types=42 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/unionIntersectionInference.ts matched_types=45 mismatched_types=0 total_types=45 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/unionTypes.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/uniqueSymbolTypes.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00%
-PASS tests/conformance/cases/compiler/updateExpressions.ts matched_types=24 mismatched_types=0 total_types=24 match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/yieldExpressions.ts matched_types=10 mismatched_types=6 total_types=16 match_percentage=62.50%
+PASS tests/conformance/cases/compiler/unaryExpressions.ts matched_types=42 mismatched_types=0 total_types=42 match_percentage=100.00% matched_assignments=1764 mismatched_assignments=0 total_assignments=1764 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/unionIntersectionInference.ts matched_types=45 mismatched_types=0 total_types=45 match_percentage=100.00% matched_assignments=2025 mismatched_assignments=0 total_assignments=2025 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/unionTypes.ts matched_types=17 mismatched_types=0 total_types=17 match_percentage=100.00% matched_assignments=289 mismatched_assignments=0 total_assignments=289 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/uniqueSymbolTypes.ts matched_types=12 mismatched_types=0 total_types=12 match_percentage=100.00% matched_assignments=144 mismatched_assignments=0 total_assignments=144 assignment_match_percentage=100.00%
+PASS tests/conformance/cases/compiler/updateExpressions.ts matched_types=24 mismatched_types=0 total_types=24 match_percentage=100.00% matched_assignments=576 mismatched_assignments=0 total_assignments=576 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/yieldExpressions.ts matched_types=10 mismatched_types=6 total_types=16 match_percentage=62.50% matched_assignments=100 mismatched_assignments=0 total_assignments=100 assignment_match_percentage=100.00%
   - tests/conformance/cases/compiler/yieldExpressions.ts:3 `_input` type mismatch
       expected: boolean
       actual:   any

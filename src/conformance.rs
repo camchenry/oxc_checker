@@ -283,6 +283,14 @@ impl FileResult {
     fn type_match_percentage(&self) -> f64 {
         percentage(self.matched_types, self.total_types())
     }
+
+    fn total_assignments(&self) -> usize {
+        self.matched_assignments + self.mismatched_assignments()
+    }
+
+    fn assignment_match_percentage(&self) -> f64 {
+        percentage(self.matched_assignments, self.total_assignments())
+    }
 }
 
 struct ComparisonStats {
@@ -3852,12 +3860,16 @@ fn format_type_record_report(
     for result in results {
         let status = if result.passed() { "PASS" } else { "FAIL" };
         snapshot.push_str(&format!(
-            "{status} {} matched_types={} mismatched_types={} total_types={} match_percentage={:.2}%\n",
+            "{status} {} matched_types={} mismatched_types={} total_types={} match_percentage={:.2}% matched_assignments={} mismatched_assignments={} total_assignments={} assignment_match_percentage={:.2}%\n",
             case_snapshot_path(suite, &result.path),
             result.matched_types,
             result.mismatched_types(),
             result.total_types(),
-            result.type_match_percentage()
+            result.type_match_percentage(),
+            result.matched_assignments,
+            result.mismatched_assignments(),
+            result.total_assignments(),
+            result.assignment_match_percentage(),
         ));
         let mut line_starts = None;
         for error in &result.errors {
