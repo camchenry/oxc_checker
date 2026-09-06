@@ -5355,8 +5355,8 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         // TODO(perf): pre-allocate
-        let mut explicit_properties: Vec<TyProperty<'a>> = Vec::new();
-        let mut spread_properties: Vec<TyProperty<'a>> = Vec::new();
+        let mut properties: Vec<TyProperty<'a>> = Vec::new();
+        let mut explicit_property_names: Vec<&str> = Vec::new();
         let mut spread_index_infos: Vec<IndexInfo<'a>> = Vec::new();
         for property in &object.properties {
             match property {
@@ -5407,14 +5407,17 @@ impl<'a, 'store> Checker<'a, 'store> {
                                             && property_key_name_str(&candidate.key) == Some(name))
                                 }),
                     };
-                    spread_properties.retain(|existing| existing.name != name);
-                    if let Some(existing) = explicit_properties
-                        .iter_mut()
-                        .find(|existing| existing.name == name)
+                    if explicit_property_names
+                        .iter()
+                        .all(|existing| *existing != name)
+                    {
+                        properties.retain(|existing| existing.name != name);
+                        properties.push(property);
+                        explicit_property_names.push(name);
+                    } else if let Some(existing) =
+                        properties.iter_mut().find(|existing| existing.name == name)
                     {
                         *existing = property;
-                    } else {
-                        explicit_properties.push(property);
                     }
                 }
                 ObjectPropertyKind::SpreadProperty(spread) => {
@@ -5438,31 +5441,28 @@ impl<'a, 'store> Checker<'a, 'store> {
                             .flatten()
                             .copied(),
                     );
-                    for spread_property in
-                        self.get_object_spread_properties(program_id, spread_type, 0)
-                    {
-                        let property = TyProperty {
+                    let mut spread_properties = self
+                        .get_object_spread_properties(program_id, spread_type, 0)
+                        .into_iter()
+                        .map(|spread_property| TyProperty {
                             readonly: context.check_mode.const_context(),
                             ..spread_property
-                        };
-                        explicit_properties.retain(|existing| existing.name != property.name);
-                        if let Some(existing) = spread_properties
-                            .iter_mut()
-                            .find(|existing| existing.name == property.name)
-                        {
-                            *existing = property;
-                        } else {
-                            spread_properties.push(property);
-                        }
-                    }
+                        })
+                        .collect::<Vec<_>>();
+                    properties.retain(|existing| {
+                        !spread_properties
+                            .iter()
+                            .any(|property| property.name == existing.name)
+                    });
+                    spread_properties.append(&mut properties);
+                    properties = spread_properties;
+                    explicit_property_names.clear();
                 }
             }
         }
 
-        self.ty.object_literal_with_index_infos(
-            explicit_properties.into_iter().chain(spread_properties),
-            spread_index_infos,
-        )
+        self.ty
+            .object_literal_with_index_infos(properties, spread_index_infos)
     }
 
     fn get_type_of_object_property_accessor(

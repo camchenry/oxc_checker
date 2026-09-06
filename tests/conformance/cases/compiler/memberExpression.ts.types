@@ -311,8 +311,7 @@ const numericDynamic = numericDictionary[42];
 >                      ^^^^^^^^^^^^^^^^^: NumericDictionary   (TypeReference) (Identifier)
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
->     ^^^^^: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]   (Tuple) (Identifier)
-   expected: readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]
+>     ^^^^^: readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]   (Tuple) (Identifier)
 
 const users = [user, { ...user, name: "Bob", id: "user_Bob" }] as const;
 >              ^^^^: User   (TypeReference) (Identifier)
@@ -336,15 +335,13 @@ const firstUser = users[0];
 >     ^^^^^^^^^: User   (TypeReference) (Identifier)
 
 const firstUser = users[0];
->                 ^^^^^: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]   (Tuple) (Identifier)
-               expected: readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]
+>                 ^^^^^: readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]   (Tuple) (Identifier)
 
 const firstUserName = users[0].name;
 >     ^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const firstUserName = users[0].name;
->                     ^^^^^: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]   (Tuple) (Identifier)
-                   expected: readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]
+>                     ^^^^^: readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]   (Tuple) (Identifier)
 
 const firstUserName = users[0].name;
 >                              ^^^^: string   (String) (Identifier)
@@ -353,23 +350,19 @@ const usersLength = users.length;
 >     ^^^^^^^^^^^: 2   (NumberLiteral) (Identifier)
 
 const usersLength = users.length;
->                   ^^^^^: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]   (Tuple) (Identifier)
-                 expected: readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]
+>                   ^^^^^: readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]   (Tuple) (Identifier)
 
 const usersLength = users.length;
 >                         ^^^^^^: 2   (NumberLiteral) (Identifier)
 
 const arrayMapMethod = users.map;
->     ^^^^^^^^^^^^^^: <U>(callbackfn: (value: User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]   (Function) (Identifier)
-            expected: <U>(callbackfn: (value: User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }, index: number, array: readonly (User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; })[]) => U, thisArg?: any) => U[]
+>     ^^^^^^^^^^^^^^: <U>(callbackfn: (value: User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }, index: number, array: readonly (User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; })[]) => U, thisArg?: any) => U[]   (Function) (Identifier)
 
 const arrayMapMethod = users.map;
->                      ^^^^^: readonly [User, { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }]   (Tuple) (Identifier)
-                    expected: readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]
+>                      ^^^^^: readonly [User, { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }]   (Tuple) (Identifier)
 
 const arrayMapMethod = users.map;
->                            ^^^: <U>(callbackfn: (value: User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; }, index: number, array: readonly (User | { readonly name: "Bob"; readonly id: "user_Bob"; readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; })[]) => U, thisArg?: any) => U[]   (Function) (Identifier)
-                        expected: <U>(callbackfn: (value: User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }, index: number, array: readonly (User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; })[]) => U, thisArg?: any) => U[]
+>                            ^^^: <U>(callbackfn: (value: User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; }, index: number, array: readonly (User | { readonly age: number; readonly active?: boolean; readonly address: { city: string; zip: number; }; readonly greet: (message: string) => string; readonly preferences: { theme: "light" | "dark"; notifications?: boolean; }; readonly name: "Bob"; readonly id: "user_Bob"; })[]) => U, thisArg?: any) => U[]   (Function) (Identifier)
 
 const tuple = ["ready", 200, { ok: true }] as const;
 >     ^^^^^: readonly ["ready", 200, { readonly ok: true; }]   (Tuple) (Identifier)
