@@ -1,0 +1,11 @@
+declare const condition: string | undefined;
+>             ^^^^^^^^^: string | undefined   (Union) (Identifier)
+
+if (condition) {
+>   ^^^^^^^^^: string | undefined   (Union) (Identifier)
+
+  Array;
+> ^^^^^: ArrayConstructor   (TypeReference) (Identifier)
+
+  Array;
+> ^^^^^^: ArrayConstructor   (TypeReference) (ExpressionStatement)

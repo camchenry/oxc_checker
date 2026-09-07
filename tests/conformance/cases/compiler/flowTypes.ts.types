@@ -160,32 +160,20 @@ if (isAction(maybeAction) && maybeAction.type) {
 if (isAction(maybeAction) && maybeAction.type) {
 >                                        ^^^^: string   (String) (Identifier)
 
-  console.log(maybeAction);
-> ^^^^^^^: Console   (TypeReference) (Identifier)
+  maybeAction;
+> ^^^^^^^^^^^: Action   (TypeReference) (Identifier)
 
-  console.log(maybeAction);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
+  maybeAction;
+> ^^^^^^^^^^^^: Action   (TypeReference) (ExpressionStatement)
 
-  console.log(maybeAction);
->         ^^^: (...data: any[]) => void   (Function) (Identifier)
+  maybeAction.type;
+> ^^^^^^^^^^^: Action   (TypeReference) (Identifier)
 
-  console.log(maybeAction);
->             ^^^^^^^^^^^: Action   (TypeReference) (Identifier)
+  maybeAction.type;
+> ^^^^^^^^^^^^^^^^^: string   (String) (ExpressionStatement)
 
-  console.log(maybeAction.type);
-> ^^^^^^^: Console   (TypeReference) (Identifier)
-
-  console.log(maybeAction.type);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
-
-  console.log(maybeAction.type);
->         ^^^: (...data: any[]) => void   (Function) (Identifier)
-
-  console.log(maybeAction.type);
->             ^^^^^^^^^^^: Action   (TypeReference) (Identifier)
-
-  console.log(maybeAction.type);
->                         ^^^^: string   (String) (Identifier)
+  maybeAction.type;
+>             ^^^^: string   (String) (Identifier)
 
 if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAction) {
 >          ^^^^^^^^^^^: unknown   (Unknown) (Identifier)
@@ -196,29 +184,275 @@ if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAc
 if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAction) {
 >                                                                        ^^^^^^^^^^^: object   (PrimitiveObject) (Identifier)
 
-  console.log(maybeAction);
+  maybeAction;
+> ^^^^^^^^^^^: object & Record<"type", unknown>   (Intersection) (Identifier)
+
+  maybeAction;
+> ^^^^^^^^^^^^: object & Record<"type", unknown>   (Intersection) (ExpressionStatement)
+
+  maybeAction.type;
+> ^^^^^^^^^^^: object & Record<"type", unknown>   (Intersection) (Identifier)
+
+  maybeAction.type;
+> ^^^^^^^^^^^^^^^^^: unknown   (Unknown) (ExpressionStatement)
+
+  maybeAction.type;
+>             ^^^^: unknown   (Unknown) (Identifier)
+
+interface GenericAction<T extends string = string> {
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+interface GenericAction<T extends string = string> {
+>         ^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+interface GenericAction<T extends string = string> {
+>                       ^: any   (Any) (Identifier)
+
+  type: T;
+> ^^^^: T   (TypeParameter) (Identifier)
+
+  type: T;
+>       ^: any   (Any) (Identifier)
+
+declare function isGenericAction(value: unknown): value is GenericAction;
+>                ^^^^^^^^^^^^^^^: (value: unknown) => value is GenericAction   (Function) (Identifier)
+
+declare function isGenericAction(value: unknown): value is GenericAction;
+>                                ^^^^^: unknown   (Unknown) (Identifier)
+
+declare function isGenericAction(value: unknown): value is GenericAction;
+>                                                 ^^^^^: unknown   (Unknown) (Identifier)
+
+declare function isGenericAction(value: unknown): value is GenericAction;
+>                                                          ^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+declare function isGenericAction(value: unknown): value is GenericAction;
+>                                                          ^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+declare const unknownAction: unknown;
+>             ^^^^^^^^^^^^^: unknown   (Unknown) (Identifier)
+
+if (isGenericAction(unknownAction)) {
+>   ^^^^^^^^^^^^^^^: (value: unknown) => value is GenericAction   (Function) (Identifier)
+
+if (isGenericAction(unknownAction)) {
+>                   ^^^^^^^^^^^^^: unknown   (Unknown) (Identifier)
+
+  console.log(unknownAction);
 > ^^^^^^^: Console   (TypeReference) (Identifier)
 
-  console.log(maybeAction);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
+  console.log(unknownAction);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
-  console.log(maybeAction);
+  console.log(unknownAction);
 >         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
-  console.log(maybeAction);
->             ^^^^^^^^^^^: object & Record<"type", unknown>   (Intersection) (Identifier)
+  console.log(unknownAction);
+>             ^^^^^^^^^^^^^: GenericAction<string>   (TypeReference) (Identifier)
 
-  console.log(maybeAction.type);
+declare const nullableValue: string | null;
+>             ^^^^^^^^^^^^^: string | null   (Union) (Identifier)
+
+const whenNull = null === nullableValue ? nullableValue : "";
+>     ^^^^^^^^: null | ""   (Union) (Identifier)
+
+const whenNull = null === nullableValue ? nullableValue : "";
+>                         ^^^^^^^^^^^^^: string | null   (Union) (Identifier)
+
+const whenNull = null === nullableValue ? nullableValue : "";
+>                                         ^^^^^^^^^^^^^: null   (Null) (Identifier)
+
+const whenString = null !== nullableValue ? nullableValue : "";
+>     ^^^^^^^^^^: string   (String) (Identifier)
+
+const whenString = null !== nullableValue ? nullableValue : "";
+>                           ^^^^^^^^^^^^^: string | null   (Union) (Identifier)
+
+const whenString = null !== nullableValue ? nullableValue : "";
+>                                           ^^^^^^^^^^^^^: string   (String) (Identifier)
+
+function flowDirectAssignment() {
+>        ^^^^^^^^^^^^^^^^^^^^: () => void   (Function) (Identifier)
+
+  let value: string | number;
+>     ^^^^^: string | number   (Union) (Identifier)
+
+  value = 1;
+> ^^^^^: string | number   (Union) (Identifier)
+
+  value = 1;
+> ^^^^^^^^^^: 1   (NumberLiteral) (ExpressionStatement)
+
+  console.log(value);
 > ^^^^^^^: Console   (TypeReference) (Identifier)
 
-  console.log(maybeAction.type);
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
+  console.log(value);
+> ^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
 
-  console.log(maybeAction.type);
+  console.log(value);
 >         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
-  console.log(maybeAction.type);
->             ^^^^^^^^^^^: object & Record<"type", unknown>   (Intersection) (Identifier)
+  console.log(value);
+>             ^^^^^: number   (Number) (Identifier)
 
-  console.log(maybeAction.type);
->                         ^^^^: unknown   (Unknown) (Identifier)
+function flowSelfReferentialAssignment() {
+>        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: () => void   (Function) (Identifier)
+
+  let value: number | undefined;
+>     ^^^^^: number | undefined   (Union) (Identifier)
+
+  value = +value;
+> ^^^^^: number | undefined   (Union) (Identifier)
+
+  value = +value;
+> ^^^^^^^^^^^^^^^: number   (Number) (ExpressionStatement)
+
+  value = +value;
+>          ^^^^^: number | undefined   (Union) (Identifier)
+
+  console.log(value);
+> ^^^^^^^: Console   (TypeReference) (Identifier)
+
+  console.log(value);
+> ^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
+
+  console.log(value);
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
+
+  console.log(value);
+>             ^^^^^: number   (Number) (Identifier)
+
+let compoundWriteValue: any = 0;
+>   ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+compoundWriteValue = 1;
+>^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+compoundWriteValue = 1;
+>^^^^^^^^^^^^^^^^^^^^^^^: 1   (NumberLiteral) (ExpressionStatement)
+
+compoundWriteValue += 2;
+>^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+compoundWriteValue += 2;
+>^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+
+declare const nestedBranchValue: string | number | undefined;
+>             ^^^^^^^^^^^^^^^^^: string | number | undefined   (Union) (Identifier)
+
+if (nestedBranchValue) {
+>   ^^^^^^^^^^^^^^^^^: string | number | undefined   (Union) (Identifier)
+
+  if (typeof nestedBranchValue === "string") {
+>            ^^^^^^^^^^^^^^^^^: string | number   (Union) (Identifier)
+
+    console.log(nestedBranchValue);
+>   ^^^^^^^: Console   (TypeReference) (Identifier)
+
+    console.log(nestedBranchValue);
+>   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
+
+    console.log(nestedBranchValue);
+>           ^^^: (...data: any[]) => void   (Function) (Identifier)
+
+    console.log(nestedBranchValue);
+>               ^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
+
+let siblingBranchValue: string | undefined;
+>   ^^^^^^^^^^^^^^^^^^: string | undefined   (Union) (Identifier)
+
+declare const siblingCondition: boolean;
+>             ^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
+
+if (siblingCondition && siblingBranchValue) {
+>   ^^^^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
+
+if (siblingCondition && siblingBranchValue) {
+>                       ^^^^^^^^^^^^^^^^^^: string | undefined   (Union) (Identifier)
+
+  console.log(siblingBranchValue);
+> ^^^^^^^: Console   (TypeReference) (Identifier)
+
+  console.log(siblingBranchValue);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
+
+  console.log(siblingBranchValue);
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
+
+  console.log(siblingBranchValue);
+>             ^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
+
+  siblingBranchValue = undefined;
+> ^^^^^^^^^^^^^^^^^^: string | undefined   (Union) (Identifier)
+
+  siblingBranchValue = undefined;
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: undefined   (Undefined) (ExpressionStatement)
+
+  siblingBranchValue = undefined;
+>                      ^^^^^^^^^: undefined   (Undefined) (Identifier)
+
+declare const optionalContainer: { value: string | undefined };
+>             ^^^^^^^^^^^^^^^^^: { value: string | undefined; }   (Object) (Identifier)
+
+declare const optionalContainer: { value: string | undefined };
+>                                  ^^^^^: string | undefined   (Union) (Identifier)
+
+if (optionalContainer?.value) {
+>   ^^^^^^^^^^^^^^^^^: { value: string | undefined; }   (Object) (Identifier)
+
+if (optionalContainer?.value) {
+>                      ^^^^^: string | undefined   (Union) (Identifier)
+
+  console.log(optionalContainer.value);
+> ^^^^^^^: Console   (TypeReference) (Identifier)
+
+  console.log(optionalContainer.value);
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
+
+  console.log(optionalContainer.value);
+>         ^^^: (...data: any[]) => void   (Function) (Identifier)
+
+  console.log(optionalContainer.value);
+>             ^^^^^^^^^^^^^^^^^: { value: string | undefined; }   (Object) (Identifier)
+
+  console.log(optionalContainer.value);
+>                               ^^^^^: string   (String) (Identifier)
+
+function evolvingSiblingBranch() {
+>        ^^^^^^^^^^^^^^^^^^^^^: () => void   (Function) (Identifier)
+
+  let values = [];
+>     ^^^^^^: any[]   (Array) (Identifier)
+
+  declare const condition: boolean;
+>               ^^^^^^^^^: boolean   (Boolean) (Identifier)
+
+  if (condition) {
+>     ^^^^^^^^^: boolean   (Boolean) (Identifier)
+
+    values.push(1);
+>   ^^^^^^: any[]   (Array) (Identifier)
+
+    values.push(1);
+>   ^^^^^^^^^^^^^^^: number   (Number) (ExpressionStatement)
+
+    values.push(1);
+>          ^^^^: (...items: any[]) => number   (Function) (Identifier)
+
+    const untouched = values;
+>         ^^^^^^^^^: any[]   (Array) (Identifier)
+
+    const untouched = values;
+>                     ^^^^^^: any[]   (Array) (Identifier)
+
+    console.log(untouched);
+>   ^^^^^^^: Console   (TypeReference) (Identifier)
+
+    console.log(untouched);
+>   ^^^^^^^^^^^^^^^^^^^^^^^: void   (Void) (ExpressionStatement)
+
+    console.log(untouched);
+>           ^^^: (...data: any[]) => void   (Function) (Identifier)
+
+    console.log(untouched);
+>               ^^^^^^^^^: any[]   (Array) (Identifier)

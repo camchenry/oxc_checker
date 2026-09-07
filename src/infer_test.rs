@@ -271,55 +271,6 @@ fn covariant_candidates_combine_for_naked_type_variable_priority() {
 }
 
 #[test]
-fn top_level_literal_candidates_widen_when_not_top_level_in_return() {
-    let allocator = Allocator::default();
-    test_checker!(allocator, store, checker, arena);
-    let type_parameter = Ty::type_parameter("T", None, None);
-    let mut context = InferenceContext::with_substitutions(
-        [type_parameter],
-        &TypeParameterSubstitutions::new(),
-        arena,
-    )
-    .with_return_type(arena.object([Ty::property(
-        "value",
-        arena.type_reference("T", std::iter::empty()),
-    )]));
-    context.add_candidate(
-        type_parameter,
-        arena.string_literal("ready"),
-        InferencePriority::NakedTypeVariable,
-        InferenceVariance::Covariant,
-    );
-
-    assert_eq!(context.get_inferred_type(0, &checker), Some(Ty::string()));
-}
-
-#[test]
-fn top_level_literal_candidates_are_preserved_for_top_level_return() {
-    let allocator = Allocator::default();
-    test_checker!(allocator, store, checker, arena);
-    let type_parameter = Ty::type_parameter("T", None, None);
-    let mut context = InferenceContext::with_substitutions(
-        [type_parameter],
-        &TypeParameterSubstitutions::new(),
-        arena,
-    )
-    .with_return_type(arena.type_reference("T", std::iter::empty()));
-    context.add_candidate(
-        type_parameter,
-        arena.string_literal("ready"),
-        InferencePriority::NakedTypeVariable,
-        InferenceVariance::Covariant,
-    );
-
-    assert_optional_type_eq(
-        arena,
-        context.get_inferred_type(0, &checker),
-        Some(arena.string_literal("ready")),
-    );
-}
-
-#[test]
 fn forward_default_references_resolve_to_unknown() {
     let allocator = Allocator::default();
     test_checker!(allocator, store, checker, arena);

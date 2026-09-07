@@ -1144,66 +1144,6 @@ fn default_lib_entries_are_marked_as_lib() {
 }
 
 #[test]
-fn flow_narrows_truthy_if_branch() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const x: string | undefined;
-    if (x) {
-        x;
-    } else {
-        x;
-    }
-    ",
-    );
-
-    let reference_types = get_identifier_reference_types(&ret, "x");
-    assert_eq!(reference_types.len(), 3);
-    assert_type_eq(
-        ret.arena,
-        &reference_types[0],
-        &arena(&ret).union([Ty::string(), Ty::undefined()]),
-    );
-    assert_eq!(reference_types[1], Ty::string());
-    assert_type_eq(
-        ret.arena,
-        &reference_types[2],
-        &arena(&ret).union([Ty::string(), Ty::undefined()]),
-    );
-}
-
-#[test]
-fn flow_narrows_typeof_if_branches() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const y: string | number | boolean;
-    if (typeof y === 'string') {
-        y;
-    } else {
-        y;
-    }
-    ",
-    );
-
-    let reference_types = get_identifier_reference_types(&ret, "y");
-    assert_eq!(reference_types.len(), 3);
-    assert_type_eq(
-        ret.arena,
-        &reference_types[0],
-        &arena(&ret).union([Ty::string(), Ty::number(), Ty::boolean()]),
-    );
-    assert_eq!(reference_types[1], Ty::string());
-    assert_type_eq(
-        ret.arena,
-        &reference_types[2],
-        &arena(&ret).union([Ty::number(), Ty::boolean()]),
-    );
-}
-
-#[test]
 fn flow_predicate_narrowing_expands_fully_implicit_defaults_for_values() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -1237,83 +1177,6 @@ fn flow_predicate_narrowing_expands_fully_implicit_defaults_for_values() {
             .map(|ty| type_string(&ret, ty))
             .collect::<Vec<_>>(),
         vec!["unknown".to_string(), "Base<unknown, string>".to_string()]
-    );
-}
-
-#[test]
-fn flow_does_not_index_condition_reference_in_global_symbol_program() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const x: string | undefined;
-    if (x) {
-        Array;
-    }
-    ",
-    );
-
-    assert_eq!(
-        get_identifier_reference_types(&ret, "Array")
-            .into_iter()
-            .map(|ty| type_string(&ret, ty))
-            .collect::<Vec<_>>(),
-        vec!["ArrayConstructor".to_string()]
-    );
-}
-
-#[test]
-fn flow_narrows_typeof_conditional_expression_arms() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const y: string | number | boolean;
-    const z = typeof y === 'string' ? y : undefined;
-    ",
-    );
-    let arena = arena(&ret);
-
-    assert_type_eq(
-        arena,
-        &get_global_symbol_type(&ret, "z"),
-        &arena.union([Ty::string(), Ty::undefined()]),
-    );
-    assert_type_eq(
-        arena,
-        &get_identifier_reference_types(&ret, "y"),
-        &vec![
-            arena.union([Ty::string(), Ty::number(), Ty::boolean()]),
-            Ty::string(),
-        ],
-    );
-}
-
-#[test]
-fn conditional_template_uses_declared_literal_in_unreachable_arm() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    const arg = 'something';
-    const msg = typeof arg === 'string' ? arg : `arg = ${arg}`;
-    ",
-    );
-
-    assert_eq!(
-        type_string(&ret, get_global_symbol_type(&ret, "msg")),
-        "\"something\" | \"arg = something\""
-    );
-    assert_eq!(
-        get_identifier_reference_types(&ret, "arg")
-            .into_iter()
-            .map(|ty| type_string(&ret, ty))
-            .collect::<Vec<_>>(),
-        vec![
-            "\"something\"".to_string(),
-            "\"something\"".to_string(),
-            "never".to_string(),
-        ]
     );
 }
 
@@ -1363,31 +1226,6 @@ fn flow_narrows_undefined_equality_conditional_expression_arms() {
 }
 
 #[test]
-fn flow_narrows_reversed_null_equality_conditional_expression_arms() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const value: string | null;
-    const whenNull = null === value ? value : '';
-    const whenString = null !== value ? value : '';
-    ",
-    );
-    let arena = arena(&ret);
-
-    assert_type_eq(
-        arena,
-        &get_identifier_reference_types(&ret, "value"),
-        &vec![
-            arena.union([Ty::string(), Ty::null()]),
-            Ty::null(),
-            arena.union([Ty::string(), Ty::null()]),
-            Ty::string(),
-        ],
-    );
-}
-
-#[test]
 fn flow_write_invalidates_previous_narrowing() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -1430,50 +1268,6 @@ fn flow_compatible_assignment_preserves_previous_narrowing() {
     assert_eq!(reference_types.len(), 3);
     assert_eq!(reference_types[1], Ty::string());
     assert_eq!(reference_types[2], Ty::string());
-}
-
-#[test]
-fn flow_direct_assignment_updates_current_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    let value: string | number;
-    value = 1;
-    value;
-    ",
-    );
-
-    let reference_types = get_identifier_reference_types(&ret, "value");
-    assert_eq!(reference_types.len(), 2);
-    assert_type_eq(
-        ret.arena,
-        &reference_types[0],
-        &arena(&ret).union([Ty::string(), Ty::number()]),
-    );
-    assert_eq!(reference_types[1], Ty::number());
-}
-
-#[test]
-fn flow_self_referential_assignment_reads_pre_write_type() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    let value: number | undefined;
-    value = +value;
-    value;
-    ",
-    );
-
-    let reference_types = get_identifier_reference_types(&ret, "value");
-    assert_eq!(reference_types.len(), 3);
-    assert_type_eq(
-        ret.arena,
-        &reference_types[1],
-        &arena(&ret).union([Ty::number(), Ty::undefined()]),
-    );
-    assert_eq!(reference_types[2], Ty::number());
 }
 
 #[test]
@@ -1563,49 +1357,6 @@ fn structural_property_lookup_stops_on_unchanged_conditional_expansion() {
 }
 
 #[test]
-fn flow_assignment_does_not_refine_later_compound_write_target() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    let value: any = 0;
-    value = 1;
-    value += 2;
-    ",
-    );
-
-    let reference_types = get_identifier_reference_types(&ret, "value");
-    assert_eq!(reference_types.len(), 2);
-    assert_eq!(reference_types[0], Ty::any());
-    assert_eq!(reference_types[1], Ty::any());
-}
-
-#[test]
-fn flow_applies_nested_branch_effects_in_order() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const value: string | number | undefined;
-    if (value) {
-        if (typeof value === 'string') {
-            value;
-        }
-    }
-    ",
-    );
-
-    let reference_types = get_identifier_reference_types(&ret, "value");
-    assert_eq!(reference_types.len(), 3);
-    assert_type_eq(
-        ret.arena,
-        &reference_types[1],
-        &arena(&ret).union([Ty::string(), Ty::number()]),
-    );
-    assert_eq!(reference_types[2], Ty::string());
-}
-
-#[test]
 fn flow_stops_at_control_flow_graph_depth_limit() {
     let allocator = Allocator::default();
     let mut source = String::from("declare const value: string | undefined;\n");
@@ -1692,27 +1443,6 @@ fn flow_depth_limit_only_disables_the_containing_function() {
 }
 
 #[test]
-fn flow_narrows_logical_expression_rhs() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const value: string | undefined;
-    const result = value && value;
-    ",
-    );
-
-    let reference_types = get_identifier_reference_types(&ret, "value");
-    assert_eq!(reference_types.len(), 2);
-    assert_type_eq(
-        ret.arena,
-        &reference_types[0],
-        &arena(&ret).union([Ty::string(), Ty::undefined()]),
-    );
-    assert_eq!(reference_types[1], Ty::string());
-}
-
-#[test]
 fn flow_does_not_cross_deferred_closure_boundary() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -1734,26 +1464,6 @@ fn flow_does_not_cross_deferred_closure_boundary() {
             &arena(&ret).union([Ty::string(), Ty::undefined()]),
         );
     }
-}
-
-#[test]
-fn flow_ignores_write_in_sibling_branch() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    let value: string | undefined;
-    declare const condition: boolean;
-    if (condition && value) {
-        value;
-    } else {
-        value = undefined;
-    }
-    ",
-    );
-
-    let reference_types = get_identifier_reference_types(&ret, "value");
-    assert_eq!(reference_types[1], Ty::string());
 }
 
 #[test]
@@ -1779,24 +1489,6 @@ fn flow_conservatively_invalidates_narrow_after_nested_write() {
         reference_types.last().unwrap(),
         &arena(&ret).union([Ty::string(), Ty::undefined()]),
     );
-}
-
-#[test]
-fn flow_narrows_optional_static_member_in_true_branch() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    declare const container: { value: string | undefined };
-    if (container?.value) {
-        container.value;
-    }
-    ",
-    );
-
-    let member_types = get_static_member_expression_types(&ret, "value");
-    assert_eq!(member_types.len(), 2);
-    assert_eq!(member_types[1], Ty::string());
 }
 
 #[test]
@@ -1961,55 +1653,6 @@ fn intersection_with_any_reduces_to_any() {
 
     assert_eq!(arena.intersection([Ty::any(), literal]), Ty::any());
     assert_eq!(arena.intersection([literal, Ty::any()]), Ty::any());
-}
-
-#[test]
-fn assignability_handles_basic_and_structural_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(&allocator, "");
-    let checker = checker(&ret);
-    let arena = arena(&ret);
-
-    assert!(checker.is_assignable_to(Ty::number(), Ty::number()));
-    assert!(checker.is_assignable_to(Ty::number(), Ty::any()));
-    assert!(checker.is_assignable_to(Ty::string(), Ty::unknown()));
-    assert!(!checker.is_assignable_to(Ty::number(), Ty::string()));
-    assert!(checker.is_assignable_to(
-        arena.number_literal(1.0, "1", NumberBase::Decimal),
-        Ty::number()
-    ));
-    assert!(checker.is_assignable_to(arena.array(Ty::number()), arena.array(Ty::number())));
-
-    let source = arena.object([
-        Ty::property("x", Ty::number()),
-        Ty::property("y", Ty::string()),
-    ]);
-    let target = arena.object([Ty::property("x", Ty::number())]);
-
-    assert!(checker.is_assignable_to(source, target));
-    assert!(!checker.is_assignable_to(target, source));
-}
-
-#[test]
-fn assignability_handles_complex_types() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(&allocator, "");
-    let checker = checker(&ret);
-    let arena = arena(&ret);
-
-    // Test that a function type is assignable to a more general function type
-    assert!(checker.is_assignable_to(
-        arena.function(vec![], vec![], Ty::string()),
-        arena.function(vec![], vec![], Ty::any())
-    ));
-
-    // Regression test: Check that thenable is assignable to an intersection type
-    let thenable = arena.object([Ty::property(
-        "then",
-        arena.function(vec![], vec![], Ty::any()),
-    )]);
-    let intersection = arena.intersection([Ty::primitive_object(), thenable]);
-    assert!(checker.is_assignable_to(thenable, intersection));
 }
 
 #[test]
@@ -2230,136 +1873,6 @@ fn declared_function_type_parameters_expand_conditional_alias_annotations() {
             get_symbol_type_in_function(&ret, "useParams", "streamFn")
         ),
         "(context: { queryKey: TQueryKey; pageParam?: unknown; }) => void"
-    );
-}
-
-#[test]
-#[ignore = "TODO: Fix type argument printing"]
-fn printing_type_arguments() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-        interface Box<T> {
-            value: T;
-        }
-
-        function box<T>(value: T): Box<T> {
-            return { value };
-        }
-
-        interface Iterable<T, TReturn = any, TNext = any> {
-            [Symbol.iterator](): Iterator<T, TReturn, TNext>;
-        }
-
-        function from<T>(iterable: Iterable<T>): Array<T> {
-        }
-        ",
-    );
-
-    assert_eq!(
-        type_string(&ret, get_global_symbol_type(&ret, "box")),
-        "<T>(value: T) => Box<T>"
-    );
-    assert_eq!(
-        type_string(&ret, get_global_symbol_type(&ret, "from")),
-        "<T>(iterable: Iterable<T>): Array<T>"
-    )
-}
-
-#[test]
-#[ignore = "TODO: Fix type argument printing"]
-fn streamed_query_style_aliases_render_at_use_sites() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-            interface Register {}
-            interface QueryClient {}
-            interface AbortSignal {}
-            interface Error {}
-            type Todo = { id: number; title: string };
-            declare const dataTagSymbol: unique symbol;
-            declare const dataTagErrorSymbol: unique symbol;
-            type AnyDataTag = { [dataTagSymbol]: any; [dataTagErrorSymbol]: any };
-            type DataTag<TType, TValue, TError> = TType extends AnyDataTag
-                ? TType
-                : TType & { [dataTagSymbol]: TValue; [dataTagErrorSymbol]: TError };
-            type InferDataFromTag<TQueryFnData, TTaggedQueryKey> =
-                TTaggedQueryKey extends DataTag<unknown, infer TaggedValue, unknown>
-                    ? TaggedValue
-                    : TQueryFnData;
-            type TodoQueryKey = DataTag<readonly [\"todos\"], Todo[], Error>;
-            type TaggedTodoData = InferDataFromTag<string, TodoQueryKey>;
-            type QueryKey = Register extends { queryKey: infer TQueryKey }
-                ? TQueryKey extends readonly unknown[] ? TQueryKey : readonly unknown[]
-                : readonly unknown[];
-            type QueryMeta = Register extends { queryMeta: infer TQueryMeta }
-                ? TQueryMeta extends Record<string, unknown> ? TQueryMeta : Record<string, unknown>
-                : Record<string, unknown>;
-            type QueryFunctionContext<TQueryKey extends QueryKey = QueryKey, TPageParam = never> =
-                [TPageParam] extends [never]
-                    ? { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown }
-                    : { client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; pageParam: TPageParam; meta: QueryMeta | undefined };
-            type QueryFunction<T = unknown, TQueryKey extends QueryKey = QueryKey, TPageParam = never> =
-                (context: QueryFunctionContext<TQueryKey, TPageParam>) => T;
-            type OmitKeyof<TObject, TKey extends keyof TObject, TStrictly = 'strictly'> = Omit<TObject, TKey>;
-            type StreamedQueryParams<TQueryFnData, TData, TQueryKey extends QueryKey> = {
-                streamFn: (context: QueryFunctionContext<TQueryKey>) => TQueryFnData;
-                initialValue: TData;
-            };
-            declare const numberedContext: QueryFunctionContext<readonly [\"todos\"], number>;
-            const pageParam = numberedContext.pageParam;
-
-            function streamedQuery<
-                TQueryFnData = unknown,
-                TData = Array<TQueryFnData>,
-                TQueryKey extends QueryKey = QueryKey,
-            >({ streamFn, initialValue }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>): QueryFunction<TData, TQueryKey> {
-                return (context) => {
-                    const signalLessContext: OmitKeyof<typeof context, 'signal'> = {
-                        client: context.client,
-                        meta: context.meta,
-                        queryKey: context.queryKey,
-                    };
-                    const meta = context.meta;
-                    return initialValue;
-                };
-            }
-            ",
-    );
-
-    assert_eq!(
-        type_string(&ret, get_global_symbol_type(&ret, "streamedQuery")),
-        "<TQueryFnData = unknown, TData = TQueryFnData[], TQueryKey extends QueryKey = readonly unknown[]>({ streamFn, initialValue, }: StreamedQueryParams<TQueryFnData, TData, TQueryKey>) => QueryFunction<TData, TQueryKey>"
-    );
-    assert_eq!(
-        type_string(&ret, get_type_alias_type(&ret, "QueryMeta")),
-        "{ [x: string]: unknown; }"
-    );
-    assert_eq!(
-        type_string(&ret, get_type_alias_type(&ret, "InferDataFromTag")),
-        "TTaggedQueryKey extends { [dataTagSymbol]: infer TaggedValue; [dataTagErrorSymbol]: unknown; } ? TaggedValue : TQueryFnData"
-    );
-    assert_eq!(
-        type_string(&ret, get_type_alias_type(&ret, "TaggedTodoData")),
-        "Todo[]"
-    );
-    assert_eq!(
-        get_ts_property_signature_types(&ret, "meta"),
-        vec![
-            "Record<string, unknown> | undefined",
-            "Record<string, unknown> | undefined",
-        ]
-    );
-    assert_eq!(get_global_symbol_type(&ret, "pageParam"), Ty::number());
-    assert_eq!(
-        type_string(&ret, get_first_symbol_type(&ret, "signalLessContext")),
-        "OmitKeyof<{ client: QueryClient; queryKey: TQueryKey; signal: AbortSignal; meta: QueryMeta | undefined; pageParam?: unknown; direction?: unknown; }, \"signal\">"
-    );
-    assert_eq!(
-        type_string(&ret, get_first_symbol_type(&ret, "meta")),
-        "Record<string, unknown> | undefined"
     );
 }
 

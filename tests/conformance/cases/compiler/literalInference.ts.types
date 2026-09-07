@@ -1,0 +1,53 @@
+function identity<T>(value: T): T {
+>        ^^^^^^^^: <T>(value: T) => T   (Function) (Identifier)
+
+function identity<T>(value: T): T {
+>                 ^: any   (Any) (Identifier)
+
+function identity<T>(value: T): T {
+>                    ^^^^^: T   (TypeParameter) (Identifier)
+
+function identity<T>(value: T): T {
+>                           ^: any   (Any) (Identifier)
+
+function identity<T>(value: T): T {
+>                               ^: any   (Any) (Identifier)
+
+  return value;
+>        ^^^^^: T   (TypeParameter) (Identifier)
+
+function box<T>(value: T): { value: T } {
+>        ^^^: <T>(value: T) => { value: T; }   (Function) (Identifier)
+
+function box<T>(value: T): { value: T } {
+>            ^: any   (Any) (Identifier)
+
+function box<T>(value: T): { value: T } {
+>               ^^^^^: T   (TypeParameter) (Identifier)
+
+function box<T>(value: T): { value: T } {
+>                      ^: any   (Any) (Identifier)
+
+function box<T>(value: T): { value: T } {
+>                            ^^^^^: T   (TypeParameter) (Identifier)
+
+function box<T>(value: T): { value: T } {
+>                                   ^: any   (Any) (Identifier)
+
+  return { value };
+>          ^^^^^: T   (TypeParameter) (Identifier)
+
+  return { value };
+>          ^^^^^: T   (TypeParameter) (Identifier)
+
+const preservedLiteral = identity("ready");
+>     ^^^^^^^^^^^^^^^^: "ready"   (StringLiteral) (Identifier)
+
+const preservedLiteral = identity("ready");
+>                        ^^^^^^^^: <T>(value: T) => T   (Function) (Identifier)
+
+const widenedLiteral = box("ready");
+>     ^^^^^^^^^^^^^^: { value: string; }   (Object) (Identifier)
+
+const widenedLiteral = box("ready");
+>                      ^^^: <T>(value: T) => { value: T; }   (Function) (Identifier)

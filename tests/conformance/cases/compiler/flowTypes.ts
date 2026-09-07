@@ -46,14 +46,76 @@ declare const maybeAction: unknown;
 
 if (isAction(maybeAction) && maybeAction.type) {
   // Action
-  console.log(maybeAction);
+  maybeAction;
   // string
-  console.log(maybeAction.type);
+  maybeAction.type;
 }
 
 if (typeof maybeAction === "object" && maybeAction !== null && "type" in maybeAction) {
   // object & Record<"type", unknown>
-  console.log(maybeAction);
+  maybeAction;
   // unknown
-  console.log(maybeAction.type);
+  maybeAction.type;
+}
+
+interface GenericAction<T extends string = string> {
+  type: T;
+}
+
+declare function isGenericAction(value: unknown): value is GenericAction;
+declare const unknownAction: unknown;
+
+if (isGenericAction(unknownAction)) {
+  console.log(unknownAction);
+}
+
+declare const nullableValue: string | null;
+const whenNull = null === nullableValue ? nullableValue : "";
+const whenString = null !== nullableValue ? nullableValue : "";
+
+function flowDirectAssignment() {
+  let value: string | number;
+  value = 1;
+  console.log(value);
+}
+
+function flowSelfReferentialAssignment() {
+  let value: number | undefined;
+  value = +value;
+  console.log(value);
+}
+
+let compoundWriteValue: any = 0;
+compoundWriteValue = 1;
+compoundWriteValue += 2;
+
+declare const nestedBranchValue: string | number | undefined;
+if (nestedBranchValue) {
+  if (typeof nestedBranchValue === "string") {
+    console.log(nestedBranchValue);
+  }
+}
+
+let siblingBranchValue: string | undefined;
+declare const siblingCondition: boolean;
+if (siblingCondition && siblingBranchValue) {
+  console.log(siblingBranchValue);
+} else {
+  siblingBranchValue = undefined;
+}
+
+declare const optionalContainer: { value: string | undefined };
+if (optionalContainer?.value) {
+  console.log(optionalContainer.value);
+}
+
+function evolvingSiblingBranch() {
+  let values = [];
+  declare const condition: boolean;
+  if (condition) {
+    values.push(1);
+  } else {
+    const untouched = values;
+    console.log(untouched);
+  }
 }
