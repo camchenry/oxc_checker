@@ -1,0 +1,119 @@
+for (let index = 0; index < 2; index++) {
+>        ^^^^^: number   (Number) (Identifier)
+
+for (let index = 0; index < 2; index++) {
+>                   ^^^^^: number   (Number) (Identifier)
+
+for (let index = 0; index < 2; index++) {
+>                              ^^^^^: number   (Number) (Identifier)
+
+  index;
+> ^^^^^: number   (Number) (Identifier)
+
+  index;
+> ^^^^^^: number   (Number) (ExpressionStatement)
+
+const record = { first: 1, second: 2 };
+>     ^^^^^^: { first: number; second: number; }   (Object) (Identifier)
+
+const record = { first: 1, second: 2 };
+>                ^^^^^: number   (Number) (Identifier)
+
+const record = { first: 1, second: 2 };
+>                          ^^^^^^: number   (Number) (Identifier)
+
+for (const key in record) {
+>          ^^^: string   (String) (Identifier)
+
+for (const key in record) {
+>                 ^^^^^^: { first: number; second: number; }   (Object) (Identifier)
+
+  key;
+> ^^^: string   (String) (Identifier)
+
+  key;
+> ^^^^: string   (String) (ExpressionStatement)
+
+const tuple = ["text", 42] as const;
+>     ^^^^^: readonly ["text", 42]   (Tuple) (Identifier)
+
+const tuple = ["text", 42] as const;
+>                             ^^^^^: any   (Any) (Identifier)
+
+const tuple = ["text", 42] as const;
+>                             ^^^^^: any   (Error) (Identifier)
+
+for (const value of tuple) {
+>          ^^^^^: any   (Any) (Identifier)
+        expected: "text" | 42
+
+for (const value of tuple) {
+>                   ^^^^^: readonly ["text", 42]   (Tuple) (Identifier)
+
+  value;
+> ^^^^^: any   (Any) (Identifier)
+expected: "text" | 42
+
+  value;
+> ^^^^^^: any   (Any) (ExpressionStatement)
+expected: "text" | 42
+
+async function consumeSyncPromises() {
+>              ^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)
+
+  const promises = [Promise.resolve(1), Promise.resolve(2)];
+>       ^^^^^^^^: Promise<number>[]   (Array) (Identifier)
+
+  const promises = [Promise.resolve(1), Promise.resolve(2)];
+>                   ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
+
+  const promises = [Promise.resolve(1), Promise.resolve(2)];
+>                           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (Object) (Identifier)
+
+  const promises = [Promise.resolve(1), Promise.resolve(2)];
+>                                       ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
+
+  const promises = [Promise.resolve(1), Promise.resolve(2)];
+>                                               ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (Object) (Identifier)
+
+  for await (const awaitedValue of promises) {
+>                  ^^^^^^^^^^^^: any   (Any) (Identifier)
+                       expected: number
+
+  for await (const awaitedValue of promises) {
+>                                  ^^^^^^^^: Promise<number>[]   (Array) (Identifier)
+
+    awaitedValue;
+>   ^^^^^^^^^^^^: any   (Any) (Identifier)
+        expected: number
+
+    awaitedValue;
+>   ^^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+         expected: number
+
+declare const asyncValues: AsyncIterable<string>;
+>             ^^^^^^^^^^^: AsyncIterable<string>   (TypeReference) (Identifier)
+
+declare const asyncValues: AsyncIterable<string>;
+>                          ^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+declare const asyncValues: AsyncIterable<string>;
+>                          ^^^^^^^^^^^^^: any   (Error) (Identifier)
+
+async function consumeAsyncIterable() {
+>              ^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)
+
+  for await (const asyncValue of asyncValues) {
+>                  ^^^^^^^^^^: any   (Any) (Identifier)
+                     expected: string
+
+  for await (const asyncValue of asyncValues) {
+>                                ^^^^^^^^^^^: AsyncIterable<string>   (TypeReference) (Identifier)
+
+    asyncValue;
+>   ^^^^^^^^^^: any   (Any) (Identifier)
+      expected: string
+
+    asyncValue;
+>   ^^^^^^^^^^^: any   (Any) (ExpressionStatement)
+       expected: string
