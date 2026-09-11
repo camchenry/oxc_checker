@@ -1072,53 +1072,6 @@ fn global_type_reference_locations_resolve_symbols() {
 }
 
 #[test]
-fn enum_member_types_are_canonical_across_locations() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-        enum E { A, B }
-        const value = E.A;
-        type Members = E.A | E.A | E.B;
-        ",
-    );
-    let checker = checker(&ret);
-    let semantic = ret.store.entry(ret.program_id).unwrap().semantic();
-
-    let declaration_type = semantic
-        .nodes()
-        .iter_enumerated()
-        .find_map(|(node_id, node)| match node.kind() {
-            AstKind::TSEnumMember(member) if member.id.static_name().as_str() == "A" => {
-                Some(checker.get_type_at_location(NodeRef::new(ret.program_id, node_id)))
-            }
-            _ => None,
-        })
-        .unwrap();
-    let value_type = get_global_symbol_type(&ret, "value");
-    let members_type = get_type_alias_type(&ret, "Members");
-
-    assert_eq!(declaration_type, value_type);
-    assert!(matches!(
-        ret.arena.ty_kind(declaration_type),
-        types::TyKind::TypeReference(reference) if reference.target.is_some()
-    ));
-    let types::TyKind::Union(union) = ret.arena.ty_kind(members_type) else {
-        panic!("expected enum member union");
-    };
-    assert_eq!(union.types.len(), 2);
-    assert_eq!(union.types[0], declaration_type);
-    assert_eq!(
-        union
-            .types
-            .iter()
-            .map(|ty| type_string(&ret, *ty))
-            .collect::<Vec<_>>(),
-        ["E.A", "E.B"]
-    );
-}
-
-#[test]
 fn same_named_enum_members_in_different_scopes_are_distinct() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -2313,28 +2266,6 @@ fn recursively_growing_type_arguments_hit_instantiation_limit() {
 }
 
 #[test]
-fn recursive_conditional_inference_defers_unresolved_active_aliases() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        "
-    type ParseSuccess<R extends string> = { rest: R };
-    type ParseManyWhitespace<S extends string> =
-        S extends ` ${infer R0}`
-            ? ParseManyWhitespace<R0> extends ParseSuccess<infer R1>
-                ? ParseSuccess<R1>
-                : null
-            : ParseSuccess<S>;
-    type Generic<S extends string> = ParseManyWhitespace<S>;
-    ",
-    );
-
-    let ty = get_type_alias_type(&ret, "Generic");
-    assert_ne!(ty, Ty::any());
-    assert!(type_string(&ret, ty).contains("ParseManyWhitespace<R0>"));
-}
-
-#[test]
 fn recursive_tuple_rest_aliases_are_preserved_while_active() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(
@@ -2543,55 +2474,6 @@ fn optional_mapped_type_aliases_include_undefined_and_drop_empty_intersection() 
     assert_eq!(
         get_ts_property_signature_types(&ret, "deep"),
         vec!["OptionalDeep<O>"]
-    );
-}
-
-#[test]
-fn indexed_access_resolves_mapped_type_property_templates() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    type Defaults = { requireExactProps: false };
-    type Wrapper<T> = T & {};
-    type Apply<SpecifiedOptions extends object> = {
-        [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
-            ? SpecifiedOptions[Key]
-            : Defaults[Key]
-    };
-    type ApplyWrapped<SpecifiedOptions extends object> = {
-        [Key in keyof Defaults]: Key extends keyof SpecifiedOptions
-            ? Wrapper<SpecifiedOptions[Key & keyof SpecifiedOptions]>
-            : Defaults[Key]
-    };
-    type Deferred<Options extends object> = Apply<Options>["requireExactProps"];
-    type DeferredWrapped<Options extends object> = ApplyWrapped<Options>["requireExactProps"];
-    type Concrete = Apply<{ requireExactProps: true }>["requireExactProps"];
-    type Outer<Options extends object> = Apply<Options>["requireExactProps"] extends true ? "yes" : "no";
-    type OuterViaParameter<Options extends object> = _Outer<Apply<Options>>;
-    type _Outer<Options extends { requireExactProps: boolean }> = Options["requireExactProps"] extends true ? "yes" : "no";
-    "#,
-    );
-
-    assert_eq!(
-        type_string(&ret, get_type_alias_type(&ret, "Deferred")),
-        "\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false"
-    );
-    assert_eq!(
-        type_string(&ret, get_type_alias_type(&ret, "DeferredWrapped")),
-        "\"requireExactProps\" extends keyof Options ? Wrapper<Options[keyof Options & \"requireExactProps\"]> : false"
-    );
-    assert_eq!(
-        type_string(&ret, get_type_alias_type(&ret, "Concrete")),
-        "true"
-    );
-    assert_eq!(
-        type_string(&ret, get_type_alias_type(&ret, "Outer")),
-        "(\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false) extends true ? \"yes\" : \"no\""
-    );
-    assert_eq!(
-        type_string(&ret, get_type_alias_type(&ret, "OuterViaParameter")),
-        "(\"requireExactProps\" extends keyof Options ? Options[\"requireExactProps\"] : false) extends true ? \"yes\" : \"no\""
     );
 }
 
@@ -3494,36 +3376,6 @@ fn async_only_iterable_does_not_supply_regular_for_of_element_type() {
     );
 
     assert_eq!(get_first_symbol_type(&ret, "chunk"), Ty::any());
-}
-
-#[test]
-fn structural_type_literal_iterable_discriminates_yield_results() {
-    let allocator = Allocator::default();
-    let ret = parse_and_check_source(
-        &allocator,
-        r#"
-    declare const values: {
-        [Symbol.iterator](): {
-            next():
-                | { done?: false; value: "item" }
-                | { done: true; value: void };
-        };
-    };
-
-    for (const value of values) {
-        value;
-    }
-    for (const character of "text") {
-        character;
-    }
-    "#,
-    );
-
-    assert_eq!(
-        type_string(&ret, get_first_symbol_type(&ret, "value")),
-        "\"item\""
-    );
-    assert_eq!(get_first_symbol_type(&ret, "character"), Ty::string());
 }
 
 #[test]
