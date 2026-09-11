@@ -10799,7 +10799,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         CheckMode::NONE,
                     );
                     return Some(
-                        self.get_iterable_element_type_for_inference(program_id, iterable_type, 0)
+                        self.get_element_type_of_iterable(program_id, iterable_type, 0)
                             .unwrap_or_else(|| self.ty.any()),
                     );
                 }
@@ -11381,8 +11381,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             return argument_type;
         }
 
-        let Some(element_type) =
-            self.get_iterable_element_type_for_inference(program_id, argument_type, 0)
+        let Some(element_type) = self.get_element_type_of_iterable(program_id, argument_type, 0)
         else {
             return argument_type;
         };
@@ -11390,7 +11389,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.ty.type_reference(reference.name, [element_type])
     }
 
-    fn get_iterable_element_type_for_inference(
+    fn get_element_type_of_iterable(
         &self,
         program_id: ProgramId,
         iterable_type: Ty<'a>,
@@ -11411,7 +11410,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 function_minimum_argument_count(self.arena(), signature.function(self.arena())) == 0
             })
             .find_map(|signature| {
-                self.get_iterator_element_type_for_inference(
+                self.get_element_type_of_iterator(
                     program_id,
                     signature.function(self.arena()).return_type(),
                     depth + 1,
@@ -11419,7 +11418,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             })
     }
 
-    fn get_iterator_element_type_for_inference(
+    fn get_element_type_of_iterator(
         &self,
         program_id: ProgramId,
         iterator_type: Ty<'a>,
@@ -11440,11 +11439,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.get_interface_heritage_types(program_id, reference)
             .into_iter()
             .find_map(|(heritage_program_id, heritage_type)| {
-                self.get_iterator_element_type_for_inference(
-                    heritage_program_id,
-                    heritage_type,
-                    depth + 1,
-                )
+                self.get_element_type_of_iterator(heritage_program_id, heritage_type, depth + 1)
             })
     }
 
