@@ -194,8 +194,7 @@ async function validUseOfForAwaitOnAsyncIterable() {
 >   ^^^^^^^^: any   (Error) (ExpressionStatement)
 
   for await (const promisedValue of yieldThingsAsynchronously()) {
->                  ^^^^^^^^^^^^^: any   (Any) (Identifier)
-                        expected: 1 | 2
+>                  ^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
 
   for await (const promisedValue of yieldThingsAsynchronously()) {
 >                                   ^^^^^^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (Function) (Identifier)
@@ -210,8 +209,7 @@ async function validUseOfForAwaitOnAsyncIterable() {
 >           ^^^: (...data: any[]) => void   (Function) (Identifier)
 
     console.log(promisedValue);
->               ^^^^^^^^^^^^^: any   (Any) (Identifier)
-                     expected: 1 | 2
+>               ^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
 
 function makeSyncDisposable(): Disposable {
 >        ^^^^^^^^^^^^^^^^^^: () => Disposable   (Function) (Identifier)

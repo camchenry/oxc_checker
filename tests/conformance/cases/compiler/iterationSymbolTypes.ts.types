@@ -38,18 +38,18 @@ async function useStream<TQueryFnData>(
 >                      ^^^^^^^^: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (Function) (Identifier)
 
   for await (const chunk of stream) {
->                  ^^^^^: any   (Any) (Identifier)
+>                  ^^^^^: TQueryFnData   (TypeParameter) (Identifier)
                 expected: Awaited<TQueryFnData>
 
   for await (const chunk of stream) {
 >                           ^^^^^^: AsyncIterable<TQueryFnData>   (TypeReference) (Identifier)
 
     chunk;
->   ^^^^^: any   (Any) (Identifier)
+>   ^^^^^: TQueryFnData   (TypeParameter) (Identifier)
  expected: Awaited<TQueryFnData>
 
     chunk;
->   ^^^^^^: any   (Any) (ExpressionStatement)
+>   ^^^^^^: TQueryFnData   (TypeParameter) (ExpressionStatement)
   expected: Awaited<TQueryFnData>
 
 async function* asyncGeneratorValues() {
@@ -65,19 +65,16 @@ async function consumeGenerator() {
 >              ^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)
 
   for await (const generatedValue of asyncGeneratorValues()) {
->                  ^^^^^^^^^^^^^^: any   (Any) (Identifier)
-                         expected: 1 | 2
+>                  ^^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
 
   for await (const generatedValue of asyncGeneratorValues()) {
 >                                    ^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (Function) (Identifier)
 
     generatedValue;
->   ^^^^^^^^^^^^^^: any   (Any) (Identifier)
-          expected: 1 | 2
+>   ^^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
 
     generatedValue;
->   ^^^^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
-           expected: 1 | 2
+>   ^^^^^^^^^^^^^^^: 1 | 2   (Union) (ExpressionStatement)
 
 interface TextAsyncIterator {
 >         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)

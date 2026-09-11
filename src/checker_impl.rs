@@ -10866,9 +10866,20 @@ impl<'a, 'store> Checker<'a, 'store> {
                         Some(ancestor_id),
                         CheckMode::NONE,
                     );
-                    let element_type = self
-                        .get_element_type_of_iterable(program_id, iterable_type, 0)
-                        .unwrap_or_else(|| self.ty.any());
+                    let element_type = if for_of.r#await {
+                        self.get_element_type_of_iterable(program_id, iterable_type, true, 0)
+                            .or_else(|| {
+                                self.get_element_type_of_iterable(
+                                    program_id,
+                                    iterable_type,
+                                    false,
+                                    0,
+                                )
+                            })
+                    } else {
+                        self.get_element_type_of_iterable(program_id, iterable_type, false, 0)
+                    }
+                    .unwrap_or_else(|| self.ty.any());
                     return Some(if for_of.r#await {
                         self.get_awaited_type(program_id, element_type)
                     } else {
@@ -11453,7 +11464,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             return argument_type;
         }
 
-        let Some(element_type) = self.get_element_type_of_iterable(program_id, argument_type, 0)
+        let Some(element_type) =
+            self.get_element_type_of_iterable(program_id, argument_type, false, 0)
         else {
             return argument_type;
         };
@@ -11465,16 +11477,22 @@ impl<'a, 'store> Checker<'a, 'store> {
         &self,
         program_id: ProgramId,
         iterable_type: Ty<'a>,
+        is_async: bool,
         depth: usize,
     ) -> Option<Ty<'a>> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return None;
         }
 
+        let (iterator_property_name, iterator_type_name) = if is_async {
+            ("Symbol.asyncIterator", "AsyncIterator")
+        } else {
+            ("Symbol.iterator", "Iterator")
+        };
         let iterator_method = self.get_property_type_of_static_member_type(
             program_id,
             iterable_type,
-            "Symbol.iterator",
+            iterator_property_name,
         )?;
         self.get_signatures_of_type_in_program(program_id, iterator_method, SignatureKind::Call)
             .into_iter()
@@ -11485,6 +11503,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 self.get_element_type_of_iterator(
                     program_id,
                     signature.function(self.arena()).return_type(),
+                    iterator_type_name,
                     depth + 1,
                 )
             })
@@ -11494,6 +11513,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         &self,
         program_id: ProgramId,
         iterator_type: Ty<'a>,
+        iterator_type_name: &str,
         depth: usize,
     ) -> Option<Ty<'a>> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
@@ -11503,7 +11523,8 @@ impl<'a, 'store> Checker<'a, 'store> {
         let TyKind::TypeReference(reference) = self.ty_kind(iterator_type) else {
             return None;
         };
-        if reference.name == "Iterator" && self.is_global_lib_type_reference(program_id, reference)
+        if reference.name == iterator_type_name
+            && self.is_global_lib_type_reference(program_id, reference)
         {
             return reference.type_arguments.first().copied();
         }
@@ -11511,7 +11532,12 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.get_interface_heritage_types(program_id, reference)
             .into_iter()
             .find_map(|(heritage_program_id, heritage_type)| {
-                self.get_element_type_of_iterator(heritage_program_id, heritage_type, depth + 1)
+                self.get_element_type_of_iterator(
+                    heritage_program_id,
+                    heritage_type,
+                    iterator_type_name,
+                    depth + 1,
+                )
             })
     }
 

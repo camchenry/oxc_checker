@@ -98,16 +98,13 @@ async function consumeAsyncIterable() {
 >              ^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)
 
   for await (const asyncValue of asyncValues) {
->                  ^^^^^^^^^^: any   (Any) (Identifier)
-                     expected: string
+>                  ^^^^^^^^^^: string   (String) (Identifier)
 
   for await (const asyncValue of asyncValues) {
 >                                ^^^^^^^^^^^: AsyncIterable<string>   (TypeReference) (Identifier)
 
     asyncValue;
->   ^^^^^^^^^^: any   (Any) (Identifier)
-      expected: string
+>   ^^^^^^^^^^: string   (String) (Identifier)
 
     asyncValue;
->   ^^^^^^^^^^^: any   (Any) (ExpressionStatement)
-       expected: string
+>   ^^^^^^^^^^^: string   (String) (ExpressionStatement)
