@@ -59,3 +59,12 @@ Not something I'm planning right now, but it could be possible in the future.
 ### Why does this exist?
 
 I think it's possible for a simple type checker to exist independently of `tsc`/`tsgo`. I believe there's value in having multiple implementations of the same type system. I want to learn more about type checking and what it looks like in a practical codebase, so I decided to try implementing it myself.
+
+
+## Development
+
+Enable the repository's Git hooks once after cloning:
+
+```sh
+git config core.hooksPath .githooks
+```

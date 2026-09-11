@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+echo "Checking Rust formatting..."
+if ! cargo fmt --all -- --check; then
+	echo "Applying Rust formatting..."
+	cargo fmt --all
+	echo "cargo fmt updated files; review and stage them before committing again."
+	exit 1
+fi
+
+echo "Linting Rust targets..."
+cargo lint
