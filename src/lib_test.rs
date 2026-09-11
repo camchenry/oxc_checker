@@ -950,6 +950,25 @@ fn global_this_exposes_script_var_but_not_lexical_bindings() {
 }
 
 #[test]
+fn mapped_type_indexing_does_not_instantiate_unrelated_properties() {
+    let allocator = Allocator::default();
+    let mut source = String::from("type Source = { selected: number;\n");
+    for index in 0..=crate::limits::TYPE_INSTANTIATION_MAX_COUNT {
+        source.push_str(&format!("property{index}: string;\n"));
+    }
+    source.push_str(
+        "};
+        type Mapped = { [Key in keyof Source]: Source[Key] };
+        type Value = Mapped[\"selected\"];
+        ",
+    );
+    let ret = parse_and_check_source(&allocator, &source);
+    let value = get_type_alias_type(&ret, "Value");
+
+    assert_type_eq(arena(&ret), &value, &Ty::number());
+}
+
+#[test]
 fn global_this_conditional_matches_nested_global_value_property() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

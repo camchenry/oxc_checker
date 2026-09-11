@@ -2519,6 +2519,21 @@ impl<'a, 'store> Checker<'a, 'store> {
                     let object_type =
                         self.get_type_from_ts_type(program_id, &indexed_access.object_type);
                     let index_type = self.get_type_from_ts_type(program_id, &indexed_access.index_type);
+                    if let Some(ty) = self
+                        .get_unexpanded_mapped_type_alias_target(program_id, object_type)
+                        .and_then(|(mapped_program_id, mapped)| {
+                            let property_name =
+                                index_type_to_property_name(self.arena(), index_type)?;
+                            self.get_property_type_of_mapped_type(
+                                mapped_program_id,
+                                mapped,
+                                property_name,
+                                0,
+                            )
+                        })
+                    {
+                        return ty;
+                    }
                     let lookup_index_type = self.get_type_from_ts_type_expanding_top_level_aliases(
                         program_id,
                         &indexed_access.index_type,
@@ -3574,6 +3589,45 @@ impl<'a, 'store> Checker<'a, 'store> {
         self.expand_type(program_id, name_type, depth + 1)
     }
 
+    /// Resolves a mapped type alias body without materializing its properties.
+    fn get_unexpanded_mapped_type_alias_target(
+        &self,
+        program_id: ProgramId,
+        ty: Ty<'a>,
+    ) -> Option<(ProgramId, &'a TyMapped<'a>)> {
+        if self.is_active_unresolved_type_alias(ty) {
+            return None;
+        }
+        let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
+            return None;
+        };
+        let (symbol, declaration) =
+            self.get_type_reference_symbol_and_declaration(program_id, reference)?;
+        let declaration = self.type_alias_declaration_node(symbol.program_id, declaration)?;
+        let AstKind::TSTypeAliasDeclaration(alias) =
+            self.nodes(symbol.program_id).kind(declaration)
+        else {
+            return None;
+        };
+        if !matches!(alias.type_annotation, TSType::TSMappedType(_)) {
+            return None;
+        }
+
+        let substitutions = self.type_parameter_substitutions_for_reference(
+            symbol.program_id,
+            alias.type_parameters.as_deref(),
+            reference,
+        );
+        let target = self.instantiate_type(
+            self.get_type_from_ts_type(symbol.program_id, &alias.type_annotation),
+            &substitutions.to_mapper(self.arena()),
+        );
+        let TyKind::Mapped(mapped) = self.ty_kind(target) else {
+            return None;
+        };
+        Some((symbol.program_id, mapped))
+    }
+
     pub(super) fn expand_type(&self, program_id: ProgramId, ty: Ty<'a>, depth: usize) -> Ty<'a> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return ty;
@@ -3587,6 +3641,21 @@ impl<'a, 'store> Checker<'a, 'store> {
                 })
                 .unwrap_or(ty),
             TyKind::IndexedAccess(indexed_access) => {
+                if let Some(resolved) = self
+                    .get_unexpanded_mapped_type_alias_target(program_id, indexed_access.object_type)
+                    .and_then(|(mapped_program_id, mapped)| {
+                        let property_name =
+                            index_type_to_property_name(self.arena(), indexed_access.index_type)?;
+                        self.get_property_type_of_mapped_type(
+                            mapped_program_id,
+                            mapped,
+                            property_name,
+                            depth + 1,
+                        )
+                    })
+                {
+                    return self.expand_type(program_id, resolved, depth + 1);
+                }
                 let object_type =
                     self.expand_type(program_id, indexed_access.object_type, depth + 1);
                 let index_type = indexed_access.index_type;
