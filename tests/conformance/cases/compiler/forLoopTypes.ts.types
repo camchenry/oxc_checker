@@ -74,19 +74,16 @@ async function consumeSyncPromises() {
 >                                               ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (Object) (Identifier)
 
   for await (const awaitedValue of promises) {
->                  ^^^^^^^^^^^^: any   (Any) (Identifier)
-                       expected: number
+>                  ^^^^^^^^^^^^: number   (Number) (Identifier)
 
   for await (const awaitedValue of promises) {
 >                                  ^^^^^^^^: Promise<number>[]   (Array) (Identifier)
 
     awaitedValue;
->   ^^^^^^^^^^^^: any   (Any) (Identifier)
-        expected: number
+>   ^^^^^^^^^^^^: number   (Number) (Identifier)
 
     awaitedValue;
->   ^^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
-         expected: number
+>   ^^^^^^^^^^^^^: number   (Number) (ExpressionStatement)
 
 declare const asyncValues: AsyncIterable<string>;
 >             ^^^^^^^^^^^: AsyncIterable<string>   (TypeReference) (Identifier)

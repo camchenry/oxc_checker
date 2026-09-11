@@ -10789,8 +10789,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     return Some(self.ty.string());
                 }
                 AstKind::ForOfStatement(for_of)
-                    if !for_of.r#await
-                        && for_statement_left_contains_declarator(&for_of.left, declarator) =>
+                    if for_statement_left_contains_declarator(&for_of.left, declarator) =>
                 {
                     let iterable_type = self.get_type_of_expression_with_node(
                         program_id,
@@ -10798,10 +10797,14 @@ impl<'a, 'store> Checker<'a, 'store> {
                         Some(ancestor_id),
                         CheckMode::NONE,
                     );
-                    return Some(
-                        self.get_element_type_of_iterable(program_id, iterable_type, 0)
-                            .unwrap_or_else(|| self.ty.any()),
-                    );
+                    let element_type = self
+                        .get_element_type_of_iterable(program_id, iterable_type, 0)
+                        .unwrap_or_else(|| self.ty.any());
+                    return Some(if for_of.r#await {
+                        self.get_awaited_type(program_id, element_type)
+                    } else {
+                        element_type
+                    });
                 }
                 _ => {}
             }
