@@ -5,7 +5,7 @@ use crate::{
     mapper::TypeMapper,
     type_predicate_kinds_match,
     types::{
-        Ty, TyIntersection, TyKind, TyObject, function_maximum_argument_count,
+        Ty, TyFunction, TyIntersection, TyKind, TyObject, function_maximum_argument_count,
         function_minimum_argument_count,
     },
 };
@@ -356,16 +356,23 @@ impl<'a, 'store> Checker<'a, 'store> {
                 })
             }
             (TyKind::Object(source), TyKind::Function(_)) => {
-                // TODO(correctness): Compare overload matrices with erased type parameters.
-                let mut signatures = source
-                    .signatures()
-                    .iter()
-                    .filter(|signature| signature.kind == SignatureKind::Call)
-                    .peekable();
-                signatures.peek().is_some()
+                let call_signatures = || {
+                    source
+                        .signatures()
+                        .iter()
+                        .filter(|signature| signature.kind == SignatureKind::Call)
+                        .map(|signature| signature.ty)
+                };
+                let mut signatures = call_signatures().peekable();
+                (signatures.peek().is_some()
                     && signatures.all(|signature| {
-                        self.is_assignable_to_at_depth(signature.ty, target, next_depth)
-                    })
+                        self.is_assignable_to_at_depth(signature, target, next_depth)
+                    }))
+                    || self.call_signatures_assignable_to(
+                        &call_signatures(),
+                        std::iter::once(target),
+                        next_depth,
+                    )
             }
             (TyKind::Object(source), TyKind::Object(target)) => {
                 self.object_properties_assignable_to(&source.properties.iter(), target, next_depth)
@@ -591,6 +598,30 @@ impl<'a, 'store> Checker<'a, 'store> {
 
                 // Otherwise, assume the functions are assignable.
                 true
+            }
+            (TyKind::Function(_), TyKind::Object(target)) => {
+                let target_is_weak = !target.properties.is_empty()
+                    && target.properties.iter().all(|property| property.optional)
+                    && target.signatures().is_empty()
+                    && target.index_infos().is_empty();
+                let target_call_signatures = target
+                    .signatures()
+                    .iter()
+                    .filter(|signature| signature.kind == SignatureKind::Call)
+                    .map(|signature| signature.ty);
+                !target_is_weak
+                    && !target
+                        .signatures()
+                        .iter()
+                        .any(|signature| signature.kind == SignatureKind::Construct)
+                    && target.properties.iter().all(|property| property.optional)
+                    && target.index_infos().is_empty()
+                    && (target_call_signatures.clone().next().is_none()
+                        || self.call_signatures_assignable_to(
+                            &std::iter::once(source),
+                            target_call_signatures,
+                            next_depth,
+                        ))
             }
             (TyKind::TypeReference(source), TyKind::TypeReference(target)) => {
                 source.has_identical_target(target)
@@ -930,6 +961,167 @@ impl<'a, 'store> Checker<'a, 'store> {
                     self.is_assignable_to_at_depth(*source_argument, *target_argument, depth)
                 },
             )
+    }
+
+    /// Checks that every target call signature has a compatible source call signature.
+    fn call_signatures_assignable_to(
+        &self,
+        source_signatures: &(impl Iterator<Item = Ty<'a>> + Clone),
+        mut target_signatures: impl Iterator<Item = Ty<'a>> + Clone,
+        depth: usize,
+    ) -> bool {
+        let has_identical_signature = target_signatures.clone().any(|target| {
+            source_signatures
+                .clone()
+                .any(|source| self.arena().is_type_identical_to(source, target))
+        });
+        if !has_identical_signature {
+            return false;
+        }
+
+        let erase_type_parameters =
+            source_signatures.clone().count() != 1 || target_signatures.clone().count() != 1;
+        target_signatures.all(|target| {
+            let TyKind::Function(target) = self.ty_kind(target) else {
+                return false;
+            };
+            source_signatures.clone().any(|source| {
+                let TyKind::Function(source) = self.ty_kind(source) else {
+                    return false;
+                };
+                self.function_types_assignable_to(source, target, depth, erase_type_parameters)
+            })
+        })
+    }
+
+    /// Compares two function signatures, optionally erasing their type parameters for overload matching.
+    fn function_types_assignable_to(
+        &self,
+        source: &TyFunction<'a>,
+        target: &TyFunction<'a>,
+        depth: usize,
+        erase_type_parameters: bool,
+    ) -> bool {
+        let (source_mapper, target_mapper) = if erase_type_parameters {
+            (
+                TypeMapper::from_type_parameters_and_arguments(
+                    self.arena(),
+                    source.type_parameters.iter().copied(),
+                    source.type_parameters.iter().map(|_| self.ty.any()),
+                ),
+                TypeMapper::from_type_parameters_and_arguments(
+                    self.arena(),
+                    target.type_parameters.iter().copied(),
+                    target.type_parameters.iter().map(|_| self.ty.any()),
+                ),
+            )
+        } else if source.type_parameters.is_empty() || target.type_parameters.is_empty() {
+            (TypeMapper::Empty, TypeMapper::Empty)
+        } else {
+            if source.type_parameters.len() != target.type_parameters.len() {
+                return false;
+            }
+            let mapper = TypeMapper::from_type_parameters_and_arguments(
+                self.arena(),
+                source.type_parameters.iter().copied(),
+                target
+                    .type_parameters
+                    .iter()
+                    .map(|parameter| self.arena().type_parameter_type(*parameter)),
+            );
+            if !source
+                .type_parameters
+                .iter()
+                .zip(&target.type_parameters)
+                .all(
+                    |(source, target)| match (source.constraint_type, target.constraint_type) {
+                        (Some(source), Some(target)) => self
+                            .arena()
+                            .is_type_identical_to(self.instantiate_type(source, &mapper), target),
+                        (None, None) => true,
+                        _ => false,
+                    },
+                )
+            {
+                return false;
+            }
+            (mapper, TypeMapper::Empty)
+        };
+
+        let source_minimum_argument_count = function_minimum_argument_count(self.arena(), source);
+        let target_maximum_argument_count = function_maximum_argument_count(self.arena(), target);
+        if target_maximum_argument_count
+            .is_some_and(|target_count| source_minimum_argument_count > target_count)
+        {
+            return false;
+        }
+
+        let parameter_type_at_position =
+            |parameter: &crate::types::TyParameter<'a>, other_is_rest: bool| {
+                let ty = (parameter.rest && !other_is_rest)
+                    .then(|| parameter.ty.array_element_type(self.arena()))
+                    .flatten()
+                    .filter(Ty::is_any)
+                    .unwrap_or(parameter.ty);
+                if erase_type_parameters && parameter.optional {
+                    self.ty.union([ty, self.ty.undefined()])
+                } else {
+                    ty
+                }
+            };
+        if !source.parameters.iter().zip(target.parameters.iter()).all(
+            |(source_parameter, target_parameter)| {
+                let source_type = self.instantiate_type(
+                    parameter_type_at_position(source_parameter, target_parameter.rest),
+                    &source_mapper,
+                );
+                let target_type = self.instantiate_type(
+                    parameter_type_at_position(target_parameter, source_parameter.rest),
+                    &target_mapper,
+                );
+                self.is_assignable_to_at_depth(target_type, source_type, depth)
+            },
+        ) {
+            return false;
+        }
+
+        let target_return_type = self.instantiate_type(target.return_type(), &target_mapper);
+        if self.ty_kind(target_return_type) == TyKind::Void {
+            return true;
+        }
+
+        let type_predicate_matches = match (source.type_predicate, target.type_predicate) {
+            (Some(source_predicate), Some(target_predicate)) => {
+                type_predicate_kinds_match(source_predicate, target_predicate)
+                    && match (
+                        source_predicate.target_type(),
+                        target_predicate.target_type(),
+                    ) {
+                        (Some(source_type), Some(target_type)) => self.is_assignable_to_at_depth(
+                            self.instantiate_type(source_type, &source_mapper),
+                            self.instantiate_type(target_type, &target_mapper),
+                            depth,
+                        ),
+                        (None, None) => true,
+                        _ => false,
+                    }
+            }
+            (Some(type_predicate), None) => {
+                self.ty_kind(target_return_type) == TyKind::Boolean
+                    && type_predicate.is_type_guard()
+            }
+            (None, Some(_)) => false,
+            (None, None) => true,
+        };
+        if !type_predicate_matches {
+            return false;
+        }
+
+        self.is_assignable_to_at_depth(
+            self.instantiate_type(source.return_type(), &source_mapper),
+            target_return_type,
+            depth,
+        )
     }
 
     fn type_properties_assignable_to(

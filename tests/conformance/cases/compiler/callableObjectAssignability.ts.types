@@ -1,0 +1,128 @@
+declare let single: () => number;
+>           ^^^^^^: () => number   (Function) (Identifier)
+
+declare let overloaded: {
+>           ^^^^^^^^^^: { (): number; (value: string): number; }   (Object) (Identifier)
+
+    (value: string): number;
+>    ^^^^^: string   (String) (Identifier)
+
+single = overloaded;
+>^^^^^^: () => number   (Function) (Identifier)
+
+single = overloaded;
+>^^^^^^^^^^^^^^^^^^^^: { (): number; (value: string): number; }   (Object) (ExpressionStatement)
+
+single = overloaded;
+>        ^^^^^^^^^^: { (): number; (value: string): number; }   (Object) (Identifier)
+
+overloaded = single;
+>^^^^^^^^^^: { (): number; (value: string): number; }   (Object) (Identifier)
+
+overloaded = single;
+>^^^^^^^^^^^^^^^^^^^^: () => number   (Function) (ExpressionStatement)
+
+overloaded = single;
+>            ^^^^^^: () => number   (Function) (Identifier)
+
+declare let plainFunction: () => number;
+>           ^^^^^^^^^^^^^: () => number   (Function) (Identifier)
+
+declare let callableWithProperty: {
+>           ^^^^^^^^^^^^^^^^^^^^: { (): number; required: string; }   (Object) (Identifier)
+
+    required: string;
+>   ^^^^^^^^: string   (String) (Identifier)
+
+plainFunction = callableWithProperty;
+>^^^^^^^^^^^^^: () => number   (Function) (Identifier)
+
+plainFunction = callableWithProperty;
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: { (): number; required: string; }   (Object) (ExpressionStatement)
+
+plainFunction = callableWithProperty;
+>               ^^^^^^^^^^^^^^^^^^^^: { (): number; required: string; }   (Object) (Identifier)
+
+callableWithProperty = plainFunction;
+>^^^^^^^^^^^^^^^^^^^^: { (): number; required: string; }   (Object) (Identifier)
+
+callableWithProperty = plainFunction;
+>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: () => number   (Function) (ExpressionStatement)
+
+callableWithProperty = plainFunction;
+>                      ^^^^^^^^^^^^^: () => number   (Function) (Identifier)
+
+declare let callable: () => number;
+>           ^^^^^^^^: () => number   (Function) (Identifier)
+
+declare let nonCallable: {};
+>           ^^^^^^^^^^^: {}   (Object) (Identifier)
+
+callable = nonCallable;
+>^^^^^^^^: () => number   (Function) (Identifier)
+
+callable = nonCallable;
+>^^^^^^^^^^^^^^^^^^^^^^^: {}   (Object) (ExpressionStatement)
+
+callable = nonCallable;
+>          ^^^^^^^^^^^: {}   (Object) (Identifier)
+
+nonCallable = callable;
+>^^^^^^^^^^^: {}   (Object) (Identifier)
+
+nonCallable = callable;
+>^^^^^^^^^^^^^^^^^^^^^^^: () => number   (Function) (ExpressionStatement)
+
+nonCallable = callable;
+>             ^^^^^^^^: () => number   (Function) (Identifier)
+
+declare let weakSource: () => number;
+>           ^^^^^^^^^^: () => number   (Function) (Identifier)
+
+declare let weakTarget: { localeMatcher?: string };
+>           ^^^^^^^^^^: { localeMatcher?: string; }   (Object) (Identifier)
+
+declare let weakTarget: { localeMatcher?: string };
+>                         ^^^^^^^^^^^^^: string | undefined   (Union) (Identifier)
+
+weakTarget = weakSource;
+>^^^^^^^^^^: { localeMatcher?: string; }   (Object) (Identifier)
+
+weakTarget = weakSource;
+>^^^^^^^^^^^^^^^^^^^^^^^^: () => number   (Function) (ExpressionStatement)
+
+weakTarget = weakSource;
+>            ^^^^^^^^^^: () => number   (Function) (Identifier)
+
+weakSource = weakTarget;
+>^^^^^^^^^^: () => number   (Function) (Identifier)
+
+weakSource = weakTarget;
+>^^^^^^^^^^^^^^^^^^^^^^^^: { localeMatcher?: string; }   (Object) (ExpressionStatement)
+
+weakSource = weakTarget;
+>            ^^^^^^^^^^: { localeMatcher?: string; }   (Object) (Identifier)
+
+declare let callOnly: () => {};
+>           ^^^^^^^^: () => {}   (Function) (Identifier)
+
+declare let constructOnly: new () => {};
+>           ^^^^^^^^^^^^^: new () => {}   (Object) (Identifier)
+
+callOnly = constructOnly;
+>^^^^^^^^: () => {}   (Function) (Identifier)
+
+callOnly = constructOnly;
+>^^^^^^^^^^^^^^^^^^^^^^^^^: new () => {}   (Object) (ExpressionStatement)
+
+callOnly = constructOnly;
+>          ^^^^^^^^^^^^^: new () => {}   (Object) (Identifier)
+
+constructOnly = callOnly;
+>^^^^^^^^^^^^^: new () => {}   (Object) (Identifier)
+
+constructOnly = callOnly;
+>^^^^^^^^^^^^^^^^^^^^^^^^^: () => {}   (Function) (ExpressionStatement)
+
+constructOnly = callOnly;
+>               ^^^^^^^^: () => {}   (Function) (Identifier)
