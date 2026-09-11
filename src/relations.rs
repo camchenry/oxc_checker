@@ -519,29 +519,14 @@ impl<'a, 'store> Checker<'a, 'store> {
                     return false;
                 }
 
-                // Each parameter must be assignable to the corresponding parameter in the target
-                // function. An `any[]` rest parameter contributes `any` when compared with a
-                // non-rest position.
-                let parameter_type_at_position =
-                    |parameter: &crate::types::TyParameter<'a>, other_is_rest: bool| {
-                        (parameter.rest && !other_is_rest)
-                            .then(|| parameter.ty.array_element_type(self.arena()))
-                            .flatten()
-                            .filter(Ty::is_any)
-                            .unwrap_or(parameter.ty)
-                    };
-                let parameters_match = source.parameters.iter().zip(target.parameters.iter()).all(
-                    |(source_parameter, target_parameter)| {
-                        let source_type = self.instantiate_type(
-                            parameter_type_at_position(source_parameter, target_parameter.rest),
-                            &source_mapper,
-                        );
-                        let target_type =
-                            parameter_type_at_position(target_parameter, source_parameter.rest);
-                        self.is_assignable_to_at_depth(target_type, source_type, next_depth)
-                    },
-                );
-                if !parameters_match {
+                if !self.function_parameters_assignable_to(
+                    source,
+                    target,
+                    &source_mapper,
+                    &TypeMapper::Empty,
+                    next_depth,
+                    false,
+                ) {
                     return false;
                 }
 
@@ -949,6 +934,114 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
+    /// Returns the parameter type and optionality at an effective call position.
+    fn function_parameter_at_position(
+        &self,
+        function: &TyFunction<'a>,
+        position: usize,
+        array_rest_element: Option<Ty<'a>>,
+    ) -> Option<(Ty<'a>, bool, bool)> {
+        if let Some(array_rest_element) = array_rest_element {
+            let rest_index = function.parameters.len() - 1;
+            if position >= rest_index {
+                return Some((array_rest_element, false, true));
+            }
+        }
+        function
+            .parameters
+            .get(position)
+            .map(|parameter| (parameter.ty, parameter.optional, false))
+    }
+
+    /// Checks parameter types contravariantly, expanding ordinary array rest parameters across
+    /// every corresponding fixed parameter position.
+    fn function_parameters_assignable_to(
+        &self,
+        source: &TyFunction<'a>,
+        target: &TyFunction<'a>,
+        source_mapper: &TypeMapper<'a>,
+        target_mapper: &TypeMapper<'a>,
+        depth: usize,
+        erase_type_parameters: bool,
+    ) -> bool {
+        let array_rest_element = |function: &TyFunction<'a>| {
+            function
+                .parameters
+                .last()
+                .filter(|parameter| parameter.rest)
+                .and_then(|parameter| parameter.ty.array_element_type(self.arena()))
+        };
+        let has_non_array_rest = |function: &TyFunction<'a>| {
+            function.parameters.last().is_some_and(|parameter| {
+                parameter.rest && parameter.ty.array_element_type(self.arena()).is_none()
+            })
+        };
+        let compare_packed_rest = has_non_array_rest(source) || has_non_array_rest(target);
+        if compare_packed_rest {
+            let parameter_type_at_position =
+                |parameter: &crate::types::TyParameter<'a>, other_is_rest: bool| {
+                    let ty = (parameter.rest && !other_is_rest)
+                        .then(|| parameter.ty.array_element_type(self.arena()))
+                        .flatten()
+                        .filter(Ty::is_any)
+                        .unwrap_or(parameter.ty);
+                    if erase_type_parameters && parameter.optional {
+                        self.ty.union([ty, self.ty.undefined()])
+                    } else {
+                        ty
+                    }
+                };
+            return source.parameters.iter().zip(target.parameters.iter()).all(
+                |(source_parameter, target_parameter)| {
+                    let source_type = self.instantiate_type(
+                        parameter_type_at_position(source_parameter, target_parameter.rest),
+                        source_mapper,
+                    );
+                    let target_type = self.instantiate_type(
+                        parameter_type_at_position(target_parameter, source_parameter.rest),
+                        target_mapper,
+                    );
+                    self.is_assignable_to_at_depth(target_type, source_type, depth)
+                },
+            );
+        }
+
+        let source_array_rest_element = array_rest_element(source);
+        let target_array_rest_element = array_rest_element(target);
+        let parameter_count =
+            if source_array_rest_element.is_some() || target_array_rest_element.is_some() {
+                source.parameters.len().max(target.parameters.len())
+            } else {
+                source.parameters.len().min(target.parameters.len())
+            };
+
+        (0..parameter_count).all(|position| {
+            let Some((source_type, source_optional, source_is_rest)) =
+                self.function_parameter_at_position(source, position, source_array_rest_element)
+            else {
+                return true;
+            };
+            let Some((target_type, target_optional, target_is_rest)) =
+                self.function_parameter_at_position(target, position, target_array_rest_element)
+            else {
+                return true;
+            };
+            let source_type = if source_optional && (erase_type_parameters || target_is_rest) {
+                self.ty.union([source_type, self.ty.undefined()])
+            } else {
+                source_type
+            };
+            let target_type = if target_optional && (erase_type_parameters || source_is_rest) {
+                self.ty.union([target_type, self.ty.undefined()])
+            } else {
+                target_type
+            };
+            let source_type = self.instantiate_type(source_type, source_mapper);
+            let target_type = self.instantiate_type(target_type, target_mapper);
+            self.is_assignable_to_at_depth(target_type, source_type, depth)
+        })
+    }
+
     fn type_arguments_assignable_to(
         &self,
         source_arguments: &[Ty<'a>],
@@ -1056,31 +1149,13 @@ impl<'a, 'store> Checker<'a, 'store> {
             return false;
         }
 
-        let parameter_type_at_position =
-            |parameter: &crate::types::TyParameter<'a>, other_is_rest: bool| {
-                let ty = (parameter.rest && !other_is_rest)
-                    .then(|| parameter.ty.array_element_type(self.arena()))
-                    .flatten()
-                    .filter(Ty::is_any)
-                    .unwrap_or(parameter.ty);
-                if erase_type_parameters && parameter.optional {
-                    self.ty.union([ty, self.ty.undefined()])
-                } else {
-                    ty
-                }
-            };
-        if !source.parameters.iter().zip(target.parameters.iter()).all(
-            |(source_parameter, target_parameter)| {
-                let source_type = self.instantiate_type(
-                    parameter_type_at_position(source_parameter, target_parameter.rest),
-                    &source_mapper,
-                );
-                let target_type = self.instantiate_type(
-                    parameter_type_at_position(target_parameter, source_parameter.rest),
-                    &target_mapper,
-                );
-                self.is_assignable_to_at_depth(target_type, source_type, depth)
-            },
+        if !self.function_parameters_assignable_to(
+            source,
+            target,
+            &source_mapper,
+            &target_mapper,
+            depth,
+            erase_type_parameters,
         ) {
             return false;
         }
@@ -1715,10 +1790,7 @@ mod tests {
         assert!(is_assignable_to(
             ty.function(
                 [],
-                [
-                    ty.parameter("a", number_array),
-                    ty.parameter("b", number_array)
-                ],
+                [ty.parameter("a", Ty::Number), ty.parameter("b", Ty::Number)],
                 Ty::Void
             ),
             ty.function(
@@ -1727,6 +1799,60 @@ mod tests {
                 Ty::Void
             )
         ));
+
+        let fixed = ty.function(
+            [],
+            [
+                ty.parameter("arg1", Ty::String),
+                ty.parameter("arg2", Ty::Number),
+                ty.parameter("arg3", Ty::String),
+            ],
+            Ty::Void,
+        );
+        let string_rest = ty.function(
+            [],
+            [
+                ty.parameter("arg1", Ty::String),
+                ty.parameter("arg2", Ty::Number),
+                ty.parameter("rest", arena.array(Ty::String)).rest(true),
+            ],
+            Ty::Void,
+        );
+        assert!(is_assignable_to(fixed, string_rest));
+        assert!(is_assignable_to(string_rest, fixed));
+        assert!(!is_assignable_to(
+            ty.function(
+                [],
+                [
+                    ty.parameter("arg1", Ty::String),
+                    ty.parameter("arg2", Ty::Number),
+                    ty.parameter("arg3", Ty::String),
+                    ty.parameter("arg4", Ty::Number),
+                ],
+                Ty::Void,
+            ),
+            string_rest,
+        ));
+
+        let short_optional_rest = ty.function(
+            [],
+            [
+                ty.parameter("a", Ty::String).optional(true),
+                ty.parameter("rest", number_array).rest(true),
+            ],
+            Ty::Void,
+        );
+        let long_optional_rest = ty.function(
+            [],
+            [
+                ty.parameter("a", Ty::String).optional(true),
+                ty.parameter("b", Ty::Number).optional(true),
+                ty.parameter("rest", number_array).rest(true),
+            ],
+            Ty::Void,
+        );
+        assert!(is_assignable_to(long_optional_rest, short_optional_rest));
+        assert!(!is_assignable_to(short_optional_rest, long_optional_rest));
 
         let any_rest = ty.function(
             [],
