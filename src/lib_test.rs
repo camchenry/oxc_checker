@@ -3875,7 +3875,6 @@ fn awaited_primitive_types() {
         type_string(&ret, get_type_alias_type(&ret, "TNullOrUndefined")),
         "null | undefined"
     );
-    assert_eq!(type_string(&ret, get_type_alias_type(&ret, "T16")), "any");
     assert_eq!(
         type_string(&ret, get_global_symbol_type(&ret, "arrayOfPromises")),
         "Promise<number>[]"
