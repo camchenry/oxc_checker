@@ -50,8 +50,7 @@ declare const array: string[];
 >             ^^^^^: string[]   (Array) (Identifier)
 
 for (const value of array) {
->          ^^^^^: any   (Any) (Identifier)
-        expected: string
+>          ^^^^^: string   (String) (Identifier)
 
 for (const value of array) {
 >                   ^^^^^: string[]   (Array) (Identifier)
@@ -66,8 +65,7 @@ for (const value of array) {
 >         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(value);
->             ^^^^^: any   (Any) (Identifier)
-           expected: string
+>             ^^^^^: string   (String) (Identifier)
 
 for (let i = 0; i < array.length; i += 1) {
 >        ^: number   (Number) (Identifier)
@@ -133,12 +131,10 @@ array.forEach((value, i) => {
 >                ^^^^^: string   (String) (Identifier)
 
 for (const [i, value] of array.entries()) {
->           ^: any   (Any) (Identifier)
-     expected: number
+>           ^: number   (Number) (Identifier)
 
 for (const [i, value] of array.entries()) {
->              ^^^^^: any   (Any) (Identifier)
-            expected: string
+>              ^^^^^: string   (String) (Identifier)
 
 for (const [i, value] of array.entries()) {
 >                        ^^^^^: string[]   (Array) (Identifier)
@@ -156,9 +152,7 @@ for (const [i, value] of array.entries()) {
 >         ^^^: (...data: any[]) => void   (Function) (Identifier)
 
   console.log(i, value);
->             ^: any   (Any) (Identifier)
-       expected: number
+>             ^: number   (Number) (Identifier)
 
   console.log(i, value);
->                ^^^^^: any   (Any) (Identifier)
-              expected: string
+>                ^^^^^: string   (String) (Identifier)

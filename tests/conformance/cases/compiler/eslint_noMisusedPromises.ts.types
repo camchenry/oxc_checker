@@ -173,15 +173,13 @@ class MyClass implements MySyncInterface {
 >        ^^^^^: any   (Error) (Identifier)
 
 for (const value of [1, 2, 3]) {
->          ^^^^^: any   (Any) (Identifier)
-        expected: number
+>          ^^^^^: number   (Number) (Identifier)
 
   await doSomething(value);
 > ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Error) (ExpressionStatement)
 
   await doSomething(value);
->                   ^^^^^: any   (Any) (Identifier)
-                 expected: number
+>                   ^^^^^: number   (Number) (Identifier)
 
 Promise.all(
 >^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)

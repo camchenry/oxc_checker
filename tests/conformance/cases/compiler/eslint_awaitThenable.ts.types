@@ -105,8 +105,7 @@ async function syncIterable() {
 >       ^^^^^^^^^^^^^: number[]   (Array) (Identifier)
 
   for (const value of arrayOfValues) {
->            ^^^^^: any   (Any) (Identifier)
-          expected: number
+>            ^^^^^: number   (Number) (Identifier)
 
   for (const value of arrayOfValues) {
 >                     ^^^^^^^^^^^^^: number[]   (Array) (Identifier)
@@ -121,8 +120,7 @@ async function syncIterable() {
 >           ^^^: (...data: any[]) => void   (Function) (Identifier)
 
     console.log(value);
->               ^^^^^: any   (Any) (Identifier)
-             expected: number
+>               ^^^^^: number   (Number) (Identifier)
 
 async function syncIterableOfPromises() {
 >              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)
@@ -149,8 +147,7 @@ async function syncIterableOfPromises() {
 >           ^^^^^^^: { (): Promise<void>; <T>(value: T): Promise<Awaited<T>>; <T>(value: T | PromiseLike<T>): Promise<Awaited<T>>; }   (Object) (Identifier)
 
   for (const promisedValue of await Promise.all(arrayOfPromises)) {
->            ^^^^^^^^^^^^^: any   (Any) (Identifier)
-                  expected: number
+>            ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
   for (const promisedValue of await Promise.all(arrayOfPromises)) {
 >                                   ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
@@ -171,8 +168,7 @@ async function syncIterableOfPromises() {
 >           ^^^: (...data: any[]) => void   (Function) (Identifier)
 
     console.log(promisedValue);
->               ^^^^^^^^^^^^^: any   (Any) (Identifier)
-                     expected: number
+>               ^^^^^^^^^^^^^: number   (Number) (Identifier)
 
 async function validUseOfForAwaitOnAsyncIterable() {
 >              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)

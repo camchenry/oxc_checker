@@ -44,19 +44,16 @@ const tuple = ["text", 42] as const;
 >                             ^^^^^: any   (Error) (Identifier)
 
 for (const value of tuple) {
->          ^^^^^: any   (Any) (Identifier)
-        expected: "text" | 42
+>          ^^^^^: "text" | 42   (Union) (Identifier)
 
 for (const value of tuple) {
 >                   ^^^^^: readonly ["text", 42]   (Tuple) (Identifier)
 
   value;
-> ^^^^^: any   (Any) (Identifier)
-expected: "text" | 42
+> ^^^^^: "text" | 42   (Union) (Identifier)
 
   value;
-> ^^^^^^: any   (Any) (ExpressionStatement)
-expected: "text" | 42
+> ^^^^^^: "text" | 42   (Union) (ExpressionStatement)
 
 async function consumeSyncPromises() {
 >              ^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)

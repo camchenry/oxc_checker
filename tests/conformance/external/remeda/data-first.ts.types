@@ -575,8 +575,7 @@ export function pick<T extends object, Keys extends keyof T>(
 >                           ^^^^: any   (Any) (Identifier)
 
   for (const key of keys) {
->            ^^^: any   (Any) (Identifier)
-        expected: Keys
+>            ^^^: Keys   (TypeParameter) (Identifier)
 
   for (const key of keys) {
 >                   ^^^^: NonEmptyArray<Keys>   (TypeReference) (Identifier)
@@ -585,19 +584,16 @@ export function pick<T extends object, Keys extends keyof T>(
 >   ^^^: Pick<T, Keys>   (TypeReference) (Identifier)
 
     out[key] = data[key]
->   ^^^^^^^^^^^^^^^^^^^^: T[any]   (IndexedAccess) (ExpressionStatement)
-                expected: T[Keys]
+>   ^^^^^^^^^^^^^^^^^^^^: T[Keys]   (IndexedAccess) (ExpressionStatement)
 
     out[key] = data[key]
->       ^^^: any   (Any) (Identifier)
-   expected: Keys
+>       ^^^: Keys   (TypeParameter) (Identifier)
 
     out[key] = data[key]
 >              ^^^^: T   (TypeParameter) (Identifier)
 
     out[key] = data[key]
->                   ^^^: any   (Any) (Identifier)
-               expected: Keys
+>                   ^^^: Keys   (TypeParameter) (Identifier)
 
   return out
 >        ^^^: Pick<T, Keys>   (TypeReference) (Identifier)

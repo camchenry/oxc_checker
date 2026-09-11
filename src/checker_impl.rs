@@ -10788,6 +10788,21 @@ impl<'a, 'store> Checker<'a, 'store> {
                     }
                     return Some(self.ty.string());
                 }
+                AstKind::ForOfStatement(for_of)
+                    if !for_of.r#await
+                        && for_statement_left_contains_declarator(&for_of.left, declarator) =>
+                {
+                    let iterable_type = self.get_type_of_expression_with_node(
+                        program_id,
+                        &for_of.right,
+                        Some(ancestor_id),
+                        CheckMode::NONE,
+                    );
+                    return Some(
+                        self.get_iterable_element_type_for_inference(program_id, iterable_type, 0)
+                            .unwrap_or_else(|| self.ty.any()),
+                    );
+                }
                 _ => {}
             }
         }
