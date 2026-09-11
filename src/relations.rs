@@ -470,41 +470,43 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .iter()
                 .any(|ty| self.is_assignable_to_at_depth(*ty, target, next_depth)),
             (TyKind::Function(source), TyKind::Function(target)) => {
-                let source_mapper = if source.type_parameters.is_empty()
-                    || target.type_parameters.is_empty()
-                {
-                    TypeMapper::Empty
-                } else {
-                    if source.type_parameters.len() != target.type_parameters.len() {
-                        return false;
-                    }
-                    let mapper = TypeMapper::from_type_parameters_and_arguments(
-                        self.arena(),
-                        source.type_parameters.iter().copied(),
-                        target
-                            .type_parameters
-                            .iter()
-                            .map(|parameter| self.arena().type_parameter_type(*parameter)),
-                    );
-                    if !source
-                        .type_parameters
-                        .iter()
-                        .zip(&target.type_parameters)
-                        .all(|(source, target)| {
-                            match (source.constraint_type, target.constraint_type) {
-                                (Some(source), Some(target)) => self.arena().is_type_identical_to(
-                                    self.instantiate_type(source, &mapper),
-                                    target,
-                                ),
-                                (None, None) => true,
-                                _ => false,
+                let source_mapper =
+                    if source.type_parameters.is_empty() || target.type_parameters.is_empty() {
+                        TypeMapper::Empty
+                    } else {
+                        if source.type_parameters.len() != target.type_parameters.len() {
+                            self.infer_signature_type_mapper(source, target)
+                        } else {
+                            let mapper = TypeMapper::from_type_parameters_and_arguments(
+                                self.arena(),
+                                source.type_parameters.iter().copied(),
+                                target
+                                    .type_parameters
+                                    .iter()
+                                    .map(|parameter| self.arena().type_parameter_type(*parameter)),
+                            );
+                            if !source
+                                .type_parameters
+                                .iter()
+                                .zip(&target.type_parameters)
+                                .all(|(source, target)| {
+                                    match (source.constraint_type, target.constraint_type) {
+                                        (Some(source), Some(target)) => {
+                                            self.arena().is_type_identical_to(
+                                                self.instantiate_type(source, &mapper),
+                                                target,
+                                            )
+                                        }
+                                        (None, None) => true,
+                                        _ => false,
+                                    }
+                                })
+                            {
+                                return false;
                             }
-                        })
-                    {
-                        return false;
-                    }
-                    mapper
-                };
+                            mapper
+                        }
+                    };
 
                 // If the number of required arguments for the source is greater than the
                 // largest possible number of arguments for the target (that is: no overlap),
@@ -1112,33 +1114,38 @@ impl<'a, 'store> Checker<'a, 'store> {
             (TypeMapper::Empty, TypeMapper::Empty)
         } else {
             if source.type_parameters.len() != target.type_parameters.len() {
-                return false;
-            }
-            let mapper = TypeMapper::from_type_parameters_and_arguments(
-                self.arena(),
-                source.type_parameters.iter().copied(),
-                target
+                (
+                    self.infer_signature_type_mapper(source, target),
+                    TypeMapper::Empty,
+                )
+            } else {
+                let mapper = TypeMapper::from_type_parameters_and_arguments(
+                    self.arena(),
+                    source.type_parameters.iter().copied(),
+                    target
+                        .type_parameters
+                        .iter()
+                        .map(|parameter| self.arena().type_parameter_type(*parameter)),
+                );
+                if !source
                     .type_parameters
                     .iter()
-                    .map(|parameter| self.arena().type_parameter_type(*parameter)),
-            );
-            if !source
-                .type_parameters
-                .iter()
-                .zip(&target.type_parameters)
-                .all(
-                    |(source, target)| match (source.constraint_type, target.constraint_type) {
-                        (Some(source), Some(target)) => self
-                            .arena()
-                            .is_type_identical_to(self.instantiate_type(source, &mapper), target),
-                        (None, None) => true,
-                        _ => false,
-                    },
-                )
-            {
-                return false;
+                    .zip(&target.type_parameters)
+                    .all(|(source, target)| {
+                        match (source.constraint_type, target.constraint_type) {
+                            (Some(source), Some(target)) => self.arena().is_type_identical_to(
+                                self.instantiate_type(source, &mapper),
+                                target,
+                            ),
+                            (None, None) => true,
+                            _ => false,
+                        }
+                    })
+                {
+                    return false;
+                }
+                (mapper, TypeMapper::Empty)
             }
-            (mapper, TypeMapper::Empty)
         };
 
         let source_minimum_argument_count = function_minimum_argument_count(self.arena(), source);

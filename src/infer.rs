@@ -1763,6 +1763,40 @@ fn match_property_type_pairs<'a>(
 }
 
 impl<'a, 'store> Checker<'a, 'store> {
+    /// Infers a generic source signature's type parameters from a contextual target signature.
+    pub(crate) fn infer_signature_type_mapper(
+        &self,
+        source: &TyFunction<'a>,
+        target: &TyFunction<'a>,
+    ) -> TypeMapper<'a> {
+        let mut context = InferenceContext::with_substitutions(
+            source.type_parameters.iter().copied(),
+            &TypeParameterSubstitutions::new(),
+            self.arena(),
+        );
+        for (source_parameter, target_parameter) in
+            source.parameters.iter().zip(target.parameters.iter())
+        {
+            self.infer_types(source_parameter.ty, target_parameter.ty, &mut context);
+        }
+        if type_contains_inference_variable(self.arena(), source.return_type(), &context) {
+            self.infer_types_with_variance(
+                source.return_type(),
+                target.return_type(),
+                &mut context,
+                InferenceVariance::Covariant,
+                InferencePriority::ReturnType,
+            );
+        }
+
+        context
+            .resolve_with_contextual_mapper(
+                self,
+                InferenceResolutionFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
+            )
+            .mapper
+    }
+
     fn infer_type_pairs_with_variance(
         &self,
         pairs: impl IntoIterator<Item = (Ty<'a>, Ty<'a>)>,
