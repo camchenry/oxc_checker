@@ -1712,9 +1712,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     CheckMode::CONTEXT_FREE | CheckMode::PRESERVE_LITERALS,
                 );
                 // TODO: Just use `template_substitution_static_value` directly here?
-                value.push_str(
-                    self.template_substitution_static_value(expression_type)?,
-                );
+                value.push_str(self.template_substitution_static_value(expression_type)?);
             }
         }
         Some(self.arena().str(&value))
@@ -1756,10 +1754,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                     Some(member.node_id()),
                     CheckMode::CONTEXT_FREE | CheckMode::PRESERVE_LITERALS,
                 );
-                let value = self.template_substitution_static_value_worker(
-                    initializer_type,
-                    seen_enum_members,
-                );
+                let value = self
+                    .template_substitution_static_value_worker(initializer_type, seen_enum_members);
                 seen_enum_members.pop();
                 value
             }
