@@ -3,8 +3,8 @@
 # Cases root: tests/conformance/cases
 allocs: total=64113 files=95 max_per_file=6491 average_per_file=674.87
 files: passed=131 failed=62 panicked=0 total=193 pass_percentage=67.88%
-types: matched=4003 mismatched=25 total=4028 match_percentage=99.38%
-assign: matched=90046 mismatched=786 total=90832 match_percentage=99.13%
+types: matched=4006 mismatched=22 total=4028 match_percentage=99.45%
+assign: matched=90061 mismatched=786 total=90847 match_percentage=99.13%
 
 PASS tests/conformance/cases/compiler/abstractIdentifierNameStrict.ts matched_types=4 mismatched_types=0 total_types=4 match_percentage=100.00% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
 PASS tests/conformance/cases/compiler/arrayTypes.ts matched_types=11 mismatched_types=0 total_types=11 match_percentage=100.00% matched_assignments=121 mismatched_assignments=0 total_assignments=121 assignment_match_percentage=100.00%
@@ -243,24 +243,15 @@ PASS tests/conformance/cases/compiler/eslint_consistentReturn.ts::a.ts matched_t
 PASS tests/conformance/cases/compiler/eslint_consistentReturn.ts::b.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
 PASS tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::a.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
 PASS tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::b.ts matched_types=9 mismatched_types=0 total_types=9 match_percentage=100.00% matched_assignments=81 mismatched_assignments=0 total_assignments=81 assignment_match_percentage=100.00%
-FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::c.ts matched_types=2 mismatched_types=2 total_types=4 match_percentage=50.00% matched_assignments=4 mismatched_assignments=0 total_assignments=4 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::c.ts matched_types=3 mismatched_types=1 total_types=4 match_percentage=75.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
   - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::c.ts:4 `x` type mismatch
       expected: 1
       actual:   any
-  - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::c.ts:4 `T` missing from oxc output
-      expected: number
-      actual:   <missing>
-FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::d.ts matched_types=2 mismatched_types=2 total_types=4 match_percentage=50.00% matched_assignments=4 mismatched_assignments=0 total_assignments=4 assignment_match_percentage=100.00%
+FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::d.ts matched_types=3 mismatched_types=1 total_types=4 match_percentage=75.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
   - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::d.ts:4 `x` type mismatch
       expected: 1
       actual:   any
-  - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::d.ts:4 `T` missing from oxc output
-      expected: number
-      actual:   <missing>
-FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::e.ts matched_types=2 mismatched_types=2 total_types=4 match_percentage=50.00% matched_assignments=4 mismatched_assignments=0 total_assignments=4 assignment_match_percentage=100.00%
-  - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::e.ts:4 `T` missing from oxc output
-      expected: number
-      actual:   <missing>
+FAIL tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::e.ts matched_types=3 mismatched_types=1 total_types=4 match_percentage=75.00% matched_assignments=9 mismatched_assignments=0 total_assignments=9 assignment_match_percentage=100.00%
   - tests/conformance/cases/compiler/eslint_consistentTypeExports.ts::e.ts:5 `x` type mismatch
       expected: 1
       actual:   any

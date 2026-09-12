@@ -90,6 +90,9 @@ export { x, T };
 >        ^: any   (Any) (Identifier)
   expected: 1
 
+export { x, T };
+>           ^: number   (Number) (ExportSpecifier)
+
 const x = 1;
 >     ^: 1   (NumberLiteral) (Identifier)
 
@@ -104,11 +107,17 @@ export { x, type T };
 >        ^: any   (Any) (Identifier)
   expected: 1
 
+export { x, type T };
+>                ^: number   (Number) (ExportSpecifier)
+
 const x = 1;
 >     ^: 1   (NumberLiteral) (Identifier)
 
 type T = number;
 >    ^: number   (Number) (Identifier)
+
+export type { T };
+>             ^: number   (Number) (ExportSpecifier)
 
 export { x };
 >        ^: 1   (NumberLiteral) (Identifier)

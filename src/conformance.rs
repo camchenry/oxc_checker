@@ -26,7 +26,6 @@ use oxc_ast_visit::{
 use oxc_resolver::{FileMetadata, FileSystem, ResolveError, ResolveOptions, ResolverGeneric};
 use oxc_semantic::NodeId;
 use oxc_span::{GetSpan, Span};
-use oxc_syntax::module_record::{ExportEntry, ExportLocalName};
 use rayon::prelude::*;
 use rustc_hash::FxHashMap;
 use serde::{Deserialize, Serialize};
@@ -2368,23 +2367,35 @@ fn actual_export_specifier_records<'a>(
         .map(|captured| captured.record.key())
         .collect::<BTreeSet<_>>();
     entry
-        .module_record()
-        .local_export_entries
+        .program()
+        .body
         .iter()
-        .filter_map(|export_entry| {
-            let ExportLocalName::Name(local_name) = &export_entry.local_name else {
-                return None;
-            };
+        .filter_map(|statement| match statement {
+            Statement::ExportNamedDeclaration(declaration) => Some(declaration),
+            _ => None,
+        })
+        .flat_map(|declaration| declaration.specifiers.iter())
+        .filter_map(|specifier| {
+            let (span, text) = module_export_name_span_and_text(&specifier.local);
             let key = TypeRecordKey {
-                start: local_name.span.start,
-                end: local_name.span.end,
-                text: sanitize_cow(Cow::Borrowed(local_name.name.as_str())),
+                start: span.start,
+                end: span.end,
+                text: sanitize_cow(Cow::Borrowed(text)),
             };
             if existing_keys.contains(&key) {
                 return None;
             }
-            let node_ref = export_specifier_node_ref(program_id, entry, export_entry)?;
-            let ty = checker.get_type_at_location(node_ref);
+            let node_ref = NodeRef::new(program_id, specifier.local.node_id());
+            let ty = checker
+                .get_type_symbol_in_program(program_id, text)
+                .map(|symbol| {
+                    let declaration = checker
+                        .semantic(symbol.program_id)
+                        .scoping()
+                        .symbol_declaration(symbol.symbol_id);
+                    checker.get_type_at_location(NodeRef::new(symbol.program_id, declaration))
+                })
+                .unwrap_or_else(|| checker.get_type_at_location(node_ref));
             if ty.is_none() {
                 return None;
             }
@@ -2404,28 +2415,6 @@ fn actual_export_specifier_records<'a>(
             })
         })
         .collect()
-}
-
-fn export_specifier_node_ref<'a>(
-    program_id: ProgramId,
-    entry: &program::ProgramEntry<'a>,
-    export_entry: &ExportEntry<'a>,
-) -> Option<NodeRef> {
-    let ExportLocalName::Name(local_name) = &export_entry.local_name else {
-        return None;
-    };
-    entry.program().body.iter().find_map(|statement| {
-        let Statement::ExportNamedDeclaration(declaration) = statement else {
-            return None;
-        };
-        if declaration.span != export_entry.statement_span {
-            return None;
-        }
-        declaration.specifiers.iter().find_map(|specifier| {
-            let (span, _) = module_export_name_span_and_text(&specifier.local);
-            (span == local_name.span).then(|| NodeRef::new(program_id, specifier.node_id()))
-        })
-    })
 }
 
 fn actual_identifier_record<'a>(
