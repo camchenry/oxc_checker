@@ -12459,6 +12459,9 @@ impl<'a> Checker<'a, '_> {
             }
             AstKind::ExportSpecifier(specifier) => self
                 .get_type_symbol_in_program(node.program_id, &specifier.local.name())
+                .or_else(|| {
+                    self.get_value_symbol_for_name(node.program_id, &specifier.local.name())
+                })
                 .map(|symbol| self.get_type_of_symbol(symbol))
                 .or_else(|| {
                     self.get_type_of_local_type_declaration_by_name(

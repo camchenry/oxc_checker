@@ -84,11 +84,9 @@ type T = number;
 
 export { x, T };
 >        ^: 1   (NumberLiteral) (Identifier)
-  expected: 1
 
 export { x, T };
->        ^: any   (Any) (Identifier)
-  expected: 1
+>        ^: 1   (NumberLiteral) (Identifier)
 
 export { x, T };
 >           ^: number   (Number) (ExportSpecifier)
@@ -101,11 +99,9 @@ type T = number;
 
 export { x, type T };
 >        ^: 1   (NumberLiteral) (Identifier)
-  expected: 1
 
 export { x, type T };
->        ^: any   (Any) (Identifier)
-  expected: 1
+>        ^: 1   (NumberLiteral) (Identifier)
 
 export { x, type T };
 >                ^: number   (Number) (ExportSpecifier)
@@ -121,8 +117,6 @@ export type { T };
 
 export { x };
 >        ^: 1   (NumberLiteral) (Identifier)
-  expected: 1
 
 export { x };
->        ^: any   (Any) (Identifier)
-  expected: 1
+>        ^: 1   (NumberLiteral) (Identifier)
