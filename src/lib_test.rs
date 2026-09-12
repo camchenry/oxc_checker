@@ -2316,14 +2316,20 @@ fn template_literal_type_resolves_qualified_enum_member() {
         enum ABC {
             A = "A",
             B = "B",
+            C = 1,
         }
         type Value = `${ABC.A}`;
+        type NumericValue = `${ABC.C}`;
         "#,
     );
 
     assert_eq!(
         type_string(&ret, get_type_alias_type(&ret, "Value")),
         "\"A\""
+    );
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "NumericValue")),
+        "\"1\""
     );
 }
 

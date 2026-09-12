@@ -93,8 +93,7 @@ type ABCUnion = `${ABC}`;
 >                  ^^^: typeof ABC   (TypeQuery) (Identifier)
 
 type A = `${ABC.A}`;
->    ^: `${ABC.A}`   (TemplateLiteral) (Identifier)
-expected: "A"
+>    ^: "A"   (StringLiteral) (Identifier)
 
 type A = `${ABC.A}`;
 >           ^^^: typeof ABC   (TypeQuery) (Identifier)

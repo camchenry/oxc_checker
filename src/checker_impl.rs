@@ -1713,17 +1713,21 @@ impl<'a, 'store> Checker<'a, 'store> {
                 );
                 // TODO: Just use `template_substitution_static_value` directly here?
                 value.push_str(
-                    self.template_substitution_static_value(program_id, expression_type)?,
+                    self.template_substitution_static_value(expression_type)?,
                 );
             }
         }
         Some(self.arena().str(&value))
     }
 
-    fn template_substitution_static_value(
+    fn template_substitution_static_value(&self, ty: Ty<'a>) -> Option<&'a str> {
+        self.template_substitution_static_value_worker(ty, &mut Vec::new())
+    }
+
+    fn template_substitution_static_value_worker(
         &self,
-        _program_id: ProgramId,
         ty: Ty<'a>,
+        seen_enum_members: &mut Vec<SymbolRef>,
     ) -> Option<&'a str> {
         match self.ty_kind(ty) {
             TyKind::StringLiteral(literal) => Some(literal.value),
@@ -1738,12 +1742,47 @@ impl<'a, 'store> Checker<'a, 'store> {
             TyKind::TemplateLiteral(template) if template.expressions.is_empty() => {
                 Some(template.quasis[0].value)
             }
-            TyKind::TypeReference(_reference) => {
-                // TODO: Handle enums like `Enum` and also `Enum`
-                None
+            TyKind::TypeReference(reference) => {
+                let target = reference.target?;
+                if seen_enum_members.contains(&target) {
+                    return None;
+                }
+                let member = self.get_enum_member_for_symbol(target)?;
+                let initializer = member.initializer.as_ref()?;
+                seen_enum_members.push(target);
+                let initializer_type = self.get_type_of_expression_with_node(
+                    target.program_id,
+                    initializer,
+                    Some(member.node_id()),
+                    CheckMode::CONTEXT_FREE | CheckMode::PRESERVE_LITERALS,
+                );
+                let value = self.template_substitution_static_value_worker(
+                    initializer_type,
+                    seen_enum_members,
+                );
+                seen_enum_members.pop();
+                value
             }
             _ => None,
         }
+    }
+
+    fn get_enum_member_for_symbol(
+        &self,
+        symbol: SymbolRef,
+    ) -> Option<&'a oxc_ast::ast::TSEnumMember<'a>> {
+        let declaration = self
+            .semantic(symbol.program_id)
+            .scoping()
+            .symbol_declaration(symbol.symbol_id);
+        self.nodes(symbol.program_id)
+            .kind(declaration)
+            .as_ts_enum_member()
+            .or_else(|| {
+                self.nodes(symbol.program_id)
+                    .ancestor_kinds(declaration)
+                    .find_map(AstKind::as_ts_enum_member)
+            })
     }
 
     fn template_substitution_static_values(
@@ -1757,9 +1796,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 values.extend(self.template_substitution_static_values(program_id, *ty)?);
                 Some(values)
             }),
-            _ => Some(vec![
-                self.template_substitution_static_value(program_id, ty)?,
-            ]),
+            _ => Some(vec![self.template_substitution_static_value(ty)?]),
         }
     }
 
@@ -2389,7 +2426,29 @@ impl<'a, 'store> Checker<'a, 'store> {
                     template_literal
                         .types
                         .iter()
-                        .map(|ty| self.get_type_from_ts_type(program_id, ty)),
+                        .map(|ty| match ty {
+                            TSType::TSTypeReference(reference) => {
+                                let TSTypeName::QualifiedName(qualified) = &reference.type_name
+                                else {
+                                    return self.get_type_from_ts_type(program_id, ty);
+                                };
+                                let resolved = self.get_type_of_ts_import_equals_qualified_name(
+                                    program_id, qualified,
+                                );
+                                if matches!(
+                                    self.ty_kind(resolved),
+                                    TyKind::TypeReference(reference)
+                                        if reference.target.is_some_and(|symbol| {
+                                            self.get_enum_member_for_symbol(symbol).is_some()
+                                        })
+                                ) {
+                                    resolved
+                                } else {
+                                    self.get_type_from_ts_type(program_id, ty)
+                                }
+                            }
+                            _ => self.get_type_from_ts_type(program_id, ty),
+                        }),
                 ),
                 TSType::TSIntersectionType(intersection_type) => self.ty.intersection(
                     intersection_type
