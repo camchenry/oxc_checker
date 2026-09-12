@@ -10854,6 +10854,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 Some(declaration),
                 flags,
             );
+            let ty = self.widen_empty_object_literal_type_for_variable(ty);
             if !kind.is_const()
                 && matches!(ty, Ty::Null | Ty::Undefined)
                 && self.is_null_or_undefined_initializer(expression)
@@ -10873,6 +10874,24 @@ impl<'a, 'store> Checker<'a, 'store> {
                 ty
             }
         }
+    }
+
+    /// Removes object-literal provenance when caching an inferred empty-object variable type.
+    fn widen_empty_object_literal_type_for_variable(&self, ty: Ty<'a>) -> Ty<'a> {
+        if !self.arena().is_fresh_object_literal(ty) {
+            return ty;
+        }
+        let TyKind::Object(object) = self.ty_kind(ty) else {
+            return ty;
+        };
+        if !object.is_empty() {
+            return ty;
+        }
+        self.ty.object_with_signatures_and_index_infos(
+            object.properties.iter().copied(),
+            object.signatures().iter().copied(),
+            object.index_infos().iter().copied(),
+        )
     }
 
     // TODO(inline)

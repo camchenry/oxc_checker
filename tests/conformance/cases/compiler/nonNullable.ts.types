@@ -90,3 +90,39 @@ type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
 
 type T7 = NonNullable<NonNullable<NonNullable<T0>>>;
 >                                             ^^: any   (Any) (Identifier)
+
+type T8 = "literal" | 1 | true;
+>    ^^: "literal" | 1 | true   (Union) (Identifier)
+
+type T9 = bigint | symbol;
+>    ^^: bigint | symbol   (Union) (Identifier)
+
+type T10 = null | undefined;
+>    ^^^: null | undefined   (Union) (Identifier)
+
+type T11 = void;
+>    ^^^: void   (Void) (Identifier)
+
+type T12<T> = T;
+>    ^^^: T   (TypeParameter) (Identifier)
+
+type T12<T> = T;
+>        ^: any   (Any) (Identifier)
+
+type T12<T> = T;
+>             ^: any   (Any) (Identifier)
+
+type T13<T extends {}> = T;
+>    ^^^: T   (TypeParameter) (Identifier)
+
+type T13<T extends {}> = T;
+>        ^: any   (Any) (Identifier)
+
+type T13<T extends {}> = T;
+>                        ^: any   (Any) (Identifier)
+
+const inferredEmpty = {};
+>     ^^^^^^^^^^^^^: {}   (Object) (Identifier)
+
+({}, {});
+>^^^^^^^^^: {}   (Object) (ExpressionStatement)

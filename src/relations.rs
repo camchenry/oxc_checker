@@ -230,6 +230,37 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    /// Returns whether a concrete type kind is known to exclude `null`, `undefined`, and `void`.
+    fn is_definitely_non_nullish_for_relation(&self, ty: Ty<'a>) -> bool {
+        matches!(
+            self.ty_kind(ty),
+            TyKind::Number
+                | TyKind::String
+                | TyKind::Boolean
+                | TyKind::Bigint
+                | TyKind::Symbol
+                | TyKind::UniqueSymbol(_)
+                | TyKind::PrimitiveObject
+                | TyKind::This
+                | TyKind::GlobalThis
+                | TyKind::Object(_)
+                | TyKind::ModuleNamespace(_)
+                | TyKind::Function(_)
+                | TyKind::TypeReference(_)
+                | TyKind::Class(_)
+                | TyKind::TypeQuery(_)
+                | TyKind::StringLiteral(_)
+                | TyKind::NumberLiteral(_)
+                | TyKind::BooleanLiteral(_)
+                | TyKind::BigIntLiteral(_)
+                | TyKind::TemplateLiteral(_)
+                | TyKind::Array(_)
+                | TyKind::Tuple(_)
+                | TyKind::Keyof(_)
+                | TyKind::Mapped(_)
+        )
+    }
+
     fn is_assignable_to_at_depth(&self, source: Ty<'a>, target: Ty<'a>, depth: usize) -> bool {
         if source == target {
             return true;
@@ -354,6 +385,13 @@ impl<'a, 'store> Checker<'a, 'store> {
                 source.constraint_type.is_some_and(|constraint| {
                     self.is_assignable_to_at_depth(constraint, target, next_depth)
                 })
+            }
+            (_, TyKind::Object(target_object))
+                if target_object.is_empty()
+                    && !self.arena().is_fresh_object_literal(target)
+                    && self.is_definitely_non_nullish_for_relation(source) =>
+            {
+                true
             }
             (TyKind::Object(source), TyKind::Function(_)) => {
                 let call_signatures = || {

@@ -4,7 +4,7 @@
 allocs: total=476477 files=108 max_per_file=278772 average_per_file=4411.82
 files: passed=14 failed=65 panicked=0 total=79 pass_percentage=17.72%
 types: matched=60157 mismatched=663 total=60820 match_percentage=98.91%
-assign: matched=304997 mismatched=6507 total=311504 match_percentage=97.91%
+assign: matched=305007 mismatched=6497 total=311504 match_percentage=97.91%
 
 FAIL src/lib/decorators.d.ts matched_types=181 mismatched_types=1 total_types=182 match_percentage=99.45% matched_assignments=713 mismatched_assignments=8 total_assignments=721 assignment_match_percentage=98.89%
   - src/lib/decorators.d.ts:20 `DecoratorMetadata` type mismatch
@@ -17063,7 +17063,7 @@ FAIL src/lib/es2017.intl.d.ts matched_types=22 mismatched_types=2 total_types=24
       typescript target: typeof Intl    (Object)
       oxc source: { (date?: Date | number): DateTimeFormatPart[]; (date?: FormattableTemporalObject | Date | number): DateTimeFormatPart[]; (date?: Date | number): DateTimeFormatPart[]; }    (Object)
       oxc target: typeof Intl    (TypeQuery)
-FAIL src/lib/es2017.object.d.ts matched_types=32 mismatched_types=0 total_types=32 match_percentage=100.00% matched_assignments=986 mismatched_assignments=38 total_assignments=1024 assignment_match_percentage=96.29%
+FAIL src/lib/es2017.object.d.ts matched_types=32 mismatched_types=0 total_types=32 match_percentage=100.00% matched_assignments=996 mismatched_assignments=28 total_assignments=1024 assignment_match_percentage=97.27%
   - :6 `values` should not be assignable to :6 `o`
       typescript source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
       typescript target: ArrayLike<T> | { [s: string]: T; }    (Union)
@@ -17079,22 +17079,6 @@ FAIL src/lib/es2017.object.d.ts matched_types=32 mismatched_types=0 total_types=
       typescript target: { <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; }    (Function)
       oxc source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Object)
       oxc target: { <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; }    (Object)
-  - :6 `o` should be assignable to :12 `o`
-      typescript source: ArrayLike<T> | { [s: string]: T; }    (Union)
-      typescript target: {}    (Object)
-      oxc source: { [s: string]: T; } | ArrayLike<T>    (Union)
-      oxc target: {}    (Object)
-  - :6 `o` should be assignable to :24 `o`
-      typescript source: ArrayLike<T> | { [s: string]: T; }    (Union)
-      typescript target: {}    (Object)
-      oxc source: { [s: string]: T; } | ArrayLike<T>    (Union)
-      oxc target: {}    (Object)
-  - :6 `s` should be assignable to :12 `o`
-      source: string    (String)
-      target: {}    (Object)
-  - :6 `s` should be assignable to :24 `o`
-      source: string    (String)
-      target: {}    (Object)
   - :12 `values` should not be assignable to :6 `o`
       typescript source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; <T>(o: { [s: string]: T; } | ArrayLike<T>): T[]; (o: {}): any[]; }    (Function)
       typescript target: ArrayLike<T> | { [s: string]: T; }    (Union)
@@ -17150,22 +17134,6 @@ FAIL src/lib/es2017.object.d.ts matched_types=32 mismatched_types=0 total_types=
       typescript target: { <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; }    (Function)
       oxc source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; }    (Object)
       oxc target: { <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; }    (Object)
-  - :18 `o` should be assignable to :12 `o`
-      typescript source: ArrayLike<T> | { [s: string]: T; }    (Union)
-      typescript target: {}    (Object)
-      oxc source: { [s: string]: T; } | ArrayLike<T>    (Union)
-      oxc target: {}    (Object)
-  - :18 `o` should be assignable to :24 `o`
-      typescript source: ArrayLike<T> | { [s: string]: T; }    (Union)
-      typescript target: {}    (Object)
-      oxc source: { [s: string]: T; } | ArrayLike<T>    (Union)
-      oxc target: {}    (Object)
-  - :18 `s` should be assignable to :12 `o`
-      source: string    (String)
-      target: {}    (Object)
-  - :18 `s` should be assignable to :24 `o`
-      source: string    (String)
-      target: {}    (Object)
   - :24 `entries` should not be assignable to :6 `o`
       typescript source: { <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; }    (Function)
       typescript target: ArrayLike<T> | { [s: string]: T; }    (Union)
@@ -17236,12 +17204,6 @@ FAIL src/lib/es2017.object.d.ts matched_types=32 mismatched_types=0 total_types=
       typescript target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; }    (Function)
       oxc source: { <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; <T>(o: T): { [P in keyof T]: TypedPropertyDescriptor<T[P]>; } & { [x: string]: PropertyDescriptor; }; }    (Object)
       oxc target: { <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; <T>(o: { [s: string]: T; } | ArrayLike<T>): [string, T][]; (o: {}): [string, any][]; }    (Object)
-  - :30 `x` should be assignable to :12 `o`
-      source: string    (String)
-      target: {}    (Object)
-  - :30 `x` should be assignable to :24 `o`
-      source: string    (String)
-      target: {}    (Object)
 PASS src/lib/es2017.sharedmemory.d.ts matched_types=185 mismatched_types=0 total_types=185 match_percentage=100.00% matched_assignments=740 mismatched_assignments=0 total_assignments=740 assignment_match_percentage=100.00%
 FAIL src/lib/es2017.string.d.ts matched_types=4 mismatched_types=3 total_types=7 match_percentage=57.14% matched_assignments=16 mismatched_assignments=0 total_assignments=16 assignment_match_percentage=100.00%
   - src/lib/es2017.string.d.ts:1 `String` type mismatch

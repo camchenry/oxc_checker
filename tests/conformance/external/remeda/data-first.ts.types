@@ -228,28 +228,33 @@ export function map(data: unknown, callbackfn: LazyEvaluator<any, any>): any[] {
 >                   ^^^^: unknown   (Unknown) (Identifier)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                   ^^^: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]   (Function) (Identifier)
+>                                   ^^^: <U>(callbackfn: (value: T, index: number, array: T[]) => U, thisArg?: any) => U[]   (Function) (Identifier)
+                               expected: <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisArg?: any) => U[]
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                        ^^^^^: any   (Any) (Identifier)
+>                                        ^^^^^: T   (TypeParameter) (Identifier)
+                                      expected: any
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
 >                                               ^^^^^: number   (Number) (Identifier)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                                      ^^^^^^: any[]   (Array) (Identifier)
+>                                                      ^^^^^^: T[]   (Array) (Identifier)
+                                                     expected: any[]
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
 >                                                                 ^^^^^^^^^^: LazyEvaluator<any, any>   (TypeReference) (Identifier)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                                                            ^^^^^: any   (Any) (Identifier)
+>                                                                            ^^^^^: T   (TypeParameter) (Identifier)
+                                                                          expected: any
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
 >                                                                                   ^^^^^: number   (Number) (Identifier)
 
     : Object.values(data as object).map((value, index, values) => callbackfn(value, index, values))
->                                                                                          ^^^^^^: any[]   (Array) (Identifier)
+>                                                                                          ^^^^^^: T[]   (Array) (Identifier)
+                                                                                         expected: any[]
 
 import type { Pred } from './internal/types'
 >             ^^^^: (value: T, index: number, data: readonly T[]) => boolean   (Function) (Identifier)
