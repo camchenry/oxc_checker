@@ -212,6 +212,7 @@ struct OxcRecordCollection {
     records: Vec<TypeRecord>,
     panicked_paths: BTreeSet<String>,
     allocations: ConformanceAllocationStats,
+    file_timings: Vec<ConformanceFileTiming>,
 }
 
 impl OxcRecordCollection {
@@ -219,7 +220,13 @@ impl OxcRecordCollection {
         self.allocations.extend(&collection.allocations);
         self.records.extend(collection.records);
         self.panicked_paths.extend(collection.panicked_paths);
+        self.file_timings.extend(collection.file_timings);
     }
+}
+
+struct ConformanceFileTiming {
+    path: String,
+    elapsed: Duration,
 }
 
 /// Arena allocation requests made while processing physical conformance input files.
@@ -303,6 +310,7 @@ struct ComparisonStats {
     mismatched_assignments: usize,
     total_assignments: usize,
     allocations: ConformanceAllocationStats,
+    slowest_files: Vec<ConformanceFileTiming>,
 }
 
 #[derive(Default)]
@@ -326,6 +334,7 @@ impl ComparisonStats {
         results: &[FileResult],
         panicked_files: usize,
         allocations: ConformanceAllocationStats,
+        mut file_timings: Vec<ConformanceFileTiming>,
     ) -> Self {
         let total_files = results.len() + panicked_files;
         let failed_files = results.iter().filter(|result| !result.passed()).count();
@@ -339,6 +348,13 @@ impl ComparisonStats {
             .sum();
         let mismatched_assignments = results.iter().map(FileResult::mismatched_assignments).sum();
         let total_assignments = matched_assignments + mismatched_assignments;
+        file_timings.sort_by(|left, right| {
+            right
+                .elapsed
+                .cmp(&left.elapsed)
+                .then_with(|| left.path.cmp(&right.path))
+        });
+        file_timings.truncate(5);
 
         Self {
             passed_files,
@@ -352,6 +368,7 @@ impl ComparisonStats {
             mismatched_assignments,
             total_assignments,
             allocations,
+            slowest_files: file_timings,
         }
     }
 
@@ -388,7 +405,7 @@ impl ComparisonStats {
             format_count(self.matched_assignments),
             format_count(self.total_assignments)
         );
-        format!(
+        let mut summary = format!(
             "  {0:<7} {1:<15} {2:<7} {3:>6.2}%  ({4} failed{panic_suffix})\n  {5:<7} {6:<15} {7:<7} {8:>6.2}%  ({9} mismatched)\n  {10:<7} {11:<15} {7:<7} {12:>6.2}%  ({13} mismatched)",
             "Files",
             files,
@@ -404,7 +421,18 @@ impl ComparisonStats {
             assignments,
             self.assignment_match_percentage(),
             format_count(self.mismatched_assignments),
-        )
+        );
+        if !self.slowest_files.is_empty() {
+            summary.push_str("\n  Slowest files:");
+            for timing in &self.slowest_files {
+                summary.push_str(&format!(
+                    "\n    {:>10.2} ms  {}",
+                    timing.elapsed.as_secs_f64() * 1_000.0,
+                    timing.path,
+                ));
+            }
+        }
+        summary
     }
 }
 
@@ -1124,6 +1152,7 @@ fn run_single_file_conformance(case_path: &Path, refresh_tsc: bool) -> Conforman
         &results,
         collected.panicked_paths.len(),
         collected.allocations,
+        collected.file_timings,
     );
     print!("{}", format_type_record_report(suite, &stats, &results));
 
@@ -1197,6 +1226,7 @@ fn run_type_record_conformance(
         &results,
         collected.panicked_paths.len(),
         collected.allocations,
+        collected.file_timings,
     );
     let delta = write_snapshot(&snapshot_path, suite, &stats, &results);
 
@@ -1687,6 +1717,7 @@ fn collect_oxc_records_from_source_with_programs<'a>(
     prepared_programs: Option<&'a program::PreparedProgramSet<'a>>,
     expectations: Option<&ConformanceExpectations>,
 ) -> OxcRecordCollection {
+    let started_at = Instant::now();
     let allocations_before = allocator.get_allocation_stats().0;
     let mut collection = collect_oxc_records_from_source_with_programs_impl(
         cases_root,
@@ -1700,6 +1731,10 @@ fn collect_oxc_records_from_source_with_programs<'a>(
     collection
         .allocations
         .record_file(allocations_after.saturating_sub(allocations_before));
+    collection.file_timings.push(ConformanceFileTiming {
+        path: relative_path(cases_root, path),
+        elapsed: started_at.elapsed(),
+    });
     collection
 }
 

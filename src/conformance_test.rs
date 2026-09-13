@@ -65,6 +65,7 @@ fn conformance_summary_is_compact_and_aligned() {
         mismatched_assignments: 934,
         total_assignments: 91_110,
         allocations: ConformanceAllocationStats::default(),
+        slowest_files: Vec::new(),
     };
 
     assert_eq!(
@@ -75,6 +76,37 @@ fn conformance_summary_is_compact_and_aligned() {
             "  Assign  90,176/91,110   matched  98.97%  (934 mismatched)",
         )
     );
+}
+
+#[test]
+fn conformance_summary_reports_five_slowest_files() {
+    let timing = |path: &str, millis| ConformanceFileTiming {
+        path: path.to_string(),
+        elapsed: Duration::from_millis(millis),
+    };
+    let stats = ComparisonStats::from_results(
+        &[],
+        0,
+        ConformanceAllocationStats::default(),
+        vec![
+            timing("compiler/a.ts", 1),
+            timing("compiler/b.ts", 10),
+            timing("compiler/c.ts", 5),
+            timing("compiler/d.ts", 8),
+            timing("compiler/e.ts", 7),
+            timing("compiler/f.ts", 6),
+        ],
+    );
+
+    assert!(stats.summary().ends_with(concat!(
+        "  Slowest files:\n",
+        "         10.00 ms  compiler/b.ts\n",
+        "          8.00 ms  compiler/d.ts\n",
+        "          7.00 ms  compiler/e.ts\n",
+        "          6.00 ms  compiler/f.ts\n",
+        "          5.00 ms  compiler/c.ts",
+    )));
+    assert!(!stats.summary().contains("compiler/a.ts"));
 }
 
 #[test]
@@ -681,7 +713,12 @@ fn assignment_mismatches_have_separate_totals_in_file_summary() {
         ..expected_target.clone()
     };
     let results = compare_records(&[expected, expected_target], &[actual, actual_target]);
-    let stats = ComparisonStats::from_results(&results, 0, ConformanceAllocationStats::default());
+    let stats = ComparisonStats::from_results(
+        &results,
+        0,
+        ConformanceAllocationStats::default(),
+        Vec::new(),
+    );
     let report = format_type_record_report(&CASES_SUITE, &stats, &results);
 
     assert_eq!(stats.matched_types, 2);
@@ -753,7 +790,12 @@ fn compare_records_skips_assignability_when_an_endpoint_type_mismatches() {
         &[expected_source, expected_target.clone()],
         &[actual_source, expected_target],
     );
-    let stats = ComparisonStats::from_results(&results, 0, ConformanceAllocationStats::default());
+    let stats = ComparisonStats::from_results(
+        &results,
+        0,
+        ConformanceAllocationStats::default(),
+        Vec::new(),
+    );
 
     assert_eq!(stats.mismatched_types, 1);
     assert_eq!(stats.matched_assignments, 0);
@@ -864,8 +906,12 @@ fn panicked_fixture_is_excluded_from_record_comparison() {
         BTreeSet::from(["compiler/ClassDeclaration26.ts".to_string()])
     );
 
-    let stats =
-        ComparisonStats::from_results(&[], collection.panicked_paths.len(), collection.allocations);
+    let stats = ComparisonStats::from_results(
+        &[],
+        collection.panicked_paths.len(),
+        collection.allocations,
+        collection.file_timings,
+    );
     assert_eq!(stats.mismatched_types, 0);
     assert_eq!(stats.total_types, 0);
     assert_eq!(stats.panicked_files, 1);
@@ -877,7 +923,7 @@ fn allocation_stats_aggregate_per_input_file() {
     allocations.record_file(3);
     allocations.record_file(8);
     allocations.record_file(4);
-    let stats = ComparisonStats::from_results(&[], 0, allocations);
+    let stats = ComparisonStats::from_results(&[], 0, allocations, Vec::new());
     let report = format_type_record_report(&CASES_SUITE, &stats, &[]);
 
     assert_eq!(stats.allocations.total, 15);
