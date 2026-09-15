@@ -84,7 +84,7 @@ interface TypeRecord {
 }
 
 interface AssignabilityRecord {
-  target: TypeRecordKey;
+  target: number;
   assignable: boolean;
 }
 
@@ -664,12 +664,30 @@ function collectRecords(
       stack.push(children[index]);
     }
   }
+  const recordsByIndex = [...records].sort((left, right) => {
+    return compareRecordKeysOrdinal(left.record, right.record);
+  });
+  const recordIndices = new Map<CapturedTypeRecord, number>();
+  let recordIndex = -1;
+  for (let index = 0; index < recordsByIndex.length; index += 1) {
+    if (
+      index === 0
+      || compareRecordKeysOrdinal(recordsByIndex[index - 1].record, recordsByIndex[index].record) !== 0
+    ) {
+      recordIndex += 1;
+    }
+    recordIndices.set(recordsByIndex[index], recordIndex);
+  }
   records.sort((left, right) => compareRecordKeys(left.record, right.record));
   for (const [sourceIndex, targetIndex] of assignabilityPairs(records.length)) {
     const source = records[sourceIndex];
     const target = records[targetIndex];
+    const targetRecordIndex = recordIndices.get(target);
+    if (targetRecordIndex === undefined) {
+      throw new Error("missing assignment target record index");
+    }
     source.record.assignability.push({
-      target: recordKey(target.record),
+      target: targetRecordIndex,
       assignable: checker.isTypeAssignableTo(source.type, target.type),
     });
   }
@@ -680,8 +698,10 @@ function compareRecordKeys(left: TypeRecordKey, right: TypeRecordKey): number {
   return left.start - right.start || left.end - right.end || left.text.localeCompare(right.text);
 }
 
-function recordKey(record: TypeRecord): TypeRecordKey {
-  return { start: record.start, end: record.end, text: record.text };
+function compareRecordKeysOrdinal(left: TypeRecordKey, right: TypeRecordKey): number {
+  return left.start - right.start
+    || left.end - right.end
+    || (left.text < right.text ? -1 : left.text > right.text ? 1 : 0);
 }
 
 function assignabilityPairs(typeCount: number): Array<[number, number]> {

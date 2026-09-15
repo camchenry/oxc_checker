@@ -160,7 +160,7 @@ impl TypeRecord {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct AssignabilityRecord {
-    target: TypeRecordKey,
+    target: usize,
     assignable: bool,
 }
 
@@ -1750,6 +1750,9 @@ fn collect_oxc_records_from_source_with_programs_impl<'a>(
     let compiler_case = parse_compiler_test_case(source_text, &relative_path);
     let _settings = &compiler_case.settings;
     let mut collection = OxcRecordCollection::default();
+    let build_started_at = std::env::var("OXC_CONFORMANCE_PROFILE_FILE")
+        .is_ok_and(|profile_path| profile_path == relative_path)
+        .then(Instant::now);
     let parsed = match parse_fixture_program(allocator, &compiler_case, prepared_programs) {
         Ok(parsed) => Some(parsed),
         Err(error) => {
@@ -1759,6 +1762,12 @@ fn collect_oxc_records_from_source_with_programs_impl<'a>(
             None
         }
     };
+    if let Some(build_started_at) = build_started_at {
+        eprintln!(
+            "conformance fixture build {relative_path}: {:.3}ms",
+            build_started_at.elapsed().as_secs_f64() * 1_000.0,
+        );
+    }
     if let Some(parsed) = parsed {
         let checker = Checker::new(&parsed.store);
         for source_file in &compiler_case.files {
@@ -2103,6 +2112,9 @@ fn actual_identifier_records<'a>(
     expected_assignments: Option<&AssignabilityMap>,
     expected_types: Option<&TypeRecordMap>,
 ) -> Vec<TypeRecord> {
+    let phase_timing = std::env::var("OXC_CONFORMANCE_PROFILE_FILE")
+        .is_ok_and(|profile_path| profile_path == path);
+    let capture_started_at = phase_timing.then(Instant::now);
     let entry = checker.store.entry(program_id).unwrap();
     let path = Arc::<str>::from(path);
     let mut records = entry
@@ -2142,43 +2154,76 @@ fn actual_identifier_records<'a>(
         entry,
         &path,
     ));
-    records.sort_by_key(|captured| captured.record.key());
-    let record_indices = records
-        .iter()
-        .enumerate()
-        .map(|(index, captured)| (captured.record.key(), index))
-        .collect::<BTreeMap<_, _>>();
-    let assignment_pairs = expected_assignments.map_or_else(
-        || {
-            assignability_pairs(records.len())
-                .into_iter()
-                .map(|(source, target)| {
-                    (records[source].record.key(), records[target].record.key())
-                })
-                .collect::<Vec<_>>()
-        },
-        |assignments| assignments.keys().cloned().collect(),
-    );
-    for (source, target) in assignment_pairs {
-        let Some(&source_index) = record_indices.get(&source) else {
-            continue;
-        };
-        let Some(&target_index) = record_indices.get(&target) else {
-            continue;
-        };
-        if expected_types.is_some_and(|expected_types| {
-            !captured_type_matches_expectation(&records[source_index], expected_types)
-                || !captured_type_matches_expectation(&records[target_index], expected_types)
-        }) {
-            continue;
+    records.sort_by(|left, right| compare_record_keys(&left.record, &right.record));
+    let record_indices = dense_record_indices(&records);
+    let capture_elapsed = capture_started_at.map(|started_at| started_at.elapsed());
+    let assignability_started_at = phase_timing.then(Instant::now);
+    let mut assignability_cache = FxHashMap::default();
+    if let Some((expected_assignments, expected_types)) =
+        expected_assignments.zip(expected_types)
+    {
+        let expected_records = expected_types.values().collect::<Vec<_>>();
+        let actual_indices = matching_captured_record_indices(expected_types, &records);
+        for (expected_source_index, assignments) in expected_assignments.iter().enumerate() {
+            let Some(source) = actual_indices
+                .get(expected_source_index)
+                .copied()
+                .flatten()
+            else {
+                continue;
+            };
+            let Some(expected_source) = expected_records.get(expected_source_index).copied() else {
+                continue;
+            };
+            for assignment in assignments {
+                let Some(target) = actual_indices
+                    .get(assignment.target)
+                    .copied()
+                    .flatten()
+                else {
+                    continue;
+                };
+                let Some(expected_target) = expected_records.get(assignment.target).copied() else {
+                    continue;
+                };
+                push_assignability_record(
+                    checker,
+                    &mut records,
+                    source,
+                    target,
+                    Some(expected_source),
+                    Some(expected_target),
+                    &mut assignability_cache,
+                );
+            }
         }
-        let source_type = assignability_type(&records[source_index], expected_types);
-        let target_type = assignability_type(&records[target_index], expected_types);
-        let assignable = checker.is_assignable_to(source_type, target_type);
-        records[source_index]
-            .record
-            .assignability
-            .push(AssignabilityRecord { target, assignable });
+    } else {
+        for (source_index, target_index) in assignability_pairs(records.len()) {
+            push_assignability_record(
+                checker,
+                &mut records,
+                CapturedRecordIndex {
+                    captured: source_index,
+                    record: record_indices[source_index],
+                },
+                CapturedRecordIndex {
+                    captured: target_index,
+                    record: record_indices[target_index],
+                },
+                None,
+                None,
+                &mut assignability_cache,
+            );
+        }
+    }
+    if let (Some(capture_elapsed), Some(assignability_started_at)) =
+        (capture_elapsed, assignability_started_at)
+    {
+        eprintln!(
+            "conformance record phases {path}: capture={:.3}ms assignability={:.3}ms",
+            capture_elapsed.as_secs_f64() * 1_000.0,
+            assignability_started_at.elapsed().as_secs_f64() * 1_000.0,
+        );
     }
     records
         .into_iter()
@@ -2186,20 +2231,121 @@ fn actual_identifier_records<'a>(
         .collect()
 }
 
+#[derive(Clone, Copy)]
+struct CapturedRecordIndex {
+    captured: usize,
+    record: usize,
+}
+
+fn dense_record_indices(records: &[CapturedTypeRecord<'_>]) -> Vec<usize> {
+    let mut record = 0;
+    records
+        .iter()
+        .enumerate()
+        .map(|(index, captured)| {
+            if index > 0
+                && compare_record_keys(&records[index - 1].record, &captured.record)
+                    != std::cmp::Ordering::Equal
+            {
+                record += 1;
+            }
+            record
+        })
+        .collect()
+}
+
+fn matching_captured_record_indices(
+    expected: &TypeRecordMap,
+    actual: &[CapturedTypeRecord<'_>],
+) -> Vec<Option<CapturedRecordIndex>> {
+    let record_indices = dense_record_indices(actual);
+    let mut actual_records = actual.iter().enumerate().peekable();
+    expected
+        .keys()
+        .map(|expected_key| loop {
+            let (actual_index, actual_record) = actual_records.peek().copied()?;
+            match compare_record_key(&actual_record.record, expected_key) {
+                std::cmp::Ordering::Less => {
+                    actual_records.next();
+                }
+                std::cmp::Ordering::Equal => {
+                    actual_records.next();
+                    let mut last_actual_index = actual_index;
+                    while let Some((next_index, next)) = actual_records.peek().copied()
+                        && compare_record_key(&next.record, expected_key)
+                            == std::cmp::Ordering::Equal
+                    {
+                        actual_records.next();
+                        last_actual_index = next_index;
+                    }
+                    return Some(CapturedRecordIndex {
+                        captured: last_actual_index,
+                        record: record_indices[last_actual_index],
+                    });
+                }
+                std::cmp::Ordering::Greater => return None,
+            }
+        })
+        .collect()
+}
+
+fn compare_record_key(record: &TypeRecord, key: &TypeRecordKey) -> std::cmp::Ordering {
+    record
+        .start
+        .cmp(&key.start)
+        .then_with(|| record.end.cmp(&key.end))
+        .then_with(|| record.text.cmp(&key.text))
+}
+
+    fn compare_record_keys(left: &TypeRecord, right: &TypeRecord) -> std::cmp::Ordering {
+        left.start
+        .cmp(&right.start)
+        .then_with(|| left.end.cmp(&right.end))
+        .then_with(|| left.text.cmp(&right.text))
+    }
+
+fn push_assignability_record<'a>(
+    checker: &Checker<'a, '_>,
+    records: &mut [CapturedTypeRecord<'a>],
+    source: CapturedRecordIndex,
+    target: CapturedRecordIndex,
+    expected_source: Option<&TypeRecordType>,
+    expected_target: Option<&TypeRecordType>,
+    assignability_cache: &mut FxHashMap<(Ty<'a>, Ty<'a>), bool>,
+) {
+    if expected_source.is_some_and(|expected| {
+        !captured_type_matches_expectation(&records[source.captured], expected)
+    }) || expected_target.is_some_and(|expected| {
+        !captured_type_matches_expectation(&records[target.captured], expected)
+    }) {
+        return;
+    }
+    let source_type = assignability_type(&records[source.captured], expected_source);
+    let target_type = assignability_type(&records[target.captured], expected_target);
+    let assignable = *assignability_cache
+        .entry((source_type, target_type))
+        .or_insert_with(|| checker.is_assignable_to(source_type, target_type));
+    records[source.captured]
+        .record
+        .assignability
+        .push(AssignabilityRecord {
+            target: target.record,
+            assignable,
+        });
+}
+
 fn captured_type_matches_expectation(
     captured: &CapturedTypeRecord<'_>,
-    expected_types: &TypeRecordMap,
+    expected: &TypeRecordType,
 ) -> bool {
-    expected_types
-        .get(&captured.record.key())
-        .is_some_and(|expected| type_records_are_compatible(expected, &captured.record.r#type))
+    type_records_are_compatible(expected, &captured.record.r#type)
 }
 
 fn assignability_type<'a>(
     captured: &CapturedTypeRecord<'a>,
-    expected_types: Option<&TypeRecordMap>,
+    expected: Option<&TypeRecordType>,
 ) -> Ty<'a> {
-    let Some(expected) = expected_types.and_then(|types| types.get(&captured.record.key())) else {
+    let Some(expected) = expected else {
         return captured.ty;
     };
     match (expected.name.as_str(), captured.record.r#type.name.as_str()) {
@@ -2805,41 +2951,60 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
                 }
             }
 
-            let empty_assignments = BTreeMap::new();
+            let empty_assignments = AssignabilityMap::new();
             let tsc_assignments = tsc_assignments_by_file
                 .get(&path)
                 .unwrap_or(&empty_assignments);
             let oxc_assignments = oxc_assignments_by_file
                 .get(&path)
                 .unwrap_or(&empty_assignments);
-            for ((source, target), expected) in tsc_assignments {
-                if !assignability_types_are_compatible(tsc_by_key, oxc_by_key, source, target) {
-                    continue;
-                }
-                let actual = oxc_assignments
-                    .get(&(source.clone(), target.clone()))
-                    .copied();
-                if actual == Some(*expected) {
-                    matched_assignments += 1;
-                } else {
-                    let record_type = |types: &TypeRecordMap, key: &TypeRecordKey| {
-                        types.get(key).cloned().unwrap_or_else(missing_type_record)
+            let tsc_indexed_records = tsc_by_key.iter().collect::<Vec<_>>();
+            let oxc_indexed_records = oxc_by_key.iter().collect::<Vec<_>>();
+            let oxc_indices = matching_record_indices(tsc_by_key, oxc_by_key);
+            for (source_index, assignments) in tsc_assignments.iter().enumerate() {
+                for assignment in assignments {
+                    let Some((oxc_source_index, oxc_target_index)) =
+                        compatible_assignment_indices(
+                            &tsc_indexed_records,
+                            &oxc_indexed_records,
+                            &oxc_indices,
+                            source_index,
+                            assignment.target,
+                        )
+                    else {
+                        continue;
                     };
+                    let actual = oxc_assignments
+                        .get(oxc_source_index)
+                        .and_then(|assignments| {
+                            assignments
+                                .iter()
+                                .find(|actual| actual.target == oxc_target_index)
+                        })
+                        .map(|actual| actual.assignable);
+                    if actual == Some(assignment.assignable) {
+                        matched_assignments += 1;
+                        continue;
+                    }
+                    let (source, tsc_source_type) = tsc_indexed_records[source_index];
+                    let (target, tsc_target_type) = tsc_indexed_records[assignment.target];
+                    let (_, oxc_source_type) = oxc_indexed_records[oxc_source_index];
+                    let (_, oxc_target_type) = oxc_indexed_records[oxc_target_index];
                     errors.push(ComparisonError::AssignabilityMismatch {
                         start: source.start,
                         text: source.text.clone(),
                         target_start: target.start,
                         target_text: target.text.clone(),
-                        should_be_assignable: *expected,
-                        tsc_source_type: record_type(tsc_by_key, source),
-                        tsc_target_type: record_type(tsc_by_key, target),
+                        should_be_assignable: assignment.assignable,
+                        tsc_source_type: (*tsc_source_type).clone(),
+                        tsc_target_type: (*tsc_target_type).clone(),
                         oxc_source_type: assignability_record_type(
-                            tsc_by_key.get(source),
-                            oxc_by_key.get(source),
+                            Some(tsc_source_type),
+                            Some(oxc_source_type),
                         ),
                         oxc_target_type: assignability_record_type(
-                            tsc_by_key.get(target),
-                            oxc_by_key.get(target),
+                            Some(tsc_target_type),
+                            Some(oxc_target_type),
                         ),
                     });
                 }
@@ -2855,19 +3020,48 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
         .collect()
 }
 
-fn assignability_types_are_compatible(
-    expected_types: &TypeRecordMap,
-    actual_types: &TypeRecordMap,
-    source: &TypeRecordKey,
-    target: &TypeRecordKey,
-) -> bool {
-    [source, target].into_iter().all(|key| {
-        expected_types.get(key).is_some_and(|expected| {
-            actual_types
-                .get(key)
-                .is_some_and(|actual| type_records_are_compatible(expected, actual))
+fn matching_record_indices(
+    expected: &TypeRecordMap,
+    actual: &TypeRecordMap,
+) -> Vec<Option<usize>> {
+    let mut actual_records = actual.keys().enumerate().peekable();
+    expected
+        .keys()
+        .map(|expected_key| loop {
+            let (actual_index, actual_key) = actual_records.peek().copied()?;
+            match actual_key.cmp(expected_key) {
+                std::cmp::Ordering::Less => {
+                    actual_records.next();
+                }
+                std::cmp::Ordering::Equal => {
+                    actual_records.next();
+                    return Some(actual_index);
+                }
+                std::cmp::Ordering::Greater => return None,
+            }
         })
-    })
+        .collect()
+}
+
+fn compatible_assignment_indices(
+    expected: &[(&TypeRecordKey, &TypeRecordType)],
+    actual: &[(&TypeRecordKey, &TypeRecordType)],
+    actual_indices: &[Option<usize>],
+    source_index: usize,
+    target_index: usize,
+) -> Option<(usize, usize)> {
+    let actual_source_index = actual_indices.get(source_index).copied().flatten()?;
+    let actual_target_index = actual_indices.get(target_index).copied().flatten()?;
+    let (_, expected_source) = expected.get(source_index)?;
+    let (_, expected_target) = expected.get(target_index)?;
+    let (_, actual_source) = actual.get(actual_source_index)?;
+    let (_, actual_target) = actual.get(actual_target_index)?;
+    if !type_records_are_compatible(expected_source, actual_source)
+        || !type_records_are_compatible(expected_target, actual_target)
+    {
+        return None;
+    }
+    Some((actual_source_index, actual_target_index))
 }
 
 fn missing_type_record() -> TypeRecordType {
@@ -2890,23 +3084,52 @@ fn assignability_record_type(
     }
 }
 
-type AssignabilityMap = BTreeMap<(TypeRecordKey, TypeRecordKey), bool>;
+type AssignabilityMap = Vec<Vec<AssignabilityRecord>>;
 
 fn assignments_by_file(records: &[TypeRecord]) -> BTreeMap<Arc<str>, AssignabilityMap> {
-    let mut by_file = BTreeMap::new();
-    for record in records {
-        let source = record.key();
-        let assignments = by_file
+    let mut records_by_file = BTreeMap::<Arc<str>, Vec<(usize, &TypeRecord)>>::new();
+    for (record_index, record) in records.iter().enumerate() {
+        records_by_file
             .entry(Arc::clone(&record.path))
-            .or_insert_with(BTreeMap::new);
-        for assignment in &record.assignability {
-            assignments.insert(
-                (source.clone(), assignment.target.clone()),
-                assignment.assignable,
-            );
-        }
+            .or_default()
+            .push((record_index, record));
     }
-    by_file
+    records_by_file
+        .into_iter()
+        .map(|(path, mut records)| {
+            records.sort_unstable_by(|(left_index, left), (right_index, right)| {
+                compare_record_keys(left, right).then_with(|| left_index.cmp(right_index))
+            });
+            let mut assignments = Vec::new();
+            let mut record_index = 0;
+            while record_index < records.len() {
+                let group_start = record_index;
+                record_index += 1;
+                while record_index < records.len()
+                    && compare_record_keys(records[group_start].1, records[record_index].1)
+                        == std::cmp::Ordering::Equal
+                {
+                    record_index += 1;
+                }
+                let mut source_assignments = Vec::<AssignabilityRecord>::new();
+                for (_, record) in &records[group_start..record_index] {
+                    for assignment in &record.assignability {
+                        if let Some(existing) = source_assignments
+                            .iter_mut()
+                            .find(|existing| existing.target == assignment.target)
+                        {
+                            existing.assignable = assignment.assignable;
+                        } else {
+                            source_assignments.push(assignment.clone());
+                        }
+                    }
+                }
+                source_assignments.sort_unstable_by_key(|assignment| assignment.target);
+                assignments.push(source_assignments);
+            }
+            (path, assignments)
+        })
+        .collect()
 }
 
 fn type_records_are_compatible(expected: &TypeRecordType, actual: &TypeRecordType) -> bool {

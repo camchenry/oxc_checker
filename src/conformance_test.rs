@@ -487,7 +487,7 @@ fn type_repr_equivalence_ignores_union_order() {
 
 #[test]
 fn type_record_json_shape_is_strict_and_round_trips() {
-    let json = r#"{"path":"compiler/example.ts","start":4,"end":9,"text":"value","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"foo\""},"assignability":[{"target":{"start":10,"end":16,"text":"target"},"assignable":true}]}"#;
+    let json = r#"{"path":"compiler/example.ts","start":4,"end":9,"text":"value","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"foo\""},"assignability":[{"target":1,"assignable":true}]}"#;
     let record = parse_records(json, "test record").unwrap().remove(0);
 
     assert_eq!(record.node_type, "Identifier");
@@ -554,7 +554,7 @@ fn assignability_uses_expected_primitive_instead_of_oxc_literal() {
 
     assert_ne!(literal, Ty::string());
     assert_eq!(
-        assignability_type(&captured, Some(&expected_types)),
+        assignability_type(&captured, expected_types.values().next()),
         Ty::string()
     );
 }
@@ -582,7 +582,7 @@ fn collection_skips_assignability_when_target_type_mismatches() {
                 display: "number".to_string(),
             },
             assignability: vec![AssignabilityRecord {
-                target: target.clone(),
+                target: 1,
                 assignable: true,
             }],
         },
@@ -665,6 +665,18 @@ fn assignability_pairs_sample_large_files_directionally() {
 }
 
 #[test]
+fn parse_records_accepts_dense_assignment_target_indices() {
+    let records = parse_records(
+        r#"{"path":"compiler/example.ts","start":0,"end":6,"text":"source","nodeType":"Identifier","type":{"name":"Number","display":"number"},"assignability":[{"target":1,"assignable":true}]}
+{"path":"compiler/example.ts","start":10,"end":16,"text":"target","nodeType":"Identifier","type":{"name":"Number","display":"number"},"assignability":[]}"#,
+        "test records",
+    )
+    .unwrap();
+
+    assert_eq!(records[0].assignability[0].target, 1);
+}
+
+#[test]
 fn assignment_mismatches_have_separate_totals_in_file_summary() {
     let target = TypeRecordKey {
         start: 10,
@@ -682,7 +694,7 @@ fn assignment_mismatches_have_separate_totals_in_file_summary() {
             display: "1".to_string(),
         },
         assignability: vec![AssignabilityRecord {
-            target: target.clone(),
+            target: 1,
             assignable: true,
         }],
     };
@@ -700,7 +712,7 @@ fn assignment_mismatches_have_separate_totals_in_file_summary() {
     };
     let actual = TypeRecord {
         assignability: vec![AssignabilityRecord {
-            target,
+            target: 1,
             assignable: false,
         }],
         ..expected.clone()
@@ -758,7 +770,7 @@ fn compare_records_skips_assignability_when_an_endpoint_type_mismatches() {
             display: "number".to_string(),
         },
         assignability: vec![AssignabilityRecord {
-            target: target.clone(),
+            target: 1,
             assignable: true,
         }],
     };
@@ -780,7 +792,7 @@ fn compare_records_skips_assignability_when_an_endpoint_type_mismatches() {
             display: "string".to_string(),
         },
         assignability: vec![AssignabilityRecord {
-            target,
+            target: 1,
             assignable: false,
         }],
         ..expected_source.clone()
@@ -801,6 +813,120 @@ fn compare_records_skips_assignability_when_an_endpoint_type_mismatches() {
     assert_eq!(stats.matched_assignments, 0);
     assert_eq!(stats.mismatched_assignments, 0);
     assert_eq!(stats.total_assignments, 0);
+}
+
+#[test]
+fn compare_records_remaps_assignment_indices_after_missing_records() {
+    let record = |start, text: &str, assignability| TypeRecord {
+        path: Arc::from("compiler/missingRecord.ts"),
+        start,
+        end: start + u32::try_from(text.len()).unwrap(),
+        text: text.to_string(),
+        node_type: "Identifier".to_string(),
+        r#type: TypeRecordType {
+            name: "Number".to_string(),
+            display: "number".to_string(),
+        },
+        assignability,
+    };
+    let expected = [
+        record(0, "missing", Vec::new()),
+        record(
+            10,
+            "source",
+            vec![AssignabilityRecord {
+                target: 2,
+                assignable: true,
+            }],
+        ),
+        record(20, "target", Vec::new()),
+    ];
+    let actual = [
+        record(
+            10,
+            "source",
+            vec![AssignabilityRecord {
+                target: 1,
+                assignable: true,
+            }],
+        ),
+        record(20, "target", Vec::new()),
+    ];
+
+    let results = compare_records(&expected, &actual);
+
+    assert_eq!(results[0].matched_assignments, 1);
+    assert_eq!(results[0].mismatched_assignments(), 0);
+}
+
+#[test]
+fn assignments_by_file_consolidates_duplicate_sources_by_target() {
+    let record = |assignability| TypeRecord {
+        path: Arc::from("compiler/duplicates.ts"),
+        start: 0,
+        end: 6,
+        text: "source".to_string(),
+        node_type: "Identifier".to_string(),
+        r#type: TypeRecordType {
+            name: "Number".to_string(),
+            display: "number".to_string(),
+        },
+        assignability,
+    };
+    let assignments = assignments_by_file(&[
+        record(vec![AssignabilityRecord {
+            target: 0,
+            assignable: true,
+        }]),
+        record(vec![
+            AssignabilityRecord {
+                target: 0,
+                assignable: false,
+            },
+            AssignabilityRecord {
+                target: 1,
+                assignable: true,
+            },
+        ]),
+    ]);
+
+    assert_eq!(
+        assignments["compiler/duplicates.ts"],
+        vec![vec![
+            AssignabilityRecord {
+                target: 0,
+                assignable: false,
+            },
+            AssignabilityRecord {
+                target: 1,
+                assignable: true,
+            },
+        ]]
+    );
+}
+
+#[test]
+fn compare_records_skips_out_of_range_assignment_targets() {
+    let record = TypeRecord {
+        path: Arc::from("compiler/malformed.ts"),
+        start: 0,
+        end: 6,
+        text: "source".to_string(),
+        node_type: "Identifier".to_string(),
+        r#type: TypeRecordType {
+            name: "Number".to_string(),
+            display: "number".to_string(),
+        },
+        assignability: vec![AssignabilityRecord {
+            target: 1,
+            assignable: true,
+        }],
+    };
+
+    let results = compare_records(std::slice::from_ref(&record), std::slice::from_ref(&record));
+
+    assert_eq!(results[0].matched_assignments, 0);
+    assert_eq!(results[0].mismatched_assignments(), 0);
 }
 
 #[test]
