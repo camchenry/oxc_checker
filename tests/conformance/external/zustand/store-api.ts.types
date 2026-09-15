@@ -920,11 +920,11 @@ const counterInitializer: StateCreator<CounterState> = (set, get) => ({
 >                                      ^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const counterInitializer: StateCreator<CounterState> = (set, get) => ({
->                                                       ^^^: any   (Any) (Identifier)
+>                                                       ^^^: Mutate<StoreApi<CounterState>, []>["setState"]   (IndexedAccess) (Identifier)
                                                    expected: { (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
 
 const counterInitializer: StateCreator<CounterState> = (set, get) => ({
->                                                            ^^^: any   (Any) (Identifier)
+>                                                            ^^^: Mutate<StoreApi<CounterState>, []>["getState"]   (IndexedAccess) (Identifier)
                                                         expected: () => CounterState
 
   count: 0,
@@ -939,19 +939,19 @@ const counterInitializer: StateCreator<CounterState> = (set, get) => ({
         expected: number | undefined
 
   increment: (by = 1) => set({ count: get().count + by }),
->                        ^^^: any   (Any) (Identifier)
+>                        ^^^: Mutate<StoreApi<CounterState>, []>["setState"]   (IndexedAccess) (Identifier)
                     expected: { (partial: CounterState | Partial<CounterState> | ((state: CounterState) => CounterState | Partial<CounterState>), replace?: false): void; (state: CounterState | ((state: CounterState) => CounterState), replace: true): void; }
 
   increment: (by = 1) => set({ count: get().count + by }),
->                              ^^^^^: any   (Any) (Identifier)
+>                              ^^^^^: any   (Error) (Identifier)
                             expected: number
 
   increment: (by = 1) => set({ count: get().count + by }),
->                                     ^^^: any   (Any) (Identifier)
+>                                     ^^^: Mutate<StoreApi<CounterState>, []>["getState"]   (IndexedAccess) (Identifier)
                                  expected: () => CounterState
 
   increment: (by = 1) => set({ count: get().count + by }),
->                                           ^^^^^: any   (Any) (Identifier)
+>                                           ^^^^^: any   (Error) (Identifier)
                                          expected: number
 
   increment: (by = 1) => set({ count: get().count + by }),

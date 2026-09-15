@@ -1,0 +1,68 @@
+const stringOrNumberCallback:
+>     ^^^^^^^^^^^^^^^^^^^^^^: ((value: string) => { stringResult: true; }) & ((value: number) => { numberResult: true; })   (Intersection) (Identifier)
+
+    ((value: string) => { stringResult: true }) &
+>     ^^^^^: string   (String) (Identifier)
+
+    ((value: string) => { stringResult: true }) &
+>                         ^^^^^^^^^^^^: true   (BooleanLiteral) (Identifier)
+
+    ((value: number) => { numberResult: true }) = value => ({
+>     ^^^^^: number   (Number) (Identifier)
+
+    ((value: number) => { numberResult: true }) = value => ({
+>                         ^^^^^^^^^^^^: true   (BooleanLiteral) (Identifier)
+
+    ((value: number) => { numberResult: true }) = value => ({
+>                                                 ^^^^^: string | number   (Union) (Identifier)
+
+    stringResult: typeof value === "string",
+>   ^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
+
+    stringResult: typeof value === "string",
+>                        ^^^^^: string | number   (Union) (Identifier)
+
+    numberResult: typeof value === "number",
+>   ^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
+
+    numberResult: typeof value === "number",
+>                        ^^^^^: string | number   (Union) (Identifier)
+
+const oneParameterCallback:
+>     ^^^^^^^^^^^^^^^^^^^^: ((value: string) => void) & ((value: number, extra: boolean) => void)   (Intersection) (Identifier)
+
+    ((value: string) => void) &
+>     ^^^^^: string   (String) (Identifier)
+
+    ((value: number, extra: boolean) => void) = value => {};
+>     ^^^^^: number   (Number) (Identifier)
+
+    ((value: number, extra: boolean) => void) = value => {};
+>                    ^^^^^: boolean   (Boolean) (Identifier)
+
+    ((value: number, extra: boolean) => void) = value => {};
+>                                               ^^^^^: string | number   (Union) (Identifier)
+
+const incompatibleTypeParameters:
+>     ^^^^^^^^^^^^^^^^^^^^^^^^^^: (<T>(value: T) => T) & ((value: string) => string)   (Intersection) (Identifier)
+
+    (<T>(value: T) => T) &
+>     ^: any   (Any) (Identifier)
+
+    (<T>(value: T) => T) &
+>        ^^^^^: T   (TypeParameter) (Identifier)
+
+    (<T>(value: T) => T) &
+>               ^: any   (Any) (Identifier)
+
+    (<T>(value: T) => T) &
+>                     ^: any   (Any) (Identifier)
+
+    ((value: string) => string) = value => value;
+>     ^^^^^: string   (String) (Identifier)
+
+    ((value: string) => string) = value => value;
+>                                 ^^^^^: any   (Any) (Identifier)
+
+    ((value: string) => string) = value => value;
+>                                          ^^^^^: any   (Any) (Identifier)

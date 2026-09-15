@@ -8724,7 +8724,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             }
         }
 
-        let (function_span, parameter_index) =
+        let (function, parameter_index) =
             nodes
                 .ancestors(parameter_node_id)
                 .find_map(|node| match node.kind() {
@@ -8733,29 +8733,32 @@ impl<'a, 'store> Checker<'a, 'store> {
                         .items
                         .iter()
                         .position(|item| item.span == parameter.span)
-                        .map(|index| (function.span, index)),
+                        .map(|index| (FunctionKind::Function(function), index)),
                     AstKind::ArrowFunctionExpression(function) => function
                         .params
                         .items
                         .iter()
                         .position(|item| item.span == parameter.span)
-                        .map(|index| (function.span, index)),
+                        .map(|index| (FunctionKind::ArrowFunction(function), index)),
                     _ => None,
                 })?;
 
         let contextual_type = self.get_contextual_type_of_function_expression(
             program_id,
             parameter_node_id,
-            function_span,
+            function.span(),
         )?;
         let callback_function = self
-            .get_signatures_of_type_in_program(program_id, contextual_type, SignatureKind::Call)
-            .into_iter()
-            .next()?
-            .function(self.arena());
+            .get_contextual_call_signature(program_id, contextual_type, function)?;
+        let parameter_offset = usize::from(
+            callback_function
+                .parameters
+                .first()
+                .is_some_and(|parameter| parameter.name == "this"),
+        );
         callback_function
             .parameters
-            .get(parameter_index)
+            .get(parameter_index + parameter_offset)
             .map(|parameter| self.get_apparent_type(program_id, parameter.ty, 0))
     }
 
@@ -9415,8 +9418,21 @@ impl<'a, 'store> Checker<'a, 'store> {
                         })
                 }
                 AstKind::VariableDeclarator(declarator) => {
-                    binding_pattern_default_initializer_symbol_id(&declarator.id, function_span)
-                        .and_then(|symbol_id| {
+                    if declarator
+                        .init
+                        .as_ref()
+                        .is_some_and(|initializer| initializer.span() == function_span)
+                        && let Some(annotation) = declarator.type_annotation.as_deref()
+                    {
+                        return Some(
+                            self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
+                        );
+                    }
+                    binding_pattern_default_initializer_symbol_id(
+                        &declarator.id,
+                        function_span,
+                    )
+                    .and_then(|symbol_id| {
                             self.get_type_of_binding_pattern(
                                 program_id,
                                 ancestor_id,
@@ -9477,15 +9493,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                 )
             })
             .and_then(|contextual_type| {
-                self.get_signatures_of_type_in_program(
-                    program_id,
-                    contextual_type,
-                    SignatureKind::Call,
-                )
-                .into_iter()
-                .next()
-            })
-            .map(|signature| signature.function(self.arena()));
+                self.get_contextual_call_signature(program_id, contextual_type, function)
+            });
         let type_parameters =
             self.type_parameters_from_declaration(program_id, function.type_parameters());
         let parameters = self.function_signature_parameters_with_context(
@@ -9512,6 +9521,163 @@ impl<'a, 'store> Checker<'a, 'store> {
             return_type,
             type_predicate,
         )
+    }
+
+    fn get_contextual_call_signature(
+        &self,
+        program_id: ProgramId,
+        contextual_type: Ty<'a>,
+        function: FunctionKind<'a>,
+    ) -> Option<&'a TyFunction<'a>> {
+        let required_parameter_count = function
+            .parameters()
+            .items
+            .iter()
+            .take_while(|parameter| {
+                !parameter.optional
+                    && !matches!(parameter.pattern, BindingPattern::AssignmentPattern(_))
+            })
+            .count();
+        let signatures = self
+            .get_signatures_of_type_in_program(
+                program_id,
+                contextual_type,
+                SignatureKind::Call,
+            )
+            .into_iter()
+            .filter(|signature| {
+                function_maximum_argument_count(self.arena(), signature.function(self.arena()))
+                    .is_none_or(|count| count >= required_parameter_count)
+            })
+            .collect::<SignatureList<'a>>();
+
+        match signatures.as_slice() {
+            [] => None,
+            [signature] => Some(signature.function(self.arena())),
+            _ => self.intersect_contextual_signatures(&signatures, function),
+        }
+    }
+
+    fn intersect_contextual_signatures(
+        &self,
+        signatures: &[Signature<'a>],
+        function: FunctionKind<'a>,
+    ) -> Option<&'a TyFunction<'a>> {
+        let functions = signatures
+            .iter()
+            .map(|signature| signature.function(self.arena()))
+            .collect::<Vec<_>>();
+        let first = functions[0];
+        if functions
+            .iter()
+            .skip(1)
+            .any(|function| !self.type_parameter_lists_are_identical(&first.type_parameters, &function.type_parameters))
+        {
+            return None;
+        }
+
+        let parameters = (0..function.parameters().items.len()).map(|index| {
+            let types = functions.iter().map(|function| {
+                let offset = usize::from(
+                    function
+                        .parameters
+                        .first()
+                        .is_some_and(|parameter| parameter.name == "this"),
+                );
+                self.function_parameter_type_at_call_index(function, index + offset)
+                    .unwrap_or_else(|| self.ty.unknown())
+            });
+            let first_parameter_offset = usize::from(
+                first
+                    .parameters
+                    .first()
+                    .is_some_and(|parameter| parameter.name == "this"),
+            );
+            let name = first
+                .parameters
+                .get(index + first_parameter_offset)
+                .map_or("arg", |parameter| parameter.name);
+            self.ty.parameter(name, self.ty.union(types))
+        });
+        let return_type = self
+            .ty
+            .intersection(functions.iter().map(|function| function.return_type()));
+        let type_predicate = self.intersect_contextual_type_predicates(&functions);
+        let ty = self.ty.function_with_type_predicate(
+            first.type_parameters.iter().copied(),
+            parameters,
+            return_type,
+            type_predicate,
+        );
+        let TyKind::Function(function) = self.ty_kind(ty) else {
+            unreachable!("function type construction must produce a function")
+        };
+        Some(function)
+    }
+
+    fn type_parameter_lists_are_identical(
+        &self,
+        left: &[TyTypeParameter<'a>],
+        right: &[TyTypeParameter<'a>],
+    ) -> bool {
+        if left.len() != right.len() {
+            return false;
+        }
+        let mapper = TypeMapper::from_type_parameters_and_arguments(
+            self.arena(),
+            right.iter().copied(),
+            left
+                .iter()
+                .map(|parameter| self.ty.type_parameter_type(*parameter)),
+        );
+        left.iter().zip(right).all(|(left, right)| {
+            let left_constraint = left.constraint_type.unwrap_or_else(|| self.ty.unknown());
+            let right_constraint = right
+                .constraint_type
+                .map_or_else(|| self.ty.unknown(), |constraint| {
+                    self.instantiate_type(constraint, &mapper)
+                });
+            self.arena()
+                .is_type_identical_to(left_constraint, right_constraint)
+        })
+    }
+
+    fn intersect_contextual_type_predicates(
+        &self,
+        functions: &[&TyFunction<'a>],
+    ) -> Option<TyTypePredicate<'a>> {
+        let first = *functions.first()?.type_predicate?;
+        if first.is_assertion() {
+            return None;
+        }
+        let mut target_types = vec![first.target_type()?];
+        for function in functions.iter().skip(1) {
+            let predicate = *function.type_predicate?;
+            let compatible = match (first, predicate) {
+                (TyTypePredicate::This { .. }, TyTypePredicate::This { .. }) => true,
+                (
+                    TyTypePredicate::Identifier {
+                        parameter_name: left_name,
+                        parameter_index: left_index,
+                        ..
+                    },
+                    TyTypePredicate::Identifier {
+                        parameter_name: right_name,
+                        parameter_index: right_index,
+                        ..
+                    },
+                ) => {
+                    left_index == right_index
+                        && (left_index.is_some() || left_name == right_name)
+                }
+                _ => false,
+            };
+            if !compatible {
+                return None;
+            }
+            target_types.push(predicate.target_type()?);
+        }
+        Some(first.map_target_type(|_| self.ty.intersection(target_types)))
     }
 
     // TODO(inline)
@@ -12676,9 +12842,8 @@ impl<'a> Checker<'a, '_> {
                 ControlFlow::Continue(())
             }
             TyKind::Intersection(intersection) => {
-                // TODO(overloads): TypeScript Go combines intersection signatures with
-                // `CompositeSignature` metadata. Concatenation is conservative enough for
-                // first-pass call resolution but loses combined type predicate/diagnostic data.
+                // Keep constituent signatures as an overload set. Contextual function typing
+                // synthesizes their combined parameter, return, and predicate types separately.
                 for ty in &intersection.types {
                     self.visit_signatures_of_type(*ty, kind, visitor)?;
                 }
