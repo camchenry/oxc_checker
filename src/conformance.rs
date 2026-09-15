@@ -2159,28 +2159,18 @@ fn actual_identifier_records<'a>(
     let capture_elapsed = capture_started_at.map(|started_at| started_at.elapsed());
     let assignability_started_at = phase_timing.then(Instant::now);
     let mut assignability_cache = FxHashMap::default();
-    if let Some((expected_assignments, expected_types)) =
-        expected_assignments.zip(expected_types)
-    {
+    if let Some((expected_assignments, expected_types)) = expected_assignments.zip(expected_types) {
         let expected_records = expected_types.values().collect::<Vec<_>>();
         let actual_indices = matching_captured_record_indices(expected_types, &records);
         for (expected_source_index, assignments) in expected_assignments.iter().enumerate() {
-            let Some(source) = actual_indices
-                .get(expected_source_index)
-                .copied()
-                .flatten()
-            else {
+            let Some(source) = actual_indices.get(expected_source_index).copied().flatten() else {
                 continue;
             };
             let Some(expected_source) = expected_records.get(expected_source_index).copied() else {
                 continue;
             };
             for assignment in assignments {
-                let Some(target) = actual_indices
-                    .get(assignment.target)
-                    .copied()
-                    .flatten()
-                else {
+                let Some(target) = actual_indices.get(assignment.target).copied().flatten() else {
                     continue;
                 };
                 let Some(expected_target) = expected_records.get(assignment.target).copied() else {
@@ -2262,28 +2252,30 @@ fn matching_captured_record_indices(
     let mut actual_records = actual.iter().enumerate().peekable();
     expected
         .keys()
-        .map(|expected_key| loop {
-            let (actual_index, actual_record) = actual_records.peek().copied()?;
-            match compare_record_key(&actual_record.record, expected_key) {
-                std::cmp::Ordering::Less => {
-                    actual_records.next();
-                }
-                std::cmp::Ordering::Equal => {
-                    actual_records.next();
-                    let mut last_actual_index = actual_index;
-                    while let Some((next_index, next)) = actual_records.peek().copied()
-                        && compare_record_key(&next.record, expected_key)
-                            == std::cmp::Ordering::Equal
-                    {
+        .map(|expected_key| {
+            loop {
+                let (actual_index, actual_record) = actual_records.peek().copied()?;
+                match compare_record_key(&actual_record.record, expected_key) {
+                    std::cmp::Ordering::Less => {
                         actual_records.next();
-                        last_actual_index = next_index;
                     }
-                    return Some(CapturedRecordIndex {
-                        captured: last_actual_index,
-                        record: record_indices[last_actual_index],
-                    });
+                    std::cmp::Ordering::Equal => {
+                        actual_records.next();
+                        let mut last_actual_index = actual_index;
+                        while let Some((next_index, next)) = actual_records.peek().copied()
+                            && compare_record_key(&next.record, expected_key)
+                                == std::cmp::Ordering::Equal
+                        {
+                            actual_records.next();
+                            last_actual_index = next_index;
+                        }
+                        return Some(CapturedRecordIndex {
+                            captured: last_actual_index,
+                            record: record_indices[last_actual_index],
+                        });
+                    }
+                    std::cmp::Ordering::Greater => return None,
                 }
-                std::cmp::Ordering::Greater => return None,
             }
         })
         .collect()
@@ -2297,12 +2289,12 @@ fn compare_record_key(record: &TypeRecord, key: &TypeRecordKey) -> std::cmp::Ord
         .then_with(|| record.text.cmp(&key.text))
 }
 
-    fn compare_record_keys(left: &TypeRecord, right: &TypeRecord) -> std::cmp::Ordering {
-        left.start
+fn compare_record_keys(left: &TypeRecord, right: &TypeRecord) -> std::cmp::Ordering {
+    left.start
         .cmp(&right.start)
         .then_with(|| left.end.cmp(&right.end))
         .then_with(|| left.text.cmp(&right.text))
-    }
+}
 
 fn push_assignability_record<'a>(
     checker: &Checker<'a, '_>,
@@ -2963,15 +2955,13 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
             let oxc_indices = matching_record_indices(tsc_by_key, oxc_by_key);
             for (source_index, assignments) in tsc_assignments.iter().enumerate() {
                 for assignment in assignments {
-                    let Some((oxc_source_index, oxc_target_index)) =
-                        compatible_assignment_indices(
-                            &tsc_indexed_records,
-                            &oxc_indexed_records,
-                            &oxc_indices,
-                            source_index,
-                            assignment.target,
-                        )
-                    else {
+                    let Some((oxc_source_index, oxc_target_index)) = compatible_assignment_indices(
+                        &tsc_indexed_records,
+                        &oxc_indexed_records,
+                        &oxc_indices,
+                        source_index,
+                        assignment.target,
+                    ) else {
                         continue;
                     };
                     let actual = oxc_assignments
@@ -3020,24 +3010,23 @@ fn compare_records(tsc_records: &[TypeRecord], oxc_records: &[TypeRecord]) -> Ve
         .collect()
 }
 
-fn matching_record_indices(
-    expected: &TypeRecordMap,
-    actual: &TypeRecordMap,
-) -> Vec<Option<usize>> {
+fn matching_record_indices(expected: &TypeRecordMap, actual: &TypeRecordMap) -> Vec<Option<usize>> {
     let mut actual_records = actual.keys().enumerate().peekable();
     expected
         .keys()
-        .map(|expected_key| loop {
-            let (actual_index, actual_key) = actual_records.peek().copied()?;
-            match actual_key.cmp(expected_key) {
-                std::cmp::Ordering::Less => {
-                    actual_records.next();
+        .map(|expected_key| {
+            loop {
+                let (actual_index, actual_key) = actual_records.peek().copied()?;
+                match actual_key.cmp(expected_key) {
+                    std::cmp::Ordering::Less => {
+                        actual_records.next();
+                    }
+                    std::cmp::Ordering::Equal => {
+                        actual_records.next();
+                        return Some(actual_index);
+                    }
+                    std::cmp::Ordering::Greater => return None,
                 }
-                std::cmp::Ordering::Equal => {
-                    actual_records.next();
-                    return Some(actual_index);
-                }
-                std::cmp::Ordering::Greater => return None,
             }
         })
         .collect()
