@@ -8748,8 +8748,8 @@ impl<'a, 'store> Checker<'a, 'store> {
             parameter_node_id,
             function.span(),
         )?;
-        let callback_function = self
-            .get_contextual_call_signature(program_id, contextual_type, function)?;
+        let callback_function =
+            self.get_contextual_call_signature(program_id, contextual_type, function)?;
         let parameter_offset = usize::from(
             callback_function
                 .parameters
@@ -9428,11 +9428,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                             self.get_type_from_ts_type_annotation(program_id, Some(annotation)),
                         );
                     }
-                    binding_pattern_default_initializer_symbol_id(
-                        &declarator.id,
-                        function_span,
-                    )
-                    .and_then(|symbol_id| {
+                    binding_pattern_default_initializer_symbol_id(&declarator.id, function_span)
+                        .and_then(|symbol_id| {
                             self.get_type_of_binding_pattern(
                                 program_id,
                                 ancestor_id,
@@ -9539,11 +9536,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             })
             .count();
         let signatures = self
-            .get_signatures_of_type_in_program(
-                program_id,
-                contextual_type,
-                SignatureKind::Call,
-            )
+            .get_signatures_of_type_in_program(program_id, contextual_type, SignatureKind::Call)
             .into_iter()
             .filter(|signature| {
                 function_maximum_argument_count(self.arena(), signature.function(self.arena()))
@@ -9568,11 +9561,12 @@ impl<'a, 'store> Checker<'a, 'store> {
             .map(|signature| signature.function(self.arena()))
             .collect::<Vec<_>>();
         let first = functions[0];
-        if functions
-            .iter()
-            .skip(1)
-            .any(|function| !self.type_parameter_lists_are_identical(&first.type_parameters, &function.type_parameters))
-        {
+        if functions.iter().skip(1).any(|function| {
+            !self.type_parameter_lists_are_identical(
+                &first.type_parameters,
+                &function.type_parameters,
+            )
+        }) {
             return None;
         }
 
@@ -9626,17 +9620,15 @@ impl<'a, 'store> Checker<'a, 'store> {
         let mapper = TypeMapper::from_type_parameters_and_arguments(
             self.arena(),
             right.iter().copied(),
-            left
-                .iter()
+            left.iter()
                 .map(|parameter| self.ty.type_parameter_type(*parameter)),
         );
         left.iter().zip(right).all(|(left, right)| {
             let left_constraint = left.constraint_type.unwrap_or_else(|| self.ty.unknown());
-            let right_constraint = right
-                .constraint_type
-                .map_or_else(|| self.ty.unknown(), |constraint| {
-                    self.instantiate_type(constraint, &mapper)
-                });
+            let right_constraint = right.constraint_type.map_or_else(
+                || self.ty.unknown(),
+                |constraint| self.instantiate_type(constraint, &mapper),
+            );
             self.arena()
                 .is_type_identical_to(left_constraint, right_constraint)
         })
@@ -9666,10 +9658,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         parameter_index: right_index,
                         ..
                     },
-                ) => {
-                    left_index == right_index
-                        && (left_index.is_some() || left_name == right_name)
-                }
+                ) => left_index == right_index && (left_index.is_some() || left_name == right_name),
                 _ => false,
             };
             if !compatible {
