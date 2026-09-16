@@ -11011,7 +11011,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             );
             let ty = self.widen_empty_object_literal_type_for_variable(ty);
             if !kind.is_const()
-                && matches!(ty, Ty::Null | Ty::Undefined)
+                && ty.is_null_or_undefined()
                 && self.is_null_or_undefined_initializer(expression)
             {
                 self.ty.any()

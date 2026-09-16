@@ -214,10 +214,7 @@ pub(crate) fn reduce_intersection_type<'a>(
                 *ty = intersect_with_empty_object(arena, *ty, empty_object);
             }
         }
-        if type_set
-            .iter()
-            .any(|ty| matches!(arena.ty_kind(*ty), TyKind::Null | TyKind::Undefined))
-        {
+        if type_set.iter().any(Ty::is_null_or_undefined) {
             return Ty::Never;
         }
     }

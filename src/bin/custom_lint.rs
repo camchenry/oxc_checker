@@ -15,19 +15,23 @@ use syn::{
 };
 
 struct TyHelperRule {
-    variant: &'static str,
+    variants: &'static [&'static str],
     helper: &'static str,
 }
 
 // Add mappings here when a matched type gains a dedicated query helper.
 const TY_HELPER_RULES: &[TyHelperRule] = &[
     TyHelperRule {
-        variant: "Any",
+        variants: &["Any"],
         helper: "is_any",
     },
     TyHelperRule {
-        variant: "Unknown",
+        variants: &["Unknown"],
         helper: "is_unknown",
+    },
+    TyHelperRule {
+        variants: &["Null", "Undefined"],
+        helper: "is_null_or_undefined",
     },
 ];
 
@@ -79,12 +83,8 @@ impl<'a> CustomLinter<'a> {
         if matches.guard.is_some() {
             return;
         }
-        let Some(pattern_path) = pattern_path(&matches.pattern) else {
-            return;
-        };
-
         for rule in self.ty_helper_rules {
-            if rule_matches(&matches.expression, pattern_path, rule) {
+            if rule_matches(&matches.expression, &matches.pattern, rule) {
                 self.diagnostics.push(Diagnostic {
                     span,
                     message: format!("use `.{}()` instead of matching on the type", rule.helper),
@@ -105,15 +105,28 @@ impl<'ast> Visit<'ast> for CustomLinter<'_> {
     }
 }
 
-fn pattern_path(pattern: &Pat) -> Option<&SynPath> {
+fn pattern_matches(pattern: &Pat, type_name: &str, variants: &[&str]) -> bool {
     match pattern {
-        Pat::Path(pattern) => Some(&pattern.path),
-        _ => None,
+        Pat::Path(pattern) => {
+            variants.len() == 1 && path_matches(&pattern.path, type_name, variants[0])
+        }
+        Pat::Or(pattern) => {
+            pattern.cases.len() == variants.len()
+                && variants.iter().all(|variant| {
+                    pattern.cases.iter().any(|case| {
+                        let Pat::Path(case) = case else {
+                            return false;
+                        };
+                        path_matches(&case.path, type_name, variant)
+                    })
+                })
+        }
+        _ => false,
     }
 }
 
-fn rule_matches(expression: &Expr, path: &SynPath, rule: &TyHelperRule) -> bool {
-    if path_matches(path, "Ty", rule.variant) {
+fn rule_matches(expression: &Expr, pattern: &Pat, rule: &TyHelperRule) -> bool {
+    if pattern_matches(pattern, "Ty", rule.variants) {
         return true;
     }
     let Expr::MethodCall(method_call) = expression else {
@@ -121,7 +134,7 @@ fn rule_matches(expression: &Expr, path: &SynPath, rule: &TyHelperRule) -> bool 
     };
     method_call.method == "ty_kind"
         && method_call.args.len() == 1
-        && path_matches(path, "TyKind", rule.variant)
+        && pattern_matches(pattern, "TyKind", rule.variants)
 }
 
 fn path_matches(path: &SynPath, type_name: &str, variant: &str) -> bool {
@@ -238,6 +251,14 @@ mod tests {
             lint("fn f() { matches!(ty, crate::types::Ty::Unknown); }")?,
             1
         );
+        assert_eq!(
+            lint("fn f() { matches!(ty, Ty::Null | Ty::Undefined); }")?,
+            1
+        );
+        assert_eq!(
+            lint("fn f() { matches!(arena.ty_kind(ty), TyKind::Undefined | TyKind::Null); }")?,
+            1
+        );
         Ok(())
     }
 
@@ -252,13 +273,17 @@ mod tests {
             lint("fn f() { matches!(self.ty_kind(ty), TyKind::Any if condition); }")?,
             0
         );
+        assert_eq!(
+            lint("fn f() { matches!(ty, Ty::Null | Ty::Undefined | Ty::Void); }")?,
+            0
+        );
         Ok(())
     }
 
     #[test]
     fn accepts_additional_rules() -> syn::Result<()> {
         let rules = [TyHelperRule {
-            variant: "Never",
+            variants: &["Never"],
             helper: "is_never",
         }];
         let syntax = syn::parse_file(

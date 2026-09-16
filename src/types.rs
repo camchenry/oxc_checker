@@ -2442,6 +2442,11 @@ impl<'a> Ty<'a> {
         *self == Self::Undefined
     }
 
+    /// Returns `true` if the type is `null` or `undefined`.
+    pub fn is_null_or_undefined(&self) -> bool {
+        matches!(*self, Self::Null | Self::Undefined)
+    }
+
     /// Returns `true` if the type is a union type.
     pub fn is_union(&self, arena: CheckerArena<'a>) -> bool {
         matches!(arena.ty_kind(*self), TyKind::Union(_))
