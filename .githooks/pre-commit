@@ -10,4 +10,5 @@ if ! cargo fmt --all -- --check; then
 fi
 
 echo "Linting Rust targets..."
+cargo custom-lint
 cargo lint

@@ -622,12 +622,14 @@ dependencies = [
  "oxc_span",
  "oxc_str",
  "oxc_syntax",
+ "proc-macro2",
  "rayon",
  "rustc-hash",
  "serde",
  "serde_json",
  "simdutf8",
  "smallvec",
+ "syn 2.0.111",
  "terminal_size",
 ]
 

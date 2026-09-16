@@ -2,3 +2,4 @@
 conformance = "test --features conformance conformance::full_conformance -- --exact --nocapture"
 conformance-refresh = "test --features conformance,conformance-tsc conformance::full_conformance -- --exact --nocapture refresh-tsc"
 lint = "clippy --all-targets --all-features"
+custom-lint = "run --quiet --features custom-lint --bin custom-lint --"

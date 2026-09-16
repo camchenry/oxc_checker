@@ -414,7 +414,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 target_union.types.iter().any(|target_type| {
                     self.is_assignable_to_at_depth(source, *target_type, next_depth)
                 }) || source_parameter.constraint_type.is_some_and(|constraint| {
-                    !matches!(self.ty_kind(constraint), TyKind::Any)
+                    !constraint.is_any()
                         && self.is_assignable_to_at_depth(constraint, target, next_depth)
                 })
             }

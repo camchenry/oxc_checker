@@ -66,6 +66,7 @@ bench = ["dep:criterion", "dep:libc", "dep:serde", "dep:serde_json"]
 allocation-stats = ["bench", "oxc_allocator/track_allocations"]
 conformance = ["dep:rayon", "dep:serde", "dep:serde_json", "dep:simdutf8", "dep:terminal_size", "oxc_allocator/track_allocations"]
 conformance-tsc = ["dep:rayon", "dep:serde", "dep:serde_json", "dep:simdutf8", "dep:terminal_size", "oxc_allocator/track_allocations"]
+custom-lint = ["dep:proc-macro2", "dep:syn"]
 
 [dependencies]
 oxc_ast = "0.148.0"
@@ -91,6 +92,8 @@ serde = { version = "=1.0.228", features = ["derive", "rc"], optional = true }
 serde_json = { version = "=1.0.150", optional = true }
 smallvec = "1.15.1"
 rustc-hash = "2.1.1"
+proc-macro2 = { version = "1.0.103", features = ["span-locations"], optional = true }
+syn = { version = "2.0.111", features = ["full", "parsing", "visit"], optional = true }
 
 [[bench]]
 name = "check_es5_lib"
@@ -111,6 +114,11 @@ required-features = ["bench"]
 name = "profile_checker"
 path = "src/bin/profile_checker.rs"
 required-features = ["bench"]
+
+[[bin]]
+name = "custom-lint"
+path = "src/bin/custom_lint.rs"
+required-features = ["custom-lint"]
 
 [[example]]
 name = "type_counts"
