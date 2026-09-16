@@ -449,14 +449,14 @@ impl<'a, 'store> Checker<'a, 'store> {
                     && signatures.all(|signature| {
                         self.is_assignable_to_at_depth(signature, target, next_depth)
                     }))
-                    || self.call_signatures_assignable_to(
+                    || self.signatures_assignable_to(
                         &call_signatures(),
                         std::iter::once(target),
                         next_depth,
                     )
             }
             (TyKind::Object(source), TyKind::Object(target)) => {
-                self.object_properties_assignable_to(&source.properties.iter(), target, next_depth)
+                self.object_members_assignable_to(source, target, next_depth)
             }
             (
                 TyKind::String
@@ -685,11 +685,28 @@ impl<'a, 'store> Checker<'a, 'store> {
                     && target.properties.iter().all(|property| property.optional)
                     && target.index_infos().is_empty()
                     && (target_call_signatures.clone().next().is_none()
-                        || self.call_signatures_assignable_to(
+                        || self.signatures_assignable_to(
                             &std::iter::once(source),
                             target_call_signatures,
                             next_depth,
                         ))
+            }
+            (TyKind::TypeReference(source_reference), TyKind::Object(target_object))
+                if !target_object.signatures().is_empty() =>
+            {
+                source_reference
+                    .target
+                    .map(|symbol| {
+                        self.apparent_type_for_conditional_match(
+                            symbol.program_id,
+                            source,
+                            next_depth,
+                        )
+                    })
+                    .is_some_and(|apparent| {
+                        apparent != source
+                            && self.is_assignable_to_at_depth(apparent, target, next_depth)
+                    })
             }
             (TyKind::TypeReference(source), TyKind::TypeReference(target)) => {
                 source.has_identical_target(target)
@@ -1139,35 +1156,56 @@ impl<'a, 'store> Checker<'a, 'store> {
             )
     }
 
-    /// Checks that every target call signature has a compatible source call signature.
-    fn call_signatures_assignable_to(
+    /// Checks that every target signature has a compatible source signature.
+    fn signatures_assignable_to(
         &self,
         source_signatures: &(impl Iterator<Item = Ty<'a>> + Clone),
         mut target_signatures: impl Iterator<Item = Ty<'a>> + Clone,
         depth: usize,
     ) -> bool {
-        let has_identical_signature = target_signatures.clone().any(|target| {
-            source_signatures
-                .clone()
-                .any(|source| self.arena().is_type_identical_to(source, target))
-        });
-        if !has_identical_signature {
-            return false;
-        }
-
         let erase_type_parameters =
             source_signatures.clone().count() != 1 || target_signatures.clone().count() != 1;
-        target_signatures.all(|target| {
-            let TyKind::Function(target) = self.ty_kind(target) else {
+        target_signatures.all(|target_ty| {
+            let TyKind::Function(target) = self.ty_kind(target_ty) else {
                 return false;
             };
             source_signatures.clone().any(|source| {
+                if self.arena().is_type_identical_to(source, target_ty) {
+                    return true;
+                }
                 let TyKind::Function(source) = self.ty_kind(source) else {
                     return false;
                 };
                 self.function_types_assignable_to(source, target, depth, erase_type_parameters)
             })
         })
+    }
+
+    /// Compares the properties and callable capabilities of two structured object types.
+    fn object_members_assignable_to(
+        &self,
+        source: &crate::types::TyObject<'a>,
+        target: &crate::types::TyObject<'a>,
+        depth: usize,
+    ) -> bool {
+        self.object_properties_assignable_to(&source.properties.iter(), target, depth)
+            && [SignatureKind::Call, SignatureKind::Construct]
+                .into_iter()
+                .all(|kind| {
+                    self.signatures_assignable_to(
+                        &source
+                            .signatures()
+                            .iter()
+                            .filter(move |signature| signature.kind == kind)
+                            .map(|signature| signature.ty),
+                        target
+                            .signatures()
+                            .iter()
+                            .filter(move |signature| signature.kind == kind)
+                            .map(|signature| signature.ty),
+                        depth,
+                    )
+                })
     }
 
     /// Compares two function signatures, optionally erasing their type parameters for overload matching.
