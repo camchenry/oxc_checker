@@ -83,8 +83,7 @@ enum ABC {
 > ^: ABC.C   (TypeReference) (Identifier)
 
 type ABCUnion = `${ABC}`;
->    ^^^^^^^^: `${ABC}`   (TemplateLiteral) (Identifier)
-     expected: "A" | "B" | "C"
+>    ^^^^^^^^: "A" | "B" | "C"   (Union) (Identifier)
 
 type ABCUnion = `${ABC}`;
 >                  ^^^: typeof ABC   (TypeQuery) (Identifier)
@@ -100,6 +99,36 @@ type A = `${ABC.A}`;
 
 type A = `${ABC.A}`;
 >               ^: ABC.A   (TypeReference) (Identifier)
+
+type DecoratedABCUnion = `pre${ABC}post`;
+>    ^^^^^^^^^^^^^^^^^: "preApost" | "preBpost" | "preCpost"   (Union) (Identifier)
+
+type DecoratedABCUnion = `pre${ABC}post`;
+>                              ^^^: typeof ABC   (TypeQuery) (Identifier)
+
+type DecoratedABCUnion = `pre${ABC}post`;
+>                              ^^^: typeof ABC   (TypeQuery) (Identifier)
+
+enum Digit {
+>    ^^^^^: typeof Digit   (TypeQuery) (Identifier)
+
+enum Digit {
+>    ^^^^^: typeof Digit   (TypeQuery) (Identifier)
+
+  Zero = 0,
+> ^^^^: Digit.Zero   (TypeReference) (Identifier)
+
+  One = 1,
+> ^^^: Digit.One   (TypeReference) (Identifier)
+
+type DigitUnion = `${Digit}`;
+>    ^^^^^^^^^^: "0" | "1"   (Union) (Identifier)
+
+type DigitUnion = `${Digit}`;
+>                    ^^^^^: typeof Digit   (TypeQuery) (Identifier)
+
+type DigitUnion = `${Digit}`;
+>                    ^^^^^: typeof Digit   (TypeQuery) (Identifier)
 
 type TextUtil<T extends string> = `${T}`;
 >    ^^^^^^^^: `${T}`   (TemplateLiteral) (Identifier)

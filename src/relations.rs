@@ -857,6 +857,14 @@ impl<'a, 'store> Checker<'a, 'store> {
             (TyKind::NumberLiteral(_), TyKind::Number) => true,
             (TyKind::StringLiteral(_), TyKind::String) => true,
             (TyKind::TemplateLiteral(_), TyKind::String) => true,
+            (
+                TyKind::TypeReference(_),
+                TyKind::String | TyKind::StringLiteral(_) | TyKind::TemplateLiteral(_),
+            ) => self
+                .get_string_enum_member_literal_type(source)
+                .is_some_and(|source_literal| {
+                    self.is_assignable_to_at_depth(source_literal, target, next_depth)
+                }),
             (TyKind::BigIntLiteral(_), TyKind::Bigint) => true,
             (TyKind::StringLiteral(source), TyKind::StringLiteral(target)) => {
                 source.value == target.value

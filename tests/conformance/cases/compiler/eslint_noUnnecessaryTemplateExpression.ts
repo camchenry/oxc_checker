@@ -38,6 +38,13 @@ enum ABC {
 }
 type ABCUnion = `${ABC}`;
 type A = `${ABC.A}`;
+type DecoratedABCUnion = `pre${ABC}post`;
+
+enum Digit {
+  Zero = 0,
+  One = 1,
+}
+type DigitUnion = `${Digit}`;
 
 // Interpolating type parameters is allowed.
 type TextUtil<T extends string> = `${T}`;

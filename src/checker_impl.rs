@@ -1886,6 +1886,18 @@ impl<'a, 'store> Checker<'a, 'store> {
             })
     }
 
+    /// Resolves an explicit string enum member to its underlying string literal type.
+    pub(super) fn get_string_enum_member_literal_type(&self, ty: Ty<'a>) -> Option<Ty<'a>> {
+        let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
+            return None;
+        };
+        let member = self.get_enum_member_for_symbol(reference.target?)?;
+        let Expression::StringLiteral(initializer) = member.initializer.as_ref()? else {
+            return None;
+        };
+        Some(self.ty.string_literal(initializer.value.as_str()))
+    }
+
     fn template_substitution_static_values(
         &self,
         program_id: ProgramId,
@@ -1897,6 +1909,28 @@ impl<'a, 'store> Checker<'a, 'store> {
                 values.extend(self.template_substitution_static_values(program_id, *ty)?);
                 Some(values)
             }),
+            TyKind::TypeReference(reference) => {
+                if let Some((symbol, declaration_id)) =
+                    self.get_type_reference_symbol_and_declaration(program_id, reference)
+                    && let AstKind::TSEnumDeclaration(declaration) =
+                        self.nodes(symbol.program_id).kind(declaration_id)
+                {
+                    return declaration
+                        .body
+                        .members
+                        .iter()
+                        .map(|member| {
+                            let member_type = self.get_type_of_enum_member_reference(
+                                symbol.program_id,
+                                declaration,
+                                member,
+                            );
+                            self.template_substitution_static_value(member_type)
+                        })
+                        .collect();
+                }
+                Some(vec![self.template_substitution_static_value(ty)?])
+            }
             _ => Some(vec![self.template_substitution_static_value(ty)?]),
         }
     }
@@ -12790,7 +12824,11 @@ impl<'a> Checker<'a, '_> {
                 };
                 let value_type =
                     self.get_type_of_ts_import_equals_qualified_name(node.program_id, qualified);
-                if matches!(self.ty_kind(value_type), TyKind::Class(_)) {
+                if matches!(self.ty_kind(value_type), TyKind::Class(_))
+                    || self
+                        .get_string_enum_member_literal_type(value_type)
+                        .is_some()
+                {
                     value_type
                 } else {
                     resolved
