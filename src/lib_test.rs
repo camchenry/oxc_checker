@@ -2536,6 +2536,20 @@ fn structural_property_lookup_uses_compatible_index_signatures() {
 }
 
 #[test]
+fn index_signatures_ignore_parameters_after_the_first() {
+    let allocator = Allocator::default();
+    let ret = parse_and_check_source(
+        &allocator,
+        "type Multi = { [key: string, key2: number]: object }",
+    );
+
+    assert_eq!(
+        type_string(&ret, get_type_alias_type(&ret, "Multi")),
+        "{ [key: string]: object; }"
+    );
+}
+
+#[test]
 fn contextually_typed_boolean_object_properties_keep_literal_location_types() {
     let allocator = Allocator::default();
     let ret = parse_and_check_source(

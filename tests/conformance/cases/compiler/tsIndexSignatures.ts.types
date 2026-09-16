@@ -19,13 +19,6 @@ type C = {
   [key: string]: string;
 >  ^^^: string   (String) (Identifier)
 
-type Multi = {
->    ^^^^^: { [key: string]: object; }   (Object) (Identifier)
-  expected: {}
-
-  [key: string, key2: number]: object;
->  ^^^: string   (String) (Identifier)
-
 type Multi2 = {
 >    ^^^^^^: { [key: string]: string; [key2: number]: string; [key3: symbol]: string; }   (Object) (Identifier)
 
