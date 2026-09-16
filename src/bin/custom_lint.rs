@@ -42,6 +42,11 @@ const TY_HELPER_RULES: &[TyHelperRule] = &[
         helper: "is_union",
         arguments: "arena",
     },
+    TyHelperRule {
+        variants: &["Conditional"],
+        helper: "is_conditional",
+        arguments: "arena",
+    },
 ];
 
 struct MatchesInput {
@@ -306,6 +311,10 @@ mod tests {
         );
         assert_eq!(
             lint("fn f() { !matches!(self.ty_kind(ty), TyKind::Union(_)); }")?,
+            1
+        );
+        assert_eq!(
+            lint("fn f() { matches!(self.ty_kind(ty), TyKind::Conditional(_)); }")?,
             1
         );
         Ok(())

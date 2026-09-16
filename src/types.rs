@@ -2452,6 +2452,11 @@ impl<'a> Ty<'a> {
         matches!(arena.ty_kind(*self), TyKind::Union(_))
     }
 
+    /// Returns `true` if the type is a conditional type.
+    pub fn is_conditional(&self, arena: CheckerArena<'a>) -> bool {
+        matches!(arena.ty_kind(*self), TyKind::Conditional(_))
+    }
+
     /// Returns `true` if the type is a intersection type.
     pub fn is_intersection(&self, arena: CheckerArena<'a>) -> bool {
         matches!(arena.ty_kind(*self), TyKind::Intersection(_))

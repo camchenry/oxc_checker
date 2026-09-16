@@ -483,10 +483,10 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                 } else {
                     check_type
                 };
-                let extends_type = if matches!(
-                    self.checker.ty_kind(conditional.extends_type),
-                    TyKind::Conditional(_)
-                ) {
+                let extends_type = if conditional
+                    .extends_type
+                    .is_conditional(self.checker.arena())
+                {
                     format!("({extends_type})")
                 } else {
                     extends_type
@@ -708,10 +708,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
         );
         if flags.contains(TypeFormatFlags::PARENTHESIZE_CONDITIONAL_RETURN)
             && function.type_predicate.is_none()
-            && matches!(
-                self.checker.ty_kind(function.return_type()),
-                TyKind::Conditional(_)
-            )
+            && function.return_type().is_conditional(self.checker.arena())
         {
             format!("({return_type})")
         } else {

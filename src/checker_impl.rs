@@ -2128,7 +2128,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 let apparent = self
                     .get_conditional_type_alias_reference_type(program_id, reference)
                     .map(|(expanded_program_id, expanded)| {
-                        let expanded = if matches!(self.ty_kind(expanded), TyKind::Conditional(_)) {
+                        let expanded = if expanded.is_conditional(self.arena()) {
                             self.apparent_type_for_conditional_match(
                                 expanded_program_id,
                                 expanded,
@@ -2137,7 +2137,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         } else {
                             expanded
                         };
-                        if matches!(self.ty_kind(expanded), TyKind::Conditional(_)) {
+                        if expanded.is_conditional(self.arena()) {
                             ty
                         } else {
                             self.get_apparent_property_signature_type(
@@ -2642,8 +2642,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                         false_type,
                         is_distributive,
                     );
-                    if contains_infer && matches!(self.ty_kind(ty), TyKind::Conditional(_))
-                    {
+                    if contains_infer && ty.is_conditional(self.arena()) {
                         self.ty.conditional(
                             source_check_type,
                             source_extends_type,
@@ -3761,7 +3760,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     conditional.false_type,
                     conditional.is_distributive,
                 );
-                if matches!(self.ty_kind(ty), TyKind::Conditional(_)) {
+                if ty.is_conditional(self.arena()) {
                     if matches!(
                         self.ty_kind(conditional.check_type),
                         TyKind::IndexedAccess(_)
@@ -3906,7 +3905,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                     conditional.false_type,
                     conditional.is_distributive,
                 );
-                if matches!(self.ty_kind(ty), TyKind::Conditional(_)) {
+                if ty.is_conditional(self.arena()) {
                     ty
                 } else {
                     self.expand_type_for_index_lookup(program_id, ty, depth + 1)
@@ -8786,10 +8785,10 @@ impl<'a, 'store> Checker<'a, 'store> {
                 self.get_conditional_type_alias_reference_type(program_id, reference)
             }
         {
-            if matches!(self.ty_kind(expanded), TyKind::Conditional(_)) {
+            if expanded.is_conditional(self.arena()) {
                 let apparent =
                     self.apparent_type_for_conditional_match(expanded_program_id, expanded, 0);
-                return if matches!(self.ty_kind(apparent), TyKind::Conditional(_)) {
+                return if apparent.is_conditional(self.arena()) {
                     ty
                 } else {
                     apparent
