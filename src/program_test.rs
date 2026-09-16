@@ -284,5 +284,8 @@ fn infers_type_from_imported_variable_initializer() {
         .unwrap();
     let symbol = SymbolRef::new(program_id, symbol_id);
 
-    assert_eq!(checker.get_type_of_symbol(symbol), crate::Ty::string());
+    assert_eq!(
+        checker.get_type_of_symbol(symbol),
+        checker.arena().string_literal("hello")
+    );
 }
