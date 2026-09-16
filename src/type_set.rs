@@ -210,7 +210,7 @@ pub(crate) fn reduce_intersection_type<'a>(
         .find(|ty| matches!(arena.ty_kind(**ty), TyKind::Object(object) if object.is_empty()));
     if let Some(empty_object) = empty_object.copied() {
         for ty in &mut type_set {
-            if matches!(arena.ty_kind(*ty), TyKind::Union(_)) {
+            if ty.is_union(arena) {
                 *ty = intersect_with_empty_object(arena, *ty, empty_object);
             }
         }

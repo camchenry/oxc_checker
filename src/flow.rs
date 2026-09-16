@@ -749,7 +749,7 @@ impl<'a> Checker<'a, '_> {
         ty: Ty<'a>,
         kind: NullishEqualityKind,
     ) -> Ty<'a> {
-        if !matches!(self.ty_kind(ty), TyKind::Union(_)) {
+        if !ty.is_union(self.arena()) {
             return self
                 .non_nullish_constituent(node, ty, kind)
                 .unwrap_or_else(|| self.ty.never());
@@ -899,7 +899,7 @@ impl<'a> Checker<'a, '_> {
 
     /// Filter a type, distributing over union constituents and reducing the result.
     fn filter_type(&self, ty: Ty<'a>, keep: impl Fn(Ty<'a>) -> bool + Copy) -> Ty<'a> {
-        if !matches!(self.ty_kind(ty), TyKind::Union(_)) {
+        if !ty.is_union(self.arena()) {
             return if keep(ty) { ty } else { self.ty.never() };
         }
         ty.map_union(self.arena(), |ty| keep(ty).then_some(ty))
