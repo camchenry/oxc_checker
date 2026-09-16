@@ -874,7 +874,7 @@ impl<'a> Checker<'a, '_> {
             return ty;
         }
 
-        if matches!(ty, Ty::Unknown) {
+        if ty.is_unknown() {
             return if assume_true {
                 match witness {
                     TypeofWitness::String => self.ty.string(),

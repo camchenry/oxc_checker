@@ -9,26 +9,25 @@ use std::{
 
 use proc_macro2::Span;
 use syn::{
-    Expr, ExprMethodCall, Macro, Pat, Path as SynPath, Token,
+    Expr, Macro, Pat, Path as SynPath, Token,
     parse::{Parse, ParseStream},
     visit::{self, Visit},
 };
 
-struct TyKindHelperRule {
-    accessor: &'static str,
-    enum_name: &'static str,
+struct TyHelperRule {
     variant: &'static str,
     helper: &'static str,
 }
 
-// Add mappings here when a type-kind variant gains a dedicated query helper.
-const TY_KIND_HELPER_RULES: &[TyKindHelperRule] = &[
-    // Replace `matches!(..., TyKind::Any)` with `.is_any()`
-    TyKindHelperRule {
-        accessor: "ty_kind",
-        enum_name: "TyKind",
+// Add mappings here when a matched type gains a dedicated query helper.
+const TY_HELPER_RULES: &[TyHelperRule] = &[
+    TyHelperRule {
         variant: "Any",
         helper: "is_any",
+    },
+    TyHelperRule {
+        variant: "Unknown",
+        helper: "is_unknown",
     },
 ];
 
@@ -64,37 +63,31 @@ struct Diagnostic {
 }
 
 struct CustomLinter<'a> {
-    ty_kind_helper_rules: &'a [TyKindHelperRule],
+    ty_helper_rules: &'a [TyHelperRule],
     diagnostics: Vec<Diagnostic>,
 }
 
 impl<'a> CustomLinter<'a> {
-    fn new(ty_kind_helper_rules: &'a [TyKindHelperRule]) -> Self {
+    fn new(ty_helper_rules: &'a [TyHelperRule]) -> Self {
         Self {
-            ty_kind_helper_rules,
+            ty_helper_rules,
             diagnostics: Vec::new(),
         }
     }
 
-    fn check_ty_kind_helper_matches(&mut self, matches: &MatchesInput, span: Span) {
+    fn check_helper_matches(&mut self, matches: &MatchesInput, span: Span) {
         if matches.guard.is_some() {
             return;
         }
-        let Expr::MethodCall(method_call) = &matches.expression else {
-            return;
-        };
         let Some(pattern_path) = pattern_path(&matches.pattern) else {
             return;
         };
 
-        for rule in self.ty_kind_helper_rules {
-            if method_call_matches(method_call, rule) && path_matches(pattern_path, rule) {
+        for rule in self.ty_helper_rules {
+            if rule_matches(&matches.expression, pattern_path, rule) {
                 self.diagnostics.push(Diagnostic {
                     span,
-                    message: format!(
-                        "use `.{}()` instead of matching on the type kind",
-                        rule.helper
-                    ),
+                    message: format!("use `.{}()` instead of matching on the type", rule.helper),
                 });
             }
         }
@@ -106,7 +99,7 @@ impl<'ast> Visit<'ast> for CustomLinter<'_> {
         if node.path.is_ident("matches")
             && let Ok(matches) = syn::parse2::<MatchesInput>(node.tokens.clone())
         {
-            self.check_ty_kind_helper_matches(&matches, node.path.segments[0].ident.span());
+            self.check_helper_matches(&matches, node.path.segments[0].ident.span());
         }
         visit::visit_macro(self, node);
     }
@@ -119,18 +112,26 @@ fn pattern_path(pattern: &Pat) -> Option<&SynPath> {
     }
 }
 
-fn method_call_matches(method_call: &ExprMethodCall, rule: &TyKindHelperRule) -> bool {
-    method_call.method == rule.accessor && method_call.args.len() == 1
+fn rule_matches(expression: &Expr, path: &SynPath, rule: &TyHelperRule) -> bool {
+    if path_matches(path, "Ty", rule.variant) {
+        return true;
+    }
+    let Expr::MethodCall(method_call) = expression else {
+        return false;
+    };
+    method_call.method == "ty_kind"
+        && method_call.args.len() == 1
+        && path_matches(path, "TyKind", rule.variant)
 }
 
-fn path_matches(path: &SynPath, rule: &TyKindHelperRule) -> bool {
+fn path_matches(path: &SynPath, type_name: &str, variant: &str) -> bool {
     let mut segments = path.segments.iter().rev();
     segments
         .next()
-        .is_some_and(|segment| segment.ident == rule.variant)
+        .is_some_and(|segment| segment.ident == variant)
         && segments
             .next()
-            .is_some_and(|segment| segment.ident == rule.enum_name)
+            .is_some_and(|segment| segment.ident == type_name)
 }
 
 fn collect_rust_files(path: &Path, files: &mut Vec<PathBuf>) -> Result<(), Box<dyn Error>> {
@@ -160,7 +161,7 @@ fn collect_rust_files(path: &Path, files: &mut Vec<PathBuf>) -> Result<(), Box<d
 fn lint_file(path: &Path) -> Result<Vec<Diagnostic>, Box<dyn Error>> {
     let source = fs::read_to_string(path)?;
     let syntax = syn::parse_file(&source)?;
-    let mut linter = CustomLinter::new(TY_KIND_HELPER_RULES);
+    let mut linter = CustomLinter::new(TY_HELPER_RULES);
     linter.visit_file(&syntax);
     Ok(linter.diagnostics)
 }
@@ -212,7 +213,7 @@ mod tests {
 
     fn lint(source: &str) -> syn::Result<usize> {
         let syntax = syn::parse_file(source)?;
-        let mut linter = CustomLinter::new(TY_KIND_HELPER_RULES);
+        let mut linter = CustomLinter::new(TY_HELPER_RULES);
         linter.visit_file(&syntax);
         Ok(linter.diagnostics.len())
     }
@@ -227,8 +228,14 @@ mod tests {
             lint("fn f() { matches!(arena.ty_kind(ty), crate::types::TyKind::Any); }")?,
             1
         );
+        assert_eq!(lint("fn f() { matches!(ty, Ty::Any); }")?, 1);
         assert_eq!(
             lint("fn f() { matches!(self.ty_kind(ty), TyKind::Unknown); }")?,
+            1
+        );
+        assert_eq!(lint("fn f() { matches!(ty, Ty::Unknown); }")?, 1);
+        assert_eq!(
+            lint("fn f() { matches!(ty, crate::types::Ty::Unknown); }")?,
             1
         );
         Ok(())
@@ -250,20 +257,19 @@ mod tests {
 
     #[test]
     fn accepts_additional_rules() -> syn::Result<()> {
-        let rules = [TyKindHelperRule {
-            accessor: "ty_kind",
-            enum_name: "TyKind",
-            variant: "Unknown",
-            helper: "is_unknown",
+        let rules = [TyHelperRule {
+            variant: "Never",
+            helper: "is_never",
         }];
-        let syntax =
-            syn::parse_file("fn f() { matches!(self.ty_kind(constraint), TyKind::Unknown); }")?;
+        let syntax = syn::parse_file(
+            "fn f() { matches!(ty, Ty::Never); matches!(self.ty_kind(ty), TyKind::Never); }",
+        )?;
         let mut linter = CustomLinter::new(&rules);
         linter.visit_file(&syntax);
-        assert_eq!(linter.diagnostics.len(), 1);
+        assert_eq!(linter.diagnostics.len(), 2);
         assert_eq!(
             linter.diagnostics[0].message,
-            "use `.is_unknown()` instead of matching on the type kind"
+            "use `.is_never()` instead of matching on the type"
         );
         Ok(())
     }
