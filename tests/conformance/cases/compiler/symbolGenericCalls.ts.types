@@ -178,6 +178,156 @@ declare function constrainedFunction<T extends ConstraintA, U extends T = T>(val
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
 >                                                                                                       ^: any   (Any) (Identifier)
 
+declare function constrainedRelations<
+>                ^^^^^^^^^^^^^^^^^^^^: <T, U extends T, V extends U, I extends T & { extra: true; }, O extends T | number, N extends never, X, W extends unknown, S extends string, R extends string>(t: T, u: U, v: V, intersection: I, unionConstraint: O, optionalT: T | undefined, optionalU: U | undefined, arrayT: T[], arrayU: U[], tupleT: [T], tupleU: [U], targetUnion: T | number, neverN: N, otherX: X, unknownW: W, stringS: S, stringR: R) => void   (Function) (Identifier)
+
+  T,
+> ^: any   (Any) (Identifier)
+
+  U extends T,
+> ^: any   (Any) (Identifier)
+
+  U extends T,
+>           ^: any   (Any) (Identifier)
+
+  V extends U,
+> ^: any   (Any) (Identifier)
+
+  V extends U,
+>           ^: any   (Any) (Identifier)
+
+  I extends T & { extra: true },
+> ^: any   (Any) (Identifier)
+
+  I extends T & { extra: true },
+>           ^: any   (Any) (Identifier)
+
+  I extends T & { extra: true },
+>                 ^^^^^: true   (BooleanLiteral) (Identifier)
+
+  O extends T | number,
+> ^: any   (Any) (Identifier)
+
+  O extends T | number,
+>           ^: any   (Any) (Identifier)
+
+  N extends never,
+> ^: any   (Any) (Identifier)
+
+  X,
+> ^: any   (Any) (Identifier)
+
+  W extends unknown,
+> ^: any   (Any) (Identifier)
+
+  S extends string,
+> ^: any   (Any) (Identifier)
+
+  R extends string,
+> ^: any   (Any) (Identifier)
+
+  t: T,
+> ^: T   (TypeParameter) (Identifier)
+
+  t: T,
+>    ^: any   (Any) (Identifier)
+
+  u: U,
+> ^: U   (TypeParameter) (Identifier)
+
+  u: U,
+>    ^: any   (Any) (Identifier)
+
+  v: V,
+> ^: V   (TypeParameter) (Identifier)
+
+  v: V,
+>    ^: any   (Any) (Identifier)
+
+  intersection: I,
+> ^^^^^^^^^^^^: I   (TypeParameter) (Identifier)
+
+  intersection: I,
+>               ^: any   (Any) (Identifier)
+
+  unionConstraint: O,
+> ^^^^^^^^^^^^^^^: O   (TypeParameter) (Identifier)
+
+  unionConstraint: O,
+>                  ^: any   (Any) (Identifier)
+
+  optionalT: T | undefined,
+> ^^^^^^^^^: T | undefined   (Union) (Identifier)
+
+  optionalT: T | undefined,
+>            ^: any   (Any) (Identifier)
+
+  optionalU: U | undefined,
+> ^^^^^^^^^: U | undefined   (Union) (Identifier)
+
+  optionalU: U | undefined,
+>            ^: any   (Any) (Identifier)
+
+  arrayT: T[],
+> ^^^^^^: T[]   (Array) (Identifier)
+
+  arrayT: T[],
+>         ^: any   (Any) (Identifier)
+
+  arrayU: U[],
+> ^^^^^^: U[]   (Array) (Identifier)
+
+  arrayU: U[],
+>         ^: any   (Any) (Identifier)
+
+  tupleT: [T],
+> ^^^^^^: [T]   (Tuple) (Identifier)
+
+  tupleT: [T],
+>          ^: any   (Any) (Identifier)
+
+  tupleU: [U],
+> ^^^^^^: [U]   (Tuple) (Identifier)
+
+  tupleU: [U],
+>          ^: any   (Any) (Identifier)
+
+  targetUnion: T | number,
+> ^^^^^^^^^^^: T | number   (Union) (Identifier)
+
+  targetUnion: T | number,
+>              ^: any   (Any) (Identifier)
+
+  neverN: N,
+> ^^^^^^: N   (TypeParameter) (Identifier)
+
+  neverN: N,
+>         ^: any   (Any) (Identifier)
+
+  otherX: X,
+> ^^^^^^: X   (TypeParameter) (Identifier)
+
+  otherX: X,
+>         ^: any   (Any) (Identifier)
+
+  unknownW: W,
+> ^^^^^^^^: W   (TypeParameter) (Identifier)
+
+  unknownW: W,
+>           ^: any   (Any) (Identifier)
+
+  stringS: S,
+> ^^^^^^^: S   (TypeParameter) (Identifier)
+
+  stringS: S,
+>          ^: any   (Any) (Identifier)
+
+  stringR: R,
+> ^^^^^^^: R   (TypeParameter) (Identifier)
+
+  stringR: R,
+>          ^: any   (Any) (Identifier)
+
 declare function fallbackToConstraint<T extends string>(): T;
 >                ^^^^^^^^^^^^^^^^^^^^: <T extends string>() => T   (Function) (Identifier)
 

@@ -22,6 +22,36 @@ interface ConstraintA { a: number }
 declare const constraintA: ConstraintA;
 declare const constrainedFunctionValue: <T extends ConstraintA>(value: T) => T;
 declare function constrainedFunction<T extends ConstraintA, U extends T = T>(value?: T, other?: U): [T, U];
+declare function constrainedRelations<
+  T,
+  U extends T,
+  V extends U,
+  I extends T & { extra: true },
+  O extends T | number,
+  N extends never,
+  X,
+  W extends unknown,
+  S extends string,
+  R extends string,
+>(
+  t: T,
+  u: U,
+  v: V,
+  intersection: I,
+  unionConstraint: O,
+  optionalT: T | undefined,
+  optionalU: U | undefined,
+  arrayT: T[],
+  arrayU: U[],
+  tupleT: [T],
+  tupleU: [U],
+  targetUnion: T | number,
+  neverN: N,
+  otherX: X,
+  unknownW: W,
+  stringS: S,
+  stringR: R,
+): void;
 declare function fallbackToConstraint<T extends string>(): T;
 const fromConstraint = constrainedFunction();
 const fromConstraintInference = constrainedFunction(constraintA);

@@ -5,8 +5,8 @@ use crate::{
     mapper::TypeMapper,
     type_predicate_kinds_match,
     types::{
-        Ty, TyFunction, TyIntersection, TyKind, TyObject, function_maximum_argument_count,
-        function_minimum_argument_count,
+        Ty, TyFunction, TyIntersection, TyKind, TyObject, TyTypeParameter,
+        function_maximum_argument_count, function_minimum_argument_count,
     },
 };
 
@@ -261,6 +261,39 @@ impl<'a, 'store> Checker<'a, 'store> {
         )
     }
 
+    /// Tests whether a source type parameter's constraint implies the target parameter.
+    /// For example, `S extends T & U` implies `T`, while `S extends T | U` does not.
+    fn source_constraint_implies_type_parameter(
+        &self,
+        source: Ty<'a>,
+        target: &TyTypeParameter<'a>,
+        depth: usize,
+    ) -> bool {
+        if depth >= ASSIGNABILITY_MAX_DEPTH {
+            return false;
+        }
+
+        let next_depth = depth + 1;
+        match self.ty_kind(source) {
+            TyKind::Never => true,
+            TyKind::TypeParameter(source) => {
+                source == target
+                    || source.constraint_type.is_some_and(|constraint| {
+                        self.source_constraint_implies_type_parameter(
+                            constraint, target, next_depth,
+                        )
+                    })
+            }
+            TyKind::Union(source) => source.types.iter().all(|source| {
+                self.source_constraint_implies_type_parameter(*source, target, next_depth)
+            }),
+            TyKind::Intersection(source) => source.types.iter().any(|source| {
+                self.source_constraint_implies_type_parameter(*source, target, next_depth)
+            }),
+            _ => false,
+        }
+    }
+
     fn is_assignable_to_at_depth(&self, source: Ty<'a>, target: Ty<'a>, depth: usize) -> bool {
         if source == target {
             return true;
@@ -377,10 +410,20 @@ impl<'a, 'store> Checker<'a, 'store> {
             (TyKind::Union(source_union), _) => source_union.types.iter().all(|source_type| {
                 self.is_assignable_to_at_depth(*source_type, target, next_depth)
             }),
+            (TyKind::TypeParameter(source_parameter), TyKind::Union(target_union)) => {
+                target_union.types.iter().any(|target_type| {
+                    self.is_assignable_to_at_depth(source, *target_type, next_depth)
+                }) || source_parameter.constraint_type.is_some_and(|constraint| {
+                    !matches!(self.ty_kind(constraint), TyKind::Any)
+                        && self.is_assignable_to_at_depth(constraint, target, next_depth)
+                })
+            }
             (_, TyKind::Union(target_union)) => target_union.types.iter().any(|target_type| {
                 self.is_assignable_to_at_depth(source, *target_type, next_depth)
             }),
-            (TyKind::TypeParameter(source), TyKind::TypeParameter(target)) => source == target,
+            (TyKind::TypeParameter(_), TyKind::TypeParameter(target_parameter)) => {
+                self.source_constraint_implies_type_parameter(source, target_parameter, next_depth)
+            }
             (TyKind::TypeParameter(source), _) => {
                 source.constraint_type.is_some_and(|constraint| {
                     self.is_assignable_to_at_depth(constraint, target, next_depth)
