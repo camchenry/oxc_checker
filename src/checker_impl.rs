@@ -18,6 +18,7 @@ use oxc_ast::{
         TSTypeName, TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
         TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
         TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
+        YieldExpression,
     },
 };
 use oxc_cfg::{BlockNodeId, ControlFlowGraph};
@@ -78,6 +79,14 @@ const GLOBAL_THIS_IDENT: Ident = static_ident!("globalThis");
 
 /// Signature results with inline storage for the common one- and two-signature cases.
 type SignatureList<'a> = SmallVec<[Signature<'a>; 2]>;
+
+/// The independent output, completion, and input channels of an iterator.
+#[derive(Clone, Copy)]
+enum IterationTypeKind {
+    Yield,
+    Return,
+    Next,
+}
 
 #[derive(Debug, Clone, Copy)]
 pub(crate) enum FunctionKind<'a> {
@@ -1243,9 +1252,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                     _ => self.ty.number(),
                 }
             }
-            AstKind::YieldExpression(_) => {
-                // TODO: Implement yield expression support.
-                self.ty.error(TypeErrorKind::UnsupportedType)
+            AstKind::YieldExpression(expression) => {
+                self.get_type_of_yield_expression(program_id, expression)
             }
             AstKind::PrivateInExpression(_) => self.ty.boolean(),
             // TODO(correctness): Handle all of these cases.
@@ -1255,6 +1263,103 @@ impl<'a, 'store> Checker<'a, 'store> {
             AstKind::V8IntrinsicExpression(_) => self.ty.error(TypeErrorKind::UnsupportedType),
             _ => self.ty.error(TypeErrorKind::UnsupportedType),
         }
+    }
+
+    /// Resolve a yield's input channel or a delegated iterator's completion channel.
+    fn get_type_of_yield_expression(
+        &self,
+        program_id: ProgramId,
+        expression: &'a YieldExpression<'a>,
+    ) -> Ty<'a> {
+        let operand_type = expression.argument.as_ref().map(|argument| {
+            self.get_type_of_expression_with_node(
+                program_id,
+                argument,
+                Some(expression.node_id()),
+                CheckMode::PRESERVE_LITERALS,
+            )
+        });
+        let function = self
+            .nodes(program_id)
+            .ancestors(expression.node_id())
+            .find_map(|ancestor| match ancestor.kind() {
+                AstKind::Function(function) => Some(Some(function)),
+                AstKind::ArrowFunctionExpression(_) => Some(None),
+                _ => None,
+            });
+        let Some(Some(function)) = function else {
+            return self.ty.any();
+        };
+        if !function.generator {
+            return self.ty.any();
+        }
+
+        // TODO(correctness): Check outgoing yields and delegated input compatibility.
+        if expression.delegate {
+            let Some(operand_type) = operand_type else {
+                return self.ty.any();
+            };
+            let return_type = function
+                .r#async
+                .then(|| {
+                    self.get_iteration_type_of_iterable(
+                        program_id,
+                        operand_type,
+                        true,
+                        IterationTypeKind::Return,
+                        0,
+                    )
+                })
+                .flatten()
+                .or_else(|| {
+                    self.get_iteration_type_of_iterable(
+                        program_id,
+                        operand_type,
+                        false,
+                        IterationTypeKind::Return,
+                        0,
+                    )
+                });
+            return return_type.map_or_else(
+                || self.ty.any(),
+                |return_type| {
+                    let return_type = self.expand_type(program_id, return_type, 0);
+                    if function.r#async {
+                        self.get_awaited_type(program_id, return_type)
+                    } else {
+                        return_type
+                    }
+                },
+            );
+        }
+
+        // TODO(completeness): Obtain TNext from contextual generator signatures when unannotated.
+        // Do not infer the containing signature from its body here: it may depend on this yield.
+        let Some(annotation) = function.return_type.as_deref() else {
+            return self.ty.any();
+        };
+        let return_type = self.get_type_from_ts_type_annotation(program_id, Some(annotation));
+        self.get_iteration_type_of_iterable(
+            program_id,
+            return_type,
+            function.r#async,
+            IterationTypeKind::Next,
+            0,
+        )
+        .or_else(|| {
+            self.get_iteration_type_of_iterator(
+                program_id,
+                return_type,
+                if function.r#async {
+                    "AsyncIterator"
+                } else {
+                    "Iterator"
+                },
+                IterationTypeKind::Next,
+                0,
+            )
+        })
+        .unwrap_or_else(|| self.ty.any())
     }
 
     fn get_type_of_import_expression(
@@ -11708,6 +11813,24 @@ impl<'a, 'store> Checker<'a, 'store> {
         is_async: bool,
         depth: usize,
     ) -> Option<Ty<'a>> {
+        self.get_iteration_type_of_iterable(
+            program_id,
+            iterable_type,
+            is_async,
+            IterationTypeKind::Yield,
+            depth,
+        )
+    }
+
+    /// Resolve an iterable's selected channel through its iterator method.
+    fn get_iteration_type_of_iterable(
+        &self,
+        program_id: ProgramId,
+        iterable_type: Ty<'a>,
+        is_async: bool,
+        kind: IterationTypeKind,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
             return None;
         }
@@ -11728,20 +11851,23 @@ impl<'a, 'store> Checker<'a, 'store> {
                 function_minimum_argument_count(self.arena(), signature.function(self.arena())) == 0
             })
             .find_map(|signature| {
-                self.get_element_type_of_iterator(
+                self.get_iteration_type_of_iterator(
                     program_id,
                     signature.function(self.arena()).return_type(),
                     iterator_type_name,
+                    kind,
                     depth + 1,
                 )
             })
     }
 
-    fn get_element_type_of_iterator(
+    /// Resolve a standard iterator channel, including substituted interface heritage.
+    fn get_iteration_type_of_iterator(
         &self,
         program_id: ProgramId,
         iterator_type: Ty<'a>,
         iterator_type_name: &str,
+        kind: IterationTypeKind,
         depth: usize,
     ) -> Option<Ty<'a>> {
         if depth >= TYPE_EXPANSION_MAX_DEPTH {
@@ -11749,21 +11875,28 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         let TyKind::TypeReference(reference) = self.ty_kind(iterator_type) else {
+            // TODO(completeness): Extract channels from structural next/return methods and unions.
             return None;
         };
         if reference.name == iterator_type_name
             && self.is_global_lib_type_reference(program_id, reference)
         {
-            return reference.type_arguments.first().copied();
+            let index = match kind {
+                IterationTypeKind::Yield => 0,
+                IterationTypeKind::Return => 1,
+                IterationTypeKind::Next => 2,
+            };
+            return reference.type_arguments.get(index).copied();
         }
 
         self.get_interface_heritage_types(program_id, reference)
             .into_iter()
             .find_map(|(heritage_program_id, heritage_type)| {
-                self.get_element_type_of_iterator(
+                self.get_iteration_type_of_iterator(
                     heritage_program_id,
                     heritage_type,
                     iterator_type_name,
+                    kind,
                     depth + 1,
                 )
             })

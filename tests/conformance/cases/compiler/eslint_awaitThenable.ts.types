@@ -173,7 +173,7 @@ async function validUseOfForAwaitOnAsyncIterable() {
 >                 ^^^^^^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (Function) (Identifier)
 
     yield 1;
->   ^^^^^^^^: any   (Error) (ExpressionStatement)
+>   ^^^^^^^^: any   (Any) (ExpressionStatement)
 
     await new Promise(resolve => setTimeout(resolve, 1000));
 >   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^: unknown   (Unknown) (ExpressionStatement)
@@ -191,7 +191,7 @@ async function validUseOfForAwaitOnAsyncIterable() {
 >                                           ^^^^^^^: (value: unknown) => void   (Function) (Identifier)
 
     yield 2;
->   ^^^^^^^^: any   (Error) (ExpressionStatement)
+>   ^^^^^^^^: any   (Any) (ExpressionStatement)
 
   for await (const promisedValue of yieldThingsAsynchronously()) {
 >                  ^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)

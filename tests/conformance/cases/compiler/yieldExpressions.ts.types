@@ -8,8 +8,7 @@ function* _innerGenerator(): Generator<number, "inner", boolean> {
 >                            ^^^^^^^^^: any   (Error) (Identifier)
 
   const _input = yield 0;
->       ^^^^^^: any   (Error) (Identifier)
-      expected: boolean
+>       ^^^^^^: boolean   (Boolean) (Identifier)
 
 function* _typedGenerator(): Generator<number, string, boolean> {
 >         ^^^^^^^^^^^^^^^: () => Generator<number, string, boolean>   (Function) (Identifier)
@@ -21,23 +20,19 @@ function* _typedGenerator(): Generator<number, string, boolean> {
 >                            ^^^^^^^^^: any   (Error) (Identifier)
 
   const _input = yield 1;
->       ^^^^^^: any   (Error) (Identifier)
-      expected: boolean
+>       ^^^^^^: boolean   (Boolean) (Identifier)
 
   const _bareInput = yield;
->       ^^^^^^^^^^: any   (Error) (Identifier)
-          expected: boolean
+>       ^^^^^^^^^^: boolean   (Boolean) (Identifier)
 
   const _delegatedReturn = yield* _innerGenerator();
->       ^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
-                expected: "inner"
+>       ^^^^^^^^^^^^^^^^: "inner"   (StringLiteral) (Identifier)
 
   const _delegatedReturn = yield* _innerGenerator();
 >                                 ^^^^^^^^^^^^^^^: () => Generator<number, "inner", boolean>   (Function) (Identifier)
 
   const _arrayReturn = yield* [1, 2];
->       ^^^^^^^^^^^^: any   (Error) (Identifier)
-            expected: undefined
+>       ^^^^^^^^^^^^: undefined   (Undefined) (Identifier)
 
 async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
 >               ^^^^^^^^^^^^^^^: () => AsyncGenerator<string, void, Date>   (Function) (Identifier)
@@ -55,11 +50,106 @@ async function* _asyncGenerator(): AsyncGenerator<string, void, Date> {
 >                                                               ^^^^: DateConstructor   (TypeReference) (Identifier)
 
   const _input = yield "value";
->       ^^^^^^: any   (Error) (Identifier)
-      expected: Date
+>       ^^^^^^: Date   (TypeReference) (Identifier)
 
 function* _untypedGenerator() {
 >         ^^^^^^^^^^^^^^^^^: () => Generator<number, void, unknown>   (Function) (Identifier)
 
   const _input = yield 1;
->       ^^^^^^: any   (Error) (Identifier)
+>       ^^^^^^: any   (Any) (Identifier)
+
+function* _stringInputGenerator(): Generator<number, boolean, string> {
+>         ^^^^^^^^^^^^^^^^^^^^^: () => Generator<number, boolean, string>   (Function) (Identifier)
+
+function* _stringInputGenerator(): Generator<number, boolean, string> {
+>                                  ^^^^^^^^^: any   (Any) (Identifier)
+
+function* _stringInputGenerator(): Generator<number, boolean, string> {
+>                                  ^^^^^^^^^: any   (Error) (Identifier)
+
+  const _input = yield 1;
+>       ^^^^^^: string   (String) (Identifier)
+
+  const _bareInput = yield;
+>       ^^^^^^^^^^: string   (String) (Identifier)
+
+  const _tupleReturn = yield* [1, 2] as const;
+>       ^^^^^^^^^^^^: undefined   (Undefined) (Identifier)
+
+  const _tupleReturn = yield* [1, 2] as const;
+>                                       ^^^^^: any   (Any) (Identifier)
+
+  const _tupleReturn = yield* [1, 2] as const;
+>                                       ^^^^^: any   (Error) (Identifier)
+
+async function* _promiseInputGenerator(): AsyncGenerator<string, void, Promise<Date>> {
+>               ^^^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<string, void, Promise<Date>>   (Function) (Identifier)
+
+async function* _promiseInputGenerator(): AsyncGenerator<string, void, Promise<Date>> {
+>                                         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+async function* _promiseInputGenerator(): AsyncGenerator<string, void, Promise<Date>> {
+>                                         ^^^^^^^^^^^^^^: any   (Error) (Identifier)
+
+async function* _promiseInputGenerator(): AsyncGenerator<string, void, Promise<Date>> {
+>                                                                      ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
+
+async function* _promiseInputGenerator(): AsyncGenerator<string, void, Promise<Date>> {
+>                                                                      ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
+
+async function* _promiseInputGenerator(): AsyncGenerator<string, void, Promise<Date>> {
+>                                                                              ^^^^: DateConstructor   (TypeReference) (Identifier)
+
+async function* _promiseInputGenerator(): AsyncGenerator<string, void, Promise<Date>> {
+>                                                                              ^^^^: DateConstructor   (TypeReference) (Identifier)
+
+  const _input = yield "value";
+>       ^^^^^^: Promise<Date>   (TypeReference) (Identifier)
+
+  const _bareInput = yield;
+>       ^^^^^^^^^^: Promise<Date>   (TypeReference) (Identifier)
+
+declare function _asyncInnerGenerator(): AsyncGenerator<string, Promise<"async">, Date>;
+>                ^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<string, Promise<"async">, Date>   (Function) (Identifier)
+
+declare function _asyncInnerGenerator(): AsyncGenerator<string, Promise<"async">, Date>;
+>                                        ^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+declare function _asyncInnerGenerator(): AsyncGenerator<string, Promise<"async">, Date>;
+>                                        ^^^^^^^^^^^^^^: any   (Error) (Identifier)
+
+declare function _asyncInnerGenerator(): AsyncGenerator<string, Promise<"async">, Date>;
+>                                                               ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
+
+declare function _asyncInnerGenerator(): AsyncGenerator<string, Promise<"async">, Date>;
+>                                                               ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
+
+declare function _asyncInnerGenerator(): AsyncGenerator<string, Promise<"async">, Date>;
+>                                                                                 ^^^^: DateConstructor   (TypeReference) (Identifier)
+
+declare function _asyncInnerGenerator(): AsyncGenerator<string, Promise<"async">, Date>;
+>                                                                                 ^^^^: DateConstructor   (TypeReference) (Identifier)
+
+async function* _asyncDelegation(): AsyncGenerator<string, void, Date> {
+>               ^^^^^^^^^^^^^^^^: () => AsyncGenerator<string, void, Date>   (Function) (Identifier)
+
+async function* _asyncDelegation(): AsyncGenerator<string, void, Date> {
+>                                   ^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+async function* _asyncDelegation(): AsyncGenerator<string, void, Date> {
+>                                   ^^^^^^^^^^^^^^: any   (Error) (Identifier)
+
+async function* _asyncDelegation(): AsyncGenerator<string, void, Date> {
+>                                                                ^^^^: DateConstructor   (TypeReference) (Identifier)
+
+async function* _asyncDelegation(): AsyncGenerator<string, void, Date> {
+>                                                                ^^^^: DateConstructor   (TypeReference) (Identifier)
+
+  const _delegatedReturn = yield* _asyncInnerGenerator();
+>       ^^^^^^^^^^^^^^^^: "async"   (StringLiteral) (Identifier)
+
+  const _delegatedReturn = yield* _asyncInnerGenerator();
+>                                 ^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<string, Promise<"async">, Date>   (Function) (Identifier)
+
+  const _arrayReturn = yield* ["value"];
+>       ^^^^^^^^^^^^: undefined   (Undefined) (Identifier)

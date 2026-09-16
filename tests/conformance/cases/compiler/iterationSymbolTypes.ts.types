@@ -56,10 +56,10 @@ async function* asyncGeneratorValues() {
 >               ^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (Function) (Identifier)
 
   yield 1;
-> ^^^^^^^^: any   (Error) (ExpressionStatement)
+> ^^^^^^^^: any   (Any) (ExpressionStatement)
 
   yield 2;
-> ^^^^^^^^: any   (Error) (ExpressionStatement)
+> ^^^^^^^^: any   (Any) (ExpressionStatement)
 
 async function consumeGenerator() {
 >              ^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)

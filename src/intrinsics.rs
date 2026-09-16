@@ -27,6 +27,10 @@ impl<'a, 'store> Checker<'a, 'store> {
         type_arguments: &[Ty<'a>],
         depth: usize,
     ) -> Ty<'a> {
+        if name == "BuiltinIteratorReturn" {
+            // TODO(completeness): Honor strictBuiltinIteratorReturn when compiler options are supported.
+            return self.ty.undefined();
+        }
         let Some(type_argument) = type_arguments.first().copied() else {
             return self.ty.type_reference("intrinsic", std::iter::empty());
         };
@@ -36,7 +40,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 self.apply_intrinsic_string_mapping(program_id, name, type_argument, depth + 1)
             }
             "NoInfer" => type_argument,
-            "BuiltinIteratorReturn" => self.ty.any(),
             _ => self.ty.type_reference("intrinsic", std::iter::empty()),
         }
     }
