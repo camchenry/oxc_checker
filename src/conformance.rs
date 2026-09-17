@@ -3335,9 +3335,7 @@ fn type_chain_start(type_repr: &str, operator_index: usize, operator: char) -> u
         {
             closing_delimiters.pop();
         } else if closing_delimiters.is_empty() {
-            if matches!(character, ',' | ':' | ';' | '?')
-                || (operator == '&' && character == '|')
-            {
+            if matches!(character, ',' | ':' | ';' | '?') || (operator == '&' && character == '|') {
                 start = next_index;
             } else if character == '=' {
                 start = if type_repr[next_index..].starts_with('>') {
@@ -3378,11 +3376,7 @@ fn type_chain_end(type_repr: &str, operator_index: usize, operator: char) -> usi
                 || (character == '=' && !type_repr[next_index..].starts_with('>'))
                 || (operator == '&' && character == '|'))
         {
-            return trim_end_whitespace(
-                type_repr,
-                index,
-                operator_index + operator.len_utf8(),
-            );
+            return trim_end_whitespace(type_repr, index, operator_index + operator.len_utf8());
         }
 
         index = next_index;

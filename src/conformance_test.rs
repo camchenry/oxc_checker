@@ -186,14 +186,8 @@ fn type_repr_order_normalization_handles_conditional_intersections() {
 
 #[test]
 fn type_repr_order_normalization_preserves_operator_precedence() {
-    assert!(type_reprs_are_equivalent(
-        "A | B & C",
-        "C & B | A"
-    ));
-    assert!(!type_reprs_are_equivalent(
-        "A | B & C",
-        "(A | B) & C"
-    ));
+    assert!(type_reprs_are_equivalent("A | B & C", "C & B | A"));
+    assert!(!type_reprs_are_equivalent("A | B & C", "(A | B) & C"));
 }
 
 #[test]
