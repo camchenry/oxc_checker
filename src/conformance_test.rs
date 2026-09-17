@@ -508,6 +508,25 @@ fn type_repr_equivalence_ignores_union_order() {
 }
 
 #[test]
+fn type_repr_equivalence_ignores_string_delimiter_style() {
+    assert!(type_reprs_are_equivalent("T['value']", r#"T["value"]"#));
+    assert!(type_reprs_are_equivalent(
+        r#"['say "hello"', "it's", 'both \'"', 'C:\\temp']"#,
+        r#"['say "hello"', "it's", "both '\"", "C:\\temp"]"#,
+    ));
+    assert!(type_reprs_are_equivalent(
+        r#"'left' | "right""#,
+        r#""right" | "left""#,
+    ));
+}
+
+#[test]
+fn type_repr_equivalence_preserves_string_literal_values() {
+    assert!(!type_reprs_are_equivalent("'left'", r#""right""#));
+    assert!(!type_reprs_are_equivalent(r#""\\n""#, r#""\n""#));
+}
+
+#[test]
 fn type_record_json_shape_is_strict_and_round_trips() {
     let json = r#"{"path":"compiler/example.ts","start":4,"end":9,"text":"value","nodeType":"Identifier","type":{"name":"StringLiteral","display":"\"foo\""},"assignability":[{"target":1,"assignable":true}]}"#;
     let record = parse_records(json, "test record").unwrap().remove(0);

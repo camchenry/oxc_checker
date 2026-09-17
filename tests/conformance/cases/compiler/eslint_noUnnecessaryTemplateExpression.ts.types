@@ -35,7 +35,7 @@ type WrappedText = `${Text}`;
 >                     ^^^^: any   (Any) (Identifier)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
->             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (Intersection) (Identifier)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 >                                                ^^^^^^: "test-brand"   (StringLiteral) (Identifier)
@@ -44,10 +44,10 @@ const wrappedIntersection = `${intersectionWithString}`;
 >     ^^^^^^^^^^^^^^^^^^^: string   (String) (Identifier)
 
 const wrappedIntersection = `${intersectionWithString}`;
->                              ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
+>                              ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (Intersection) (Identifier)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
->    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
+>    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (Intersection) (Identifier)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
 >                                        ^^^^^^: "test-brand"   (StringLiteral) (Identifier)
@@ -164,25 +164,25 @@ type WrappedText = Text;
 >                  ^^^^: any   (Any) (Identifier)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
->             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
+>             ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (Intersection) (Identifier)
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 >                                                ^^^^^^: "test-brand"   (StringLiteral) (Identifier)
 
 const wrappedIntersection = intersectionWithString;
->     ^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
+>     ^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (Intersection) (Identifier)
 
 const wrappedIntersection = intersectionWithString;
->                           ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
+>                           ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (Intersection) (Identifier)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
->    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
+>    ^^^^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (Intersection) (Identifier)
 
 type IntersectionWithString = string & { _brand: 'test-brand' };
 >                                        ^^^^^^: "test-brand"   (StringLiteral) (Identifier)
 
 type WrappedIntersection = IntersectionWithString;
->    ^^^^^^^^^^^^^^^^^^^: string & { _brand: 'test-brand'; }   (Intersection) (Identifier)
+>    ^^^^^^^^^^^^^^^^^^^: string & { _brand: "test-brand"; }   (Intersection) (Identifier)
 
 type WrappedIntersection = IntersectionWithString;
 >                          ^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)

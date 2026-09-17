@@ -13,9 +13,9 @@ use oxc_ast::{
         PropertyDefinition, PropertyKey, PropertyKind, SimpleAssignmentTarget,
         StaticMemberExpression, TSImportEqualsDeclaration, TSImportType, TSImportTypeQualifier,
         TSInterfaceDeclaration, TSLiteral, TSMappedType, TSMethodSignature, TSMethodSignatureKind,
-        TSModuleReference, TSNamedTupleMember, TSNamespaceDeclaration, TSPropertySignature,
-        TSQualifiedName, TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation,
-        TSTypeName, TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
+        TSModuleReference, TSNamedTupleMember, TSNamespaceDeclaration, TSQualifiedName,
+        TSSignature, TSThisParameter, TSTupleElement, TSType, TSTypeAnnotation, TSTypeName,
+        TSTypeOperatorOperator, TSTypeParameter, TSTypeParameterDeclaration,
         TSTypeParameterInstantiation, TSTypeQuery, TSTypeQueryExprName, TSTypeReference,
         TaggedTemplateExpression, TemplateLiteral, VariableDeclarationKind, VariableDeclarator,
         YieldExpression,
@@ -57,9 +57,9 @@ use crate::{
     types::{
         CheckerArena, IndexInfo, LabeledTupleElement, MappedModifier, Signature, SignatureKind,
         TupleElement, TupleReadonly, Ty, TyFunction, TyKind, TyMapped, TyParameter, TyProperty,
-        TyPropertyFlags, TyTypeParameter, TyTypePredicate, TyTypeReference, TypeErrorKind,
+        TyTypeParameter, TyTypePredicate, TyTypeReference, TypeErrorKind,
         binding_pattern_to_parameter_name, function_maximum_argument_count,
-        function_minimum_argument_count, property_name_flags,
+        function_minimum_argument_count,
         return_type_and_type_predicate_from_annotation_with_resolver, type_predicate_return_type,
         visit_type,
     },
@@ -439,7 +439,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                             !self.arena().is_type_identical_to(property.ty, property_ty);
                         TyProperty {
                             name: property.name,
-                            flags: property.flags,
                             computed: property.computed,
                             optional: property.optional,
                             method: property.method,
@@ -494,7 +493,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 namespace.name,
                 namespace.properties.iter().map(|property| TyProperty {
                     name: property.name,
-                    flags: property.flags,
                     computed: property.computed,
                     optional: property.optional,
                     method: property.method,
@@ -1959,7 +1957,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                         let member_name = member.id.static_name();
                         TyProperty {
                             name: member_name.as_str(),
-                            flags: TyPropertyFlags::NONE,
                             ty: *ty,
                             computed: false,
                             optional: false,
@@ -2375,27 +2372,6 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
     }
 
-    // TODO(correctness): these quotes are still not correctly handled, need to check more cases
-    fn property_signature_flags(property: &TSPropertySignature<'_>) -> TyPropertyFlags {
-        let type_single_quoted = property.type_annotation.as_deref().is_some_and(|annotation| {
-            matches!(
-                &annotation.type_annotation,
-                TSType::TSLiteralType(literal)
-                    if matches!(
-                        &literal.literal,
-                        TSLiteral::StringLiteral(literal)
-                            if literal.raw.as_ref().is_some_and(|raw| raw.as_str().starts_with('\''))
-                    )
-            )
-        });
-        property_name_flags(&property.key)
-            | if type_single_quoted {
-                TyPropertyFlags::TYPE_SINGLE_QUOTED
-            } else {
-                TyPropertyFlags::NONE
-            }
-    }
-
     /// Resolve a TypeScript type node, using symbols for references that need checker state.
     fn get_type_from_ts_type(&self, program_id: ProgramId, ty: &'a TSType<'a>) -> Ty<'a> {
         let depth = &self.ts_type_resolution_depth;
@@ -2440,7 +2416,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                                 );
                                 Some(TyProperty {
                                     name,
-                                    flags: Self::property_signature_flags(property),
                                     ty,
                                     computed: property.computed,
                                     optional: property.optional,
@@ -2474,7 +2449,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                                     });
                                     return Some(TyProperty {
                                         name,
-                                        flags: property_name_flags(&method.key),
                                         ty,
                                         computed: method.computed,
                                         optional: method.optional,
@@ -2505,7 +2479,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                                 );
                                 Some(TyProperty {
                                     name,
-                                    flags: property_name_flags(&method.key),
                                     ty,
                                     computed: method.computed,
                                     optional: method.optional,
@@ -4136,7 +4109,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             let ty = self.expand_type(program_id, ty, depth + 1);
             expanded.push(TyProperty {
                 name: property_name,
-                flags: property.flags,
                 ty,
                 computed: false,
                 optional: matches!(mapped.optional, MappedModifier::True | MappedModifier::Plus),
@@ -5262,7 +5234,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 );
                 properties.push(TyProperty {
                     name,
-                    flags: Self::property_signature_flags(property),
                     ty: self.instantiate_type(ty, &mapper),
                     computed: property.computed,
                     optional: property.optional,
@@ -5468,7 +5439,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                         let ty = self.instantiate_type(ty, &mapper);
                         properties.push(TyProperty {
                             name,
-                            flags: Self::property_signature_flags(property),
                             ty,
                             computed: property.computed,
                             optional: property.optional,
@@ -5506,7 +5476,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                             });
                             properties.push(TyProperty {
                                 name,
-                                flags: property_name_flags(&method.key),
                                 ty,
                                 computed: method.computed,
                                 optional: method.optional,
@@ -5520,7 +5489,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                         let signature = self.instantiate_signature(signature, &mapper);
                         properties.push(TyProperty {
                             name,
-                            flags: property_name_flags(&method.key),
                             ty: signature.ty,
                             computed: method.computed,
                             optional: method.optional,
@@ -5739,7 +5707,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                     );
                     let property = TyProperty {
                         name,
-                        flags: property_name_flags(&property.key),
                         ty,
                         computed: false,
                         optional: false,
@@ -5997,7 +5964,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 };
                 properties.push(TyProperty {
                     name,
-                    flags: property_name_flags(key),
                     ty,
                     computed,
                     optional,
@@ -6061,7 +6027,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 };
                 properties.push(TyProperty {
                     name,
-                    flags: property_name_flags(&property.key),
                     ty: self.instantiate_type(
                         self.get_type_of_property_definition(
                             class_symbol.program_id,
@@ -8635,7 +8600,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                             let name = property_key_name_str(&method.key)?;
                             Some(TyProperty {
                                 name,
-                                flags: property_name_flags(&method.key),
                                 computed: false,
                                 optional: false,
                                 method: true,
@@ -8651,7 +8615,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                             let name = property_key_name_str(&property.key)?;
                             Some(TyProperty {
                                 name,
-                                flags: property_name_flags(&property.key),
                                 computed: false,
                                 optional: property.optional,
                                 method: false,
@@ -8688,7 +8651,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                     let name = property_key_name_str(&method.key)?;
                     Some(TyProperty {
                         name,
-                        flags: property_name_flags(&method.key),
                         computed: false,
                         optional: false,
                         method: true,
@@ -8700,7 +8662,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                     let name = property_key_name_str(&property.key)?;
                     Some(TyProperty {
                         name,
-                        flags: property_name_flags(&property.key),
                         ty: self.get_type_of_property_definition(
                             program_id,
                             property,
@@ -9420,7 +9381,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 );
                 Some(TyProperty {
                     name,
-                    flags: property_name_flags(&property.key),
                     ty,
                     computed: false,
                     optional: false,
@@ -11105,7 +11065,6 @@ impl<'a, 'store> Checker<'a, 'store> {
             } else {
                 properties.push(TyProperty {
                     name,
-                    flags: TyPropertyFlags::NONE,
                     ty,
                     computed: false,
                     optional: false,

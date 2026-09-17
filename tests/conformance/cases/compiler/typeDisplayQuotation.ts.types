@@ -1,0 +1,62 @@
+declare function mixedIndexedAccess<T>(): readonly [T['single'], T["double"]];
+>                ^^^^^^^^^^^^^^^^^^: <T>() => readonly [T["single"], T["double"]]   (Function) (Identifier)
+
+declare function mixedIndexedAccess<T>(): readonly [T['single'], T["double"]];
+>                                   ^: any   (Any) (Identifier)
+
+declare function mixedIndexedAccess<T>(): readonly [T['single'], T["double"]];
+>                                                   ^: any   (Any) (Identifier)
+
+declare function mixedIndexedAccess<T>(): readonly [T['single'], T["double"]];
+>                                                                ^: any   (Any) (Identifier)
+
+declare function singleTuple(): readonly ['entry'];
+>                ^^^^^^^^^^^: () => readonly ["entry"]   (Function) (Identifier)
+
+declare function doubleTuple(): readonly ["entry"];
+>                ^^^^^^^^^^^: () => readonly ["entry"]   (Function) (Identifier)
+
+declare function mixedTuple(): readonly ['same', "same"];
+>                ^^^^^^^^^^: () => readonly ["same", "same"]   (Function) (Identifier)
+
+declare function singleObject(): { kind: 'single' };
+>                ^^^^^^^^^^^^: () => { kind: "single"; }   (Function) (Identifier)
+
+declare function singleObject(): { kind: 'single' };
+>                                  ^^^^: "single"   (StringLiteral) (Identifier)
+
+declare function doubleObject(): { kind: "double" };
+>                ^^^^^^^^^^^^: () => { kind: "double"; }   (Function) (Identifier)
+
+declare function doubleObject(): { kind: "double" };
+>                                  ^^^^: "double"   (StringLiteral) (Identifier)
+
+declare function mixedObject(): { single: 'same'; double: "same" };
+>                ^^^^^^^^^^^: () => { single: "same"; double: "same"; }   (Function) (Identifier)
+
+declare function mixedObject(): { single: 'same'; double: "same" };
+>                                 ^^^^^^: "same"   (StringLiteral) (Identifier)
+
+declare function mixedObject(): { single: 'same'; double: "same" };
+>                                                 ^^^^^^: "same"   (StringLiteral) (Identifier)
+
+declare function singleProperty(): { 'not-name': string };
+>                ^^^^^^^^^^^^^^: () => { "not-name": string; }   (Function) (Identifier)
+
+declare function doubleProperty(): { "not-name": string };
+>                ^^^^^^^^^^^^^^: () => { "not-name": string; }   (Function) (Identifier)
+
+declare function mixedProperty(): { 'same-name': string; "same-name"?: string };
+>                ^^^^^^^^^^^^^: () => { "same-name": string; "same-name"?: string; }   (Function) (Identifier)
+
+declare function quotationEdges(): readonly ['say "hello"', "it's", 'both \'"', 'C:\\temp'];
+>                ^^^^^^^^^^^^^^: () => readonly ['say "hello"', "it's", "both '\"", "C:\\temp"]   (Function) (Identifier)
+
+const synthesizedLiteral = 'synthesized' as const;
+>     ^^^^^^^^^^^^^^^^^^: "synthesized"   (StringLiteral) (Identifier)
+
+const synthesizedLiteral = 'synthesized' as const;
+>                                           ^^^^^: any   (Any) (Identifier)
+
+const synthesizedLiteral = 'synthesized' as const;
+>                                           ^^^^^: any   (Error) (Identifier)

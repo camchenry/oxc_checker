@@ -497,7 +497,7 @@ expected: { [KeyType in keyof ObjectType as Filter<KeyType, KeysType>]: ObjectTy
 >                                        ^^^^^^^^^^^: string   (String) (Identifier)
 
 type CreatedEvent = {
->    ^^^^^^^^^^^^: { type: 'created'; user: User; }   (Object) (Identifier)
+>    ^^^^^^^^^^^^: { type: "created"; user: User; }   (Object) (Identifier)
 
   type: 'created'
 > ^^^^: "created"   (StringLiteral) (Identifier)
@@ -509,7 +509,7 @@ type CreatedEvent = {
 >       ^^^^: any   (Any) (Identifier)
 
 type DeletedEvent = {
->    ^^^^^^^^^^^^: { type: 'deleted'; id: string; actor?: string; }   (Object) (Identifier)
+>    ^^^^^^^^^^^^: { type: "deleted"; id: string; actor?: string; }   (Object) (Identifier)
 
   type: 'deleted'
 > ^^^^: "deleted"   (StringLiteral) (Identifier)

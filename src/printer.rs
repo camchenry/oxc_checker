@@ -8,7 +8,7 @@ use crate::{
     limits::TYPE_STRING_MAX_DEPTH,
     types::{
         MappedModifier, Signature, SignatureKind, TupleElement, Ty, TyFunction, TyKind,
-        TyParameter, TyProperty, TyPropertyFlags, TyTypeParameter, TyTypePredicate,
+        TyParameter, TyProperty, TyTypeParameter, TyTypePredicate,
     },
 };
 
@@ -17,9 +17,7 @@ bitflags! {
     struct TypeFormatFlags: u8 {
         const NONE = 0;
         const WRITE_ARRAY_AS_GENERIC_TYPE = 1 << 0;
-        const PRESERVE_PROPERTY_NAME_QUOTES = 1 << 1;
-        const USE_SINGLE_QUOTES_FOR_STRING_LITERAL = 1 << 2;
-        const PARENTHESIZE_CONDITIONAL_RETURN = 1 << 3;
+        const PARENTHESIZE_CONDITIONAL_RETURN = 1 << 1;
     }
 }
 
@@ -43,12 +41,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
         replace_type_reference: &dyn Fn(Ty<'a>) -> Option<Ty<'a>>,
         depth: &Cell<usize>,
     ) -> String {
-        self.to_type_string_with_flags(
-            ty,
-            replace_type_reference,
-            TypeFormatFlags::PRESERVE_PROPERTY_NAME_QUOTES,
-            depth,
-        )
+        self.to_type_string_with_flags(ty, replace_type_reference, TypeFormatFlags::NONE, depth)
     }
 
     fn to_type_string_with_flags(
@@ -63,11 +56,6 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
             return "...".to_string();
         }
 
-        let flags = if current == 0 {
-            flags
-        } else {
-            flags & !TypeFormatFlags::PRESERVE_PROPERTY_NAME_QUOTES
-        };
         depth.set(current + 1);
         let result = self.to_type_string_inner(ty, replace_type_reference, flags, depth);
         depth.set(current);
@@ -154,7 +142,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                             format!(
                                 "{}{}{};",
                                 readonly,
-                                property_name_to_type_string(property, flags),
+                                property_name_to_type_string(property),
                                 self.signature_to_type_string_for_function(
                                     function,
                                     &|_| None,
@@ -166,20 +154,11 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                             format!(
                                 "{}{}: {};",
                                 readonly,
-                                property_name_to_type_string(property, flags),
+                                property_name_to_type_string(property),
                                 self.to_type_string_with_flags(
                                     property.ty,
                                     replace_type_reference,
-                                    flags
-                                        | TypeFormatFlags::WRITE_ARRAY_AS_GENERIC_TYPE
-                                        | if property
-                                            .flags
-                                            .contains(TyPropertyFlags::TYPE_SINGLE_QUOTED)
-                                        {
-                                            TypeFormatFlags::USE_SINGLE_QUOTES_FOR_STRING_LITERAL
-                                        } else {
-                                            TypeFormatFlags::NONE
-                                        },
+                                    flags | TypeFormatFlags::WRITE_ARRAY_AS_GENERIC_TYPE,
                                     depth,
                                 )
                             )
@@ -247,10 +226,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                 }
             }
             TyKind::GlobalThis => "typeof globalThis".to_string(),
-            TyKind::StringLiteral(string_literal) => quoted_property_name(
-                string_literal.value,
-                flags.contains(TypeFormatFlags::USE_SINGLE_QUOTES_FOR_STRING_LITERAL),
-            ),
+            TyKind::StringLiteral(string_literal) => quoted_type_string(string_literal.value),
             TyKind::NumberLiteral(number_literal) => {
                 // Print the base-10 representation of the number
                 if number_literal.value.is_zero() {
@@ -899,20 +875,13 @@ impl<'a> Checker<'a, '_> {
     }
 }
 
-fn property_name_to_type_string(
-    property: &TyProperty<'_>,
-    format_flags: TypeFormatFlags,
-) -> String {
+fn property_name_to_type_string(property: &TyProperty<'_>) -> String {
     let name = if property.computed {
         format!("[{}]", property.name)
     } else if is_identifier_name(property.name) || is_numeric_property_name(property.name) {
         property.name.to_string()
     } else {
-        quoted_property_name(
-            property.name,
-            format_flags.contains(TypeFormatFlags::PRESERVE_PROPERTY_NAME_QUOTES)
-                && property.flags.contains(TyPropertyFlags::SINGLE_QUOTED),
-        )
+        quoted_type_string(property.name)
     };
     if property.optional {
         format!("{name}?")
@@ -921,9 +890,13 @@ fn property_name_to_type_string(
     }
 }
 
-fn quoted_property_name(name: &str, single_quoted: bool) -> String {
+fn quoted_type_string(name: &str) -> String {
     let mut quoted = String::with_capacity(name.len() + 2);
-    let delimiter = if single_quoted { '\'' } else { '"' };
+    let delimiter = if name.contains('"') && !name.contains('\'') {
+        '\''
+    } else {
+        '"'
+    };
     quoted.push(delimiter);
     for character in name.chars() {
         match character {

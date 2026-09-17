@@ -3,7 +3,6 @@ use crate::{
     limits::{TUPLE_SPREAD_MAX_LENGTH, TYPE_VISIT_MAX_DEPTH},
     type_set::{reduce_intersection_type, reduce_source_union_type, reduce_union_type},
 };
-use bitflags::bitflags;
 use oxc_allocator::{Allocator, HashMap as ArenaHashMap, HashSet as ArenaHashSet, Vec as ArenaVec};
 use oxc_ast::ast::{
     BigintBase, BindingPattern, NumberBase, PropertyKey, TSMappedTypeModifierOperator, TSType,
@@ -16,17 +15,6 @@ use std::{cell::RefCell, marker::PhantomData, num::NonZeroU32, ops::Deref};
 
 const SYNTHETIC_INDEX_SIGNATURE_NAME: &str = "x";
 const TYPE_VISIT_INLINE_WORDS: usize = 32;
-
-bitflags! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-    struct TypeFormatFlags: u8 {
-        const NONE = 0;
-        const WRITE_ARRAY_AS_GENERIC_TYPE = 1 << 0;
-        const PRESERVE_PROPERTY_NAME_QUOTES = 1 << 1;
-        const USE_SINGLE_QUOTES_FOR_STRING_LITERAL = 1 << 2;
-        const PARENTHESIZE_CONDITIONAL_RETURN = 1 << 3;
-    }
-}
 
 #[derive(Clone, Copy)]
 pub struct CheckerArena<'a> {
@@ -138,7 +126,6 @@ impl<'a> TypeBuilder<'a> {
     pub const fn property(self, name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
         TyProperty {
             name,
-            flags: TyPropertyFlags::NONE,
             computed: false,
             optional: false,
             method: false,
@@ -655,19 +642,9 @@ pub struct TyModuleNamespace<'a> {
     pub properties: ArenaVec<'a, TyProperty<'a>>,
 }
 
-bitflags! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-    pub struct TyPropertyFlags: u8 {
-        const NONE = 0;
-        const SINGLE_QUOTED = 1 << 0;
-        const TYPE_SINGLE_QUOTED = 1 << 1;
-    }
-}
-
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub struct TyProperty<'a> {
     pub name: &'a str,
-    pub flags: TyPropertyFlags,
     pub ty: Ty<'a>,
     pub computed: bool,
     pub optional: bool,
@@ -1740,7 +1717,6 @@ impl<'a> Ty<'a> {
     pub const fn property(name: &'a str, ty: Ty<'a>) -> TyProperty<'a> {
         TyProperty {
             name,
-            flags: TyPropertyFlags::NONE,
             computed: false,
             optional: false,
             method: false,
@@ -2871,23 +2847,6 @@ fn property_key_to_binding_pattern_string(key: &PropertyKey<'_>) -> Option<Strin
         PropertyKey::NumericLiteral(literal) => literal.raw.as_ref().map(ToString::to_string),
         PropertyKey::StringLiteral(literal) => Some(format!("{:?}", literal.value.as_str())),
         _ => None,
-    }
-}
-
-pub(crate) fn property_name_flags(key: &PropertyKey<'_>) -> TyPropertyFlags {
-    match key {
-        PropertyKey::StringLiteral(literal) => literal
-            .raw
-            .as_ref()
-            .and_then(|raw| raw.as_str().chars().next())
-            .map_or(TyPropertyFlags::NONE, |delimiter| {
-                if delimiter == '\'' {
-                    TyPropertyFlags::SINGLE_QUOTED
-                } else {
-                    TyPropertyFlags::NONE
-                }
-            }),
-        _ => TyPropertyFlags::NONE,
     }
 }
 

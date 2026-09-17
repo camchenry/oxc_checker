@@ -492,7 +492,6 @@ export type OmitKeyof<
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >    ^^^^^^^^^^^^^^^^^^^^^^^: { streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode?: "append" | "reset" | "replace"; }   (Object) (Identifier)
-                    expected: { streamFn: (context: QueryFunctionContext<TQueryKey>) => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>; refetchMode?: 'append' | 'reset' | 'replace'; }
 
 type BaseStreamedQueryParams<TQueryFnData, TQueryKey extends QueryKey> = {
 >                            ^^^^^^^^^^^^: any   (Any) (Identifier)

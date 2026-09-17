@@ -600,7 +600,6 @@ fn object_method_display_uses_signature_syntax() {
     let abort_signal = arena.type_reference("AbortSignal", []);
     let abort = TyProperty {
         name: "abort",
-        flags: TyPropertyFlags::NONE,
         ty: arena.function(
             [],
             [Ty::parameter("reason", Ty::any()).optional(true)],
@@ -625,7 +624,6 @@ fn object_readonly_property_display() {
     let arena = context.arena;
     let readonly = TyProperty {
         name: "x",
-        flags: TyPropertyFlags::NONE,
         ty: Ty::string(),
         computed: false,
         optional: false,
@@ -640,13 +638,12 @@ fn object_readonly_property_display() {
 }
 
 #[test]
-fn object_non_identifier_property_uses_single_quotes() {
+fn object_non_identifier_property_uses_double_quotes() {
     let allocator = Allocator::default();
     let context = TypeStringContext::new(&allocator);
     let arena = context.arena;
     let property = TyProperty {
         name: "~types",
-        flags: TyPropertyFlags::SINGLE_QUOTED,
         ty: Ty::string(),
         computed: false,
         optional: true,
@@ -656,7 +653,7 @@ fn object_non_identifier_property_uses_single_quotes() {
 
     assert_eq!(
         context.type_string(arena.object([property])),
-        "{ readonly '~types'?: string; }"
+        "{ readonly \"~types\"?: string; }"
     );
 }
 
@@ -667,7 +664,6 @@ fn object_non_identifier_property_preserves_double_quotes() {
     let arena = context.arena;
     let property = TyProperty {
         name: "data-id",
-        flags: TyPropertyFlags::NONE,
         ty: Ty::string(),
         computed: false,
         optional: false,
@@ -682,13 +678,12 @@ fn object_non_identifier_property_preserves_double_quotes() {
 }
 
 #[test]
-fn object_property_type_preserves_single_quotes() {
+fn object_property_type_uses_double_quotes() {
     let allocator = Allocator::default();
     let context = TypeStringContext::new(&allocator);
     let arena = context.arena;
     let property = TyProperty {
         name: "brand",
-        flags: TyPropertyFlags::TYPE_SINGLE_QUOTED,
         ty: arena.string_literal("test-brand"),
         computed: false,
         optional: false,
@@ -698,7 +693,23 @@ fn object_property_type_preserves_single_quotes() {
 
     assert_eq!(
         context.type_string(arena.object([property])),
-        "{ brand: 'test-brand'; }"
+        "{ brand: \"test-brand\"; }"
+    );
+}
+
+#[test]
+fn string_literal_uses_single_quotes_to_avoid_escaping_double_quotes() {
+    let allocator = Allocator::default();
+    let context = TypeStringContext::new(&allocator);
+    let arena = context.arena;
+
+    assert_eq!(
+        context.type_string(arena.string_literal("say \"hello\"")),
+        "'say \"hello\"'"
+    );
+    assert_eq!(
+        context.type_string(arena.string_literal("both '\"")),
+        "\"both '\\\"\""
     );
 }
 
@@ -709,7 +720,6 @@ fn nested_object_property_uses_default_double_quotes() {
     let arena = context.arena;
     let nested = arena.object([TyProperty {
         name: "stage-0",
-        flags: TyPropertyFlags::SINGLE_QUOTED,
         ty: Ty::string(),
         computed: false,
         optional: false,
@@ -718,7 +728,6 @@ fn nested_object_property_uses_default_double_quotes() {
     }]);
     let outer = arena.object([TyProperty {
         name: "configs",
-        flags: TyPropertyFlags::NONE,
         ty: nested,
         computed: false,
         optional: false,
@@ -740,7 +749,6 @@ fn object_property_preserves_generic_array_declaration_syntax() {
     let array = arena.generic_array(Ty::string(), false);
     let values = TyProperty {
         name: "values",
-        flags: TyPropertyFlags::NONE,
         ty: array,
         computed: false,
         optional: true,
@@ -749,7 +757,6 @@ fn object_property_preserves_generic_array_declaration_syntax() {
     };
     let maybe_values = TyProperty {
         name: "maybeValues",
-        flags: TyPropertyFlags::NONE,
         ty: arena.union([array, Ty::undefined()]),
         computed: false,
         optional: false,

@@ -35,7 +35,7 @@ const msg2 = `arg = ${arg || 'default'}`;
 >                     ^^^: "foo"   (StringLiteral) (Identifier)
 
 const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
->     ^^^^^^^^^^^^^^^^^^: string & { _kind?: 'MyString'; }   (Intersection) (Identifier)
+>     ^^^^^^^^^^^^^^^^^^: string & { _kind?: "MyString"; }   (Intersection) (Identifier)
 
 const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
 >                                    ^^^^^: "MyString" | undefined   (Union) (Identifier)
@@ -44,7 +44,7 @@ const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
 >     ^^^^: string   (String) (Identifier)
 
 const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
->                                    ^^^^^^^^^^^^^^^^^^: string & { _kind?: 'MyString'; }   (Intersection) (Identifier)
+>                                    ^^^^^^^^^^^^^^^^^^: string & { _kind?: "MyString"; }   (Intersection) (Identifier)
 
 const arg = 123;
 >     ^^^: 123   (NumberLiteral) (Identifier)

@@ -936,7 +936,6 @@ export type PayloadActionCreator<
 
 export function createAction<P = void, T extends string = string>(
 >               ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (Object) (Identifier)
-                    expected: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 
 export function createAction<P = void, T extends string = string>(
 >                            ^: any   (Any) (Identifier)
@@ -961,7 +960,6 @@ export function createAction<P = void, T extends string = string>(
 
 export function createAction<
 >               ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (Object) (Identifier)
-                    expected: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 
   PA extends PrepareAction<any>,
 > ^^: any   (Any) (Identifier)
@@ -1004,7 +1002,6 @@ export function createAction<
 
 export function createAction(type: string, prepareAction?: Function): any {
 >               ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (Object) (Identifier)
-                    expected: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 
 export function createAction(type: string, prepareAction?: Function): any {
 >                            ^^^^: string   (String) (Identifier)
@@ -1198,7 +1195,6 @@ type IfPrepareActionMethodProvided<
 
 import { createAction, isActionCreator } from '../packages/toolkit/src/createAction'
 >        ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (Object) (Identifier)
-             expected: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 
 import { createAction, isActionCreator } from '../packages/toolkit/src/createAction'
 >                      ^^^^^^^^^^^^^^^: (action: unknown) => action is BaseActionCreator<unknown, string> & Function   (Function) (Identifier)
@@ -1221,7 +1217,6 @@ export const increment = createAction<number, 'counter/increment'>('counter/incr
 
 export const increment = createAction<number, 'counter/increment'>('counter/increment')
 >                        ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (Object) (Identifier)
-                             expected: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 
 export const incrementAction = increment(5)
 >            ^^^^^^^^^^^^^^^: any   (Error) (Identifier)
@@ -1249,7 +1244,6 @@ export const reset = createAction('counter/reset')
 
 export const reset = createAction('counter/reset')
 >                    ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (Object) (Identifier)
-                         expected: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 
 export const resetAction = reset()
 >            ^^^^^^^^^^^: any   (Error) (Identifier)
@@ -1277,7 +1271,6 @@ export const setName = createAction<string | undefined, 'user/nameChanged'>(
 
 export const setName = createAction<string | undefined, 'user/nameChanged'>(
 >                      ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (Object) (Identifier)
-                           expected: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 
 export const missingNameAction = setName()
 >            ^^^^^^^^^^^^^^^^^: any   (Error) (Identifier)
@@ -1301,7 +1294,6 @@ export const addTodo = createAction(
 
 export const addTodo = createAction(
 >                      ^^^^^^^^^^^^: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>["payload"], T, PA>; }   (Object) (Identifier)
-                           expected: { <P = void, T extends string = string>(type: T): PayloadActionCreator<P, T>; <PA extends PrepareAction<any>, T extends string = string>(type: T, prepareAction: PA): PayloadActionCreator<ReturnType<PA>['payload'], T, PA>; }
 
   (title: string, priority = 1) => ({
 >  ^^^^^: string   (String) (Identifier)

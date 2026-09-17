@@ -811,7 +811,6 @@ import { pipe } from '../src/pipe'
 
 type Task = {
 >    ^^^^: { id: string; status: "todo" | "done"; points?: number; }   (Object) (Identifier)
- expected: { id: string; status: 'todo' | 'done'; points?: number; }
 
   id: string
 > ^^: string   (String) (Identifier)

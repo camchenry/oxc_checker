@@ -3160,9 +3160,9 @@ fn normalize_nested_type_contexts(type_repr: &str) -> String {
             normalized.push_str(&template);
             index = next_index;
         } else if matches!(character, '\'' | '"') {
-            let quoted_end = quoted_type_part_end(type_repr, index);
-            normalized.push_str(&type_repr[index..quoted_end]);
-            index = quoted_end;
+            let (quoted, next_index) = normalize_quoted_type_part(type_repr, index);
+            normalized.push_str(&quoted);
+            index = next_index;
         } else if is_open_type_delimiter(character) {
             if let Some(close_index) = matching_type_delimiter_index(type_repr, index) {
                 normalized.push(character);
@@ -3183,6 +3183,45 @@ fn normalize_nested_type_contexts(type_repr: &str) -> String {
     }
 
     normalized
+}
+
+fn normalize_quoted_type_part(type_repr: &str, quote_index: usize) -> (String, usize) {
+    let (delimiter, mut index) = char_at(type_repr, quote_index);
+    let mut normalized = String::from("\"");
+
+    while index < type_repr.len() {
+        let (character, next_index) = char_at(type_repr, index);
+        if character == '\\' {
+            let escape_start = index;
+            index = next_index;
+            if index >= type_repr.len() {
+                break;
+            }
+            let (escaped, escaped_end) = char_at(type_repr, index);
+            if matches!(escaped, '\'' | '"') {
+                if escaped == '"' {
+                    normalized.push_str("\\\"");
+                } else {
+                    normalized.push(escaped);
+                }
+            } else {
+                normalized.push_str(&type_repr[escape_start..escaped_end]);
+            }
+            index = escaped_end;
+        } else if character == delimiter {
+            normalized.push('"');
+            return (normalized, next_index);
+        } else {
+            if character == '"' {
+                normalized.push_str("\\\"");
+            } else {
+                normalized.push(character);
+            }
+            index = next_index;
+        }
+    }
+
+    (type_repr[quote_index..].to_string(), type_repr.len())
 }
 
 fn normalize_template_literal_type_part(type_repr: &str, start: usize) -> (String, usize) {
