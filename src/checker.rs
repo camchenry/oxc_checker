@@ -64,6 +64,9 @@ pub(crate) struct TypeStringCacheKey<'a> {
 
 pub(crate) type SymbolTypeCache<'a> = Vec<Option<IndexVec<SymbolId, Option<Ty<'a>>>>>;
 
+/// Stable declaration identities for an active structural interface comparison.
+pub(crate) type InterfaceRelationKey<'a> = (Option<SymbolRef>, &'a str, Option<SymbolRef>, &'a str);
+
 pub struct Checker<'a, 'store> {
     pub(crate) store: &'store ProgramStore<'a>,
     pub(crate) arena: CheckerArena<'a>,
@@ -88,6 +91,8 @@ pub struct Checker<'a, 'store> {
     pub(crate) resolving_type_parameters: RefCell<Vec<TypeParameterResolution>>,
     pub(crate) resolving_class_members: RefCell<Vec<ClassMemberResolution>>,
     pub(crate) interface_property_resolution_stack: RefCell<Vec<(usize, String, String)>>,
+    /// Active non-identical interface pairs being compared structurally.
+    pub(crate) interface_relation_stack: RefCell<Vec<InterfaceRelationKey<'a>>>,
     pub(crate) ts_type_resolution_depth: Cell<usize>,
     pub(crate) hide_implicit_type_argument_display: Cell<bool>,
     pub(crate) type_instantiation_depth: Cell<usize>,
@@ -146,6 +151,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             resolving_type_parameters: RefCell::new(Vec::new()),
             resolving_class_members: RefCell::new(Vec::new()),
             interface_property_resolution_stack: RefCell::new(Vec::new()),
+            interface_relation_stack: RefCell::new(Vec::new()),
             ts_type_resolution_depth: Cell::new(0),
             hide_implicit_type_argument_display: Cell::new(false),
             type_instantiation_depth: Cell::new(0),

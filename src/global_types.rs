@@ -24,6 +24,7 @@ const SYMBOL_TYPE_NAME: &str = "Symbol";
 const BIGINT_TYPE_NAME: &str = "BigInt";
 const REGEXP_TYPE_NAME: &str = "RegExp";
 const NON_NULLABLE_TYPE_NAME: &str = "NonNullable";
+const AWAITED_TYPE_NAME: &str = "Awaited";
 const EXTRACT_TYPE_NAME: &str = "Extract";
 const RECORD_TYPE_NAME: &str = "Record";
 const ITERABLE_TYPE_NAME: &str = "Iterable";
@@ -352,6 +353,17 @@ impl<'a, 'store> Checker<'a, 'store> {
 
     pub(crate) fn get_global_promise_type(&self, program_id: ProgramId) -> Ty<'a> {
         self.expect_global_type_reference(program_id, "Promise", std::iter::empty())
+    }
+
+    /// Return the global `Awaited<T>` alias without reducing a deferred type argument.
+    pub(crate) fn get_global_awaited_type(
+        &self,
+        program_id: ProgramId,
+        target_type: Ty<'a>,
+    ) -> Ty<'a> {
+        let ty = self.expect_global_type_reference(program_id, AWAITED_TYPE_NAME, [target_type]);
+        self.register_type_alias_metadata(program_id, ty);
+        ty
     }
 
     pub(crate) fn get_global_non_nullable_type(

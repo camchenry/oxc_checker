@@ -708,13 +708,49 @@ impl<'a, 'store> Checker<'a, 'store> {
                             && self.is_assignable_to_at_depth(apparent, target, next_depth)
                     })
             }
-            (TyKind::TypeReference(source), TyKind::TypeReference(target)) => {
-                source.has_identical_target(target)
-                    && self.type_arguments_assignable_to(
-                        &source.type_arguments,
-                        &target.type_arguments,
+            (TyKind::TypeReference(source_reference), TyKind::TypeReference(target_reference)) => {
+                if source_reference.has_identical_target(target_reference) {
+                    self.type_arguments_assignable_to(
+                        &source_reference.type_arguments,
+                        &target_reference.type_arguments,
                         next_depth,
                     )
+                } else {
+                    let relation = (
+                        source_reference.target,
+                        source_reference.name,
+                        target_reference.target,
+                        target_reference.name,
+                    );
+                    let cycle_detected = {
+                        let mut stack = self.interface_relation_stack.borrow_mut();
+                        if stack.contains(&relation) {
+                            true
+                        } else {
+                            stack.push(relation);
+                            false
+                        }
+                    };
+                    if cycle_detected {
+                        return true;
+                    }
+
+                    let source_object =
+                        self.resolve_iteration_protocol_reference_for_relation(source);
+                    let target_object =
+                        self.resolve_iteration_protocol_reference_for_relation(target);
+                    let result =
+                        source_object
+                            .zip(target_object)
+                            .is_some_and(|(source, target)| {
+                                self.is_assignable_to_at_depth(source, target, next_depth)
+                            });
+                    let mut stack = self.interface_relation_stack.borrow_mut();
+                    if let Some(position) = stack.iter().rposition(|active| active == &relation) {
+                        stack.remove(position);
+                    }
+                    result
+                }
             }
             (TyKind::Class(_) | TyKind::Function(_), TyKind::TypeReference(reference)) => {
                 reference.target.is_some_and(|symbol| {

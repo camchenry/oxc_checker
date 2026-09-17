@@ -5274,6 +5274,84 @@ impl<'a, 'store> Checker<'a, 'store> {
         (!properties.is_empty()).then(|| self.ty.object(properties))
     }
 
+    /// Materialize interface members when the complete shape is an iteration protocol.
+    pub(crate) fn resolve_iteration_protocol_reference_for_relation(
+        &self,
+        ty: Ty<'a>,
+    ) -> Option<Ty<'a>> {
+        let TyKind::TypeReference(reference) = self.ty_kind(ty) else {
+            return None;
+        };
+        let symbol = reference.target?;
+        if !self.is_iteration_protocol_reference(symbol.program_id, reference, 0) {
+            return None;
+        }
+
+        let properties =
+            self.get_object_spread_properties_of_interface(symbol.program_id, reference, 0);
+        // TODO(correctness): Generalize structural interface relations
+        (!properties.is_empty()
+            && properties.iter().all(|property| {
+                matches!(
+                    property.name,
+                    "Symbol.iterator" | "Symbol.asyncIterator" | "next" | "return" | "throw"
+                )
+            }))
+        .then(|| self.ty.object(properties))
+    }
+
+    fn is_iteration_protocol_reference(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+        depth: usize,
+    ) -> bool {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return false;
+        }
+        let declarations = self.interface_declarations_for_type_reference(program_id, reference);
+        if declarations.is_empty() {
+            return false;
+        }
+
+        let mut has_protocol_member = false;
+        for &(declaration_program_id, interface) in &declarations {
+            for signature in &interface.body.body {
+                let key = match signature {
+                    TSSignature::TSPropertySignature(property) => &property.key,
+                    TSSignature::TSMethodSignature(method) => &method.key,
+                    _ => return false,
+                };
+                let Some(name) = self.resolved_property_key_name(declaration_program_id, key)
+                else {
+                    return false;
+                };
+                if !matches!(
+                    name,
+                    "Symbol.iterator" | "Symbol.asyncIterator" | "next" | "return" | "throw"
+                ) {
+                    return false;
+                }
+                has_protocol_member = true;
+            }
+        }
+
+        self.get_interface_heritage_types(program_id, reference)
+            .into_iter()
+            .all(|(heritage_program_id, heritage_type)| {
+                let TyKind::TypeReference(heritage_reference) = self.ty_kind(heritage_type) else {
+                    return false;
+                };
+                has_protocol_member = true;
+                self.is_iteration_protocol_reference(
+                    heritage_program_id,
+                    heritage_reference,
+                    depth + 1,
+                )
+            })
+            && has_protocol_member
+    }
+
     fn apparent_type_declaration_for_conditional_match(
         &self,
         program_id: ProgramId,
@@ -7817,6 +7895,17 @@ impl<'a, 'store> Checker<'a, 'store> {
                     reference,
                     property_name,
                 )
+            })
+            .or_else(|| {
+                self.get_interface_heritage_types(program_id, reference)
+                    .into_iter()
+                    .find_map(|(heritage_program_id, heritage_type)| {
+                        self.get_property_type_of_static_member_type(
+                            heritage_program_id,
+                            heritage_type,
+                            property_name,
+                        )
+                    })
             });
 
         {
@@ -11248,7 +11337,11 @@ impl<'a, 'store> Checker<'a, 'store> {
                     }
                     .unwrap_or_else(|| self.ty.any());
                     return Some(if for_of.r#await {
-                        self.get_awaited_type(program_id, element_type)
+                        if matches!(self.ty_kind(element_type), TyKind::TypeParameter(_)) {
+                            self.get_global_awaited_type(program_id, element_type)
+                        } else {
+                            self.get_awaited_type(program_id, element_type)
+                        }
                     } else {
                         element_type
                     });
@@ -11908,32 +12001,120 @@ impl<'a, 'store> Checker<'a, 'store> {
             return None;
         }
 
-        let TyKind::TypeReference(reference) = self.ty_kind(iterator_type) else {
-            // TODO(completeness): Extract channels from structural next/return methods and unions.
-            return None;
-        };
-        if reference.name == iterator_type_name
-            && self.is_global_lib_type_reference(program_id, reference)
-        {
-            let index = match kind {
-                IterationTypeKind::Yield => 0,
-                IterationTypeKind::Return => 1,
-                IterationTypeKind::Next => 2,
-            };
-            return reference.type_arguments.get(index).copied();
+        if let TyKind::TypeReference(reference) = self.ty_kind(iterator_type) {
+            if reference.name == iterator_type_name
+                && self.is_global_lib_type_reference(program_id, reference)
+            {
+                let index = match kind {
+                    IterationTypeKind::Yield => 0,
+                    IterationTypeKind::Return => 1,
+                    IterationTypeKind::Next => 2,
+                };
+                return reference.type_arguments.get(index).copied();
+            }
+
+            if let Some(iteration_type) = self
+                .get_interface_heritage_types(program_id, reference)
+                .into_iter()
+                .find_map(|(heritage_program_id, heritage_type)| {
+                    self.get_iteration_type_of_iterator(
+                        heritage_program_id,
+                        heritage_type,
+                        iterator_type_name,
+                        kind,
+                        depth + 1,
+                    )
+                })
+            {
+                return Some(iteration_type);
+            }
         }
 
-        self.get_interface_heritage_types(program_id, reference)
+        let next_method =
+            self.get_property_type_of_static_member_type(program_id, iterator_type, "next")?;
+        self.get_signatures_of_type_in_program(program_id, next_method, SignatureKind::Call)
             .into_iter()
-            .find_map(|(heritage_program_id, heritage_type)| {
-                self.get_iteration_type_of_iterator(
-                    heritage_program_id,
-                    heritage_type,
-                    iterator_type_name,
-                    kind,
-                    depth + 1,
-                )
+            .filter(|signature| {
+                function_minimum_argument_count(self.arena(), signature.function(self.arena())) == 0
             })
+            .find_map(|signature| {
+                let result_type = signature.function(self.arena()).return_type();
+                let result_type = if iterator_type_name == "AsyncIterator" {
+                    self.get_awaited_type(program_id, result_type)
+                } else {
+                    result_type
+                };
+                self.get_iteration_type_of_iterator_result(program_id, result_type, kind, depth + 1)
+            })
+    }
+
+    /// Extract a selected channel from a standard or structural iterator result.
+    fn get_iteration_type_of_iterator_result(
+        &self,
+        program_id: ProgramId,
+        result_type: Ty<'a>,
+        kind: IterationTypeKind,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+
+        match self.ty_kind(result_type) {
+            TyKind::Union(union) => {
+                let types = union
+                    .types
+                    .iter()
+                    .filter_map(|result_type| {
+                        self.get_iteration_type_of_iterator_result(
+                            program_id,
+                            *result_type,
+                            kind,
+                            depth + 1,
+                        )
+                    })
+                    .collect::<Vec<_>>();
+                (!types.is_empty()).then(|| self.ty.union(types))
+            }
+            TyKind::TypeReference(reference)
+                if self.is_global_lib_type_reference(program_id, reference) =>
+            {
+                match (reference.name, kind) {
+                    ("IteratorResult" | "IteratorYieldResult", IterationTypeKind::Yield) => {
+                        reference.type_arguments.first().copied()
+                    }
+                    ("IteratorResult", IterationTypeKind::Return) => {
+                        reference.type_arguments.get(1).copied()
+                    }
+                    ("IteratorReturnResult", IterationTypeKind::Return) => {
+                        reference.type_arguments.first().copied()
+                    }
+                    _ => None,
+                }
+            }
+            TyKind::TypeReference(_) | TyKind::Conditional(_) | TyKind::IndexedAccess(_) => {
+                let expanded = self.expand_type(program_id, result_type, depth + 1);
+                (expanded != result_type).then(|| {
+                    self.get_iteration_type_of_iterator_result(
+                        program_id,
+                        expanded,
+                        kind,
+                        depth + 1,
+                    )
+                })?
+            }
+            _ => {
+                let done_type =
+                    self.get_property_type_of_static_member_type(program_id, result_type, "done");
+                let is_return = done_type.is_some_and(|done_type| {
+                    matches!(self.ty_kind(done_type), TyKind::BooleanLiteral(true))
+                });
+                if matches!(kind, IterationTypeKind::Yield) == is_return {
+                    return None;
+                }
+                self.get_property_type_of_static_member_type(program_id, result_type, "value")
+            }
+        }
     }
 
     fn get_interface_heritage_types(

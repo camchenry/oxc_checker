@@ -37,3 +37,41 @@ async function consumeInheritedStream() {
     inheritedChunk;
   }
 }
+
+interface StructuralNumberIterator {
+  next(): IteratorResult<1 | 2, void>;
+}
+interface StructuralNumbers {
+  [Symbol.iterator](): StructuralNumberIterator;
+}
+interface InheritedNumbers extends Iterable<1 | 2> {}
+declare const structuralNumbers: StructuralNumbers;
+declare const inheritedNumbers: InheritedNumbers;
+
+for (const structuralNumber of structuralNumbers) {
+  structuralNumber;
+}
+for (const inheritedNumber of inheritedNumbers) {
+  inheritedNumber;
+}
+
+declare const promisedNumbers: Iterable<Promise<1 | 2>>;
+for (const promisedNumber of promisedNumbers) {
+  promisedNumber;
+}
+async function consumePromisedNumbers() {
+  for await (const awaitedNumber of promisedNumbers) {
+    awaitedNumber;
+  }
+}
+
+interface RecursiveIterableA<T> {
+  next(): IteratorResult<T>;
+  [Symbol.iterator](): RecursiveIterableA<T>;
+}
+interface RecursiveIterableB<T> {
+  next(): IteratorResult<T>;
+  [Symbol.iterator](): RecursiveIterableB<T>;
+}
+declare const recursiveA: RecursiveIterableA<"recursive">;
+declare const recursiveB: RecursiveIterableB<"recursive">;

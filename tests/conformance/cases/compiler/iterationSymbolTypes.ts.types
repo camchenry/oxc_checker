@@ -38,19 +38,16 @@ async function useStream<TQueryFnData>(
 >                      ^^^^^^^^: () => AsyncIterable<TQueryFnData> | Promise<AsyncIterable<TQueryFnData>>   (Function) (Identifier)
 
   for await (const chunk of stream) {
->                  ^^^^^: TQueryFnData   (TypeParameter) (Identifier)
-                expected: Awaited<TQueryFnData>
+>                  ^^^^^: Awaited<TQueryFnData>   (TypeReference) (Identifier)
 
   for await (const chunk of stream) {
 >                           ^^^^^^: AsyncIterable<TQueryFnData>   (TypeReference) (Identifier)
 
     chunk;
->   ^^^^^: TQueryFnData   (TypeParameter) (Identifier)
- expected: Awaited<TQueryFnData>
+>   ^^^^^: Awaited<TQueryFnData>   (TypeReference) (Identifier)
 
     chunk;
->   ^^^^^^: TQueryFnData   (TypeParameter) (ExpressionStatement)
-  expected: Awaited<TQueryFnData>
+>   ^^^^^^: Awaited<TQueryFnData>   (TypeReference) (ExpressionStatement)
 
 async function* asyncGeneratorValues() {
 >               ^^^^^^^^^^^^^^^^^^^^: () => AsyncGenerator<1 | 2, void, unknown>   (Function) (Identifier)
@@ -128,19 +125,16 @@ async function consumeStructuralStream() {
 >              ^^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)
 
   for await (const structuralChunk of structuralStream) {
->                  ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
-                          expected: "chunk"
+>                  ^^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (Identifier)
 
   for await (const structuralChunk of structuralStream) {
 >                                     ^^^^^^^^^^^^^^^^: StructuralTextStream   (TypeReference) (Identifier)
 
     structuralChunk;
->   ^^^^^^^^^^^^^^^: any   (Any) (Identifier)
-           expected: "chunk"
+>   ^^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (Identifier)
 
     structuralChunk;
->   ^^^^^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
-            expected: "chunk"
+>   ^^^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (ExpressionStatement)
 
 interface InheritedTextStream extends AsyncIterable<"chunk"> {}
 >         ^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -167,16 +161,232 @@ async function consumeInheritedStream() {
 >              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)
 
   for await (const inheritedChunk of inheritedStream) {
->                  ^^^^^^^^^^^^^^: any   (Any) (Identifier)
-                         expected: "chunk"
+>                  ^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (Identifier)
 
   for await (const inheritedChunk of inheritedStream) {
 >                                    ^^^^^^^^^^^^^^^: InheritedTextStream   (TypeReference) (Identifier)
 
     inheritedChunk;
->   ^^^^^^^^^^^^^^: any   (Any) (Identifier)
-          expected: "chunk"
+>   ^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (Identifier)
 
     inheritedChunk;
->   ^^^^^^^^^^^^^^^: any   (Any) (ExpressionStatement)
-           expected: "chunk"
+>   ^^^^^^^^^^^^^^^: "chunk"   (StringLiteral) (ExpressionStatement)
+
+interface StructuralNumberIterator {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+interface StructuralNumberIterator {
+>         ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+  next(): IteratorResult<1 | 2, void>;
+> ^^^^: () => IteratorResult<1 | 2, void>   (Function) (Identifier)
+
+  next(): IteratorResult<1 | 2, void>;
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+  next(): IteratorResult<1 | 2, void>;
+>         ^^^^^^^^^^^^^^: any   (Error) (Identifier)
+
+interface StructuralNumbers {
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+interface StructuralNumbers {
+>         ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): StructuralNumberIterator;
+>  ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
+
+  [Symbol.iterator](): StructuralNumberIterator;
+>         ^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
+
+  [Symbol.iterator](): StructuralNumberIterator;
+>                      ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): StructuralNumberIterator;
+>                      ^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+interface InheritedNumbers extends Iterable<1 | 2> {}
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+interface InheritedNumbers extends Iterable<1 | 2> {}
+>         ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+interface InheritedNumbers extends Iterable<1 | 2> {}
+>                                  ^^^^^^^^: any   (Any) (Identifier)
+
+interface InheritedNumbers extends Iterable<1 | 2> {}
+>                                  ^^^^^^^^: any   (Error) (Identifier)
+
+declare const structuralNumbers: StructuralNumbers;
+>             ^^^^^^^^^^^^^^^^^: StructuralNumbers   (TypeReference) (Identifier)
+
+declare const structuralNumbers: StructuralNumbers;
+>                                ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+declare const structuralNumbers: StructuralNumbers;
+>                                ^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+declare const inheritedNumbers: InheritedNumbers;
+>             ^^^^^^^^^^^^^^^^: InheritedNumbers   (TypeReference) (Identifier)
+
+declare const inheritedNumbers: InheritedNumbers;
+>                               ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+declare const inheritedNumbers: InheritedNumbers;
+>                               ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+for (const structuralNumber of structuralNumbers) {
+>          ^^^^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
+
+for (const structuralNumber of structuralNumbers) {
+>                              ^^^^^^^^^^^^^^^^^: StructuralNumbers   (TypeReference) (Identifier)
+
+  structuralNumber;
+> ^^^^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
+
+  structuralNumber;
+> ^^^^^^^^^^^^^^^^^: 1 | 2   (Union) (ExpressionStatement)
+
+for (const inheritedNumber of inheritedNumbers) {
+>          ^^^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
+
+for (const inheritedNumber of inheritedNumbers) {
+>                             ^^^^^^^^^^^^^^^^: InheritedNumbers   (TypeReference) (Identifier)
+
+  inheritedNumber;
+> ^^^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
+
+  inheritedNumber;
+> ^^^^^^^^^^^^^^^^: 1 | 2   (Union) (ExpressionStatement)
+
+declare const promisedNumbers: Iterable<Promise<1 | 2>>;
+>             ^^^^^^^^^^^^^^^: Iterable<Promise<1 | 2>>   (TypeReference) (Identifier)
+
+declare const promisedNumbers: Iterable<Promise<1 | 2>>;
+>                              ^^^^^^^^: any   (Any) (Identifier)
+
+declare const promisedNumbers: Iterable<Promise<1 | 2>>;
+>                              ^^^^^^^^: any   (Error) (Identifier)
+
+declare const promisedNumbers: Iterable<Promise<1 | 2>>;
+>                                       ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
+
+declare const promisedNumbers: Iterable<Promise<1 | 2>>;
+>                                       ^^^^^^^: PromiseConstructor   (TypeReference) (Identifier)
+
+for (const promisedNumber of promisedNumbers) {
+>          ^^^^^^^^^^^^^^: Promise<1 | 2>   (TypeReference) (Identifier)
+
+for (const promisedNumber of promisedNumbers) {
+>                            ^^^^^^^^^^^^^^^: Iterable<Promise<1 | 2>>   (TypeReference) (Identifier)
+
+  promisedNumber;
+> ^^^^^^^^^^^^^^: Promise<1 | 2>   (TypeReference) (Identifier)
+
+  promisedNumber;
+> ^^^^^^^^^^^^^^^: Promise<1 | 2>   (TypeReference) (ExpressionStatement)
+
+async function consumePromisedNumbers() {
+>              ^^^^^^^^^^^^^^^^^^^^^^: () => Promise<void>   (Function) (Identifier)
+
+  for await (const awaitedNumber of promisedNumbers) {
+>                  ^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
+
+  for await (const awaitedNumber of promisedNumbers) {
+>                                   ^^^^^^^^^^^^^^^: Iterable<Promise<1 | 2>>   (TypeReference) (Identifier)
+
+    awaitedNumber;
+>   ^^^^^^^^^^^^^: 1 | 2   (Union) (Identifier)
+
+    awaitedNumber;
+>   ^^^^^^^^^^^^^^: 1 | 2   (Union) (ExpressionStatement)
+
+interface RecursiveIterableA<T> {
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+interface RecursiveIterableA<T> {
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+interface RecursiveIterableA<T> {
+>                            ^: any   (Any) (Identifier)
+
+  next(): IteratorResult<T>;
+> ^^^^: () => IteratorResult<T>   (Function) (Identifier)
+
+  next(): IteratorResult<T>;
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+  next(): IteratorResult<T>;
+>         ^^^^^^^^^^^^^^: any   (Error) (Identifier)
+
+  next(): IteratorResult<T>;
+>                        ^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): RecursiveIterableA<T>;
+>  ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
+
+  [Symbol.iterator](): RecursiveIterableA<T>;
+>         ^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
+
+  [Symbol.iterator](): RecursiveIterableA<T>;
+>                      ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): RecursiveIterableA<T>;
+>                      ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): RecursiveIterableA<T>;
+>                                         ^: any   (Any) (Identifier)
+
+interface RecursiveIterableB<T> {
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+interface RecursiveIterableB<T> {
+>         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+interface RecursiveIterableB<T> {
+>                            ^: any   (Any) (Identifier)
+
+  next(): IteratorResult<T>;
+> ^^^^: () => IteratorResult<T>   (Function) (Identifier)
+
+  next(): IteratorResult<T>;
+>         ^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+  next(): IteratorResult<T>;
+>         ^^^^^^^^^^^^^^: any   (Error) (Identifier)
+
+  next(): IteratorResult<T>;
+>                        ^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): RecursiveIterableB<T>;
+>  ^^^^^^: SymbolConstructor   (TypeReference) (Identifier)
+
+  [Symbol.iterator](): RecursiveIterableB<T>;
+>         ^^^^^^^^: unique symbol   (UniqueSymbol) (Identifier)
+
+  [Symbol.iterator](): RecursiveIterableB<T>;
+>                      ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): RecursiveIterableB<T>;
+>                      ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+  [Symbol.iterator](): RecursiveIterableB<T>;
+>                                         ^: any   (Any) (Identifier)
+
+declare const recursiveA: RecursiveIterableA<"recursive">;
+>             ^^^^^^^^^^: RecursiveIterableA<"recursive">   (TypeReference) (Identifier)
+
+declare const recursiveA: RecursiveIterableA<"recursive">;
+>                         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+declare const recursiveA: RecursiveIterableA<"recursive">;
+>                         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+declare const recursiveB: RecursiveIterableB<"recursive">;
+>             ^^^^^^^^^^: RecursiveIterableB<"recursive">   (TypeReference) (Identifier)
+
+declare const recursiveB: RecursiveIterableB<"recursive">;
+>                         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+declare const recursiveB: RecursiveIterableB<"recursive">;
+>                         ^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
