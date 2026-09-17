@@ -3,16 +3,10 @@
 # Cases root: tests/conformance/external
 allocs: total=85819 files=9 max_per_file=18616 average_per_file=9535.44
 files: passed=13 failed=28 panicked=0 total=41 pass_percentage=31.71%
-types: matched=2169 mismatched=329 total=2498 match_percentage=86.83%
-assign: matched=39348 mismatched=886 total=40234 match_percentage=97.80%
+types: matched=2171 mismatched=327 total=2498 match_percentage=86.91%
+assign: matched=39362 mismatched=886 total=40248 match_percentage=97.80%
 
-FAIL tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts matched_types=192 mismatched_types=2 total_types=194 match_percentage=98.97% matched_assignments=760 mismatched_assignments=2 total_assignments=762 assignment_match_percentage=99.74%
-  - tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts:11 `PathImpl` type mismatch
-      expected: V extends BrowserNativeObject | Primitive ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
-      actual:   V extends Primitive | BrowserNativeObject ? `${K}` : true extends AnyIsEqual<TraversedTypes, V> ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`
-  - tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts:52 `ArrayPathImpl` type mismatch
-      expected: V extends BrowserNativeObject | Primitive ? never : V extends readonly (infer U)[] ? U extends BrowserNativeObject | Primitive ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
-      actual:   V extends Primitive | BrowserNativeObject ? never : V extends readonly (infer U)[] ? U extends Primitive | BrowserNativeObject ? never : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}` | `${K}.${ArrayPathInternal<V, TraversedTypes | V>}` : true extends AnyIsEqual<TraversedTypes, V> ? never : `${K}.${ArrayPathInternal<V, TraversedTypes | V>}`
+FAIL tests/conformance/external/react-hook-form/field-path.ts::src/types/path/eager.ts matched_types=194 mismatched_types=0 total_types=194 match_percentage=100.00% matched_assignments=774 mismatched_assignments=2 total_assignments=776 assignment_match_percentage=99.74%
   - src/types/path/eager.ts:6 `IsTuple` should be assignable to src/types/path/eager.ts:7 `Primitive`
       typescript source: number extends T["length"] ? false : true    (Conditional)
       typescript target: string | number | bigint | symbol | boolean | null | undefined    (Union)

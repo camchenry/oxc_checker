@@ -169,6 +169,34 @@ fn conformance_snapshot_delta_collapses_unchanged_results() {
 }
 
 #[test]
+fn type_repr_order_normalization_handles_conditional_unions() {
+    let expected = "V extends BrowserNativeObject | Primitive ? `${K}` : `${K}` | `${K}.${PathInternal<V, TraversedTypes | V>}`";
+    let actual = "V extends Primitive | BrowserNativeObject ? `${K}` : `${K}.${PathInternal<V, V | TraversedTypes>}` | `${K}`";
+
+    assert!(type_reprs_are_equivalent(expected, actual));
+}
+
+#[test]
+fn type_repr_order_normalization_handles_conditional_intersections() {
+    let expected = "T extends A & B ? C & D : Box<E & F>";
+    let actual = "T extends B & A ? D & C : Box<F & E>";
+
+    assert!(type_reprs_are_equivalent(expected, actual));
+}
+
+#[test]
+fn type_repr_order_normalization_preserves_operator_precedence() {
+    assert!(type_reprs_are_equivalent(
+        "A | B & C",
+        "C & B | A"
+    ));
+    assert!(!type_reprs_are_equivalent(
+        "A | B & C",
+        "(A | B) & C"
+    ));
+}
+
+#[test]
 fn collection_progress_fits_active_files_on_one_line() {
     let state = ConformanceCollectionProgressState {
         completed_paths: 4,

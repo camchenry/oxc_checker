@@ -3139,13 +3139,14 @@ fn is_more_specific_primitive_type(expected: &TypeRecordType, actual: &TypeRecor
 
 fn type_reprs_are_equivalent(expected: &str, actual: &str) -> bool {
     expected == actual
-        || normalize_union_order_for_comparison(expected)
-            == normalize_union_order_for_comparison(actual)
+        || normalize_type_member_order_for_comparison(expected)
+            == normalize_type_member_order_for_comparison(actual)
 }
 
-fn normalize_union_order_for_comparison(type_repr: &str) -> String {
+fn normalize_type_member_order_for_comparison(type_repr: &str) -> String {
     let nested = normalize_nested_type_contexts(type_repr);
-    normalize_top_level_union_chains(&nested)
+    let intersections = normalize_top_level_type_chains(&nested, '&');
+    normalize_top_level_type_chains(&intersections, '|')
 }
 
 fn normalize_nested_type_contexts(type_repr: &str) -> String {
@@ -3165,7 +3166,7 @@ fn normalize_nested_type_contexts(type_repr: &str) -> String {
         } else if is_open_type_delimiter(character) {
             if let Some(close_index) = matching_type_delimiter_index(type_repr, index) {
                 normalized.push(character);
-                normalized.push_str(&normalize_union_order_for_comparison(
+                normalized.push_str(&normalize_type_member_order_for_comparison(
                     &type_repr[next_index..close_index],
                 ));
                 let (close, close_next_index) = char_at(type_repr, close_index);
@@ -3209,7 +3210,7 @@ fn normalize_template_literal_type_part(type_repr: &str, start: usize) -> (Strin
                 normalized.push_str(&type_repr[expression_start..]);
                 return (normalized, type_repr.len());
             };
-            normalized.push_str(&normalize_union_order_for_comparison(
+            normalized.push_str(&normalize_type_member_order_for_comparison(
                 &type_repr[expression_start..close_brace],
             ));
             normalized.push('}');
@@ -3223,20 +3224,20 @@ fn normalize_template_literal_type_part(type_repr: &str, start: usize) -> (Strin
     (normalized, type_repr.len())
 }
 
-fn normalize_top_level_union_chains(type_repr: &str) -> String {
+fn normalize_top_level_type_chains(type_repr: &str, operator: char) -> String {
     let mut normalized = String::new();
     let mut cursor = 0;
 
-    while let Some(pipe_index) = top_level_pipe_index(type_repr, cursor) {
-        let start = union_chain_start(type_repr, pipe_index);
-        let end = union_chain_end(type_repr, pipe_index);
+    while let Some(operator_index) = top_level_operator_index(type_repr, cursor, operator) {
+        let start = type_chain_start(type_repr, operator_index, operator);
+        let end = type_chain_end(type_repr, operator_index, operator);
         if start < cursor {
-            cursor = pipe_index + 1;
+            cursor = operator_index + operator.len_utf8();
             continue;
         }
 
         normalized.push_str(&type_repr[cursor..start]);
-        normalized.push_str(&normalize_union_chain(&type_repr[start..end]));
+        normalized.push_str(&normalize_type_chain(&type_repr[start..end], operator));
         cursor = end;
     }
 
@@ -3244,51 +3245,51 @@ fn normalize_top_level_union_chains(type_repr: &str) -> String {
     normalized
 }
 
-fn normalize_union_chain(union_chain: &str) -> String {
-    let mut types = split_top_level_union_types(union_chain)
+fn normalize_type_chain(type_chain: &str, operator: char) -> String {
+    let mut types = split_top_level_types(type_chain, operator)
         .into_iter()
         .map(|ty| ty.trim().to_string())
         .collect::<Vec<_>>();
     if types.len() < 2 {
-        return union_chain.to_string();
+        return type_chain.to_string();
     }
 
     types.sort();
-    types.join(" | ")
+    types.join(&format!(" {operator} "))
 }
 
-fn split_top_level_union_types(union_chain: &str) -> Vec<&str> {
+fn split_top_level_types(type_chain: &str, operator: char) -> Vec<&str> {
     let mut types = Vec::new();
     let mut start = 0;
     let mut index = 0;
     let mut closing_delimiters = Vec::new();
 
-    while index < union_chain.len() {
-        let (character, next_index) = char_at(union_chain, index);
+    while index < type_chain.len() {
+        let (character, next_index) = char_at(type_chain, index);
         if matches!(character, '\'' | '"' | '`') {
-            index = quoted_type_part_end(union_chain, index);
+            index = quoted_type_part_end(type_chain, index);
             continue;
         }
 
         if is_open_type_delimiter(character) {
             closing_delimiters.push(close_type_delimiter(character));
         } else if closing_delimiters.last().copied() == Some(character)
-            && !is_arrow_greater_than(union_chain, index, character)
+            && !is_arrow_greater_than(type_chain, index, character)
         {
             closing_delimiters.pop();
-        } else if character == '|' && closing_delimiters.is_empty() {
-            types.push(&union_chain[start..index]);
+        } else if character == operator && closing_delimiters.is_empty() {
+            types.push(&type_chain[start..index]);
             start = next_index;
         }
 
         index = next_index;
     }
 
-    types.push(&union_chain[start..]);
+    types.push(&type_chain[start..]);
     types
 }
 
-fn top_level_pipe_index(type_repr: &str, start: usize) -> Option<usize> {
+fn top_level_operator_index(type_repr: &str, start: usize, operator: char) -> Option<usize> {
     let mut index = start;
     let mut closing_delimiters = Vec::new();
 
@@ -3305,7 +3306,7 @@ fn top_level_pipe_index(type_repr: &str, start: usize) -> Option<usize> {
             && !is_arrow_greater_than(type_repr, index, character)
         {
             closing_delimiters.pop();
-        } else if character == '|' && closing_delimiters.is_empty() {
+        } else if character == operator && closing_delimiters.is_empty() {
             return Some(index);
         }
 
@@ -3315,12 +3316,12 @@ fn top_level_pipe_index(type_repr: &str, start: usize) -> Option<usize> {
     None
 }
 
-fn union_chain_start(type_repr: &str, pipe_index: usize) -> usize {
+fn type_chain_start(type_repr: &str, operator_index: usize, operator: char) -> usize {
     let mut index = 0;
     let mut start = 0;
     let mut closing_delimiters = Vec::new();
 
-    while index < pipe_index {
+    while index < operator_index {
         let (character, next_index) = char_at(type_repr, index);
         if matches!(character, '\'' | '"' | '`') {
             index = quoted_type_part_end(type_repr, index);
@@ -3334,7 +3335,9 @@ fn union_chain_start(type_repr: &str, pipe_index: usize) -> usize {
         {
             closing_delimiters.pop();
         } else if closing_delimiters.is_empty() {
-            if matches!(character, ',' | ':' | ';') {
+            if matches!(character, ',' | ':' | ';' | '?')
+                || (operator == '&' && character == '|')
+            {
                 start = next_index;
             } else if character == '=' {
                 start = if type_repr[next_index..].starts_with('>') {
@@ -3350,11 +3353,11 @@ fn union_chain_start(type_repr: &str, pipe_index: usize) -> usize {
         index = next_index;
     }
 
-    skip_whitespace(type_repr, start, pipe_index)
+    skip_whitespace(type_repr, start, operator_index)
 }
 
-fn union_chain_end(type_repr: &str, pipe_index: usize) -> usize {
-    let mut index = pipe_index + 1;
+fn type_chain_end(type_repr: &str, operator_index: usize, operator: char) -> usize {
+    let mut index = operator_index + operator.len_utf8();
     let mut closing_delimiters = Vec::new();
 
     while index < type_repr.len() {
@@ -3371,16 +3374,25 @@ fn union_chain_end(type_repr: &str, pipe_index: usize) -> usize {
         {
             closing_delimiters.pop();
         } else if closing_delimiters.is_empty()
-            && (matches!(character, ',' | ';')
-                || (character == '=' && !type_repr[next_index..].starts_with('>')))
+            && (matches!(character, ',' | ':' | ';' | '?')
+                || (character == '=' && !type_repr[next_index..].starts_with('>'))
+                || (operator == '&' && character == '|'))
         {
-            return trim_end_whitespace(type_repr, index, pipe_index + 1);
+            return trim_end_whitespace(
+                type_repr,
+                index,
+                operator_index + operator.len_utf8(),
+            );
         }
 
         index = next_index;
     }
 
-    trim_end_whitespace(type_repr, type_repr.len(), pipe_index + 1)
+    trim_end_whitespace(
+        type_repr,
+        type_repr.len(),
+        operator_index + operator.len_utf8(),
+    )
 }
 
 fn skip_whitespace(type_repr: &str, mut index: usize, end: usize) -> usize {
