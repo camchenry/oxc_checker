@@ -7,7 +7,7 @@ use crate::{
     mapper::TypeMapper,
     type_predicate_kinds_match,
     types::{
-        Ty, TyFunction, TyIntersection, TyKind, TyObject, TyTypeParameter,
+        Ty, TyConditional, TyFunction, TyIntersection, TyKind, TyObject, TyTypeParameter,
         function_maximum_argument_count, function_minimum_argument_count, visit_type,
     },
 };
@@ -42,6 +42,20 @@ enum PrimitiveDomain {
 impl<'a, 'store> Checker<'a, 'store> {
     pub fn is_assignable_to(&self, source: Ty<'a>, target: Ty<'a>) -> bool {
         self.is_assignable_to_at_depth(source, target, 0)
+    }
+
+    /// Returns the union of possible results for an unresolved conditional source type.
+    fn default_constraint_of_conditional_type(&self, conditional: &TyConditional<'a>) -> Ty<'a> {
+        match (
+            conditional.true_type.is_any(),
+            conditional.false_type.is_any(),
+        ) {
+            (true, false) => conditional.false_type,
+            (false, true) => conditional.true_type,
+            _ => self
+                .ty
+                .union([conditional.true_type, conditional.false_type]),
+        }
     }
 
     fn resolve_intersection_type(
@@ -412,6 +426,10 @@ impl<'a, 'store> Checker<'a, 'store> {
             (TyKind::Union(source_union), _) => source_union.types.iter().all(|source_type| {
                 self.is_assignable_to_at_depth(*source_type, target, next_depth)
             }),
+            (TyKind::Conditional(source), _) => {
+                let constraint = self.default_constraint_of_conditional_type(source);
+                self.is_assignable_to_at_depth(constraint, target, next_depth)
+            }
             (TyKind::TypeParameter(source_parameter), TyKind::Union(target_union)) => {
                 target_union.types.iter().any(|target_type| {
                     self.is_assignable_to_at_depth(source, *target_type, next_depth)
@@ -844,7 +862,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                 | TyKind::Keyof(_)
                 | TyKind::ModuleNamespace(_)
                 | TyKind::Infer(_)
-                | TyKind::Conditional(_)
                 | TyKind::IndexedAccess(_),
                 _,
             ) => {

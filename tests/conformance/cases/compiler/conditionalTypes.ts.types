@@ -33,3 +33,51 @@ declare function unresolvedConditional<T>(): T extends string ? number : boolean
 
 declare function unresolvedConditional<T>(): T extends string ? number : boolean;
 >                                            ^: any   (Any) (Identifier)
+
+type Primitive = null | undefined | string | number | boolean | symbol | bigint;
+>    ^^^^^^^^^: null | undefined | string | number | boolean | symbol | bigint   (Union) (Identifier)
+
+type IsTuple<T extends ReadonlyArray<any>> = number extends T["length"] ? false : true;
+>    ^^^^^^^: number extends T["length"] ? false : true   (Conditional) (Identifier)
+
+type IsTuple<T extends ReadonlyArray<any>> = number extends T["length"] ? false : true;
+>            ^: any   (Any) (Identifier)
+
+type IsTuple<T extends ReadonlyArray<any>> = number extends T["length"] ? false : true;
+>                      ^^^^^^^^^^^^^: any   (Any) (Identifier)
+
+type IsTuple<T extends ReadonlyArray<any>> = number extends T["length"] ? false : true;
+>                      ^^^^^^^^^^^^^: any   (Error) (Identifier)
+
+type IsTuple<T extends ReadonlyArray<any>> = number extends T["length"] ? false : true;
+>                                                           ^: any   (Any) (Identifier)
+
+type DistributiveBoolean<T> = T extends string ? false : true;
+>    ^^^^^^^^^^^^^^^^^^^: T extends string ? false : true   (Conditional) (Identifier)
+
+type DistributiveBoolean<T> = T extends string ? false : true;
+>                        ^: any   (Any) (Identifier)
+
+type DistributiveBoolean<T> = T extends string ? false : true;
+>                             ^: any   (Any) (Identifier)
+
+type OneAnyBranch<T> = T extends string ? any : number;
+>    ^^^^^^^^^^^^: T extends string ? any : number   (Conditional) (Identifier)
+
+type OneAnyBranch<T> = T extends string ? any : number;
+>                 ^: any   (Any) (Identifier)
+
+type OneAnyBranch<T> = T extends string ? any : number;
+>                      ^: any   (Any) (Identifier)
+
+type BooleanTarget = boolean;
+>    ^^^^^^^^^^^^^: boolean   (Boolean) (Identifier)
+
+type TrueTarget = true;
+>    ^^^^^^^^^^: true   (BooleanLiteral) (Identifier)
+
+type ObjectTarget = object;
+>    ^^^^^^^^^^^^: object   (PrimitiveObject) (Identifier)
+
+type EmptyObjectTarget = {};
+>    ^^^^^^^^^^^^^^^^^: {}   (Object) (Identifier)
