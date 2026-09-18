@@ -1011,8 +1011,8 @@ fn assignment_mismatches_keep_distinct_typescript_and_oxc_pairs() {
         },
     );
 
-    assert!(snapshot.contains("      typescript source: string    (String)\n"));
-    assert!(snapshot.contains("      typescript target: string    (String)\n"));
+    assert!(snapshot.contains("      TS source:  string    (String)\n"));
+    assert!(snapshot.contains("      TS target:  string    (String)\n"));
     assert!(snapshot.contains("      oxc source: string    (String)\n"));
     assert!(snapshot.contains("      oxc target: \"literal\"    (StringLiteral)\n"));
 }

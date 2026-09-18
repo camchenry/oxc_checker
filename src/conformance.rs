@@ -4276,20 +4276,30 @@ fn write_snapshot_error(
                 "  - {source_location} `{text}` {expectation} assignable to {target_location} `{target_text}`\n",
             ));
             if tsc_source_type == oxc_source_type && tsc_target_type == oxc_target_type {
-                write_assignability_type(snapshot, "source", tsc_source_type);
-                write_assignability_type(snapshot, "target", tsc_target_type);
+                write_assignability_type(snapshot, "source", 6, tsc_source_type);
+                write_assignability_type(snapshot, "target", 6, tsc_target_type);
             } else {
-                write_assignability_type(snapshot, "typescript source", tsc_source_type);
-                write_assignability_type(snapshot, "typescript target", tsc_target_type);
-                write_assignability_type(snapshot, "oxc source", oxc_source_type);
-                write_assignability_type(snapshot, "oxc target", oxc_target_type);
+                write_assignability_type(snapshot, "TS source", 10, tsc_source_type);
+                write_assignability_type(snapshot, "TS target", 10, tsc_target_type);
+                write_assignability_type(snapshot, "oxc source", 10, oxc_source_type);
+                write_assignability_type(snapshot, "oxc target", 10, oxc_target_type);
             }
         }
     }
 }
 
-fn write_assignability_type(snapshot: &mut String, label: &str, ty: &TypeRecordType) {
-    snapshot.push_str(&format!("      {label}: {}    ({})\n", ty.display, ty.name));
+fn write_assignability_type(
+    snapshot: &mut String,
+    label: &str,
+    label_width: usize,
+    ty: &TypeRecordType,
+) {
+    snapshot.push_str(&format!(
+        "      {label}: {padding}{}    ({})\n",
+        ty.display,
+        ty.name,
+        padding = " ".repeat(label_width.saturating_sub(label.len())),
+    ));
 }
 
 #[cfg(test)]
