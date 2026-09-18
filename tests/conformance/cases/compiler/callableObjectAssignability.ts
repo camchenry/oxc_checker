@@ -40,3 +40,28 @@ declare let constructOnly: new () => {};
 
 callOnly = constructOnly;
 constructOnly = callOnly;
+
+// @filename: signatureDisplay.ts
+declare let singleCallObject: { (value: string): number };
+declare let singleConstructObject: { new(value: string): {} };
+declare let overloadedConstructObject: {
+    new(): {};
+    new(value: string): {};
+};
+declare let constructWithProperty: { new(): {}; tag: boolean };
+declare let callAndConstruct: { (): number; new(): {} };
+declare let constructorSyntax: new () => {};
+declare let abstractConstructorSyntax: abstract new () => {};
+declare let callObjectArray: { (): number }[];
+declare let constructObjectArray: { new(): {} }[];
+declare let takesConstructObject: (ctor: { new(): {} }) => void;
+declare let returnsCallObject: () => { (): number };
+declare let takesCallObjectArray: (callbacks: { (): number }[]) => void;
+declare let objectWithSignatureTypes: {
+    call: { (): number };
+    construct: { new(): {} };
+    calls: { (): number }[];
+    constructs: { new(): {} }[];
+};
+type ConstructorAlias = { new(): {} };
+declare let constructorAlias: ConstructorAlias;

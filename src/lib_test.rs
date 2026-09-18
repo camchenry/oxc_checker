@@ -4173,7 +4173,7 @@ fn keyof_constraints_and_indexed_access_types_render() {
 
     assert_eq!(
         type_string(&ret, get_global_symbol_type(&ret, "source")),
-        "{ <K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any): void; }"
+        "<K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any) => void"
     );
 }
 

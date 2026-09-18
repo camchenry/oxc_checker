@@ -132792,8 +132792,7 @@ type ElementTagNameMap = HTMLElementTagNameMap & Pick<SVGElementTagNameMap, Excl
 >                                                                                                                     ^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 declare var Audio: {
->           ^^^^^: { new (src?: string): HTMLAudioElement; }   (Object) (Identifier)
-         expected: new (src?: string) => HTMLAudioElement
+>           ^^^^^: new (src?: string) => HTMLAudioElement   (Object) (Identifier)
 
     new(src?: string): HTMLAudioElement;
 >       ^^^: string | undefined   (Union) (Identifier)
@@ -132805,8 +132804,7 @@ declare var Audio: {
 >                      ^^^^^^^^^^^^^^^^: { new (): HTMLAudioElement; prototype: HTMLAudioElement; }   (Object) (Identifier)
 
 declare var Image: {
->           ^^^^^: { new (width?: number, height?: number): HTMLImageElement; }   (Object) (Identifier)
-         expected: new (width?: number, height?: number) => HTMLImageElement
+>           ^^^^^: new (width?: number, height?: number) => HTMLImageElement   (Object) (Identifier)
 
     new(width?: number, height?: number): HTMLImageElement;
 >       ^^^^^: number | undefined   (Union) (Identifier)
@@ -132821,8 +132819,7 @@ declare var Image: {
 >                                         ^^^^^^^^^^^^^^^^: { new (): HTMLImageElement; prototype: HTMLImageElement; }   (Object) (Identifier)
 
 declare var Option: {
->           ^^^^^^: { new (text?: string, value?: string, defaultSelected?: boolean, selected?: boolean): HTMLOptionElement; }   (Object) (Identifier)
-          expected: new (text?: string, value?: string, defaultSelected?: boolean, selected?: boolean) => HTMLOptionElement
+>           ^^^^^^: new (text?: string, value?: string, defaultSelected?: boolean, selected?: boolean) => HTMLOptionElement   (Object) (Identifier)
 
     new(text?: string, value?: string, defaultSelected?: boolean, selected?: boolean): HTMLOptionElement;
 >       ^^^^: string | undefined   (Union) (Identifier)

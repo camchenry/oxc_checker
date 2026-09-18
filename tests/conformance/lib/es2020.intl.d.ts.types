@@ -30,23 +30,19 @@ declare namespace Intl {
 >                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
->                                                         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                                                        expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                                                         ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
->                                                         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                                                        expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                                                         ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
 >                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
->                                                                                                           ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                                                                                                          expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                                                                                                           ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
     type LocalesArgument = UnicodeBCP47LocaleIdentifier | Locale | readonly (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined;
->                                                                                                           ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                                                                                                          expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                                                                                                           ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
     interface RelativeTimeFormatOptions {
 >             ^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -427,12 +423,10 @@ declare namespace Intl {
 >       ^^^^^^: string | undefined   (Union) (Identifier)
 
     interface Locale extends LocaleOptions {
->             ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-            expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>             ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
     interface Locale extends LocaleOptions {
->             ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-            expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>             ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
     interface Locale extends LocaleOptions {
 >                            ^^^^^^^^^^^^^: any   (Any) (Identifier)
@@ -451,24 +445,20 @@ declare namespace Intl {
         expected: () => Locale
 
         maximize(): Locale;
->                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                  expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                   ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
         maximize(): Locale;
->                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                  expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                   ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
         minimize(): Locale;
 >       ^^^^^^^^: { (): Locale; (): Locale; }   (Object) (Identifier)
         expected: () => Locale
 
         minimize(): Locale;
->                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                  expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                   ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
         minimize(): Locale;
->                   ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                  expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                   ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
         toString(): UnicodeBCP47LocaleIdentifier;
 >       ^^^^^^^^: { (): UnicodeBCP47LocaleIdentifier; (): UnicodeBCP47LocaleIdentifier; }   (Object) (Identifier)
@@ -478,8 +468,7 @@ declare namespace Intl {
 >                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
     const Locale: {
->         ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-        expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>         ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
 >            ^^^: UnicodeBCP47LocaleIdentifier | Locale   (Union) (Identifier)
@@ -489,12 +478,10 @@ declare namespace Intl {
 >                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                                                ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                                               expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                                                ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                                                ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                                               expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                                                ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
 >                                                        ^^^^^^^: LocaleOptions | undefined   (Union) (Identifier)
@@ -506,12 +493,10 @@ declare namespace Intl {
 >                                                                  ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                                                                                  ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                                                                                 expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                                                                                  ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
         new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
->                                                                                  ^^^^^^: { new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale; }   (Object) (Identifier)
-                                                                                 expected: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale
+>                                                                                  ^^^^^^: new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions) => Locale   (Object) (Identifier)
 
     type DisplayNamesFallback =
 >        ^^^^^^^^^^^^^^^^^^^^: "code" | "none"   (Union) (Identifier)

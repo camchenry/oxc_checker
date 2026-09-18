@@ -613,6 +613,8 @@ pub struct TyObject<'a> {
     pub properties: &'a [TyProperty<'a>],
     members: Option<&'a TyObjectMembers<'a>>,
     pub is_constructor_type: bool,
+    /// Whether this object is the value-side constructor type produced from a class.
+    pub(crate) is_class_constructor_type: bool,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -1910,6 +1912,14 @@ impl<'a> CheckerArena<'a> {
         self.object_from_slices(&[], self.alloc_slice_from_iter([signature]), &[], true)
     }
 
+    pub(crate) fn class_constructor_type(
+        self,
+        properties: &'a [TyProperty<'a>],
+        signatures: &'a [Signature<'a>],
+    ) -> Ty<'a> {
+        self.object_from_slices_with_flags(properties, signatures, &[], false, true)
+    }
+
     pub fn object_with_index_infos(
         self,
         properties: impl IntoIterator<Item = TyProperty<'a>>,
@@ -1939,6 +1949,23 @@ impl<'a> CheckerArena<'a> {
         index_infos: &'a [IndexInfo<'a>],
         is_constructor_type: bool,
     ) -> &'a TyObject<'a> {
+        self.alloc_object_with_flags(
+            properties,
+            signatures,
+            index_infos,
+            is_constructor_type,
+            false,
+        )
+    }
+
+    fn alloc_object_with_flags(
+        self,
+        properties: &'a [TyProperty<'a>],
+        signatures: &'a [Signature<'a>],
+        index_infos: &'a [IndexInfo<'a>],
+        is_constructor_type: bool,
+        is_class_constructor_type: bool,
+    ) -> &'a TyObject<'a> {
         let members = (!signatures.is_empty() || !index_infos.is_empty()).then(|| {
             self.alloc(TyObjectMembers {
                 signatures,
@@ -1949,6 +1976,7 @@ impl<'a> CheckerArena<'a> {
             properties,
             members,
             is_constructor_type,
+            is_class_constructor_type,
         })
     }
 
@@ -1959,11 +1987,29 @@ impl<'a> CheckerArena<'a> {
         index_infos: &'a [IndexInfo<'a>],
         is_constructor_type: bool,
     ) -> Ty<'a> {
-        self.alloc_type(TyKind::Object(self.alloc_object(
+        self.object_from_slices_with_flags(
             properties,
             signatures,
             index_infos,
             is_constructor_type,
+            false,
+        )
+    }
+
+    fn object_from_slices_with_flags(
+        self,
+        properties: &'a [TyProperty<'a>],
+        signatures: &'a [Signature<'a>],
+        index_infos: &'a [IndexInfo<'a>],
+        is_constructor_type: bool,
+        is_class_constructor_type: bool,
+    ) -> Ty<'a> {
+        self.alloc_type(TyKind::Object(self.alloc_object_with_flags(
+            properties,
+            signatures,
+            index_infos,
+            is_constructor_type,
+            is_class_constructor_type,
         )))
     }
 
@@ -2563,11 +2609,29 @@ impl<'a> Ty<'a> {
         let TyKind::Object(object) = arena.ty_kind(self) else {
             return self;
         };
-        arena.object_from_slices(
+        arena.object_from_slices_with_flags(
             object.properties,
             arena.alloc_slice_from_iter(signatures),
             object.index_infos(),
             object.is_constructor_type,
+            object.is_class_constructor_type,
+        )
+    }
+
+    pub(crate) fn with_properties(
+        self,
+        arena: CheckerArena<'a>,
+        properties: impl IntoIterator<Item = TyProperty<'a>>,
+    ) -> Self {
+        let TyKind::Object(object) = arena.ty_kind(self) else {
+            return self;
+        };
+        arena.object_from_slices_with_flags(
+            arena.alloc_slice_from_iter(properties),
+            object.signatures(),
+            object.index_infos(),
+            object.is_constructor_type,
+            object.is_class_constructor_type,
         )
     }
 
@@ -2579,11 +2643,12 @@ impl<'a> Ty<'a> {
         let TyKind::Object(object) = arena.ty_kind(self) else {
             return self;
         };
-        arena.object_from_slices(
+        arena.object_from_slices_with_flags(
             object.properties,
             object.signatures(),
             arena.alloc_slice_from_iter(index_infos),
             object.is_constructor_type,
+            object.is_class_constructor_type,
         )
     }
 
@@ -2594,10 +2659,27 @@ impl<'a> Ty<'a> {
         if object.is_constructor_type {
             return self;
         }
-        arena.object_from_slices(
+        arena.object_from_slices_with_flags(
             object.properties,
             object.signatures(),
             object.index_infos(),
+            true,
+            false,
+        )
+    }
+
+    pub(crate) fn with_class_constructor_type(self, arena: CheckerArena<'a>) -> Self {
+        let TyKind::Object(object) = arena.ty_kind(self) else {
+            return self;
+        };
+        if object.is_class_constructor_type {
+            return self;
+        }
+        arena.object_from_slices_with_flags(
+            object.properties,
+            object.signatures(),
+            object.index_infos(),
+            false,
             true,
         )
     }

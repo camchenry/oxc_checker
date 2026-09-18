@@ -7,7 +7,7 @@ use crate::{
     checker::Checker,
     limits::TYPE_STRING_MAX_DEPTH,
     types::{
-        MappedModifier, Signature, SignatureKind, TupleElement, Ty, TyFunction, TyKind,
+        MappedModifier, Signature, SignatureKind, TupleElement, Ty, TyFunction, TyKind, TyObject,
         TyParameter, TyProperty, TyTypeParameter, TyTypePredicate,
     },
 };
@@ -18,6 +18,7 @@ bitflags! {
         const NONE = 0;
         const WRITE_ARRAY_AS_GENERIC_TYPE = 1 << 0;
         const PARENTHESIZE_CONDITIONAL_RETURN = 1 << 1;
+        const PRESERVE_OBJECT_TYPE_LITERAL = 1 << 2;
     }
 }
 
@@ -88,10 +89,21 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
             TyKind::PrimitiveObject => "object".to_string(),
             TyKind::This => "this".to_string(),
             TyKind::Object(object) => {
-                if object.is_constructor_type
-                    && let Some(signature) = object.signatures().first()
-                {
-                    return self.constructor_type_to_string(*signature, &|_| None, flags, depth);
+                if let Some(signature) = Self::single_signature_for_display(object, flags) {
+                    return match signature.kind {
+                        SignatureKind::Call => self.function_type_to_string(
+                            signature.function(arena),
+                            replace_type_reference,
+                            flags,
+                            depth,
+                        ),
+                        SignatureKind::Construct => self.constructor_type_to_string(
+                            signature,
+                            replace_type_reference,
+                            flags,
+                            depth,
+                        ),
+                    };
                 }
                 if object.properties.is_empty()
                     && object.signatures().is_empty()
@@ -100,6 +112,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                     return "{}".to_string();
                 }
 
+                let member_flags = flags | TypeFormatFlags::PRESERVE_OBJECT_TYPE_LITERAL;
                 let signatures = object
                     .signatures()
                     .iter()
@@ -112,7 +125,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                     );
                 let members = signatures
                     .map(|signature| {
-                        self.signature_to_type_string(*signature, &|_| None, flags, depth)
+                        self.signature_to_type_string(*signature, &|_| None, member_flags, depth)
                     })
                     .chain(object.index_infos().iter().map(|info| {
                         let readonly = if info.readonly { "readonly " } else { "" };
@@ -123,13 +136,13 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                             self.to_type_string_with_flags(
                                 info.key_type,
                                 replace_type_reference,
-                                flags,
+                                member_flags,
                                 depth,
                             ),
                             self.to_type_string_with_flags(
                                 info.value_type,
                                 replace_type_reference,
-                                flags,
+                                member_flags,
                                 depth,
                             )
                         )
@@ -146,7 +159,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                                 self.signature_to_type_string_for_function(
                                     function,
                                     &|_| None,
-                                    flags,
+                                    member_flags,
                                     depth,
                                 )
                             )
@@ -158,7 +171,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                                 self.to_type_string_with_flags(
                                     property.ty,
                                     replace_type_reference,
-                                    flags | TypeFormatFlags::WRITE_ARRAY_AS_GENERIC_TYPE,
+                                    member_flags | TypeFormatFlags::WRITE_ARRAY_AS_GENERIC_TYPE,
                                     depth,
                                 )
                             )
@@ -292,7 +305,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                     };
                     return format!("{name}<{element_type}>");
                 }
-                let body = if self.display_needs_parentheses(array.element_type) {
+                let body = if self.display_needs_parentheses(array.element_type, flags) {
                     format!("({element_type})[]")
                 } else {
                     format!("{element_type}[]")
@@ -360,7 +373,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                                     flags,
                                     depth,
                                 );
-                                if self.element_type_needs_parentheses(element) {
+                                if self.element_type_needs_parentheses(element, flags) {
                                     format!("({type_string})?")
                                 } else {
                                     format!("{type_string}?")
@@ -382,7 +395,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                 .map(|ty| {
                     let type_string =
                         self.to_type_string_with_flags(*ty, replace_type_reference, flags, depth);
-                    if self.display_needs_parentheses(*ty) {
+                    if self.display_needs_parentheses(*ty, flags) {
                         format!("({type_string})")
                     } else {
                         type_string
@@ -396,7 +409,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                 .map(|ty| {
                     let type_string =
                         self.to_type_string_with_flags(*ty, replace_type_reference, flags, depth);
-                    if self.display_needs_parentheses(*ty) {
+                    if self.display_needs_parentheses(*ty, flags) {
                         format!("({type_string})")
                     } else {
                         type_string
@@ -411,7 +424,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                     flags,
                     depth,
                 );
-                if self.display_needs_parentheses(keyof.target) {
+                if self.display_needs_parentheses(keyof.target, flags) {
                     format!("keyof ({target})")
                 } else {
                     format!("keyof {target}")
@@ -430,7 +443,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                     flags,
                     depth,
                 );
-                if self.display_needs_parentheses(indexed_access.object_type) {
+                if self.display_needs_parentheses(indexed_access.object_type, flags) {
                     format!("({object_type})[{index_type}]")
                 } else {
                     format!("{object_type}[{index_type}]")
@@ -454,7 +467,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                         },
                     depth,
                 );
-                let check_type = if self.display_needs_parentheses(conditional.check_type) {
+                let check_type = if self.display_needs_parentheses(conditional.check_type, flags) {
                     format!("({check_type})")
                 } else {
                     check_type
@@ -535,7 +548,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
         }
     }
 
-    fn display_needs_parentheses(&self, ty: Ty<'a>) -> bool {
+    fn display_needs_parentheses(&self, ty: Ty<'a>, flags: TypeFormatFlags) -> bool {
         matches!(
             self.checker.ty_kind(ty),
             TyKind::Function(_)
@@ -543,11 +556,33 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
                 | TyKind::Intersection(_)
                 | TyKind::Conditional(_)
                 | TyKind::Infer(_)
-        ) || matches!(self.checker.ty_kind(ty), TyKind::Object(object) if object.is_constructor_type)
+        ) || matches!(self.checker.ty_kind(ty), TyKind::Object(object) if Self::single_signature_for_display(object, flags).is_some())
     }
 
-    fn element_type_needs_parentheses(&self, element: &TupleElement<'a>) -> bool {
-        self.display_needs_parentheses(element.ty())
+    fn single_signature_for_display(
+        object: &TyObject<'a>,
+        flags: TypeFormatFlags,
+    ) -> Option<Signature<'a>> {
+        if object.is_class_constructor_type
+            || (flags.contains(TypeFormatFlags::PRESERVE_OBJECT_TYPE_LITERAL)
+                && !object.is_constructor_type)
+            || !object.properties.is_empty()
+            || !object.index_infos().is_empty()
+        {
+            return None;
+        }
+        let [signature] = object.signatures() else {
+            return None;
+        };
+        Some(*signature)
+    }
+
+    fn element_type_needs_parentheses(
+        &self,
+        element: &TupleElement<'a>,
+        flags: TypeFormatFlags,
+    ) -> bool {
+        self.display_needs_parentheses(element.ty(), flags)
     }
 
     fn type_parameter_to_type_string(
@@ -669,6 +704,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
         flags: TypeFormatFlags,
         depth: &Cell<usize>,
     ) -> String {
+        let flags = flags | TypeFormatFlags::PRESERVE_OBJECT_TYPE_LITERAL;
         let return_type = function.type_predicate.map_or_else(
             || {
                 self.to_type_string_with_flags(
@@ -733,6 +769,7 @@ impl<'checker, 'a, 'store> TypePrinter<'checker, 'a, 'store> {
         flags: TypeFormatFlags,
         depth: &Cell<usize>,
     ) -> (String, String) {
+        let flags = flags | TypeFormatFlags::PRESERVE_OBJECT_TYPE_LITERAL;
         let type_parameters = if function.type_parameters.is_empty() {
             String::new()
         } else {

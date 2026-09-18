@@ -485,6 +485,8 @@ impl<'a, 'store> Checker<'a, 'store> {
                     .with_signatures(self.arena(), signatures);
                 if object.is_constructor_type {
                     instantiated.with_constructor_type(self.arena())
+                } else if object.is_class_constructor_type {
+                    instantiated.with_class_constructor_type(self.arena())
                 } else {
                     instantiated
                 }
@@ -8640,8 +8642,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         };
         let signatures = self.arena().alloc_slice_from_iter([signature]);
 
-        self.ty
-            .object_from_slices(properties, signatures, &[], false)
+        self.ty.class_constructor_type(properties, signatures)
     }
 
     fn get_type_of_class_instance(&self, program_id: ProgramId, class: &'a Class<'a>) -> Ty<'a> {
@@ -11026,13 +11027,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 expando_properties,
                 [Signature::new(SignatureKind::Call, ty)],
             ),
-            TyKind::Object(object) => self.arena().object_from_slices(
-                self.arena().alloc_slice_from_iter(
-                    object.properties.iter().copied().chain(expando_properties),
-                ),
-                object.signatures(),
-                object.index_infos(),
-                object.is_constructor_type,
+            TyKind::Object(object) => ty.with_properties(
+                self.arena(),
+                object.properties.iter().copied().chain(expando_properties),
             ),
             _ => ty,
         }

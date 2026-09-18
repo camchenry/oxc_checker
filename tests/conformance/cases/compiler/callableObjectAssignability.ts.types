@@ -126,3 +126,81 @@ constructOnly = callOnly;
 
 constructOnly = callOnly;
 >               ^^^^^^^^: () => {}   (Function) (Identifier)
+
+declare let singleCallObject: { (value: string): number };
+>           ^^^^^^^^^^^^^^^^: (value: string) => number   (Object) (Identifier)
+
+declare let singleCallObject: { (value: string): number };
+>                                ^^^^^: string   (String) (Identifier)
+
+declare let singleConstructObject: { new(value: string): {} };
+>           ^^^^^^^^^^^^^^^^^^^^^: new (value: string) => {}   (Object) (Identifier)
+
+declare let singleConstructObject: { new(value: string): {} };
+>                                        ^^^^^: string   (String) (Identifier)
+
+declare let overloadedConstructObject: {
+>           ^^^^^^^^^^^^^^^^^^^^^^^^^: { new (): {}; new (value: string): {}; }   (Object) (Identifier)
+
+    new(value: string): {};
+>       ^^^^^: string   (String) (Identifier)
+
+declare let constructWithProperty: { new(): {}; tag: boolean };
+>           ^^^^^^^^^^^^^^^^^^^^^: { new (): {}; tag: boolean; }   (Object) (Identifier)
+
+declare let constructWithProperty: { new(): {}; tag: boolean };
+>                                               ^^^: boolean   (Boolean) (Identifier)
+
+declare let callAndConstruct: { (): number; new(): {} };
+>           ^^^^^^^^^^^^^^^^: { (): number; new (): {}; }   (Object) (Identifier)
+
+declare let constructorSyntax: new () => {};
+>           ^^^^^^^^^^^^^^^^^: new () => {}   (Object) (Identifier)
+
+declare let abstractConstructorSyntax: abstract new () => {};
+>           ^^^^^^^^^^^^^^^^^^^^^^^^^: abstract new () => {}   (Object) (Identifier)
+
+declare let callObjectArray: { (): number }[];
+>           ^^^^^^^^^^^^^^^: (() => number)[]   (Array) (Identifier)
+
+declare let constructObjectArray: { new(): {} }[];
+>           ^^^^^^^^^^^^^^^^^^^^: (new () => {})[]   (Array) (Identifier)
+
+declare let takesConstructObject: (ctor: { new(): {} }) => void;
+>           ^^^^^^^^^^^^^^^^^^^^: (ctor: { new (): {}; }) => void   (Function) (Identifier)
+
+declare let takesConstructObject: (ctor: { new(): {} }) => void;
+>                                  ^^^^: new () => {}   (Object) (Identifier)
+
+declare let returnsCallObject: () => { (): number };
+>           ^^^^^^^^^^^^^^^^^: () => { (): number; }   (Function) (Identifier)
+
+declare let takesCallObjectArray: (callbacks: { (): number }[]) => void;
+>           ^^^^^^^^^^^^^^^^^^^^: (callbacks: { (): number; }[]) => void   (Function) (Identifier)
+
+declare let takesCallObjectArray: (callbacks: { (): number }[]) => void;
+>                                  ^^^^^^^^^: (() => number)[]   (Array) (Identifier)
+
+declare let objectWithSignatureTypes: {
+>           ^^^^^^^^^^^^^^^^^^^^^^^^: { call: { (): number; }; construct: { new (): {}; }; calls: { (): number; }[]; constructs: { new (): {}; }[]; }   (Object) (Identifier)
+
+    call: { (): number };
+>   ^^^^: () => number   (Object) (Identifier)
+
+    construct: { new(): {} };
+>   ^^^^^^^^^: new () => {}   (Object) (Identifier)
+
+    calls: { (): number }[];
+>   ^^^^^: (() => number)[]   (Array) (Identifier)
+
+    constructs: { new(): {} }[];
+>   ^^^^^^^^^^: (new () => {})[]   (Array) (Identifier)
+
+type ConstructorAlias = { new(): {} };
+>    ^^^^^^^^^^^^^^^^: new () => {}   (Object) (Identifier)
+
+declare let constructorAlias: ConstructorAlias;
+>           ^^^^^^^^^^^^^^^^: ConstructorAlias   (TypeReference) (Identifier)
+
+declare let constructorAlias: ConstructorAlias;
+>                             ^^^^^^^^^^^^^^^^: any   (Any) (Identifier)
