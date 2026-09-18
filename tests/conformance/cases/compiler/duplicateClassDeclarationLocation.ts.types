@@ -15,3 +15,24 @@ class D extends C<string> {}
 
 class D extends C<string> {}
 >               ^: typeof C   (Class) (Identifier)
+
+class Empty {}
+>     ^^^^^: typeof Empty   (Class) (Identifier)
+
+class WithStatic {
+>     ^^^^^^^^^^: typeof WithStatic   (Class) (Identifier)
+
+	static value = 0;
+>       ^^^^^: number   (Number) (Identifier)
+
+class WithInstance {
+>     ^^^^^^^^^^^^: typeof WithInstance   (Class) (Identifier)
+
+	value = 0;
+>^^^^^: number   (Number) (Identifier)
+
+declare const staticConstructor: { new(): {}; value: number };
+>             ^^^^^^^^^^^^^^^^^: { new (): {}; value: number; }   (Object) (Identifier)
+
+declare const staticConstructor: { new(): {}; value: number };
+>                                             ^^^^^: number   (Number) (Identifier)

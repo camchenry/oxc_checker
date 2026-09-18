@@ -773,13 +773,28 @@ impl<'a, 'store> Checker<'a, 'store> {
                         })
                 })
             }
-            (TyKind::Class(source), TyKind::Class(target)) => self.is_assignable_to_at_depth(
-                source.constructor_type,
-                target.constructor_type,
-                next_depth,
-            ),
+            (TyKind::Class(source), TyKind::Class(target)) => {
+                let (TyKind::Object(source_constructor), TyKind::Object(target_constructor)) = (
+                    self.ty_kind(source.constructor_type),
+                    self.ty_kind(target.constructor_type),
+                ) else {
+                    return false;
+                };
+                self.class_static_members_assignable_to(
+                    source_constructor,
+                    target_constructor,
+                    next_depth,
+                )
+            }
             (TyKind::Class(source), _) => {
                 self.is_assignable_to_at_depth(source.constructor_type, target, next_depth)
+            }
+            (TyKind::Object(source), TyKind::Class(target)) => {
+                let TyKind::Object(target_constructor) = self.ty_kind(target.constructor_type)
+                else {
+                    return false;
+                };
+                self.class_static_members_assignable_to(source, target_constructor, next_depth)
             }
             (_, TyKind::Class(target)) => {
                 self.is_assignable_to_at_depth(source, target.constructor_type, next_depth)
@@ -1233,23 +1248,49 @@ impl<'a, 'store> Checker<'a, 'store> {
         depth: usize,
     ) -> bool {
         self.object_properties_assignable_to(&source.properties.iter(), target, depth)
-            && [SignatureKind::Call, SignatureKind::Construct]
-                .into_iter()
-                .all(|kind| {
-                    self.signatures_assignable_to(
-                        &source
-                            .signatures()
-                            .iter()
-                            .filter(move |signature| signature.kind == kind)
-                            .map(|signature| signature.ty),
-                        target
-                            .signatures()
-                            .iter()
-                            .filter(move |signature| signature.kind == kind)
-                            .map(|signature| signature.ty),
-                        depth,
-                    )
-                })
+            && self.object_signatures_assignable_to(source, target, depth)
+    }
+
+    /// Compares a structural source with a class value's static side.
+    fn class_static_members_assignable_to(
+        &self,
+        source: &crate::types::TyObject<'a>,
+        target: &crate::types::TyObject<'a>,
+        depth: usize,
+    ) -> bool {
+        self.property_iter_assignable_to(
+            &source.properties.iter(),
+            &target
+                .properties
+                .iter()
+                .filter(|property| property.name != "prototype"),
+            depth,
+        ) && self.object_signatures_assignable_to(source, target, depth)
+    }
+
+    fn object_signatures_assignable_to(
+        &self,
+        source: &crate::types::TyObject<'a>,
+        target: &crate::types::TyObject<'a>,
+        depth: usize,
+    ) -> bool {
+        [SignatureKind::Call, SignatureKind::Construct]
+            .into_iter()
+            .all(|kind| {
+                self.signatures_assignable_to(
+                    &source
+                        .signatures()
+                        .iter()
+                        .filter(move |signature| signature.kind == kind)
+                        .map(|signature| signature.ty),
+                    target
+                        .signatures()
+                        .iter()
+                        .filter(move |signature| signature.kind == kind)
+                        .map(|signature| signature.ty),
+                    depth,
+                )
+            })
     }
 
     /// Compares two function signatures, optionally erasing their type parameters for overload matching.
@@ -1467,13 +1508,25 @@ impl<'a, 'store> Checker<'a, 'store> {
     fn properties_assignable_to<'properties>(
         &self,
         source_properties: &(impl Iterator<Item = &'properties TyProperty<'a>> + Clone),
-        target_properties: &[TyProperty<'a>],
+        target_properties: &'properties [TyProperty<'a>],
         depth: usize,
     ) -> bool
     where
         'a: 'properties,
     {
-        target_properties.iter().all(|target_property| {
+        self.property_iter_assignable_to(source_properties, &target_properties.iter(), depth)
+    }
+
+    fn property_iter_assignable_to<'properties>(
+        &self,
+        source_properties: &(impl Iterator<Item = &'properties TyProperty<'a>> + Clone),
+        target_properties: &(impl Iterator<Item = &'properties TyProperty<'a>> + Clone),
+        depth: usize,
+    ) -> bool
+    where
+        'a: 'properties,
+    {
+        target_properties.clone().all(|target_property| {
             let Some(source_property) = (*source_properties).clone().find(|source_property| {
                 source_property.name == target_property.name
                     && source_property.computed == target_property.computed
