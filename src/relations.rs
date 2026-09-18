@@ -423,6 +423,13 @@ impl<'a, 'store> Checker<'a, 'store> {
             (TyKind::Unknown, _) => false,
             // `undefined` is assignable to `void`
             (TyKind::Undefined, TyKind::Void) => true,
+            // Literal types are subtypes, and so are always assignable
+            (TyKind::UniqueSymbol(_), TyKind::Symbol) => true,
+            (TyKind::NumberLiteral(_), TyKind::Number) => true,
+            (TyKind::StringLiteral(_), TyKind::String) => true,
+            (TyKind::TemplateLiteral(_), TyKind::String) => true,
+            (TyKind::BigIntLiteral(_), TyKind::Bigint) => true,
+            (TyKind::BooleanLiteral(_), TyKind::Boolean) => true,
             (TyKind::Union(source_union), _) => source_union.types.iter().all(|source_type| {
                 self.is_assignable_to_at_depth(*source_type, target, next_depth)
             }),
@@ -810,10 +817,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                         },
                     )
             }
-            (TyKind::UniqueSymbol(_), TyKind::Symbol) => true,
-            (TyKind::NumberLiteral(_), TyKind::Number) => true,
-            (TyKind::StringLiteral(_), TyKind::String) => true,
-            (TyKind::TemplateLiteral(_), TyKind::String) => true,
             (
                 TyKind::TypeReference(_),
                 TyKind::String | TyKind::StringLiteral(_) | TyKind::TemplateLiteral(_),
@@ -822,11 +825,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .is_some_and(|source_literal| {
                     self.is_assignable_to_at_depth(source_literal, target, next_depth)
                 }),
-            (TyKind::BigIntLiteral(_), TyKind::Bigint) => true,
             (TyKind::StringLiteral(source), TyKind::StringLiteral(target)) => {
                 source.value == target.value
             }
-            (TyKind::BooleanLiteral(_), TyKind::Boolean) => true,
             (_, TyKind::Keyof(keyof)) => {
                 let Some(source_name) = self.property_name_from_key_type(source) else {
                     return false;
