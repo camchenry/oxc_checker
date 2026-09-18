@@ -1,3 +1,5 @@
+use oxc_ast::AstKind;
+
 use crate::{
     IndexInfo, Signature, SignatureKind, TupleElement, TyProperty,
     checker::Checker,
@@ -6,7 +8,7 @@ use crate::{
     type_predicate_kinds_match,
     types::{
         Ty, TyFunction, TyIntersection, TyKind, TyObject, TyTypeParameter,
-        function_maximum_argument_count, function_minimum_argument_count,
+        function_maximum_argument_count, function_minimum_argument_count, visit_type,
     },
 };
 
@@ -551,121 +553,7 @@ impl<'a, 'store> Checker<'a, 'store> {
                 .iter()
                 .any(|ty| self.is_assignable_to_at_depth(*ty, target, next_depth)),
             (TyKind::Function(source), TyKind::Function(target)) => {
-                let source_mapper =
-                    if source.type_parameters.is_empty() || target.type_parameters.is_empty() {
-                        TypeMapper::Empty
-                    } else {
-                        if source.type_parameters.len() != target.type_parameters.len() {
-                            self.infer_signature_type_mapper(source, target)
-                        } else {
-                            let mapper = TypeMapper::from_type_parameters_and_arguments(
-                                self.arena(),
-                                source.type_parameters.iter().copied(),
-                                target
-                                    .type_parameters
-                                    .iter()
-                                    .map(|parameter| self.arena().type_parameter_type(*parameter)),
-                            );
-                            if !source
-                                .type_parameters
-                                .iter()
-                                .zip(&target.type_parameters)
-                                .all(|(source, target)| {
-                                    match (source.constraint_type, target.constraint_type) {
-                                        (Some(source), Some(target)) => {
-                                            self.arena().is_type_identical_to(
-                                                self.instantiate_type(source, &mapper),
-                                                target,
-                                            )
-                                        }
-                                        (None, None) => true,
-                                        _ => false,
-                                    }
-                                })
-                            {
-                                return false;
-                            }
-                            mapper
-                        }
-                    };
-
-                // If the number of required arguments for the source is greater than the
-                // largest possible number of arguments for the target (that is: no overlap),
-                // then the functions are not assignable.
-                let source_minimum_argument_count =
-                    function_minimum_argument_count(self.arena(), source);
-                let target_maximum_argument_count =
-                    function_maximum_argument_count(self.arena(), target);
-                if target_maximum_argument_count
-                    .is_some_and(|target_count| source_minimum_argument_count > target_count)
-                {
-                    return false;
-                }
-
-                if !self.function_parameters_assignable_to(
-                    source,
-                    target,
-                    &source_mapper,
-                    &TypeMapper::Empty,
-                    next_depth,
-                    false,
-                ) {
-                    return false;
-                }
-
-                // Functions that return a value can be assigned to a function that returns void,
-                // because the caller ignores its result.
-                let target_return_type = target.return_type();
-                if self.ty_kind(target_return_type) == TyKind::Void {
-                    return true;
-                }
-
-                // Type predicates (e.g., `x is string`) must match in their target types
-                let type_predicate_matches = match (source.type_predicate, target.type_predicate) {
-                    (Some(source_predicate), Some(target_predicate)) => {
-                        type_predicate_kinds_match(source_predicate, target_predicate)
-                            && match (
-                                source_predicate.target_type(),
-                                target_predicate.target_type(),
-                            ) {
-                                (Some(source_type), Some(target_type)) => self
-                                    .is_assignable_to_at_depth(
-                                        self.instantiate_type(source_type, &source_mapper),
-                                        target_type,
-                                        next_depth,
-                                    ),
-                                (None, None) => true,
-                                _ => false,
-                            }
-                    }
-                    (Some(type_predicate), None) => {
-                        // If the source has a type predicate and the target does not, it's fine as long as: the target
-                        // has a boolean return type, and the source type predicate is a type guard (e.g., `x is string`)
-                        // In other words, `(x: string) => x is string` is assignable to `(x: string) => boolean`
-                        self.ty_kind(target.return_type()) == TyKind::Boolean
-                            && type_predicate.is_type_guard()
-                    }
-                    (None, Some(_)) => false,
-                    (None, None) => true,
-                };
-                if !type_predicate_matches {
-                    return false;
-                }
-
-                // Check that the return type matches
-                let source_return_type =
-                    self.instantiate_type(source.return_type(), &source_mapper);
-                let return_type_matches = self.is_assignable_to_at_depth(
-                    source_return_type,
-                    target_return_type,
-                    next_depth,
-                );
-                if !return_type_matches {
-                    return false;
-                }
-
-                // Otherwise, assume the functions are assignable.
-                true
+                self.function_types_assignable_to(source, target, next_depth, false)
             }
             (TyKind::Function(_), TyKind::Object(target)) => {
                 let target_is_weak = !target.properties.is_empty()
@@ -1277,17 +1165,29 @@ impl<'a, 'store> Checker<'a, 'store> {
         [SignatureKind::Call, SignatureKind::Construct]
             .into_iter()
             .all(|kind| {
+                let source_signatures = source
+                    .signatures()
+                    .iter()
+                    .filter(move |signature| signature.kind == kind);
+                let target_signatures = target
+                    .signatures()
+                    .iter()
+                    .filter(move |signature| signature.kind == kind);
+                if kind == SignatureKind::Construct
+                    && source_signatures
+                        .clone()
+                        .next()
+                        .is_some_and(|signature| signature.is_abstract)
+                    && target_signatures
+                        .clone()
+                        .next()
+                        .is_some_and(|signature| !signature.is_abstract)
+                {
+                    return false;
+                }
                 self.signatures_assignable_to(
-                    &source
-                        .signatures()
-                        .iter()
-                        .filter(move |signature| signature.kind == kind)
-                        .map(|signature| signature.ty),
-                    target
-                        .signatures()
-                        .iter()
-                        .filter(move |signature| signature.kind == kind)
-                        .map(|signature| signature.ty),
+                    &source_signatures.map(|signature| signature.ty),
+                    target_signatures.map(|signature| signature.ty),
                     depth,
                 )
             })
@@ -1301,6 +1201,10 @@ impl<'a, 'store> Checker<'a, 'store> {
         depth: usize,
         erase_type_parameters: bool,
     ) -> bool {
+        if !erase_type_parameters && !self.free_signature_constraints_are_compatible(source, target)
+        {
+            return false;
+        }
         let (source_mapper, target_mapper) = if erase_type_parameters {
             (
                 TypeMapper::from_type_parameters_and_arguments(
@@ -1314,42 +1218,24 @@ impl<'a, 'store> Checker<'a, 'store> {
                     target.type_parameters.iter().map(|_| self.ty.any()),
                 ),
             )
-        } else if source.type_parameters.is_empty() || target.type_parameters.is_empty() {
-            (TypeMapper::Empty, TypeMapper::Empty)
-        } else {
-            if source.type_parameters.len() != target.type_parameters.len() {
-                (
-                    self.infer_signature_type_mapper(source, target),
-                    TypeMapper::Empty,
-                )
-            } else {
-                let mapper = TypeMapper::from_type_parameters_and_arguments(
-                    self.arena(),
-                    source.type_parameters.iter().copied(),
-                    target
-                        .type_parameters
-                        .iter()
-                        .map(|parameter| self.arena().type_parameter_type(*parameter)),
-                );
-                if !source
+        } else if source.type_parameters.is_empty()
+            || source.type_parameters.len() == target.type_parameters.len()
+                && source
                     .type_parameters
                     .iter()
                     .zip(&target.type_parameters)
                     .all(|(source, target)| {
-                        match (source.constraint_type, target.constraint_type) {
-                            (Some(source), Some(target)) => self.arena().is_type_identical_to(
-                                self.instantiate_type(source, &mapper),
-                                target,
-                            ),
-                            (None, None) => true,
-                            _ => false,
-                        }
+                        source
+                            .symbol
+                            .is_some_and(|symbol| target.symbol == Some(symbol))
                     })
-                {
-                    return false;
-                }
-                (mapper, TypeMapper::Empty)
-            }
+        {
+            (TypeMapper::Empty, TypeMapper::Empty)
+        } else {
+            (
+                self.infer_signature_type_mapper(source, target),
+                TypeMapper::Empty,
+            )
         };
 
         let source_minimum_argument_count = function_minimum_argument_count(self.arena(), source);
@@ -1408,6 +1294,79 @@ impl<'a, 'store> Checker<'a, 'store> {
             target_return_type,
             depth,
         )
+    }
+
+    /// Checks constraints containing type parameters owned by an enclosing declaration.
+    fn free_signature_constraints_are_compatible(
+        &self,
+        source: &TyFunction<'a>,
+        target: &TyFunction<'a>,
+    ) -> bool {
+        let contains_free_type_parameter = |function: &TyFunction<'a>, constraint: Ty<'a>| {
+            let mut contains_free = false;
+            visit_type(self.arena(), constraint, &mut |ty| {
+                let symbol = match self.ty_kind(ty) {
+                    TyKind::TypeParameter(parameter) => parameter.symbol,
+                    TyKind::TypeReference(reference) if reference.is_bare() => reference.target,
+                    _ => return,
+                };
+                let is_type_parameter = symbol.is_some_and(|symbol| {
+                    let declaration = self
+                        .semantic(symbol.program_id)
+                        .scoping()
+                        .symbol_declaration(symbol.symbol_id);
+                    matches!(
+                        self.nodes(symbol.program_id).kind(declaration),
+                        AstKind::TSTypeParameter(_)
+                    )
+                });
+                if is_type_parameter
+                    && !function
+                        .type_parameters
+                        .iter()
+                        .any(|parameter| parameter.symbol == symbol)
+                {
+                    contains_free = true;
+                }
+            });
+            contains_free
+        };
+        let has_free_constraints = source.type_parameters.iter().any(|parameter| {
+            parameter
+                .constraint_type
+                .is_some_and(|constraint| contains_free_type_parameter(source, constraint))
+        }) || target.type_parameters.iter().any(|parameter| {
+            parameter
+                .constraint_type
+                .is_some_and(|constraint| contains_free_type_parameter(target, constraint))
+        });
+        if !has_free_constraints {
+            return true;
+        }
+        if source.type_parameters.len() != target.type_parameters.len() {
+            return false;
+        }
+        let mapper = TypeMapper::from_type_parameters_and_arguments(
+            self.arena(),
+            source.type_parameters.iter().copied(),
+            target
+                .type_parameters
+                .iter()
+                .map(|parameter| self.arena().type_parameter_type(*parameter)),
+        );
+        source
+            .type_parameters
+            .iter()
+            .zip(&target.type_parameters)
+            .all(
+                |(source, target)| match (source.constraint_type, target.constraint_type) {
+                    (Some(source), Some(target)) => self
+                        .arena()
+                        .is_type_identical_to(self.instantiate_type(source, &mapper), target),
+                    (None, None) => true,
+                    _ => false,
+                },
+            )
     }
 
     fn type_properties_assignable_to(

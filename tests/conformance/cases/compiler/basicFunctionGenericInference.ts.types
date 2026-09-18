@@ -177,3 +177,249 @@ const defaultReadTBeforeUValue = defaultReadTBeforeU();
 
 const defaultReadTBeforeUValue = defaultReadTBeforeU();
 >                                ^^^^^^^^^^^^^^^^^^^: <T = number, U = T>() => [T, U]   (Function) (Identifier)
+
+declare const genericDefaultSource: <T = string, U = T>() => U;
+>             ^^^^^^^^^^^^^^^^^^^^: <T = string, U = T>() => U   (Function) (Identifier)
+
+declare const genericDefaultSource: <T = string, U = T>() => U;
+>                                    ^: any   (Any) (Identifier)
+
+declare const genericDefaultSource: <T = string, U = T>() => U;
+>                                                ^: any   (Any) (Identifier)
+
+declare const genericDefaultSource: <T = string, U = T>() => U;
+>                                                    ^: any   (Any) (Identifier)
+
+declare const genericDefaultSource: <T = string, U = T>() => U;
+>                                                            ^: any   (Any) (Identifier)
+
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+>             ^^^^^^^^^^^^^^^^^^^: <T, U>(x: T, y: U) => { x: T; y: U; }   (Function) (Identifier)
+
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+>                                   ^: any   (Any) (Identifier)
+
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+>                                      ^: any   (Any) (Identifier)
+
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+>                                         ^: T   (TypeParameter) (Identifier)
+
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+>                                            ^: any   (Any) (Identifier)
+
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+>                                               ^: U   (TypeParameter) (Identifier)
+
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+>                                                  ^: any   (Any) (Identifier)
+
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+>                                                          ^: T   (TypeParameter) (Identifier)
+
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+>                                                             ^: any   (Any) (Identifier)
+
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+>                                                                ^: U   (TypeParameter) (Identifier)
+
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+>                                                                   ^: any   (Any) (Identifier)
+
+declare const genericTupleTarget: <T = number, U = T>() => [T, U];
+>             ^^^^^^^^^^^^^^^^^^: <T = number, U = T>() => [T, U]   (Function) (Identifier)
+
+declare const genericTupleTarget: <T = number, U = T>() => [T, U];
+>                                  ^: any   (Any) (Identifier)
+
+declare const genericTupleTarget: <T = number, U = T>() => [T, U];
+>                                              ^: any   (Any) (Identifier)
+
+declare const genericTupleTarget: <T = number, U = T>() => [T, U];
+>                                                  ^: any   (Any) (Identifier)
+
+declare const genericTupleTarget: <T = number, U = T>() => [T, U];
+>                                                           ^: any   (Any) (Identifier)
+
+declare const genericTupleTarget: <T = number, U = T>() => [T, U];
+>                                                              ^: any   (Any) (Identifier)
+
+declare const genericIdentitySource: <T>(value: T) => T;
+>             ^^^^^^^^^^^^^^^^^^^^^: <T>(value: T) => T   (Function) (Identifier)
+
+declare const genericIdentitySource: <T>(value: T) => T;
+>                                     ^: any   (Any) (Identifier)
+
+declare const genericIdentitySource: <T>(value: T) => T;
+>                                        ^^^^^: T   (TypeParameter) (Identifier)
+
+declare const genericIdentitySource: <T>(value: T) => T;
+>                                               ^: any   (Any) (Identifier)
+
+declare const genericIdentitySource: <T>(value: T) => T;
+>                                                     ^: any   (Any) (Identifier)
+
+declare const concreteIdentityTarget: (value: string) => string;
+>             ^^^^^^^^^^^^^^^^^^^^^^: (value: string) => string   (Function) (Identifier)
+
+declare const concreteIdentityTarget: (value: string) => string;
+>                                      ^^^^^: string   (String) (Identifier)
+
+declare const widerConstraintSource: <T extends string | number>(value: T) => T;
+>             ^^^^^^^^^^^^^^^^^^^^^: <T extends string | number>(value: T) => T   (Function) (Identifier)
+
+declare const widerConstraintSource: <T extends string | number>(value: T) => T;
+>                                     ^: any   (Any) (Identifier)
+
+declare const widerConstraintSource: <T extends string | number>(value: T) => T;
+>                                                                ^^^^^: T   (TypeParameter) (Identifier)
+
+declare const widerConstraintSource: <T extends string | number>(value: T) => T;
+>                                                                       ^: any   (Any) (Identifier)
+
+declare const widerConstraintSource: <T extends string | number>(value: T) => T;
+>                                                                             ^: any   (Any) (Identifier)
+
+declare const narrowerConstraintTarget: <T extends string>(value: T) => T;
+>             ^^^^^^^^^^^^^^^^^^^^^^^^: <T extends string>(value: T) => T   (Function) (Identifier)
+
+declare const narrowerConstraintTarget: <T extends string>(value: T) => T;
+>                                        ^: any   (Any) (Identifier)
+
+declare const narrowerConstraintTarget: <T extends string>(value: T) => T;
+>                                                          ^^^^^: T   (TypeParameter) (Identifier)
+
+declare const narrowerConstraintTarget: <T extends string>(value: T) => T;
+>                                                                 ^: any   (Any) (Identifier)
+
+declare const narrowerConstraintTarget: <T extends string>(value: T) => T;
+>                                                                       ^: any   (Any) (Identifier)
+
+declare const indexedAccessSource: <T, K extends keyof T>(obj: T, key: K) => T[K];
+>             ^^^^^^^^^^^^^^^^^^^: <T, K extends keyof T>(obj: T, key: K) => T[K]   (Function) (Identifier)
+
+declare const indexedAccessSource: <T, K extends keyof T>(obj: T, key: K) => T[K];
+>                                   ^: any   (Any) (Identifier)
+
+declare const indexedAccessSource: <T, K extends keyof T>(obj: T, key: K) => T[K];
+>                                      ^: any   (Any) (Identifier)
+
+declare const indexedAccessSource: <T, K extends keyof T>(obj: T, key: K) => T[K];
+>                                                      ^: any   (Any) (Identifier)
+
+declare const indexedAccessSource: <T, K extends keyof T>(obj: T, key: K) => T[K];
+>                                                         ^^^: T   (TypeParameter) (Identifier)
+
+declare const indexedAccessSource: <T, K extends keyof T>(obj: T, key: K) => T[K];
+>                                                              ^: any   (Any) (Identifier)
+
+declare const indexedAccessSource: <T, K extends keyof T>(obj: T, key: K) => T[K];
+>                                                                 ^^^: K   (TypeParameter) (Identifier)
+
+declare const indexedAccessSource: <T, K extends keyof T>(obj: T, key: K) => T[K];
+>                                                                      ^: any   (Any) (Identifier)
+
+declare const indexedAccessSource: <T, K extends keyof T>(obj: T, key: K) => T[K];
+>                                                                            ^: any   (Any) (Identifier)
+
+declare const indexedAccessSource: <T, K extends keyof T>(obj: T, key: K) => T[K];
+>                                                                              ^: any   (Any) (Identifier)
+
+declare const genericKeyofTarget: <T>(obj: T, key: keyof T) => void;
+>             ^^^^^^^^^^^^^^^^^^: <T>(obj: T, key: keyof T) => void   (Function) (Identifier)
+
+declare const genericKeyofTarget: <T>(obj: T, key: keyof T) => void;
+>                                  ^: any   (Any) (Identifier)
+
+declare const genericKeyofTarget: <T>(obj: T, key: keyof T) => void;
+>                                     ^^^: T   (TypeParameter) (Identifier)
+
+declare const genericKeyofTarget: <T>(obj: T, key: keyof T) => void;
+>                                          ^: any   (Any) (Identifier)
+
+declare const genericKeyofTarget: <T>(obj: T, key: keyof T) => void;
+>                                             ^^^: keyof T   (Keyof) (Identifier)
+
+declare const genericKeyofTarget: <T>(obj: T, key: keyof T) => void;
+>                                                        ^: any   (Any) (Identifier)
+
+declare const incompatibleKeyTarget: (text: string, key: boolean) => any;
+>             ^^^^^^^^^^^^^^^^^^^^^: (text: string, key: boolean) => any   (Function) (Identifier)
+
+declare const incompatibleKeyTarget: (text: string, key: boolean) => any;
+>                                     ^^^^: string   (String) (Identifier)
+
+declare const incompatibleKeyTarget: (text: string, key: boolean) => any;
+>                                                   ^^^: boolean   (Boolean) (Identifier)
+
+declare const numberDefaultSource: <T = number>() => T;
+>             ^^^^^^^^^^^^^^^^^^^: <T = number>() => T   (Function) (Identifier)
+
+declare const numberDefaultSource: <T = number>() => T;
+>                                   ^: any   (Any) (Identifier)
+
+declare const numberDefaultSource: <T = number>() => T;
+>                                                    ^: any   (Any) (Identifier)
+
+declare const stringDefaultTarget: <T = string>() => T;
+>             ^^^^^^^^^^^^^^^^^^^: <T = string>() => T   (Function) (Identifier)
+
+declare const stringDefaultTarget: <T = string>() => T;
+>                                   ^: any   (Any) (Identifier)
+
+declare const stringDefaultTarget: <T = string>() => T;
+>                                                    ^: any   (Any) (Identifier)
+
+declare const callableDefaultSource: {
+>             ^^^^^^^^^^^^^^^^^^^^^: { <T = string, U = T>(): U; marker: true; }   (Object) (Identifier)
+
+  <T = string, U = T>(): U;
+>  ^: any   (Any) (Identifier)
+
+  <T = string, U = T>(): U;
+>              ^: any   (Any) (Identifier)
+
+  <T = string, U = T>(): U;
+>                  ^: any   (Any) (Identifier)
+
+  <T = string, U = T>(): U;
+>                        ^: any   (Any) (Identifier)
+
+  marker: true;
+> ^^^^^^: true   (BooleanLiteral) (Identifier)
+
+declare const callableObjectTarget: {
+>             ^^^^^^^^^^^^^^^^^^^^: { <T, U>(x: T, y: U): { x: T; y: U; }; marker: true; }   (Object) (Identifier)
+
+  <T, U>(x: T, y: U): { x: T; y: U };
+>  ^: any   (Any) (Identifier)
+
+  <T, U>(x: T, y: U): { x: T; y: U };
+>     ^: any   (Any) (Identifier)
+
+  <T, U>(x: T, y: U): { x: T; y: U };
+>        ^: T   (TypeParameter) (Identifier)
+
+  <T, U>(x: T, y: U): { x: T; y: U };
+>           ^: any   (Any) (Identifier)
+
+  <T, U>(x: T, y: U): { x: T; y: U };
+>              ^: U   (TypeParameter) (Identifier)
+
+  <T, U>(x: T, y: U): { x: T; y: U };
+>                 ^: any   (Any) (Identifier)
+
+  <T, U>(x: T, y: U): { x: T; y: U };
+>                       ^: T   (TypeParameter) (Identifier)
+
+  <T, U>(x: T, y: U): { x: T; y: U };
+>                          ^: any   (Any) (Identifier)
+
+  <T, U>(x: T, y: U): { x: T; y: U };
+>                             ^: U   (TypeParameter) (Identifier)
+
+  <T, U>(x: T, y: U): { x: T; y: U };
+>                                ^: any   (Any) (Identifier)
+
+  marker: true;
+> ^^^^^^: true   (BooleanLiteral) (Identifier)

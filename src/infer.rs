@@ -21,7 +21,7 @@ use crate::{
     limits::{CONDITIONAL_INFER_MATCH_MAX_DEPTH, CONDITIONAL_TYPE_MAX_DEPTH},
     mapper::{TypeMapper, TypeParameterSubstitutions},
     program::ProgramId,
-    type_parameter_name,
+    type_parameter_name, type_predicate_kinds_match,
     types::{
         CheckerArena, LabeledTupleElement, MappedModifier, SignatureKind, TupleElement,
         TupleReadonly, Ty, TyFunction, TyInfer, TyKind, TyMapped, TyProperty, TyTemplateLiteral,
@@ -83,19 +83,31 @@ impl InferencePriority {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 struct InferenceResolutionFlags {
     fill_unresolved_with_unknown: bool,
+    filter_return_candidates_by_constraint: bool,
 }
 
 impl InferenceResolutionFlags {
     const NONE: Self = Self {
         fill_unresolved_with_unknown: false,
+        filter_return_candidates_by_constraint: false,
     };
 
     const FILL_UNRESOLVED_WITH_UNKNOWN: Self = Self {
         fill_unresolved_with_unknown: true,
+        filter_return_candidates_by_constraint: false,
+    };
+
+    const CONTEXTUAL_SIGNATURE: Self = Self {
+        fill_unresolved_with_unknown: true,
+        filter_return_candidates_by_constraint: true,
     };
 
     fn fill_unresolved_with_unknown(self) -> bool {
         self.fill_unresolved_with_unknown
+    }
+
+    fn filter_return_candidates_by_constraint(self) -> bool {
+        self.filter_return_candidates_by_constraint
     }
 }
 
@@ -129,6 +141,7 @@ struct InferenceContext<'a> {
     arena: CheckerArena<'a>,
     inferences: Vec<InferenceInfo<'a>>,
     return_type: Option<Ty<'a>>,
+    infer_from_return_union: bool,
 }
 
 pub(crate) struct InferenceResolution<'a> {
@@ -171,11 +184,17 @@ impl<'a> InferenceContext<'a> {
                 })
                 .collect(),
             return_type: None,
+            infer_from_return_union: false,
         }
     }
 
     fn with_return_type(mut self, return_type: Ty<'a>) -> Self {
         self.return_type = Some(return_type);
+        self
+    }
+
+    fn with_return_union_inference(mut self) -> Self {
+        self.infer_from_return_union = true;
         self
     }
 
@@ -329,11 +348,12 @@ impl<'a> InferenceContext<'a> {
         fix: bool,
     ) -> Option<Ty<'a>> {
         let arena = checker.arena();
-        if let Some(inferred_type) = self.inferences[index].inferred_type {
+        if self.inferences[index].is_fixed {
+            let inferred_type = self.inferences[index].inferred_type;
             if fix {
                 self.inferences[index].is_fixed = true;
             }
-            return Some(inferred_type);
+            return inferred_type;
         }
         if resolving.contains(&index) {
             return None;
@@ -383,9 +403,26 @@ impl<'a> InferenceContext<'a> {
             let substitutions = self.resolved_substitutions();
             let constraint_type =
                 checker.instantiate_type(constraint_type, &substitutions.to_mapper(arena));
-            if !checker.is_assignable_to(current_inferred_type, constraint_type) {
-                self.inferences[index].inferred_type = Some(constraint_type);
-                inferred_type = Some(constraint_type);
+            if !arena.is_type_identical_to(current_inferred_type, constraint_type)
+                && !checker.is_assignable_to(current_inferred_type, constraint_type)
+            {
+                let filtered_return_type = (flags.filter_return_candidates_by_constraint()
+                    && self.inferences[index].priority == InferencePriority::ReturnType)
+                    .then(|| {
+                        let TyKind::Union(union) = checker.ty_kind(current_inferred_type) else {
+                            return None;
+                        };
+                        let candidates = union.types.iter().copied().filter(|candidate| {
+                            arena.is_type_identical_to(*candidate, constraint_type)
+                                || checker.is_assignable_to(*candidate, constraint_type)
+                        });
+                        let filtered = arena.union(candidates);
+                        (!filtered.is_never()).then_some(filtered)
+                    })
+                    .flatten();
+                let constrained_type = filtered_return_type.unwrap_or(constraint_type);
+                self.inferences[index].inferred_type = Some(constrained_type);
+                inferred_type = Some(constrained_type);
             }
         }
 
@@ -1773,13 +1810,45 @@ impl<'a, 'store> Checker<'a, 'store> {
             source.type_parameters.iter().copied(),
             &TypeParameterSubstitutions::new(),
             self.arena(),
-        );
+        )
+        .with_return_union_inference();
         for (source_parameter, target_parameter) in
             source.parameters.iter().zip(target.parameters.iter())
         {
             self.infer_types(source_parameter.ty, target_parameter.ty, &mut context);
         }
-        if type_contains_inference_variable(self.arena(), source.return_type(), &context) {
+        let inferred_from_predicate = match (source.type_predicate, target.type_predicate) {
+            (Some(source_predicate), Some(target_predicate))
+                if type_predicate_kinds_match(source_predicate, target_predicate) =>
+            {
+                match (
+                    source_predicate.target_type(),
+                    target_predicate.target_type(),
+                ) {
+                    (Some(source_type), Some(target_type))
+                        if type_contains_inference_variable(
+                            self.arena(),
+                            source_type,
+                            &context,
+                        ) =>
+                    {
+                        self.infer_types_with_variance(
+                            source_type,
+                            target_type,
+                            &mut context,
+                            InferenceVariance::Covariant,
+                            InferencePriority::ReturnType,
+                        );
+                        true
+                    }
+                    _ => false,
+                }
+            }
+            _ => false,
+        };
+        if !inferred_from_predicate
+            && type_contains_inference_variable(self.arena(), source.return_type(), &context)
+        {
             self.infer_types_with_variance(
                 source.return_type(),
                 target.return_type(),
@@ -1790,10 +1859,7 @@ impl<'a, 'store> Checker<'a, 'store> {
         }
 
         context
-            .resolve_with_contextual_mapper(
-                self,
-                InferenceResolutionFlags::FILL_UNRESOLVED_WITH_UNKNOWN,
-            )
+            .resolve_with_contextual_mapper(self, InferenceResolutionFlags::CONTEXTUAL_SIGNATURE)
             .mapper
     }
 
@@ -1848,6 +1914,19 @@ impl<'a, 'store> Checker<'a, 'store> {
                     variance,
                     priority,
                 );
+            }
+            (_, TyKind::Union(argument_union))
+                if priority == InferencePriority::ReturnType && context.infer_from_return_union =>
+            {
+                for argument_type in &argument_union.types {
+                    self.infer_types_with_variance(
+                        parameter_type,
+                        *argument_type,
+                        context,
+                        variance,
+                        priority,
+                    );
+                }
             }
             (TyKind::Intersection(parameter_intersection), _) => {
                 self.infer_type_parameter_from_intersection(

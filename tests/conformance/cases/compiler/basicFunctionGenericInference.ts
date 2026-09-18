@@ -1,4 +1,5 @@
 // @target: es2022
+// @filename: inference.ts
 function foo<T>(x: T) {
   return x;
 }
@@ -33,3 +34,25 @@ function defaultReadTBeforeU<T = number, U = T>(): [T, U] {
 }
 
 const defaultReadTBeforeUValue = defaultReadTBeforeU();
+
+// @filename: contextualSignatures.ts
+declare const genericDefaultSource: <T = string, U = T>() => U;
+declare const genericObjectTarget: <T, U>(x: T, y: U) => { x: T; y: U };
+declare const genericTupleTarget: <T = number, U = T>() => [T, U];
+declare const genericIdentitySource: <T>(value: T) => T;
+declare const concreteIdentityTarget: (value: string) => string;
+declare const widerConstraintSource: <T extends string | number>(value: T) => T;
+declare const narrowerConstraintTarget: <T extends string>(value: T) => T;
+declare const indexedAccessSource: <T, K extends keyof T>(obj: T, key: K) => T[K];
+declare const genericKeyofTarget: <T>(obj: T, key: keyof T) => void;
+declare const incompatibleKeyTarget: (text: string, key: boolean) => any;
+declare const numberDefaultSource: <T = number>() => T;
+declare const stringDefaultTarget: <T = string>() => T;
+declare const callableDefaultSource: {
+  <T = string, U = T>(): U;
+  marker: true;
+};
+declare const callableObjectTarget: {
+  <T, U>(x: T, y: U): { x: T; y: U };
+  marker: true;
+};

@@ -8633,9 +8633,12 @@ impl<'a, 'store> Checker<'a, 'store> {
         } else {
             &[]
         };
-        let signatures = self
-            .arena()
-            .alloc_slice_from_iter([Signature::new(SignatureKind::Construct, constructor_type)]);
+        let signature = if class.r#abstract {
+            Signature::abstract_construct(constructor_type)
+        } else {
+            Signature::new(SignatureKind::Construct, constructor_type)
+        };
+        let signatures = self.arena().alloc_slice_from_iter([signature]);
 
         self.ty
             .object_from_slices(properties, signatures, &[], false)
