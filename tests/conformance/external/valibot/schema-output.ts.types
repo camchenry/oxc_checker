@@ -721,8 +721,7 @@ const userSchema = object({
 >             ^^^^^^: () => StringSchema   (Function) (Identifier)
 
 type UserInput = InferInput<typeof userSchema>
->    ^^^^^^^^^: { id: string; age: number | undefined; active: boolean; tags: InferInput<StringSchema>[]; }   (Object) (Identifier)
-      expected: { id: string; age: number | undefined; active: boolean; tags: string[]; }
+>    ^^^^^^^^^: { id: string; age: number | undefined; active: boolean; tags: string[]; }   (Object) (Identifier)
 
 type UserInput = InferInput<typeof userSchema>
 >                ^^^^^^^^^^: NonNullable<TSchema["~types"]>["input"]   (IndexedAccess) (Identifier)
@@ -734,8 +733,7 @@ type UserInput = InferInput<typeof userSchema>
 >                                  ^^^^^^^^^^: ObjectSchema<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>   (TypeReference) (Identifier)
 
 type UserOutput = InferOutput<typeof userSchema>
->    ^^^^^^^^^^: { id: string; age: number; active: boolean; tags: InferOutput<StringSchema>[]; }   (Object) (Identifier)
-       expected: { id: string; age: number; active: boolean; tags: string[]; }
+>    ^^^^^^^^^^: { id: string; age: number; active: boolean; tags: string[]; }   (Object) (Identifier)
 
 type UserOutput = InferOutput<typeof userSchema>
 >                 ^^^^^^^^^^^: NonNullable<TSchema["~types"]>["output"]   (IndexedAccess) (Identifier)
@@ -814,16 +812,14 @@ const userAge = output.age
 >                      ^^^: number   (Number) (Identifier)
 
 const userTags = output.tags
->     ^^^^^^^^: InferOutput<StringSchema>[]   (Array) (Identifier)
-      expected: string[]
+>     ^^^^^^^^: string[]   (Array) (Identifier)
 
 const userTags = output.tags
 >                ^^^^^^: { [Key in keyof { id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }]: InferOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }[Key]>; }   (Mapped) (Identifier)
                expected: ObjectOutput<{ id: StringSchema; age: OptionalSchema<NumberSchema, number>; active: BooleanSchema; tags: ArraySchema<StringSchema>; }>
 
 const userTags = output.tags
->                       ^^^^: InferOutput<StringSchema>[]   (Array) (Identifier)
-                    expected: string[]
+>                       ^^^^: string[]   (Array) (Identifier)
 
 const issue: UserIssue = {
 >     ^^^^^: UserIssue   (TypeReference) (Identifier)

@@ -3636,7 +3636,7 @@ impl<'a, 'store> Checker<'a, 'store> {
             TyKind::Mapped(mapped) if !computed => {
                 self.get_property_type_of_mapped_type(program_id, mapped, property_name, 0)
             }
-            TyKind::TypeReference(reference) => self
+            TyKind::TypeReference(_) => self
                 .get_expanded_type_alias_reference_type(program_id, object_type, 0)
                 .and_then(|(expanded_program_id, expanded)| {
                     self.get_property_type_for_indexed_access_with_computed(
@@ -3650,9 +3650,9 @@ impl<'a, 'store> Checker<'a, 'store> {
                     if computed {
                         None
                     } else {
-                        self.get_property_type_of_interface_type(
+                        self.get_property_type_of_named_type(
                             program_id,
-                            reference,
+                            &object_type,
                             property_name,
                         )
                     }
@@ -3846,6 +3846,16 @@ impl<'a, 'store> Checker<'a, 'store> {
             TyKind::Mapped(mapped) => self
                 .expand_mapped_type(program_id, mapped, depth + 1)
                 .unwrap_or(ty),
+            TyKind::Array(array) => {
+                let element_type = self.expand_type(program_id, array.element_type, depth + 1);
+                if array.display_as_generic {
+                    self.ty.generic_array(element_type, array.readonly)
+                } else if array.readonly {
+                    self.ty.readonly_array(element_type)
+                } else {
+                    self.ty.array(element_type)
+                }
+            }
             TyKind::Union(union) => self.ty.union(
                 union
                     .types
@@ -7657,30 +7667,48 @@ impl<'a, 'store> Checker<'a, 'store> {
             });
 
         if let Some(constructor_type) = constructor_type
-            && let Some(class_name) = match self.ty_kind(constructor_type) {
-                TyKind::Class(class) => Some(class.name),
-                TyKind::TypeQuery(query) if query.type_arguments.is_empty() => Some(query.name),
+            && let Some((class_name, signature_type)) = match self.ty_kind(constructor_type) {
+                TyKind::Class(class) => Some((class.name, class.constructor_type)),
+                TyKind::TypeQuery(query) if query.type_arguments.is_empty() => Some((
+                    query.name,
+                    match self.ty_kind(query.resolved) {
+                        TyKind::Class(class) => class.constructor_type,
+                        _ => query.resolved,
+                    },
+                )),
                 _ => None,
             }
         {
-            let mut type_arguments = new_expression
-                .type_arguments
-                .as_deref()
-                .into_iter()
-                .flat_map(|type_arguments| {
-                    type_arguments.params.iter().map(|type_argument| {
-                        self.get_type_argument_from_ts_type(program_id, type_argument)
-                    })
+            let mut type_arguments = self
+                .resolve_construct_signature_candidate(program_id, signature_type, new_expression)
+                .and_then(|candidate| {
+                    candidate
+                        .signature
+                        .function(self.arena())
+                        .type_parameters
+                        .iter()
+                        .map(|parameter| candidate.inference.substitutions().get(*parameter))
+                        .collect::<Option<Vec<_>>>()
                 })
-                .collect::<Vec<_>>();
-            let explicit_type_argument_count = type_arguments.len();
-            let implicit_display_type_argument_count =
-                self.fill_default_type_arguments(program_id, class_name, &mut type_arguments);
+                .unwrap_or_else(|| {
+                    new_expression
+                        .type_arguments
+                        .as_deref()
+                        .into_iter()
+                        .flat_map(|type_arguments| {
+                            type_arguments.params.iter().map(|type_argument| {
+                                self.get_type_argument_from_ts_type(program_id, type_argument)
+                            })
+                        })
+                        .collect::<Vec<_>>()
+                });
+            let display_type_argument_count = type_arguments.len();
+            self.fill_default_type_arguments(program_id, class_name, &mut type_arguments);
             return self.type_reference_with_display_type_argument_count(
                 program_id,
                 class_name,
                 type_arguments,
-                explicit_type_argument_count + implicit_display_type_argument_count,
+                display_type_argument_count,
             );
         }
 
@@ -7704,6 +7732,16 @@ impl<'a, 'store> Checker<'a, 'store> {
         constructor_type: Ty<'a>,
         new_expression: &'a NewExpression<'a>,
     ) -> Option<Ty<'a>> {
+        self.resolve_construct_signature_candidate(program_id, constructor_type, new_expression)
+            .map(ResolvedSignatureCandidate::into_return_type)
+    }
+
+    fn resolve_construct_signature_candidate(
+        &self,
+        program_id: ProgramId,
+        constructor_type: Ty<'a>,
+        new_expression: &'a NewExpression<'a>,
+    ) -> Option<ResolvedSignatureCandidate<'a>> {
         let candidates = self.get_signatures_of_type_in_program(
             program_id,
             constructor_type,
@@ -7736,7 +7774,6 @@ impl<'a, 'store> Checker<'a, 'store> {
                     )
                 })
             })
-            .map(ResolvedSignatureCandidate::into_return_type)
     }
 
     fn arguments_are_assignable_to_parameters(
@@ -7807,6 +7844,15 @@ impl<'a, 'store> Checker<'a, 'store> {
                 {
                     return Some(ty);
                 }
+                if let Some(ty) = self.get_property_type_of_class_reference(
+                    program_id,
+                    reference,
+                    *object_type,
+                    property_name,
+                    0,
+                ) {
+                    return Some(ty);
+                }
                 (reference.name, false)
             }
             TyKind::Class(class) => (class.name, true),
@@ -7822,6 +7868,91 @@ impl<'a, 'store> Checker<'a, 'store> {
             class,
             property_name,
             is_static,
+        )
+    }
+
+    fn get_property_type_of_class_reference(
+        &self,
+        program_id: ProgramId,
+        reference: &TyTypeReference<'a>,
+        receiver: Ty<'a>,
+        property_name: &str,
+        depth: usize,
+    ) -> Option<Ty<'a>> {
+        if depth >= TYPE_EXPANSION_MAX_DEPTH {
+            return None;
+        }
+
+        let class_symbol = self.get_class_symbol_for_type(program_id, reference.name)?;
+        let (class_node_id, class) = self.get_class_for_symbol(class_symbol)?;
+        let mapper = self
+            .type_parameter_substitutions_for_reference(
+                class_symbol.program_id,
+                class.type_parameters.as_deref(),
+                reference,
+            )
+            .to_mapper(self.arena())
+            .with_prepend_mapping(self.arena(), self.ty.this(), receiver);
+
+        if let Some(ty) = self.get_class_member_type(
+            class_symbol.program_id,
+            class_node_id,
+            class,
+            property_name,
+            false,
+        ) {
+            return Some(self.instantiate_type(ty, &mapper));
+        }
+
+        let super_class = class.heritage_expression()?;
+        let super_type = self.get_type_of_expression_with_node(
+            class_symbol.program_id,
+            super_class,
+            Some(class_node_id),
+            CheckMode::NONE,
+        );
+        let super_name = match self.ty_kind(super_type) {
+            TyKind::Class(class) => class.name,
+            TyKind::TypeQuery(query) => query.name,
+            _ => return None,
+        };
+        let mut type_arguments = class
+            .heritage_type_arguments()
+            .into_iter()
+            .flat_map(|arguments| arguments.params.iter())
+            .map(|argument| {
+                let ty = self.get_type_from_ts_type(class_symbol.program_id, argument);
+                self.instantiate_type(ty, &mapper)
+            })
+            .collect::<Vec<_>>();
+        let display_type_argument_count = type_arguments.len();
+        self.fill_default_type_arguments(class_symbol.program_id, super_name, &mut type_arguments);
+        if let Some(type_parameters) =
+            self.get_type_parameters_for_type(class_symbol.program_id, super_name)
+        {
+            let missing_type_argument_count =
+                type_parameters.len().saturating_sub(type_arguments.len());
+            type_arguments.extend(std::iter::repeat_n(
+                self.ty.any(),
+                missing_type_argument_count,
+            ));
+        }
+        let super_reference = self.type_reference_with_display_type_argument_count(
+            class_symbol.program_id,
+            super_name,
+            type_arguments,
+            display_type_argument_count,
+        );
+        let TyKind::TypeReference(super_reference) = self.ty_kind(super_reference) else {
+            return None;
+        };
+
+        self.get_property_type_of_class_reference(
+            class_symbol.program_id,
+            super_reference,
+            receiver,
+            property_name,
+            depth + 1,
         )
     }
 

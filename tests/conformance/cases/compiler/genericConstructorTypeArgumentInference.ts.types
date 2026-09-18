@@ -1,0 +1,299 @@
+export class Box<T> {
+>            ^^^: typeof Box   (Class) (Identifier)
+
+export class Box<T> {
+>                ^: any   (Any) (Identifier)
+
+    constructor(readonly value: T) {}
+>                        ^^^^^: T   (TypeParameter) (Identifier)
+
+    constructor(readonly value: T) {}
+>                               ^: any   (Any) (Identifier)
+
+export class DefaultBox<T = string> {
+>            ^^^^^^^^^^: typeof DefaultBox   (Class) (Identifier)
+
+export class DefaultBox<T = string> {
+>                       ^: any   (Any) (Identifier)
+
+    constructor(readonly value?: T) {}
+>                        ^^^^^: T | undefined   (Union) (Identifier)
+
+    constructor(readonly value?: T) {}
+>                                ^: any   (Any) (Identifier)
+
+export class UnknownBox<T> {
+>            ^^^^^^^^^^: typeof UnknownBox   (Class) (Identifier)
+
+export class UnknownBox<T> {
+>                       ^: any   (Any) (Identifier)
+
+    value!: T;
+>   ^^^^^: T   (TypeParameter) (Identifier)
+
+    value!: T;
+>           ^: any   (Any) (Identifier)
+
+import { Box, DefaultBox, UnknownBox } from "./box";
+>        ^^^: typeof Box   (Class) (Identifier)
+
+import { Box, DefaultBox, UnknownBox } from "./box";
+>             ^^^^^^^^^^: typeof DefaultBox   (Class) (Identifier)
+
+import { Box, DefaultBox, UnknownBox } from "./box";
+>                         ^^^^^^^^^^: typeof UnknownBox   (Class) (Identifier)
+
+const concrete = new Box({ count: 1 });
+>     ^^^^^^^^: Box<{ count: number; }>   (TypeReference) (Identifier)
+
+const concrete = new Box({ count: 1 });
+>                    ^^^: typeof Box   (Class) (Identifier)
+
+const concrete = new Box({ count: 1 });
+>                          ^^^^^: number   (Number) (Identifier)
+
+const concreteValue = concrete.value;
+>     ^^^^^^^^^^^^^: { count: number; }   (Object) (Identifier)
+
+const concreteValue = concrete.value;
+>                     ^^^^^^^^: Box<{ count: number; }>   (TypeReference) (Identifier)
+
+const concreteValue = concrete.value;
+>                              ^^^^^: { count: number; }   (Object) (Identifier)
+
+function preserve<T>(value: T) {
+>        ^^^^^^^^: <T>(value: T) => Box<T>   (Function) (Identifier)
+
+function preserve<T>(value: T) {
+>                 ^: any   (Any) (Identifier)
+
+function preserve<T>(value: T) {
+>                    ^^^^^: T   (TypeParameter) (Identifier)
+
+function preserve<T>(value: T) {
+>                           ^: any   (Any) (Identifier)
+
+    let inferred = new Box(value);
+>       ^^^^^^^^: Box<T>   (TypeReference) (Identifier)
+
+    let inferred = new Box(value);
+>                      ^^^: typeof Box   (Class) (Identifier)
+
+    let inferred = new Box(value);
+>                          ^^^^^: T   (TypeParameter) (Identifier)
+
+    const forward: Box<T> = inferred;
+>         ^^^^^^^: Box<T>   (TypeReference) (Identifier)
+
+    const forward: Box<T> = inferred;
+>                  ^^^: typeof Box   (Class) (Identifier)
+
+    const forward: Box<T> = inferred;
+>                  ^^^: typeof Box   (Class) (Identifier)
+
+    const forward: Box<T> = inferred;
+>                      ^: any   (Any) (Identifier)
+
+    const forward: Box<T> = inferred;
+>                           ^^^^^^^^: Box<T>   (TypeReference) (Identifier)
+
+    inferred = forward;
+>   ^^^^^^^^: Box<T>   (TypeReference) (Identifier)
+
+    inferred = forward;
+>   ^^^^^^^^^^^^^^^^^^^: Box<T>   (TypeReference) (ExpressionStatement)
+
+    inferred = forward;
+>              ^^^^^^^: Box<T>   (TypeReference) (Identifier)
+
+    return inferred;
+>          ^^^^^^^^: Box<T>   (TypeReference) (Identifier)
+
+const preserved = preserve({ label: "value" });
+>     ^^^^^^^^^: Box<{ label: string; }>   (TypeReference) (Identifier)
+
+const preserved = preserve({ label: "value" });
+>                 ^^^^^^^^: <T>(value: T) => Box<T>   (Function) (Identifier)
+
+const preserved = preserve({ label: "value" });
+>                            ^^^^^: string   (String) (Identifier)
+
+const explicit = new Box<string>("value");
+>     ^^^^^^^^: Box<string>   (TypeReference) (Identifier)
+
+const explicit = new Box<string>("value");
+>                    ^^^: typeof Box   (Class) (Identifier)
+
+const defaulted = new DefaultBox();
+>     ^^^^^^^^^: DefaultBox<string>   (TypeReference) (Identifier)
+
+const defaulted = new DefaultBox();
+>                     ^^^^^^^^^^: typeof DefaultBox   (Class) (Identifier)
+
+const unresolved = new UnknownBox();
+>     ^^^^^^^^^^: UnknownBox<unknown>   (TypeReference) (Identifier)
+
+const unresolved = new UnknownBox();
+>                      ^^^^^^^^^^: typeof UnknownBox   (Class) (Identifier)
+
+export class Base<T> {
+>            ^^^^: typeof Base   (Class) (Identifier)
+
+export class Base<T> {
+>                 ^: any   (Any) (Identifier)
+
+    value!: T;
+>   ^^^^^: T   (TypeParameter) (Identifier)
+
+    value!: T;
+>           ^: any   (Any) (Identifier)
+
+    self(): this {
+>   ^^^^: () => this   (Function) (Identifier)
+
+export class Derived extends Base<string> {}
+>            ^^^^^^^: typeof Derived   (Class) (Identifier)
+
+export class Derived extends Base<string> {}
+>                            ^^^^: typeof Base   (Class) (Identifier)
+
+export class Middle<T> extends Base<T[]> {}
+>            ^^^^^^: typeof Middle   (Class) (Identifier)
+
+export class Middle<T> extends Base<T[]> {}
+>                   ^: any   (Any) (Identifier)
+
+export class Middle<T> extends Base<T[]> {}
+>                              ^^^^: typeof Base   (Class) (Identifier)
+
+export class Middle<T> extends Base<T[]> {}
+>                                   ^: any   (Any) (Identifier)
+
+export class Leaf extends Middle<number> {}
+>            ^^^^: typeof Leaf   (Class) (Identifier)
+
+export class Leaf extends Middle<number> {}
+>                         ^^^^^^: typeof Middle   (Class) (Identifier)
+
+const inheritedValue = new Derived().value;
+>     ^^^^^^^^^^^^^^: string   (String) (Identifier)
+
+const inheritedValue = new Derived().value;
+>                          ^^^^^^^: typeof Derived   (Class) (Identifier)
+
+const inheritedValue = new Derived().value;
+>                                    ^^^^^: string   (String) (Identifier)
+
+const inheritedThis = new Derived().self();
+>     ^^^^^^^^^^^^^: Derived   (TypeReference) (Identifier)
+
+const inheritedThis = new Derived().self();
+>                         ^^^^^^^: typeof Derived   (Class) (Identifier)
+
+const inheritedThis = new Derived().self();
+>                                   ^^^^: () => Derived   (Function) (Identifier)
+
+const nestedInheritedValue = new Leaf().value;
+>     ^^^^^^^^^^^^^^^^^^^^: number[]   (Array) (Identifier)
+
+const nestedInheritedValue = new Leaf().value;
+>                                ^^^^: typeof Leaf   (Class) (Identifier)
+
+const nestedInheritedValue = new Leaf().value;
+>                                       ^^^^^: number[]   (Array) (Identifier)
+
+import { Box } from "./box";
+>        ^^^: typeof Box   (Class) (Identifier)
+
+import { Base, Derived, Leaf } from "./hierarchy";
+>        ^^^^: typeof Base   (Class) (Identifier)
+
+import { Base, Derived, Leaf } from "./hierarchy";
+>              ^^^^^^^: typeof Derived   (Class) (Identifier)
+
+import { Base, Derived, Leaf } from "./hierarchy";
+>                       ^^^^: typeof Leaf   (Class) (Identifier)
+
+type OwnIndexed = Box<{ count: number }>["value"];
+>    ^^^^^^^^^^: { count: number; }   (Object) (Identifier)
+
+type OwnIndexed = Box<{ count: number }>["value"];
+>                 ^^^: typeof Box   (Class) (Identifier)
+
+type OwnIndexed = Box<{ count: number }>["value"];
+>                 ^^^: typeof Box   (Class) (Identifier)
+
+type OwnIndexed = Box<{ count: number }>["value"];
+>                       ^^^^^: number   (Number) (Identifier)
+
+type InheritedIndexed = Derived["value"];
+>    ^^^^^^^^^^^^^^^^: string   (String) (Identifier)
+
+type InheritedIndexed = Derived["value"];
+>                       ^^^^^^^: typeof Derived   (Class) (Identifier)
+
+type InheritedIndexed = Derived["value"];
+>                       ^^^^^^^: typeof Derived   (Class) (Identifier)
+
+type InheritedThisIndexed = Derived["self"];
+>    ^^^^^^^^^^^^^^^^^^^^: () => Derived   (Function) (Identifier)
+
+type InheritedThisIndexed = Derived["self"];
+>                           ^^^^^^^: typeof Derived   (Class) (Identifier)
+
+type InheritedThisIndexed = Derived["self"];
+>                           ^^^^^^^: typeof Derived   (Class) (Identifier)
+
+type NestedInheritedIndexed = Leaf["value"];
+>    ^^^^^^^^^^^^^^^^^^^^^^: number[]   (Array) (Identifier)
+
+type NestedInheritedIndexed = Leaf["value"];
+>                             ^^^^: typeof Leaf   (Class) (Identifier)
+
+type NestedInheritedIndexed = Leaf["value"];
+>                             ^^^^: typeof Leaf   (Class) (Identifier)
+
+type ValueOf<T extends Base<unknown>> = T["value"];
+>    ^^^^^^^: T["value"]   (IndexedAccess) (Identifier)
+
+type ValueOf<T extends Base<unknown>> = T["value"];
+>            ^: any   (Any) (Identifier)
+
+type ValueOf<T extends Base<unknown>> = T["value"];
+>                      ^^^^: typeof Base   (Class) (Identifier)
+
+type ValueOf<T extends Base<unknown>> = T["value"];
+>                      ^^^^: typeof Base   (Class) (Identifier)
+
+type ValueOf<T extends Base<unknown>> = T["value"];
+>                                       ^: any   (Any) (Identifier)
+
+type ValuesOf<T extends Base<unknown>> = ValueOf<T>[];
+>    ^^^^^^^^: ValueOf<T>[]   (Array) (Identifier)
+
+type ValuesOf<T extends Base<unknown>> = ValueOf<T>[];
+>             ^: any   (Any) (Identifier)
+
+type ValuesOf<T extends Base<unknown>> = ValueOf<T>[];
+>                       ^^^^: typeof Base   (Class) (Identifier)
+
+type ValuesOf<T extends Base<unknown>> = ValueOf<T>[];
+>                       ^^^^: typeof Base   (Class) (Identifier)
+
+type ValuesOf<T extends Base<unknown>> = ValueOf<T>[];
+>                                        ^^^^^^^: any   (Any) (Identifier)
+
+type ValuesOf<T extends Base<unknown>> = ValueOf<T>[];
+>                                                ^: any   (Any) (Identifier)
+
+type ExpandedArrayAlias = ValuesOf<Derived>;
+>    ^^^^^^^^^^^^^^^^^^: string[]   (Array) (Identifier)
+
+type ExpandedArrayAlias = ValuesOf<Derived>;
+>                         ^^^^^^^^: any   (Any) (Identifier)
+
+type ExpandedArrayAlias = ValuesOf<Derived>;
+>                                  ^^^^^^^: typeof Derived   (Class) (Identifier)
+
+type ExpandedArrayAlias = ValuesOf<Derived>;
+>                                  ^^^^^^^: typeof Derived   (Class) (Identifier)

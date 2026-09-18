@@ -546,8 +546,7 @@ import type { ZodRawShape } from './types'
                  expected: { [x: string]: ZodTypeAny; }
 
 export const z = {
->            ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (Object) (Identifier)
-      expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+>            ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }   (Object) (Identifier)
 
   string: () => new ZodString(),
 > ^^^^^^: () => ZodString   (Function) (Identifier)
@@ -568,8 +567,7 @@ export const z = {
 >                    ^^^^^^^^^^: typeof ZodBoolean   (Class) (Identifier)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
-> ^^^^^^: <Shape extends ZodRawShape>(shape: Shape) => ZodObject   (Function) (Identifier)
-expected: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>
+> ^^^^^^: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>   (Function) (Identifier)
 
   object: <Shape extends ZodRawShape>(shape: Shape) => new ZodObject(shape),
 >          ^^^^^: any   (Any) (Identifier)
@@ -595,8 +593,7 @@ expected: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>
 >                                                                    ^^^^^: Shape   (TypeParameter) (Identifier)
 
 import { z } from '../src/v3/external'
->        ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (Object) (Identifier)
-  expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+>        ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }   (Object) (Identifier)
 
 import type { input, output } from '../src/v3/types'
 >             ^^^^^: T["_input"]   (IndexedAccess) (Identifier)
@@ -605,77 +602,65 @@ import type { input, output } from '../src/v3/types'
 >                    ^^^^^^: T["_output"]   (IndexedAccess) (Identifier)
 
 const accountSchema = z.object({
->     ^^^^^^^^^^^^^: ZodObject   (TypeReference) (Identifier)
-           expected: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+>     ^^^^^^^^^^^^^: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>   (TypeReference) (Identifier)
 
 const accountSchema = z.object({
->                     ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (Object) (Identifier)
-               expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+>                     ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }   (Object) (Identifier)
 
 const accountSchema = z.object({
->                       ^^^^^^: <Shape extends ZodRawShape>(shape: Shape) => ZodObject   (Function) (Identifier)
-                      expected: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>
+>                       ^^^^^^: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>   (Function) (Identifier)
 
   id: z.string(),
 > ^^: ZodString   (TypeReference) (Identifier)
 
   id: z.string(),
->     ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (Object) (Identifier)
-expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+>     ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }   (Object) (Identifier)
 
   id: z.string(),
 >       ^^^^^^: () => ZodString   (Function) (Identifier)
 
   email: z.string().optional(),
-> ^^^^^: any   (Error) (Identifier)
-expected: ZodOptional<ZodString>
+> ^^^^^: ZodOptional<ZodString>   (TypeReference) (Identifier)
 
   email: z.string().optional(),
->        ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (Object) (Identifier)
-  expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+>        ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }   (Object) (Identifier)
 
   email: z.string().optional(),
 >          ^^^^^^: () => ZodString   (Function) (Identifier)
 
   email: z.string().optional(),
->                   ^^^^^^^^: any   (Error) (Identifier)
-                    expected: () => ZodOptional<ZodString>
+>                   ^^^^^^^^: () => ZodOptional<ZodString>   (Function) (Identifier)
 
   scores: z.number().array(),
-> ^^^^^^: any   (Error) (Identifier)
-expected: ZodArray<ZodNumber>
+> ^^^^^^: ZodArray<ZodNumber>   (TypeReference) (Identifier)
 
   scores: z.number().array(),
->         ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (Object) (Identifier)
-   expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+>         ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }   (Object) (Identifier)
 
   scores: z.number().array(),
 >           ^^^^^^: () => ZodNumber   (Function) (Identifier)
 
   scores: z.number().array(),
->                    ^^^^^: any   (Error) (Identifier)
-                  expected: () => ZodArray<ZodNumber>
+>                    ^^^^^: () => ZodArray<ZodNumber>   (Function) (Identifier)
 
   active: z.boolean(),
 > ^^^^^^: ZodBoolean   (TypeReference) (Identifier)
 
   active: z.boolean(),
->         ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject; }   (Object) (Identifier)
-   expected: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }
+>         ^: { string: () => ZodString; number: () => ZodNumber; boolean: () => ZodBoolean; object: <Shape extends ZodRawShape>(shape: Shape) => ZodObject<Shape>; }   (Object) (Identifier)
 
   active: z.boolean(),
 >           ^^^^^^^: () => ZodBoolean   (Function) (Identifier)
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
->     ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TypeReference) (Identifier)
+>     ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof { [Key in keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }]?: true | undefined; } & keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>>   (TypeReference) (Identifier)
                  expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
->                           ^^^^^^^^^^^^^: ZodObject   (TypeReference) (Identifier)
-                                 expected: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+>                           ^^^^^^^^^^^^^: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>   (TypeReference) (Identifier)
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
->                                         ^^^^: <Mask extends { [Key in keyof Shape]?: true | undefined; }>(mask: Mask) => ZodObject<Pick<Shape, keyof Mask & keyof Shape>>   (Function) (Identifier)
+>                                         ^^^^: <Mask>(mask: Mask) => ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof Mask & keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>>   (Function) (Identifier)
                                       expected: <Mask>(mask: Mask) => ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof Mask & ("active" | "email" | "id" | "scores")>>
 
 const publicAccountSchema = accountSchema.pick({ id: true, active: true })
@@ -685,8 +670,7 @@ const publicAccountSchema = accountSchema.pick({ id: true, active: true })
 >                                                          ^^^^^^: true   (BooleanLiteral) (Identifier)
 
 type AccountInput = input<typeof accountSchema>
->    ^^^^^^^^^^^^: ZodObject["_input"]   (IndexedAccess) (Identifier)
-         expected: { id: string; email: string | undefined; scores: number[]; active: boolean; }
+>    ^^^^^^^^^^^^: { id: string; email: string | undefined; scores: number[]; active: boolean; }   (Object) (Identifier)
 
 type AccountInput = input<typeof accountSchema>
 >                   ^^^^^: T["_input"]   (IndexedAccess) (Identifier)
@@ -695,25 +679,22 @@ type AccountInput = input<typeof accountSchema>
 >                   ^^^^^: T["_input"]   (IndexedAccess) (Identifier)
 
 type AccountInput = input<typeof accountSchema>
->                                ^^^^^^^^^^^^^: ZodObject   (TypeReference) (Identifier)
-                                      expected: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+>                                ^^^^^^^^^^^^^: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>   (TypeReference) (Identifier)
 
 type AccountOutput = output<typeof accountSchema>
->    ^^^^^^^^^^^^^: ZodObject["_output"]   (IndexedAccess) (Identifier)
-          expected: { id: string; email: string | undefined; scores: number[]; active: boolean; }
-
-type AccountOutput = output<typeof accountSchema>
->                    ^^^^^^: T["_output"]   (IndexedAccess) (Identifier)
+>    ^^^^^^^^^^^^^: { id: string; email: string | undefined; scores: number[]; active: boolean; }   (Object) (Identifier)
 
 type AccountOutput = output<typeof accountSchema>
 >                    ^^^^^^: T["_output"]   (IndexedAccess) (Identifier)
 
 type AccountOutput = output<typeof accountSchema>
->                                  ^^^^^^^^^^^^^: ZodObject   (TypeReference) (Identifier)
-                                        expected: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+>                    ^^^^^^: T["_output"]   (IndexedAccess) (Identifier)
+
+type AccountOutput = output<typeof accountSchema>
+>                                  ^^^^^^^^^^^^^: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>   (TypeReference) (Identifier)
 
 type PublicAccount = output<typeof publicAccountSchema>
->    ^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>["_output"]   (IndexedAccess) (Identifier)
+>    ^^^^^^^^^^^^^: { [Key in keyof Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof { [Key in keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }]?: true | undefined; } & keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>]: output<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof { [Key in keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }]?: true | undefined; } & keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>[Key]>; }   (Mapped) (Identifier)
           expected: { id: string; active: boolean; }
 
 type PublicAccount = output<typeof publicAccountSchema>
@@ -723,7 +704,7 @@ type PublicAccount = output<typeof publicAccountSchema>
 >                    ^^^^^^: T["_output"]   (IndexedAccess) (Identifier)
 
 type PublicAccount = output<typeof publicAccountSchema>
->                                  ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TypeReference) (Identifier)
+>                                  ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof { [Key in keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }]?: true | undefined; } & keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>>   (TypeReference) (Identifier)
                                               expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 
 const inputValue: AccountInput = {
@@ -749,16 +730,13 @@ const inputValue: AccountInput = {
 > ^^^^^^: true   (BooleanLiteral) (Identifier)
 
 const parsedAccount = accountSchema.parse(inputValue)
->     ^^^^^^^^^^^^^: objectOutputType<Shape>   (TypeReference) (Identifier)
-           expected: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+>     ^^^^^^^^^^^^^: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>   (TypeReference) (Identifier)
 
 const parsedAccount = accountSchema.parse(inputValue)
->                     ^^^^^^^^^^^^^: ZodObject   (TypeReference) (Identifier)
-                           expected: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+>                     ^^^^^^^^^^^^^: ZodObject<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>   (TypeReference) (Identifier)
 
 const parsedAccount = accountSchema.parse(inputValue)
->                                   ^^^^^: (data: unknown) => objectOutputType<Shape>   (Function) (Identifier)
-                                 expected: (data: unknown) => objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+>                                   ^^^^^: (data: unknown) => objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>   (Function) (Identifier)
 
 const parsedAccount = accountSchema.parse(inputValue)
 >                                         ^^^^^^^^^^: AccountInput   (TypeReference) (Identifier)
@@ -772,8 +750,7 @@ const explicitAccount: AccountOutput = parsedAccount
 >                      ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const explicitAccount: AccountOutput = parsedAccount
->                                      ^^^^^^^^^^^^^: objectOutputType<Shape>   (TypeReference) (Identifier)
-                                            expected: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+>                                      ^^^^^^^^^^^^^: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>   (TypeReference) (Identifier)
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
 >     ^^^^^^^^^^^^^: PublicAccount   (TypeReference) (Identifier)
@@ -783,28 +760,24 @@ const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
 >                    ^^^^^^^^^^^^^: any   (Any) (Identifier)
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
->                                    ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<Shape, keyof { [Key in keyof Shape]?: true | undefined; } & keyof Shape>>   (TypeReference) (Identifier)
+>                                    ^^^^^^^^^^^^^^^^^^^: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof { [Key in keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }]?: true | undefined; } & keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>>   (TypeReference) (Identifier)
                                                 expected: ZodObject<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
->                                                        ^^^^^: (data: unknown) => objectOutputType<Shape>   (Function) (Identifier)
+>                                                        ^^^^^: (data: unknown) => objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, keyof { [Key in keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }]?: true | undefined; } & keyof { id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>>   (Function) (Identifier)
                                                       expected: (data: unknown) => objectOutputType<Pick<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }, "active" | "id">>
 
 const publicAccount: PublicAccount = publicAccountSchema.parse(parsedAccount)
->                                                              ^^^^^^^^^^^^^: objectOutputType<Shape>   (TypeReference) (Identifier)
-                                                                    expected: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+>                                                              ^^^^^^^^^^^^^: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>   (TypeReference) (Identifier)
 
 const score = parsedAccount.scores[0]
->     ^^^^^: any   (Error) (Identifier)
-   expected: number
+>     ^^^^^: number   (Number) (Identifier)
 
 const score = parsedAccount.scores[0]
->             ^^^^^^^^^^^^^: objectOutputType<Shape>   (TypeReference) (Identifier)
-                   expected: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>
+>             ^^^^^^^^^^^^^: objectOutputType<{ id: ZodString; email: ZodOptional<ZodString>; scores: ZodArray<ZodNumber>; active: ZodBoolean; }>   (TypeReference) (Identifier)
 
 const score = parsedAccount.scores[0]
->                           ^^^^^^: any   (Error) (Identifier)
-                          expected: number[]
+>                           ^^^^^^: number[]   (Array) (Identifier)
 
 const publicActive = publicAccount.active
 >     ^^^^^^^^^^^^: any   (Error) (Identifier)
